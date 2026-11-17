@@ -1,20 +1,4 @@
-export interface Product {
-  id: number
-  codigo: string
-  producto: string
-  categoria: 'Electrónica' | 'Accesorios' | 'Papelería' | 'Hogar' | 'Otras'
-  cantidad: number
-}
-
-export interface Movement {
-  id: number
-  fecha: string
-  productoId: number
-  producto: string
-  tipo: 'Entrada' | 'Salida'
-  cantidad: number
-  usuario: string
-}
+import type { Movement, Product } from '../logic/types'
 
 export const initialProducts: Product[] = [
   { id: 1, codigo: '001', producto: 'Laptop', categoria: 'Electrónica', cantidad: 15 },
@@ -45,9 +29,49 @@ export const initialProducts: Product[] = [
 ]
 
 export const initialMovements: Movement[] = [
-  { id: 1, fecha: '2026-10-26T09:15:00', productoId: 2, producto: 'Mouse', tipo: 'Entrada', cantidad: 10, usuario: 'admin' },
-  { id: 2, fecha: '2026-10-26T10:30:00', productoId: 3, producto: 'Teclado', tipo: 'Salida', cantidad: 2, usuario: 'operador' },
-  { id: 3, fecha: '2026-10-26T11:20:00', productoId: 1, producto: 'Laptop', tipo: 'Salida', cantidad: 3, usuario: 'admin' },
-  { id: 4, fecha: '2026-10-26T13:45:00', productoId: 9, producto: 'Cargador USB-C', tipo: 'Entrada', cantidad: 15, usuario: 'admin' },
-  { id: 5, fecha: '2026-10-26T14:10:00', productoId: 5, producto: 'Audífonos', tipo: 'Salida', cantidad: 1, usuario: 'operador' },
+  {
+    id: 1,
+    fecha: '2026-10-26T09:15:00',
+    productoId: 2,
+    producto: 'Mouse',
+    tipo: 'Entrada',
+    cantidad: 10,
+    usuario: 'admin',
+  },
+  {
+    id: 2,
+    fecha: '2026-10-26T10:30:00',
+    productoId: 3,
+    producto: 'Teclado',
+    tipo: 'Salida',
+    cantidad: 2,
+    usuario: 'operador',
+  },
+  {
+    id: 3,
+    fecha: '2026-10-26T11:20:00',
+    productoId: 1,
+    producto: 'Laptop',
+    tipo: 'Salida',
+    cantidad: 3,
+    usuario: 'admin',
+  },
+  {
+    id: 4,
+    fecha: '2026-10-26T13:45:00',
+    productoId: 9,
+    producto: 'Cargador USB-C',
+    tipo: 'Entrada',
+    cantidad: 15,
+    usuario: 'admin',
+  },
+  {
+    id: 5,
+    fecha: '2026-10-26T14:10:00',
+    productoId: 5,
+    producto: 'Audífonos',
+    tipo: 'Salida',
+    cantidad: 1,
+    usuario: 'operador',
+  },
 ]

@@ -1,329 +1,242 @@
-import { useState } from 'react'
-import { Outlet, NavLink, useNavigate } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  Home, 
-  Package, 
-  ArrowLeftRight, 
-  Bell, 
-  FileText, 
+import { useEffect, useState } from 'react'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+import {
+  ArrowLeftRight,
+  Bell,
+  FileText,
+  Home,
   LogOut,
-  Sun,
-  Moon,
-  Command,
   Menu,
-  X
+  Moon,
+  Package,
+  Sun,
+  X,
 } from 'lucide-react'
-import { useAuth } from '../../contexts/AuthContext'
-import { useTheme } from '../../contexts/ThemeContext'
-import { useInventoryStore } from '../../store/inventory'
-import { cn } from '../../utils/cn'
+import { useAuth } from '../../app/providers/auth-provider'
+import { useTheme } from '../../app/providers/theme-provider'
+import { useInventoryStats } from '../../logic/hooks/useInventoryStats'
+import { formatLongDate, getGreeting } from '../../logic/services/formatters'
+import { EASE_OUT } from '../illustrations/motion'
+import { OpenBox } from '../illustrations/open-box'
+
+const NAV_ITEMS = [
+  { to: '/', icon: Home, label: 'Inicio', num: '01' },
+  { to: '/inventario', icon: Package, label: 'Inventario', num: '02' },
+  { to: '/movimientos', icon: ArrowLeftRight, label: 'Movimientos', num: '03' },
+  { to: '/alertas', icon: Bell, label: 'Alertas', num: '04' },
+  { to: '/reportes', icon: FileText, label: 'Reportes', num: '05' },
+] as const
 
 export const AppLayout = () => {
-  const [sidebarExpanded, setSidebarExpanded] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { user, logout } = useAuth()
   const { theme, toggleTheme } = useTheme()
+  const { alertsCount } = useInventoryStats()
   const navigate = useNavigate()
-  const products = useInventoryStore((state) => state.products)
-  const alerts = products.filter(p => p.cantidad < 10).length
 
-  const navItems = [
-    { to: '/', icon: Home, label: 'Inicio', num: '01' },
-    { to: '/inventario', icon: Package, label: 'Inventario', num: '02' },
-    { to: '/movimientos', icon: ArrowLeftRight, label: 'Movimientos', num: '03' },
-    { to: '/alertas', icon: Bell, label: 'Alertas', num: '04', badge: alerts },
-    { to: '/reportes', icon: FileText, label: 'Reportes', num: '05' },
-  ]
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileMenuOpen(false)
+    }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [mobileMenuOpen])
 
   const handleLogout = () => {
+    setMobileMenuOpen(false)
     logout()
-    navigate('/login')
+    navigate('/login', { replace: true })
   }
 
-  const getGreeting = () => {
-    const hour = new Date().getHours()
-    if (hour < 12) return 'Buenos días'
-    if (hour < 20) return 'Buenas tardes'
-    return 'Buenas noches'
-  }
-
-  const formatDate = () => {
-    return new Date().toLocaleDateString('es-ES', { 
-      weekday: 'long', 
-      day: 'numeric', 
-      month: 'long' 
-    })
-  }
+  const badgeFor = (to: string): number | undefined =>
+    to === '/alertas' && alertsCount > 0 ? alertsCount : undefined
 
   return (
-    <div className="h-screen w-full flex overflow-hidden" style={{ backgroundColor: 'var(--bg)' }}>
-      {/* Sidebar Desktop */}
-      <motion.aside
-        className="hidden lg:flex flex-col relative z-50"
-        style={{ 
-          backgroundColor: 'var(--bg-surface)',
-          borderRight: '1px solid var(--line)',
-        }}
-        onMouseEnter={() => setSidebarExpanded(true)}
-        onMouseLeave={() => setSidebarExpanded(false)}
-        animate={{ width: sidebarExpanded ? 240 : 72 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <div className="h-[72px] flex items-center px-[16px] border-b" style={{ borderColor: 'var(--line)' }}>
-          <div className="flex items-center gap-3">
-            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="var(--ink)" strokeWidth="1.25" fill="none"/>
-              <path d="M16 4V16M16 16L4 10M16 16L28 10M16 28V16" stroke="var(--ink)" strokeWidth="1.25"/>
-            </svg>
-            <AnimatePresence>
-              {sidebarExpanded && (
-                <motion.span
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-[10px] tracking-[0.25em] uppercase whitespace-nowrap"
-                  style={{ color: 'var(--ink-subtle)' }}
-                >
-                  Atelier
-                </motion.span>
-              )}
-            </AnimatePresence>
+    <div className="app-shell">
+      <aside className="sidebar" aria-label="Navegación principal">
+        <div className="sidebar__brand">
+          <OpenBox className="sidebar__mark" />
+          <div className="sidebar__brand-text">
+            <span className="sidebar__brand-title">Atelier</span>
+            <span className="sidebar__brand-sub">de Almacén</span>
           </div>
         </div>
 
-        <nav className="flex-1 py-[16px] px-[16px]">
-          <div className="space-y-[8px]">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                end={item.to === '/'}
-                className={({ isActive }) =>
-                  cn(
-                    'relative flex items-center w-[48px] h-[48px] group transition-colors duration-300',
-                    isActive ? 'text-[var(--ink)]' : 'text-[var(--ink-subtle)] hover:text-[var(--ink)]'
-                  )
-                }
-                style={{ justifyContent: 'center' }}
-              >
-                {({ isActive }) => (
-                  <>
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeNav"
-                        className="absolute left-[-16px] w-[2px] h-[24px]"
-                        style={{ backgroundColor: 'var(--accent)' }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                      />
-                    )}
-                    {isActive && (
-                      <div 
-                        className="absolute inset-0"
-                        style={{ backgroundColor: 'rgba(20, 19, 15, 0.06)' }}
-                      />
-                    )}
-                    <item.icon size={18} strokeWidth={1.25} className="relative z-10" />
-                    <AnimatePresence>
-                      {sidebarExpanded && (
-                        <motion.div
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: -10 }}
-                          transition={{ duration: 0.3 }}
-                          className="absolute left-[56px] flex items-center gap-2 whitespace-nowrap"
-                        >
-                          <span className="text-sm relative z-10">{item.label}</span>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                    {item.badge && item.badge > 0 && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full z-10"
-                        style={{ backgroundColor: 'var(--accent)' }}
-                      />
-                    )}
-                  </>
-                )}
-              </NavLink>
-            ))}
-          </div>
+        <nav className="sidebar__nav">
+          {NAV_ITEMS.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              className={({ isActive }) =>
+                ['sidebar__link', isActive ? 'sidebar__link--active' : ''].filter(Boolean).join(' ')
+              }
+            >
+              <item.icon size={18} strokeWidth={1.25} aria-hidden="true" />
+              <span className="sidebar__label">{item.label}</span>
+              <span className="sidebar__index" aria-hidden="true">
+                {item.num}
+              </span>
+              {badgeFor(item.to) && (
+                <span className="sidebar__badge" aria-label={`${badgeFor(item.to)} alertas`}>
+                  {badgeFor(item.to)}
+                </span>
+              )}
+            </NavLink>
+          ))}
         </nav>
 
-        <div className="p-[16px] border-t" style={{ borderColor: 'var(--line)' }}>
-          <button
-            onClick={handleLogout}
-            className="relative flex items-center w-[48px] h-[48px] text-[var(--ink-subtle)] hover:text-[var(--ink)] transition-colors duration-300"
-            style={{ justifyContent: 'center' }}
-          >
-            <LogOut size={18} strokeWidth={1.25} />
-            <AnimatePresence>
-              {sidebarExpanded && (
-                <motion.span
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute left-[56px] whitespace-nowrap text-sm"
-                >
-                  Cerrar sesión
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </button>
-        </div>
-      </motion.aside>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header 
-          className="h-[72px] flex items-center justify-between border-b"
-          style={{ 
-            backgroundColor: 'var(--bg-surface)',
-            borderColor: 'var(--line)',
-            padding: '0 24px',
-          }}
-          className="lg:!px-[48px]"
-        >
-          <div className="flex items-center gap-6">
-            <button
-              onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden"
-              style={{ color: 'var(--ink)' }}
-            >
-              <Menu size={20} strokeWidth={1.25} />
-            </button>
-            <div className="flex flex-col">
-              <span 
-                className="text-[20px]"
-                style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', color: 'var(--ink)', lineHeight: 1 }}
-              >
-                {formatDate()}
-              </span>
-              <span className="text-[11px] tracking-[0.16em] uppercase mt-[4px]" style={{ color: 'var(--ink-subtle)' }}>
-                {getGreeting()}, {user?.name}
-              </span>
+        <div className="sidebar__footer">
+          <div className="sidebar__user">
+            <span className="sidebar__avatar" aria-hidden="true">
+              {user?.name.charAt(0)}
+            </span>
+            <div className="sidebar__user-text">
+              <span className="sidebar__user-name">{user?.name}</span>
+              <span className="sidebar__user-role">{user?.role}</span>
             </div>
           </div>
+          <button type="button" className="sidebar__action" onClick={handleLogout}>
+            <LogOut size={16} strokeWidth={1.25} aria-hidden="true" />
+            <span className="sidebar__label">Cerrar sesión</span>
+          </button>
+        </div>
+      </aside>
 
-          <div className="flex items-center gap-4">
-            <button
-              className="hidden md:flex items-center gap-2 px-[16px] py-[8px] border transition-colors duration-300"
-              style={{ borderColor: 'var(--line-strong)', color: 'var(--ink-subtle)' }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = 'var(--ink)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'var(--ink-subtle)'
-              }}
-            >
-              <Command size={14} strokeWidth={1.25} />
-              <span className="text-xs">Buscar</span>
-              <span className="text-[10px] px-1.5 py-0.5 border" style={{ borderColor: 'var(--line)' }}>⌘K</span>
-            </button>
+      <div className="app-body">
+        <header className="app-header">
+          <button
+            type="button"
+            className="app-header__menu"
+            onClick={() => setMobileMenuOpen(true)}
+            aria-label="Abrir menú de navegación"
+          >
+            <Menu size={20} strokeWidth={1.25} aria-hidden="true" />
+          </button>
 
+          <div className="app-header__meta">
+            <p className="app-header__date">{formatLongDate()}</p>
+            <p className="app-header__greeting">
+              {getGreeting()}, {user?.name}
+            </p>
+          </div>
+
+          <div className="app-header__actions">
+            <span className="app-header__status" aria-hidden="true">
+              <span className="app-header__status-dot" />
+              En línea
+            </span>
             <button
+              type="button"
+              className="theme-toggle"
               onClick={toggleTheme}
-              className="p-2 transition-colors duration-300"
-              style={{ color: 'var(--ink-subtle)' }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = 'var(--ink)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'var(--ink-subtle)'
-              }}
+              aria-label={theme === 'light' ? 'Activar modo oscuro' : 'Activar modo claro'}
             >
-              {theme === 'light' ? <Moon size={18} strokeWidth={1.25} /> : <Sun size={18} strokeWidth={1.25} />}
+              {theme === 'light' ? (
+                <Moon size={17} strokeWidth={1.25} aria-hidden="true" />
+              ) : (
+                <Sun size={17} strokeWidth={1.25} aria-hidden="true" />
+              )}
             </button>
-
-            <div 
-              className="w-[40px] h-[40px] flex items-center justify-center text-xs"
-              style={{ backgroundColor: 'var(--accent)', color: '#FBFAF6' }}
-            >
+            <div className="app-header__avatar" aria-hidden="true">
               {user?.name.charAt(0)}
             </div>
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto overflow-x-hidden">
+        <main className="app-content">
           <Outlet />
         </main>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
             <motion.div
+              className="mobile-menu__overlay"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/40 z-50 lg:hidden"
+              aria-hidden="true"
             />
-            <motion.div
+            <motion.aside
+              className="mobile-menu"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menú de navegación"
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-y-0 left-0 w-72 z-50 lg:hidden flex flex-col"
-              style={{ backgroundColor: 'var(--bg-surface)', borderRight: '1px solid var(--line)' }}
+              transition={{ duration: 0.4, ease: EASE_OUT }}
             >
-              <div className="h-[72px] flex items-center justify-between px-6 border-b" style={{ borderColor: 'var(--line)' }}>
-                <div className="flex items-center gap-3">
-                  <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16 4L4 10V22L16 28L28 22V10L16 4Z" stroke="var(--ink)" strokeWidth="1.25" fill="none"/>
-                    <path d="M16 4V16M16 16L4 10M16 16L28 10M16 28V16" stroke="var(--ink)" strokeWidth="1.25"/>
-                  </svg>
-                  <span className="text-[10px] tracking-[0.25em] uppercase" style={{ color: 'var(--ink-subtle)' }}>
-                    Atelier
-                  </span>
+              <div className="mobile-menu__head">
+                <div className="sidebar__brand">
+                  <OpenBox className="sidebar__mark" />
+                  <div className="sidebar__brand-text">
+                    <span className="sidebar__brand-title">Atelier</span>
+                    <span className="sidebar__brand-sub">de Almacén</span>
+                  </div>
                 </div>
-                <button onClick={() => setMobileMenuOpen(false)} style={{ color: 'var(--ink)' }}>
-                  <X size={20} strokeWidth={1.25} />
-                </button>
-              </div>
-              <nav className="flex-1 py-4 px-3">
-                <div className="space-y-1">
-                  {navItems.map((item) => (
-                    <NavLink
-                      key={item.to}
-                      to={item.to}
-                      end={item.to === '/'}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={({ isActive }) =>
-                        cn(
-                          'relative flex items-center h-10 px-3',
-                          isActive ? 'text-[var(--ink)]' : 'text-[var(--ink-subtle)]'
-                        )
-                      }
-                    >
-                      {({ isActive }) => (
-                        <>
-                          {isActive && (
-                            <div className="absolute left-0 w-[2px] h-6" style={{ backgroundColor: 'var(--accent)' }} />
-                          )}
-                          <item.icon size={18} strokeWidth={1.25} />
-                          <span className="ml-3 text-sm">{item.label}</span>
-                        </>
-                      )}
-                    </NavLink>
-                  ))}
-                </div>
-              </nav>
-              <div className="p-3 border-t" style={{ borderColor: 'var(--line)' }}>
                 <button
-                  onClick={handleLogout}
-                  className="flex items-center h-10 px-3 w-full text-[var(--ink-subtle)]"
+                  type="button"
+                  className="icon-button"
+                  onClick={() => setMobileMenuOpen(false)}
+                  aria-label="Cerrar menú"
                 >
-                  <LogOut size={18} strokeWidth={1.25} />
-                  <span className="ml-3 text-sm">Cerrar sesión</span>
+                  <X size={20} strokeWidth={1.25} aria-hidden="true" />
                 </button>
               </div>
-            </motion.div>
+
+              <nav className="mobile-menu__nav">
+                {NAV_ITEMS.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    end={item.to === '/'}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      ['mobile-menu__link', isActive ? 'mobile-menu__link--active' : '']
+                        .filter(Boolean)
+                        .join(' ')
+                    }
+                  >
+                    <item.icon size={18} strokeWidth={1.25} aria-hidden="true" />
+                    <span>{item.label}</span>
+                    <span className="mobile-menu__index">{item.num}</span>
+                    {badgeFor(item.to) && <span className="sidebar__badge">{badgeFor(item.to)}</span>}
+                  </NavLink>
+                ))}
+              </nav>
+
+              <div className="mobile-menu__footer">
+                <div className="sidebar__user">
+                  <span className="sidebar__avatar" aria-hidden="true">
+                    {user?.name.charAt(0)}
+                  </span>
+                  <div className="sidebar__user-text">
+                    <span className="sidebar__user-name">{user?.name}</span>
+                    <span className="sidebar__user-role">{user?.role}</span>
+                  </div>
+                </div>
+                <div className="mobile-menu__actions">
+                  <button type="button" className="btn btn--outline btn--sm" onClick={toggleTheme}>
+                    {theme === 'light' ? (
+                      <Moon size={15} strokeWidth={1.25} aria-hidden="true" />
+                    ) : (
+                      <Sun size={15} strokeWidth={1.25} aria-hidden="true" />
+                    )}
+                    {theme === 'light' ? 'Modo oscuro' : 'Modo claro'}
+                  </button>
+                  <button type="button" className="btn btn--ghost btn--sm" onClick={handleLogout}>
+                    <LogOut size={15} strokeWidth={1.25} aria-hidden="true" />
+                    Salir
+                  </button>
+                </div>
+              </div>
+            </motion.aside>
           </>
         )}
       </AnimatePresence>

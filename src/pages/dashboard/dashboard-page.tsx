@@ -1,426 +1,303 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import { useInventoryStore } from '../../store/inventory'
-import { ArrowUp, ArrowDown, ArrowRight } from 'lucide-react'
+import type { CSSProperties } from 'react'
 import { NavLink } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { ArrowDown, ArrowRight, ArrowUp } from 'lucide-react'
+import { useInventoryStore } from '../../logic/store/inventory'
+import { useCategoryStock, useInventoryStats } from '../../logic/hooks/useInventoryStats'
+import { useAnimatedNumber } from '../../logic/hooks/useAnimatedNumber'
+import { getMostMovedProduct, getRecentMovements } from '../../logic/store/selectors'
+import {
+  formatNumber,
+  formatRelativeTime,
+  pluralize,
+} from '../../logic/services/formatters'
+import { EASE_OUT } from '../../components/illustrations/motion'
 
-const AnimatedNumber = ({ value }: { value: number }) => {
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    let start = 0
-    const end = value
-    const duration = 1200
-    const increment = end / (duration / 16)
-
-    const timer = setInterval(() => {
-      start += increment
-      if (start >= end) {
-        setCount(end)
-        clearInterval(timer)
-      } else {
-        setCount(Math.floor(start))
-      }
-    }, 16)
-
-    return () => clearInterval(timer)
-  }, [value])
-
-  return <span>{count}</span>
+const AnimatedValue = ({ value }: { value: number }) => {
+  const current = useAnimatedNumber(value)
+  return <>{formatNumber(current)}</>
 }
 
-const Sparkline = ({ data = [4, 6, 5, 8, 7, 9, 10] }: { data?: number[] }) => {
-  const max = Math.max(...data)
-  const points = data.map((val, i) => {
-    const x = (i / (data.length - 1)) * 120
-    const y = 48 - (val / max) * 40
-    return `${x},${y}`
-  }).join(' ')
+const Sparkline = ({ label }: { label: string }) => {
+  const values = [4, 6, 5, 8, 7, 9, 10]
+  const max = Math.max(...values)
+  const min = Math.min(...values)
+  const range = max - min || 1
+  const points = values.map((value, index) => {
+    const x = (index / (values.length - 1)) * 116 + 2
+    const y = 40 - ((value - min) / range) * 32
+    return `${x.toFixed(1)},${y.toFixed(1)}`
+  })
+  const path = `M${points.join(' L')}`
 
   return (
-    <svg width="120" height="48" viewBox="0 0 120 48">
-      <motion.polyline
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: 1 }}
-        transition={{ duration: 1.2, ease: 'easeOut', delay: 0.3 }}
-        fill="none"
-        stroke="var(--ink)"
-        strokeWidth="1.5"
-        points={points}
+    <svg
+      className="sparkline"
+      viewBox="0 0 120 44"
+      role="img"
+      aria-label={label}
+      preserveAspectRatio="none"
+    >
+      <motion.path
+        className="sparkline__line"
+        d={path}
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 1 }}
+        transition={{ duration: 1.1, delay: 0.3, ease: EASE_OUT }}
       />
     </svg>
   )
 }
 
 export const DashboardPage = () => {
-  const products = useInventoryStore((state) => state.products)
+  const stats = useInventoryStats()
+  const categories = useCategoryStock()
   const movements = useInventoryStore((state) => state.movements)
-  
-  const totalProducts = products.length
-  const totalUnits = products.reduce((sum, p) => sum + p.cantidad, 0)
-  const alertsCount = products.filter(p => p.cantidad < 10).length
-  const criticalCount = products.filter(p => p.cantidad < 5).length
-  const warningCount = alertsCount - criticalCount
+  const recentMovements = getRecentMovements(movements, 4)
+  const mostMoved = getMostMovedProduct(movements)
+  const categoryUnits = categories.reduce((sum, item) => sum + item.units, 0)
 
-  const categoryData = products.reduce((acc, product) => {
-    acc[product.categoria] = (acc[product.categoria] || 0) + product.cantidad
-    return acc
-  }, {} as Record<string, number>)
-
-  const sortedCategories = Object.entries(categoryData)
-    .sort(([, a], [, b]) => b - a)
-    .map(([cat, value]) => ({ cat, value, percentage: Math.round((value / totalUnits) * 100) }))
-
-  const recentMovements = movements.slice(0, 5)
-
-  const getRelativeTime = (date: string) => {
-    const now = new Date()
-    const then = new Date(date)
-    const diff = Math.floor((now.getTime() - then.getTime()) / 1000 / 60)
-    if (diff < 60) return `hace ${diff} min`
-    if (diff < 1440) return `hace ${Math.floor(diff / 60)} h`
-    return `hace ${Math.floor(diff / 1440)} d`
-  }
-
-  const containerVariants = {
+  const container = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.06, delayChildren: 0.05 },
     },
   }
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
-    },
+  const item = {
+    hidden: { opacity: 0, y: 18 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE_OUT } },
   }
 
   return (
-    <div className="min-h-[calc(100svh-72px)]">
-      <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '48px 24px' }} className="lg:!px-[48px]">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-[48px]"
-        >
-          <p className="text-[11px] tracking-[0.16em] uppercase mb-[16px]" style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink-subtle)' }}>
-            01 / DASHBOARD
-          </p>
-          <h1 
-            className="mb-[16px]"
-            style={{ 
-              fontFamily: 'var(--font-display)', 
-              color: 'var(--ink)',
-              fontSize: 'clamp(48px, 6vw, 88px)',
-              lineHeight: 0.95,
-            }}
-          >
-            Inicio
+    <div className="page dashboard">
+      <header className="page-head">
+        <div>
+          <div className="page-head__meta">
+            <span className="page-head__index">01 / DASHBOARD</span>
+            <span className="page-head__rule" aria-hidden="true" />
+            <span className="eyebrow">{formatNumber(stats.totalProducts)} referencias</span>
+          </div>
+          <h1 className="page-title">
+            Inicio<em>.</em>
           </h1>
-          <p className="text-[16px]" style={{ color: 'var(--ink-subtle)' }}>
-            <span style={{ color: 'var(--accent)' }}>{alertsCount}</span> producto{alertsCount !== 1 ? 's' : ''} necesita{alertsCount !== 1 ? 'n' : ''} tu atención
-          </p>
-        </motion.div>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-12 gap-[24px]"
-          style={{ alignContent: 'start' }}
-        >
-          {/* Fila 1 */}
-          <motion.div variants={itemVariants} className="md:col-span-6 lg:col-span-7">
-            <div 
-              className="flex flex-col justify-between h-[280px] p-[32px] border"
-              style={{ 
-                backgroundColor: 'var(--bg-surface)',
-                borderColor: 'var(--line)',
-              }}
-            >
-              <div className="flex items-start justify-between">
-                <p className="text-[11px] tracking-[0.16em] uppercase" style={{ color: 'var(--ink-subtle)' }}>
-                  Total de productos
-                </p>
-              </div>
-              <div className="flex items-end justify-between">
-                <div 
-                  className="text-left"
-                  style={{ 
-                    fontFamily: 'var(--font-display)', 
-                    color: 'var(--ink)',
-                    fontSize: 'clamp(72px, 9vw, 128px)',
-                    lineHeight: 0.9,
-                  }}
-                >
-                  <AnimatedNumber value={totalProducts} />
-                </div>
-                <div className="flex items-end gap-4 mb-2">
-                  <Sparkline />
-                  <div className="text-right">
-                    <p className="text-[13px] flex items-center gap-1" style={{ fontFamily: 'var(--font-mono)', color: 'var(--moss)' }}>
-                      <ArrowUp size={12} strokeWidth={1.5} />
-                      12% vs. semana pasada
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="flex-1 h-px" style={{ backgroundColor: 'var(--line)' }} />
-                <p className="text-[13px]" style={{ color: 'var(--ink-subtle)' }}>
-                  {totalUnits.toLocaleString('es-ES')} unidades en total
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div variants={itemVariants} className="md:col-span-6 lg:col-span-5">
-            <div 
-              className="flex flex-col justify-between h-[280px] p-[32px] border"
-              style={{ 
-                backgroundColor: 'var(--accent)',
-                borderColor: 'var(--accent)',
-              }}
-            >
-              <div className="flex items-start justify-between">
-                <p className="text-[11px] tracking-[0.16em] uppercase" style={{ color: '#FBFAF6' }}>
-                  Alertas de stock
-                </p>
-                <motion.div
-                  animate={{ scale: [1, 1.3, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: '#FBFAF6' }}
-                />
-              </div>
-              <div 
-                className="text-left"
-                style={{ 
-                  fontFamily: 'var(--font-display)', 
-                  color: '#FBFAF6',
-                  fontSize: 'clamp(72px, 9vw, 128px)',
-                  lineHeight: 0.9,
-                }}
-              >
-                <AnimatedNumber value={alertsCount} />
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-1 text-[11px] border" style={{ borderColor: 'rgba(251, 250, 246, 0.4)', color: '#FBFAF6' }}>
-                  {criticalCount} críticos
-                </span>
-                <span className="px-2 py-1 text-[11px] border" style={{ borderColor: 'rgba(251, 250, 246, 0.4)', color: '#FBFAF6' }}>
-                  {warningCount} en advertencia
-                </span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Fila 2 */}
-          <motion.div variants={itemVariants} className="md:col-span-6 lg:col-span-7">
-            <div 
-              className="flex flex-col h-[360px] p-[32px] border"
-              style={{ 
-                backgroundColor: 'var(--bg-surface)',
-                borderColor: 'var(--line)',
-              }}
-            >
-              <div className="flex items-start justify-between mb-[24px]">
-                <p className="text-[11px] tracking-[0.16em] uppercase" style={{ color: 'var(--ink)' }}>
-                  Stock por categoría
-                </p>
-                <p className="text-[11px] tracking-[0.16em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink-subtle)' }}>
-                  CH-01
-                </p>
-              </div>
-              <div className="flex-1 flex flex-col justify-center space-y-[20px]">
-                {sortedCategories.map((item, index) => (
-                  <motion.div
-                    key={item.cat}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: index * 0.08 }}
-                    className="group flex items-center gap-4"
-                  >
-                    <div className="w-[120px] text-sm" style={{ color: 'var(--ink)' }}>
-                      {item.cat}
-                    </div>
-                    <div className="flex-1 relative h-[12px]">
-                      <div className="absolute inset-0" style={{ backgroundColor: 'rgba(20, 19, 15, 0.08)' }} />
-                      <motion.div
-                        initial={{ scaleX: 0 }}
-                        animate={{ scaleX: 1 }}
-                        transition={{ duration: 0.8, delay: index * 0.08 + 0.2, ease: [0.22, 1, 0.36, 1] }}
-                        className="absolute inset-y-0 left-0 origin-left"
-                        style={{ 
-                          width: `${(item.value / totalUnits) * 100}%`,
-                          backgroundColor: index === 0 ? 'var(--accent)' : 'var(--ink)',
-                          borderRadius: '2px',
-                        }}
-                      />
-                    </div>
-                    <div className="w-[80px] text-right">
-                      <span className="text-sm tabular-nums" style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink)' }}>
-                        {item.value}
-                      </span>
-                      <span className="text-xs ml-2" style={{ color: 'var(--ink-subtle)' }}>
-                        {item.percentage}%
-                      </span>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div variants={itemVariants} className="md:col-span-6 lg:col-span-5">
-            <div 
-              className="flex flex-col h-[360px] p-[32px] border"
-              style={{ 
-                backgroundColor: 'var(--bg-surface)',
-                borderColor: 'var(--line)',
-              }}
-            >
-              <div className="flex items-start justify-between mb-[24px]">
-                <p className="text-[11px] tracking-[0.16em] uppercase" style={{ color: 'var(--ink)' }}>
-                  Últimos movimientos
-                </p>
-                <p className="text-[11px] tracking-[0.16em] uppercase" style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink-subtle)' }}>
-                  MV-01
-                </p>
-              </div>
-              <div className="flex-1">
-                {recentMovements.map((mov, index) => (
-                  <div 
-                    key={mov.id} 
-                    className="grid items-center gap-3 py-[16px] border-b"
-                    style={{ 
-                      gridTemplateColumns: '32px 1fr auto',
-                      borderColor: 'var(--line)',
-                    }}
-                  >
-                    <div 
-                      className="w-[32px] h-[32px] rounded-full flex items-center justify-center"
-                      style={{ 
-                        backgroundColor: mov.tipo === 'Entrada' ? 'rgba(94, 122, 75, 0.12)' : 'rgba(255, 74, 28, 0.12)' 
-                      }}
-                    >
-                      {mov.tipo === 'Entrada' ? (
-                        <ArrowUp size={14} strokeWidth={1.5} style={{ color: 'var(--moss)' }} />
-                      ) : (
-                        <ArrowDown size={14} strokeWidth={1.5} style={{ color: 'var(--accent)' }} />
-                      )}
-                    </div>
-                    <div>
-                      <p className="text-[15px]" style={{ color: 'var(--ink)' }}>{mov.producto}</p>
-                      <p className="text-[13px]" style={{ color: 'var(--ink-subtle)' }}>
-                        {getRelativeTime(mov.fecha)}
-                      </p>
-                    </div>
-                    <div 
-                      className="text-[16px] tabular-nums"
-                      style={{ 
-                        fontFamily: 'var(--font-mono)',
-                        color: mov.tipo === 'Entrada' ? 'var(--moss)' : 'var(--accent)'
-                      }}
-                    >
-                      {mov.tipo === 'Entrada' ? '+' : '-'}{mov.cantidad}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <NavLink 
-                to="/movimientos" 
-                className="flex items-center gap-2 text-[13px] mt-4 group"
-                style={{ color: 'var(--ink-subtle)' }}
-              >
-                <span>Ver todos</span>
-                <ArrowRight size={14} strokeWidth={1.25} className="group-hover:translate-x-1 transition-transform duration-300" />
-              </NavLink>
-            </div>
-          </motion.div>
-
-          {/* Fila 3 */}
-          <motion.div variants={itemVariants} className="md:col-span-6 lg:col-span-4">
-            <div 
-              className="flex flex-col justify-between h-[200px] p-[32px] border"
-              style={{ 
-                backgroundColor: 'var(--bg-surface)',
-                borderColor: 'var(--line)',
-              }}
-            >
-              <p className="text-[11px] tracking-[0.16em] uppercase" style={{ color: 'var(--ink)' }}>
-                Tendencia semanal
-              </p>
-              <Sparkline />
-              <p className="text-[13px]" style={{ color: 'var(--ink-subtle)' }}>
-                +18% movimientos esta semana
-              </p>
-            </div>
-          </motion.div>
-
-          <motion.div variants={itemVariants} className="md:col-span-6 lg:col-span-4">
-            <div 
-              className="flex flex-col justify-between h-[200px] p-[32px] border"
-              style={{ 
-                backgroundColor: 'var(--bg-surface)',
-                borderColor: 'var(--line)',
-              }}
-            >
-              <p className="text-[11px] tracking-[0.16em] uppercase" style={{ color: 'var(--ink)' }}>
-                Producto estrella
-              </p>
-              <div>
-                <p className="text-2xl mb-1" style={{ fontFamily: 'var(--font-display)', color: 'var(--ink)' }}>Mouse</p>
-                <p className="text-[13px]" style={{ color: 'var(--ink-subtle)' }}>Mayor rotación</p>
-              </div>
-              <p className="text-[13px] tabular-nums" style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink-subtle)' }}>
-                50 unidades
-              </p>
-            </div>
-          </motion.div>
-
-          <motion.div variants={itemVariants} className="md:col-span-6 lg:col-span-4">
-            <div 
-              className="flex flex-col justify-between h-[200px] p-[32px] border"
-              style={{ 
-                backgroundColor: 'var(--bg-surface)',
-                borderColor: 'var(--line)',
-              }}
-            >
-              <p className="text-[11px] tracking-[0.16em] uppercase" style={{ color: 'var(--ink)' }}>
-                Valor del inventario
-              </p>
-              <div 
-                className="text-[56px]"
-                style={{ 
-                  fontFamily: 'var(--font-display)', 
-                  color: 'var(--ink)',
-                  lineHeight: 0.9,
-                }}
-              >
-                <AnimatedNumber value={totalUnits} />
-              </div>
-              <p className="text-[13px]" style={{ color: 'var(--ink-subtle)' }}>
-                Unidades totales registradas
-              </p>
-            </div>
-          </motion.div>
-        </motion.div>
-
-        <div className="mt-[48px] pt-[24px] border-t" style={{ borderColor: 'var(--line)' }}>
-          <p className="text-[11px] tabular-nums" style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink-subtle)' }}>
-            Última sincronización: hace 1 min
+          <p className="page-head__sub">
+            <span className="dashboard__alert-em">{stats.alertsCount}</span>{' '}
+            {pluralize(stats.alertsCount, 'producto necesita', 'productos necesitan')} tu
+            atención.{' '}
+            <span className="dashboard__sub-mono">
+              {stats.criticalCount} críticos · {stats.warningCount} bajos
+            </span>
           </p>
         </div>
-      </div>
+        <div className="page-head__aside">
+          <div className="page-head__stat">
+            <span className="page-head__stat-value">{formatNumber(stats.totalUnits)}</span>
+            <span className="page-head__stat-label">Unidades</span>
+          </div>
+          <div className="page-head__stat">
+            <span className="page-head__stat-value">{stats.movementsLast7Days}</span>
+            <span className="page-head__stat-label">Mov. 7 días</span>
+          </div>
+        </div>
+      </header>
+
+      <motion.div
+        className="dash-grid"
+        variants={container}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.article
+          variants={item}
+          className="dash-card dash-card--hero dash-card--span7"
+        >
+          <div className="dash-card__head">
+            <span className="dash-card__label">Total de productos</span>
+            <span className="dash-card__code">REF-01</span>
+          </div>
+          <div className="dash-card__main">
+            <p className="dash-card__number">
+              <AnimatedValue value={stats.totalProducts} />
+            </p>
+            <div className="dash-card__aside">
+              <Sparkline label="Tendencia ascendente de referencias en la última semana" />
+              <span className="dash-card__trend">
+                <ArrowUp size={12} strokeWidth={1.6} aria-hidden="true" />
+                12% vs. semana pasada
+              </span>
+            </div>
+          </div>
+          <div className="dash-card__foot">
+            <span className="dash-card__rule" aria-hidden="true" />
+            <span>{formatNumber(stats.totalUnits)} unidades en total</span>
+          </div>
+        </motion.article>
+
+        <motion.article
+          variants={item}
+          className="dash-card dash-card--hero dash-card--span5 dash-card--accent"
+        >
+          <div className="dash-card__head">
+            <span className="dash-card__label">Alertas de stock</span>
+            <span className="dash-card__pulse" aria-hidden="true" />
+          </div>
+          <div className="dash-card__main">
+            <p className="dash-card__number">
+              <AnimatedValue value={stats.alertsCount} />
+            </p>
+            <span className="dash-card__code">ALT-04</span>
+          </div>
+          <div className="dash-card__chips">
+            <span className="dash-chip">{stats.criticalCount} críticos</span>
+            <span className="dash-chip">{stats.warningCount} en aviso</span>
+          </div>
+          <div className="dash-card__foot">
+            <span className="dash-card__rule" aria-hidden="true" />
+            <NavLink to="/alertas" className="panel__link panel__link--flush">
+              Revisar alertas
+              <ArrowRight size={12} strokeWidth={1.5} aria-hidden="true" />
+            </NavLink>
+          </div>
+        </motion.article>
+
+        <motion.article
+          variants={item}
+          className="dash-card dash-card--chart dash-card--span7"
+        >
+          <div className="dash-card__head">
+            <span className="dash-card__label">Stock por categoría</span>
+            <span className="dash-card__code">CH-01</span>
+          </div>
+          <div className="category-chart">
+            {categories.map((entry, index) => (
+              <div className="category-row" key={entry.category}>
+                <span className="category-row__name">{entry.category}</span>
+                <div
+                  className="category-row__track"
+                  role="img"
+                  aria-label={`${entry.category}: ${entry.units} unidades, ${entry.percentage}% del total`}
+                >
+                  <motion.span
+                    className="category-row__fill"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{
+                      duration: 0.8,
+                      delay: 0.16 + index * 0.07,
+                      ease: EASE_OUT,
+                    }}
+                    style={{ '--bar-size': `${entry.percentage}%` } as CSSProperties}
+                  />
+                </div>
+                <span className="category-row__value">
+                  {formatNumber(entry.units)}
+                  <span className="category-row__pct">{entry.percentage}%</span>
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="category-chart__foot">
+            <span>{formatNumber(categoryUnits)} unidades clasificadas</span>
+            <span>{categories.length} categorías</span>
+          </div>
+        </motion.article>
+
+        <motion.article
+          variants={item}
+          className="dash-card dash-card--chart dash-card--span5"
+        >
+          <div className="dash-card__head">
+            <span className="dash-card__label">Últimos movimientos</span>
+            <span className="dash-card__code">MV-01</span>
+          </div>
+          <div className="recent-list">
+            {recentMovements.length === 0 && (
+              <p className="table-empty">Todavía no hay movimientos registrados.</p>
+            )}
+            {recentMovements.map((movement) => {
+              const isIn = movement.tipo === 'Entrada'
+              return (
+                <div className="recent-row" key={movement.id}>
+                  <span
+                    className={`recent-row__icon recent-row__icon--${isIn ? 'in' : 'out'}`}
+                    aria-hidden="true"
+                  >
+                    {isIn ? (
+                      <ArrowUp size={14} strokeWidth={1.5} />
+                    ) : (
+                      <ArrowDown size={14} strokeWidth={1.5} />
+                    )}
+                  </span>
+                  <div className="recent-row__body">
+                    <p className="recent-row__product">{movement.producto}</p>
+                    <p className="recent-row__meta">
+                      {movement.tipo} · {formatRelativeTime(movement.fecha)}
+                    </p>
+                  </div>
+                  <span
+                    className={`recent-row__amount recent-row__amount--${isIn ? 'in' : 'out'}`}
+                  >
+                    {isIn ? '+' : '−'}
+                    {movement.cantidad}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+          <NavLink to="/movimientos" className="panel__link">
+            Ver todos los movimientos
+            <ArrowRight size={12} strokeWidth={1.5} aria-hidden="true" />
+          </NavLink>
+        </motion.article>
+
+        <motion.article variants={item} className="dash-card dash-card--mini dash-card--span4">
+          <div className="dash-card__head">
+            <span className="dash-card__label">Movimientos · 7 días</span>
+            <span className="dash-card__code">MV-07</span>
+          </div>
+          <p className="dash-card__mini-value">
+            {stats.movementsLast7Days}
+            <span className="dash-card__mini-unit">registros</span>
+          </p>
+          <p className="dash-card__mini-note">
+            Entradas y salidas dentro de la ventana semanal
+          </p>
+        </motion.article>
+
+        <motion.article variants={item} className="dash-card dash-card--mini dash-card--span4">
+          <div className="dash-card__head">
+            <span className="dash-card__label">Producto estrella</span>
+            <span className="dash-card__code">TOP-01</span>
+          </div>
+          <p className="dash-card__mini-title">{mostMoved?.producto ?? 'Sin datos'}</p>
+          <p className="dash-card__mini-meta">Mayor rotación registrada</p>
+          <p className="dash-card__mini-note">
+            {mostMoved
+              ? `${formatNumber(mostMoved.units)} unidades movidas`
+              : 'Registra movimientos para calcularlo'}
+          </p>
+        </motion.article>
+
+        <motion.article variants={item} className="dash-card dash-card--mini dash-card--span4">
+          <div className="dash-card__head">
+            <span className="dash-card__label">Inventario total</span>
+            <span className="dash-card__code">INV-01</span>
+          </div>
+          <p className="dash-card__mini-value">
+            <AnimatedValue value={stats.totalUnits} />
+            <span className="dash-card__mini-unit">uds.</span>
+          </p>
+          <p className="dash-card__mini-note">Unidades registradas en las 25 referencias</p>
+        </motion.article>
+      </motion.div>
+
+      <p className="footer-note">
+        <span>Última sincronización: ahora</span>
+        <span aria-hidden="true">·</span>
+        <span>Atelier de Almacén · ALM-01</span>
+      </p>
     </div>
   )
 }

@@ -1,0 +1,13 @@
+/* Atelier de Almacén — hoja de estilos principal */
+@import './fonts.css';
+@import './tokens.css';
+@import './base.css';
+@import './components.css';
+@import './layout.css';
+@import './login.css';
+@import './slideshow.css';
+@import './dashboard.css';
+@import './inventario.css';
+@import './movimientos.css';
+@import './alertas.css';
+@import './reportes.css';

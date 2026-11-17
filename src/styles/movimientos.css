@@ -1,0 +1,310 @@
+/* ==========================================================================
+   Movimientos — bitácora del almacén
+   ========================================================================== */
+
+.movements-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.movements-summary__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.movements-summary__label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-subtle);
+}
+
+.movements-summary__value {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.movements-summary__value--in {
+  color: var(--status-normal-ink);
+}
+
+.movements-summary__value--out {
+  color: var(--status-critical-ink);
+}
+
+/* Formulario ------------------------------------------------------------- */
+
+.movement-form {
+  margin-bottom: 34px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.movement-form__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(140px, 1fr) 110px auto;
+  align-items: end;
+  gap: 18px;
+}
+
+.movement-form__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+}
+
+.segmented__option {
+  height: 42px;
+  padding: 0 14px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-subtle);
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.segmented__option + .segmented__option {
+  border-left: 1px solid var(--line-strong);
+}
+
+.segmented__option--active {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.segmented__option--active.segmented__option--in {
+  background: var(--status-normal);
+  color: var(--accent-contrast);
+}
+
+.segmented__option--active.segmented__option--out {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+/* Línea de tiempo -------------------------------------------------------- */
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 38px;
+}
+
+.timeline-day__head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.timeline-day__title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 26px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.timeline-day__rule {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.timeline-day__count {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.timeline-day__list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 7px;
+  padding-left: 24px;
+  border-left: 1px solid var(--line);
+}
+
+.timeline-item {
+  position: relative;
+}
+
+.timeline-item__node {
+  position: absolute;
+  left: -29px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--status-normal);
+  background: var(--bg);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.timeline-item__node--out {
+  border-color: var(--accent);
+}
+
+.timeline-card {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.timeline-card:hover {
+  border-color: var(--line-strong);
+  background: var(--surface-2);
+}
+
+.timeline-card__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.timeline-card__icon--in {
+  background: var(--status-normal-soft);
+  color: var(--status-normal-ink);
+}
+
+.timeline-card__icon--out {
+  background: var(--status-critical-soft);
+  color: var(--status-critical-ink);
+}
+
+.timeline-card__body {
+  min-width: 0;
+}
+
+.timeline-card__product {
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timeline-card__meta {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.timeline-card__right {
+  text-align: right;
+}
+
+.timeline-card__amount {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-variant-numeric: tabular-nums;
+}
+
+.timeline-card__amount--in {
+  color: var(--status-normal-ink);
+}
+
+.timeline-card__amount--out {
+  color: var(--status-critical-ink);
+}
+
+.timeline-card__time {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+}
+
+@media (max-width: 860px) {
+  .movement-form__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .movement-form__grid > :first-child {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 620px) {
+  .movements-summary {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .movement-form {
+    padding: 18px;
+  }
+
+  .movement-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .movement-form__grid > :first-child {
+    grid-column: auto;
+  }
+
+  .movement-form__actions .btn {
+    flex: 1;
+  }
+
+  .timeline-day__title {
+    font-size: 21px;
+    white-space: normal;
+  }
+
+  .timeline-day__list {
+    padding-left: 18px;
+  }
+
+  .timeline-item__node {
+    left: -23px;
+  }
+
+  .timeline-card {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+
+  .timeline-card__icon {
+    width: 32px;
+    height: 32px;
+  }
+}

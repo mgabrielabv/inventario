@@ -1,223 +1,462 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { useInventoryStore } from '../../store/inventory'
-import { useAuth } from '../../contexts/AuthContext'
-import { FileText, ArrowLeftRight, Calendar, TrendingUp, Download } from 'lucide-react'
-import { Button } from '../../components/ui/button'
+import {
+  ArrowLeftRight,
+  CalendarDays,
+  Download,
+  FileText,
+  Lock,
+  TrendingUp,
+} from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
-import jsPDF from 'jspdf'
+import { useAuth } from '../../app/providers/auth-provider'
+import { useInventoryStore } from '../../logic/store/inventory'
+import {
+  filterReportProducts,
+  getProductStatus,
+  groupMovementsByDate,
+} from '../../logic/store/selectors'
+import {
+  formatGroupDate,
+  formatNumber,
+  formatRelativeTime,
+  pluralize,
+} from '../../logic/services/formatters'
+import { useExportCsv, useExportPdf } from '../../logic/hooks/useExportPdf'
+import { CATEGORIES, type CategoryFilter, type ProductStatus } from '../../logic/types'
+import { StatusBadge } from '../../components/ui/status-badge'
+import { EmptyState } from '../../components/ui/empty-state'
+import { BarcodeScan } from '../../components/illustrations/barcode-scan'
+import { EASE_OUT } from '../../components/illustrations/motion'
+
+type ReportId = 'stock' | 'movimientos' | 'fecha' | 'top'
+
+const REPORTS = [
+  { id: 'stock', label: 'Stock actual', icon: FileText, code: 'R-01' },
+  { id: 'movimientos', label: 'Movimientos', icon: ArrowLeftRight, code: 'R-02' },
+  { id: 'fecha', label: 'Por fecha', icon: CalendarDays, code: 'R-03' },
+  { id: 'top', label: 'Más movidos', icon: TrendingUp, code: 'R-04' },
+] as const
+
+const STATUS_OPTIONS = ['Todos', 'Normal', 'Bajo', 'Crítico'] as const
+type StatusFilter = (typeof STATUS_OPTIONS)[number]
+
+interface ReportColumn {
+  key: string
+  label: string
+  align?: 'right'
+}
+
+interface ReportCell {
+  key: string
+  content: string
+  tone?: 'in' | 'out'
+  status?: ProductStatus
+  strong?: boolean
+  mono?: boolean
+}
+
+interface ReportRow {
+  id: string
+  cells: ReportCell[]
+}
+
+interface ReportView {
+  title: string
+  caption: string
+  columns: ReportColumn[]
+  rows: ReportRow[]
+}
+
+const todaySlug = (): string => new Date().toISOString().slice(0, 10)
 
 export const ReportesPage = () => {
-  const { user } = useAuth()
-  const { products, movements, getProductStatus } = useInventoryStore()
-  const [activeReport, setActiveReport] = useState('stock')
-  const [categoria, setCategoria] = useState('Todas')
-  const [estado, setEstado] = useState('Todas')
+  const { canAccessReports } = useAuth()
+  const products = useInventoryStore((state) => state.products)
+  const movements = useInventoryStore((state) => state.movements)
+  const exportPdf = useExportPdf()
+  const exportCsv = useExportCsv()
 
-  if (user?.role === 'Operador') {
+  const [activeReport, setActiveReport] = useState<ReportId>('stock')
+  const [category, setCategory] = useState<CategoryFilter>('Todas')
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('Todos')
+
+  const productCategory = useMemo(
+    () => new Map(products.map((product) => [product.id, product.categoria])),
+    [products],
+  )
+
+  const filteredProducts = useMemo(
+    () => filterReportProducts(products, category, statusFilter),
+    [products, category, statusFilter],
+  )
+
+  const filteredMovements = useMemo(
+    () =>
+      movements.filter((movement) => {
+        if (category === 'Todas') return true
+        return productCategory.get(movement.productoId) === category
+      }),
+    [movements, category, productCategory],
+  )
+
+  const view = useMemo<ReportView>(() => {
+    if (activeReport === 'stock') {
+      return {
+        title: 'Stock actual',
+        caption: `${filteredProducts.length} ${pluralize(filteredProducts.length, 'referencia', 'referencias')} · ${formatNumber(
+          filteredProducts.reduce((sum, product) => sum + product.cantidad, 0),
+        )} unidades`,
+        columns: [
+          { key: 'codigo', label: 'Código' },
+          { key: 'producto', label: 'Producto' },
+          { key: 'categoria', label: 'Categoría' },
+          { key: 'cantidad', label: 'Cantidad', align: 'right' },
+          { key: 'estado', label: 'Estado' },
+        ],
+        rows: filteredProducts.map((product) => ({
+          id: `stock-${product.id}`,
+          cells: [
+            { key: 'codigo', content: product.codigo, mono: true },
+            { key: 'producto', content: product.producto, strong: true },
+            { key: 'categoria', content: product.categoria },
+            { key: 'cantidad', content: formatNumber(product.cantidad), mono: true },
+            {
+              key: 'estado',
+              content: getProductStatus(product.cantidad).label,
+              status: getProductStatus(product.cantidad).status,
+            },
+          ],
+        })),
+      }
+    }
+
+    if (activeReport === 'movimientos') {
+      return {
+        title: 'Registro de movimientos',
+        caption: `${filteredMovements.length} ${pluralize(
+          filteredMovements.length,
+          'movimiento',
+          'movimientos',
+        )} · bitácora completa`,
+        columns: [
+          { key: 'fecha', label: 'Fecha' },
+          { key: 'producto', label: 'Producto' },
+          { key: 'tipo', label: 'Tipo' },
+          { key: 'cantidad', label: 'Cantidad', align: 'right' },
+          { key: 'usuario', label: 'Usuario' },
+        ],
+        rows: filteredMovements.map((movement) => {
+          const isIn = movement.tipo === 'Entrada'
+          return {
+            id: `movement-${movement.id}`,
+            cells: [
+              { key: 'fecha', content: formatRelativeTime(movement.fecha), mono: true },
+              { key: 'producto', content: movement.producto, strong: true },
+              { key: 'tipo', content: movement.tipo },
+              {
+                key: 'cantidad',
+                content: `${isIn ? '+' : '−'}${formatNumber(movement.cantidad)}`,
+                tone: isIn ? 'in' : 'out',
+                mono: true,
+              },
+              { key: 'usuario', content: movement.usuario, mono: true },
+            ],
+          }
+        }),
+      }
+    }
+
+    if (activeReport === 'fecha') {
+      const groups = groupMovementsByDate(filteredMovements)
+      return {
+        title: 'Movimientos por fecha',
+        caption: `${groups.length} ${pluralize(groups.length, 'jornada', 'jornadas')} con actividad`,
+        columns: [
+          { key: 'fecha', label: 'Fecha' },
+          { key: 'registros', label: 'Registros', align: 'right' },
+          { key: 'entradas', label: 'Entradas', align: 'right' },
+          { key: 'salidas', label: 'Salidas', align: 'right' },
+          { key: 'balance', label: 'Balance', align: 'right' },
+        ],
+        rows: groups.map((group) => {
+          const entradas = group.movements
+            .filter((movement) => movement.tipo === 'Entrada')
+            .reduce((sum, movement) => sum + movement.cantidad, 0)
+          const salidas = group.movements
+            .filter((movement) => movement.tipo === 'Salida')
+            .reduce((sum, movement) => sum + movement.cantidad, 0)
+          const balance = entradas - salidas
+          return {
+            id: `date-${group.date}`,
+            cells: [
+              { key: 'fecha', content: formatGroupDate(group.movements[0]?.fecha ?? ''), strong: true },
+              { key: 'registros', content: formatNumber(group.movements.length), mono: true },
+              { key: 'entradas', content: `+${formatNumber(entradas)}`, tone: 'in', mono: true },
+              { key: 'salidas', content: `−${formatNumber(salidas)}`, tone: 'out', mono: true },
+              {
+                key: 'balance',
+                content: `${balance >= 0 ? '+' : '−'}${formatNumber(Math.abs(balance))}`,
+                tone: balance >= 0 ? 'in' : 'out',
+                mono: true,
+              },
+            ],
+          }
+        }),
+      }
+    }
+
+    const totals = new Map<number, { producto: string; units: number; count: number }>()
+    for (const movement of filteredMovements) {
+      const entry = totals.get(movement.productoId) ?? {
+        producto: movement.producto,
+        units: 0,
+        count: 0,
+      }
+      entry.units += movement.cantidad
+      entry.count += 1
+      totals.set(movement.productoId, entry)
+    }
+
+    const ranking = Array.from(totals.values()).sort((a, b) => b.units - a.units)
+
+    return {
+      title: 'Productos más movidos',
+      caption: `${ranking.length} ${pluralize(ranking.length, 'referencia', 'referencias')} con rotación`,
+      columns: [
+        { key: 'puesto', label: '#' },
+        { key: 'producto', label: 'Producto' },
+        { key: 'registros', label: 'Movimientos', align: 'right' },
+        { key: 'unidades', label: 'Unidades movidas', align: 'right' },
+      ],
+      rows: ranking.map((entry, index) => ({
+        id: `top-${entry.producto}`,
+        cells: [
+          { key: 'puesto', content: String(index + 1).padStart(2, '0'), mono: true },
+          { key: 'producto', content: entry.producto, strong: true },
+          { key: 'registros', content: formatNumber(entry.count), mono: true },
+          { key: 'unidades', content: formatNumber(entry.units), mono: true },
+        ],
+      })),
+    }
+  }, [activeReport, filteredMovements, filteredProducts])
+
+  const handleExportCsv = () => {
+    exportCsv(
+      `reporte-${activeReport}-${todaySlug()}.csv`,
+      view.columns.map((column) => column.label),
+      view.rows.map((row) => row.cells.map((cell) => cell.content)),
+    )
+    toast.success('CSV descargado')
+  }
+
+  const handleExportPdf = () => {
+    exportPdf({
+      title: view.title,
+      subtitle: `${view.caption} · ${category === 'Todas' ? 'Todas las categorías' : category}`,
+      products: filteredProducts,
+      notes: [
+        'Documento generado desde el módulo de reportes.',
+        `Filtro de estado: ${statusFilter}.`,
+      ],
+    })
+    toast.success('PDF descargado')
+  }
+
+  if (!canAccessReports) {
     return (
-      <div className="min-h-full px-6 lg:px-10 py-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <h1 className="text-6xl mb-6" style={{ fontFamily: 'var(--font-display)', color: 'var(--ink)' }}>
-            Reportes
-          </h1>
-          <div className="p-12 text-center border" style={{ borderColor: 'var(--line)' }}>
-            <p className="text-sm" style={{ color: 'var(--ink-subtle)' }}>
-              Acceso restringido
-            </p>
+      <div className="page reportes">
+        <header className="page-head">
+          <div>
+            <div className="page-head__meta">
+              <span className="page-head__index">05 / INFORMES</span>
+              <span className="page-head__rule" aria-hidden="true" />
+              <span className="eyebrow">Acceso restringido</span>
+            </div>
+            <h1 className="page-title">
+              Reportes<em>.</em>
+            </h1>
           </div>
-        </motion.div>
+        </header>
+        <div className="report-locked">
+          <span className="report-locked__icon" aria-hidden="true">
+            <Lock size={22} strokeWidth={1.4} />
+          </span>
+          <h2 className="report-locked__title">Solo lectura para operadores</h2>
+          <p className="report-locked__text">
+            Los informes y la exportación están reservados al rol Administrador. Puedes
+            consultar el inventario, registrar movimientos y revisar alertas.
+          </p>
+          <Link className="btn btn--outline" to="/">
+            Volver al inicio
+          </Link>
+        </div>
       </div>
     )
   }
 
-  const reports = [
-    { id: 'stock', label: 'Stock Actual', icon: FileText },
-    { id: 'movimientos', label: 'Movimientos', icon: ArrowLeftRight },
-    { id: 'fecha', label: 'Reporte por Fecha', icon: Calendar },
-    { id: 'top', label: 'Productos Más/Menos Movidos', icon: TrendingUp },
-  ]
-
-  const filteredProducts = products.filter(p => {
-    const matchCat = categoria === 'Todas' || p.categoria === categoria
-    const status = getProductStatus(p.cantidad)
-    const matchEst = estado === 'Todas' || status.label === estado
-    return matchCat && matchEst
-  })
-
-  const handleExportPDF = () => {
-    toast.success('Generando PDF...')
-    setTimeout(() => {
-      const doc = new jsPDF()
-      doc.setFontSize(20)
-      doc.text('Sistema de Control e Inventario', 20, 20)
-      doc.setFontSize(12)
-      doc.text('Reporte: ' + reports.find(r => r.id === activeReport)?.label, 20, 30)
-      doc.text('Fecha: ' + new Date().toLocaleDateString('es-ES'), 20, 40)
-      doc.save('reporte-atelier.pdf')
-      toast.success('PDF descargado')
-    }, 500)
-  }
-
-  const handleExportCSV = () => {
-    toast.success('CSV descargado')
-  }
-
   return (
-    <div className="min-h-full px-6 lg:px-10 py-10">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-10"
-      >
-        <div className="flex items-baseline gap-4 mb-6">
-          <h1 
-            className="text-6xl lg:text-7xl xl:text-8xl"
-            style={{ fontFamily: 'var(--font-display)', color: 'var(--ink)' }}
-          >
-            Reportes
+    <div className="page reportes">
+      <header className="page-head">
+        <div>
+          <div className="page-head__meta">
+            <span className="page-head__index">05 / INFORMES</span>
+            <span className="page-head__rule" aria-hidden="true" />
+            <span className="eyebrow">Exportación CSV / PDF</span>
+          </div>
+          <h1 className="page-title">
+            Reportes<em>.</em>
           </h1>
-          <span className="text-[10px] tracking-[0.3em] uppercase pb-4" style={{ color: 'var(--ink-subtle)' }}>
-            05
-          </span>
+          <p className="page-head__sub">
+            Informes para decidir con claridad. Filtra el catálogo, revisa la bitácora y
+            exporta el documento que necesites.
+          </p>
         </div>
-      </motion.div>
+      </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-        {reports.map((report, index) => (
-          <motion.button
-            key={report.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.05 }}
-            onClick={() => setActiveReport(report.id)}
-            className="relative p-6 text-left border transition-all duration-300"
-            style={{
-              backgroundColor: activeReport === report.id ? 'var(--ink)' : 'var(--bg-surface)',
-              borderColor: activeReport === report.id ? 'var(--ink)' : 'var(--line)',
-            }}
-          >
-            <report.icon 
-              size={20} 
-              strokeWidth={1.25} 
-              className="mb-4"
-              style={{ color: activeReport === report.id ? 'var(--bg)' : 'var(--ink)' }}
-            />
-            <p 
-              className="text-sm"
-              style={{ color: activeReport === report.id ? 'var(--bg)' : 'var(--ink)' }}
+      <div className="report-tabs" role="tablist" aria-label="Tipo de reporte">
+        {REPORTS.map((report) => {
+          const isActive = activeReport === report.id
+          return (
+            <motion.button
+              key={report.id}
+              type="button"
+              role="tab"
+              id={`report-tab-${report.id}`}
+              aria-selected={isActive}
+              aria-controls="report-panel"
+              className={['report-tab', isActive ? 'report-tab--active' : '']
+                .filter(Boolean)
+                .join(' ')}
+              onClick={() => setActiveReport(report.id)}
+              whileTap={{ scale: 0.99 }}
+              transition={{ duration: 0.2, ease: EASE_OUT }}
             >
-              {report.label}
-            </p>
-          </motion.button>
-        ))}
+              <report.icon size={19} strokeWidth={1.3} className="report-tab__icon" aria-hidden="true" />
+              <span className="report-tab__label">{report.label}</span>
+              <span className="report-tab__code">{report.code}</span>
+            </motion.button>
+          )
+        })}
       </div>
 
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="border"
-        style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--line)' }}
+        className="panel report-panel"
+        id="report-panel"
+        role="tabpanel"
+        aria-labelledby={`report-tab-${activeReport}`}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: EASE_OUT }}
       >
-        <div className="p-6 flex flex-wrap items-center justify-between gap-4 border-b" style={{ borderColor: 'var(--line)' }}>
-          <div className="flex flex-wrap items-center gap-3">
+        <div className="report-toolbar">
+          <div className="report-toolbar__filters">
+            <label className="visually-hidden" htmlFor="report-category">
+              Categoría
+            </label>
             <select
-              value={categoria}
-              onChange={(e) => setCategoria(e.target.value)}
-              className="px-3 py-1.5 text-xs border bg-transparent"
-              style={{ borderColor: 'var(--line-strong)', color: 'var(--ink)' }}
+              id="report-category"
+              className="report-toolbar__select"
+              value={category}
+              onChange={(event) => setCategory(event.target.value as CategoryFilter)}
             >
               <option value="Todas">Todas las categorías</option>
-              <option value="Electrónica">Electrónica</option>
-              <option value="Accesorios">Accesorios</option>
-              <option value="Papelería">Papelería</option>
-              <option value="Hogar">Hogar</option>
-              <option value="Otras">Otras</option>
+              {CATEGORIES.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
             </select>
-            <select
-              value={estado}
-              onChange={(e) => setEstado(e.target.value)}
-              className="px-3 py-1.5 text-xs border bg-transparent"
-              style={{ borderColor: 'var(--line-strong)', color: 'var(--ink)' }}
-            >
-              <option value="Todas">Todos los estados</option>
-              <option value="Normal">Normal</option>
-              <option value="Bajo stock">Bajo stock</option>
-              <option value="Crítico">Crítico</option>
-            </select>
+
+            {activeReport === 'stock' && (
+              <>
+                <label className="visually-hidden" htmlFor="report-status">
+                  Estado
+                </label>
+                <select
+                  id="report-status"
+                  className="report-toolbar__select"
+                  value={statusFilter}
+                  onChange={(event) => setStatusFilter(event.target.value as StatusFilter)}
+                >
+                  {STATUS_OPTIONS.map((option) => (
+                    <option key={option} value={option}>
+                      {option === 'Todos' ? 'Todos los estados' : option}
+                    </option>
+                  ))}
+                </select>
+              </>
+            )}
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={handleExportCSV}>
-              <Download size={12} strokeWidth={1.25} className="inline mr-2" />
+
+          <div className="report-toolbar__actions">
+            <button type="button" className="btn btn--outline btn--sm" onClick={handleExportCsv}>
+              <Download size={12} strokeWidth={1.5} aria-hidden="true" />
               CSV
-            </Button>
-            <Button size="sm" onClick={handleExportPDF}>
-              <Download size={12} strokeWidth={1.25} className="inline mr-2" />
+            </button>
+            <button type="button" className="btn btn--primary btn--sm" onClick={handleExportPdf}>
+              <Download size={12} strokeWidth={1.5} aria-hidden="true" />
               PDF
-            </Button>
+            </button>
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr style={{ borderBottom: '1px solid var(--line)' }}>
-                <th className="text-left p-4 text-[9px] tracking-[0.3em] uppercase" style={{ color: 'var(--ink-subtle)' }}>Código</th>
-                <th className="text-left p-4 text-[9px] tracking-[0.3em] uppercase" style={{ color: 'var(--ink-subtle)' }}>Producto</th>
-                <th className="text-left p-4 text-[9px] tracking-[0.3em] uppercase" style={{ color: 'var(--ink-subtle)' }}>Categoría</th>
-                <th className="text-left p-4 text-[9px] tracking-[0.3em] uppercase" style={{ color: 'var(--ink-subtle)' }}>Cantidad</th>
-                <th className="text-left p-4 text-[9px] tracking-[0.3em] uppercase" style={{ color: 'var(--ink-subtle)' }}>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredProducts.map((product, index) => {
-                const status = getProductStatus(product.cantidad)
-                return (
-                  <motion.tr
-                    key={product.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.4, delay: index * 0.02 }}
-                    style={{ borderBottom: '1px solid var(--line)' }}
-                  >
-                    <td className="p-4">
-                      <span className="text-sm tabular-nums" style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink)' }}>
-                        {product.codigo}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <span className="text-sm" style={{ color: 'var(--ink)' }}>{product.producto}</span>
-                    </td>
-                    <td className="p-4">
-                      <span className="text-sm" style={{ color: 'var(--ink-subtle)' }}>{product.categoria}</span>
-                    </td>
-                    <td className="p-4">
-                      <span className="text-sm tabular-nums" style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink)' }}>
-                        {product.cantidad}
-                      </span>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-2">
-                        <div 
-                          className="w-1.5 h-1.5 rounded-full"
-                          style={{ 
-                            backgroundColor: status.status === 'normal' ? 'var(--moss)' : status.status === 'low' ? 'var(--ochre)' : 'var(--accent)'
-                          }}
-                        />
-                        <span className="text-sm" style={{ color: 'var(--ink-soft)' }}>{status.label}</span>
-                      </div>
-                    </td>
-                  </motion.tr>
-                )
-              })}
-            </tbody>
-          </table>
+        <div className="report-caption">
+          {view.title} · {view.caption}
         </div>
+
+        {view.rows.length === 0 ? (
+          <EmptyState
+            illustration={<BarcodeScan />}
+            title="Sin datos para este informe."
+            description="Ajusta los filtros o registra movimientos para que el reporte tenga contenido."
+          />
+        ) : (
+          <div className="table-wrap">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  {view.columns.map((column) => (
+                    <th
+                      key={column.key}
+                      scope="col"
+                      className={column.align === 'right' ? 'is-right' : undefined}
+                    >
+                      {column.label}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {view.rows.map((row) => (
+                  <tr key={row.id}>
+                    {row.cells.map((cell) => (
+                      <td
+                        key={cell.key}
+                        className={[
+                          cell.mono ? 'cell-amount' : '',
+                          cell.strong ? 'cell-strong' : '',
+                          cell.tone === 'in' ? 'cell-amount--in' : '',
+                          cell.tone === 'out' ? 'cell-amount--out' : '',
+                          cell.key === 'fecha' ? 'cell-muted' : '',
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
+                      >
+                        {cell.status ? (
+                          <StatusBadge status={cell.status} />
+                        ) : (
+                          cell.content
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </motion.div>
     </div>
   )

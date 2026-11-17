@@ -1,184 +1,325 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { useInventoryStore } from '../../store/inventory'
-import { useAuth } from '../../contexts/AuthContext'
-import { ArrowUp, ArrowDown, Plus } from 'lucide-react'
-import { Button } from '../../components/ui/button'
+import { useMemo, useState, type FormEvent } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ArrowDown, ArrowUp, Plus, X } from 'lucide-react'
 import { toast } from 'sonner'
+import { useAuth } from '../../app/providers/auth-provider'
+import { useInventoryStore } from '../../logic/store/inventory'
+import { groupMovementsByDate } from '../../logic/store/selectors'
+import { formatNumber, formatTime, pluralize } from '../../logic/services/formatters'
+import { validateMovementQuantity } from '../../logic/services/validation'
+import type { MovementType } from '../../logic/types'
+import { Button } from '../../components/ui/button'
+import { EmptyState } from '../../components/ui/empty-state'
+import { PalletArrows } from '../../components/illustrations/pallet-arrows'
+import { EASE_OUT } from '../../components/illustrations/motion'
 
 export const MovimientosPage = () => {
-  const { products, movements, addMovement } = useInventoryStore()
+  const products = useInventoryStore((state) => state.products)
+  const movements = useInventoryStore((state) => state.movements)
+  const addMovement = useInventoryStore((state) => state.addMovement)
   const { user } = useAuth()
-  const [showForm, setShowForm] = useState(false)
-  const [formData, setFormData] = useState({ productoId: 0, tipo: 'Entrada' as 'Entrada' | 'Salida', cantidad: 1 })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const product = products.find(p => p.id === formData.productoId)
-    if (!product) return
-    if (formData.tipo === 'Salida' && product.cantidad < formData.cantidad) {
-      toast.error('Stock insuficiente')
-      return
-    }
-    addMovement({
-      productoId: formData.productoId,
-      producto: product.producto,
-      tipo: formData.tipo,
-      cantidad: formData.cantidad,
-      usuario: user?.username || 'admin'
-    })
-    toast.success('Movimiento registrado')
-    setShowForm(false)
-    setFormData({ productoId: 0, tipo: 'Entrada', cantidad: 1 })
+  const [formOpen, setFormOpen] = useState(false)
+  const [productoId, setProductoId] = useState(0)
+  const [tipo, setTipo] = useState<MovementType>('Entrada')
+  const [cantidad, setCantidad] = useState(1)
+  const [error, setError] = useState('')
+
+  const groups = useMemo(() => groupMovementsByDate(movements), [movements])
+  const totals = useMemo(() => {
+    const entradas = movements
+      .filter((movement) => movement.tipo === 'Entrada')
+      .reduce((sum, movement) => sum + movement.cantidad, 0)
+    const salidas = movements
+      .filter((movement) => movement.tipo === 'Salida')
+      .reduce((sum, movement) => sum + movement.cantidad, 0)
+    return { entradas, salidas, registros: movements.length }
+  }, [movements])
+
+  const selectedProduct = products.find((product) => product.id === productoId)
+
+  const resetForm = () => {
+    setProductoId(0)
+    setTipo('Entrada')
+    setCantidad(1)
+    setError('')
   }
 
-  const groupedByDate = movements.reduce((acc, mov) => {
-    const date = new Date(mov.fecha).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
-    if (!acc[date]) acc[date] = []
-    acc[date].push(mov)
-    return acc
-  }, {} as Record<string, any[]>)
+  const closeForm = () => {
+    setFormOpen(false)
+    resetForm()
+  }
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setError('')
+
+    if (!selectedProduct) {
+      setError('Selecciona un producto para registrar el movimiento')
+      return
+    }
+
+    const validation = validateMovementQuantity(tipo, cantidad, selectedProduct.cantidad)
+    if (validation) {
+      setError(validation)
+      return
+    }
+
+    addMovement({
+      productoId: selectedProduct.id,
+      producto: selectedProduct.producto,
+      tipo,
+      cantidad,
+      usuario: user?.username ?? 'admin',
+    })
+    toast.success(
+      `${tipo} de ${cantidad} ${pluralize(cantidad, 'unidad', 'unidades')} · ${selectedProduct.producto}`,
+    )
+    closeForm()
+  }
 
   return (
-    <div className="min-h-full px-6 lg:px-10 py-10">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-10"
-      >
-        <div className="flex items-baseline gap-4 mb-6">
-          <h1 
-            className="text-6xl lg:text-7xl xl:text-8xl"
-            style={{ fontFamily: 'var(--font-display)', color: 'var(--ink)' }}
-          >
-            Movimientos
+    <div className="page movements">
+      <header className="page-head">
+        <div>
+          <div className="page-head__meta">
+            <span className="page-head__index">03 / BITÁCORA</span>
+            <span className="page-head__rule" aria-hidden="true" />
+            <span className="eyebrow">
+              {movements.length} {pluralize(movements.length, 'registro', 'registros')}
+            </span>
+          </div>
+          <h1 className="page-title">
+            Movimientos<em>.</em>
           </h1>
-          <span className="text-[10px] tracking-[0.3em] uppercase pb-4" style={{ color: 'var(--ink-subtle)' }}>
-            03
+          <p className="page-head__sub">
+            Entradas y salidas con trazabilidad completa. Cada lectura deja rastro y cada
+            cantidad actualiza el stock.
+          </p>
+        </div>
+        <Button type="button" onClick={() => (formOpen ? closeForm() : setFormOpen(true))}>
+          {formOpen ? (
+            <X size={14} strokeWidth={1.5} aria-hidden="true" />
+          ) : (
+            <Plus size={14} strokeWidth={1.5} aria-hidden="true" />
+          )}
+          {formOpen ? 'Cerrar' : 'Registrar movimiento'}
+        </Button>
+      </header>
+
+      <div className="movements-summary">
+        <div className="movements-summary__item">
+          <span className="movements-summary__label">Entradas</span>
+          <span className="movements-summary__value movements-summary__value--in">
+            +{formatNumber(totals.entradas)}
           </span>
         </div>
-        <Button onClick={() => setShowForm(!showForm)}>
-          <Plus size={14} strokeWidth={1.25} className="inline mr-2" />
-          Registrar Movimiento
-        </Button>
-      </motion.div>
+        <div className="movements-summary__item">
+          <span className="movements-summary__label">Salidas</span>
+          <span className="movements-summary__value movements-summary__value--out">
+            −{formatNumber(totals.salidas)}
+          </span>
+        </div>
+        <div className="movements-summary__item">
+          <span className="movements-summary__label">Registros</span>
+          <span className="movements-summary__value">{formatNumber(totals.registros)}</span>
+        </div>
+      </div>
 
-      {showForm && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          className="mb-10 p-6 border"
-          style={{ backgroundColor: 'var(--bg-surface)', borderColor: 'var(--line)' }}
-        >
-          <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-4">
-            <div className="flex-1 min-w-[200px]">
-              <label className="text-[10px] tracking-[0.2em] uppercase block mb-2" style={{ color: 'var(--ink-subtle)' }}>
-                Producto
-              </label>
-              <select
-                value={formData.productoId}
-                onChange={(e) => setFormData({...formData, productoId: parseInt(e.target.value)})}
-                className="w-full bg-transparent border-b py-2 text-sm focus:outline-none"
-                style={{ borderColor: 'var(--line-strong)', color: 'var(--ink)' }}
-                required
-              >
-                <option value={0}>Seleccionar...</option>
-                {products.map(p => (
-                  <option key={p.id} value={p.id}>{p.codigo} - {p.producto} ({p.cantidad})</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="text-[10px] tracking-[0.2em] uppercase block mb-2" style={{ color: 'var(--ink-subtle)' }}>
-                Tipo
-              </label>
-              <select
-                value={formData.tipo}
-                onChange={(e) => setFormData({...formData, tipo: e.target.value as any})}
-                className="w-full bg-transparent border-b py-2 text-sm focus:outline-none"
-                style={{ borderColor: 'var(--line-strong)', color: 'var(--ink)' }}
-              >
-                <option value="Entrada">Entrada</option>
-                <option value="Salida">Salida</option>
-              </select>
-            </div>
-            <div>
-              <label className="text-[10px] tracking-[0.2em] uppercase block mb-2" style={{ color: 'var(--ink-subtle)' }}>
-                Cantidad
-              </label>
-              <input
-                type="number"
-                value={formData.cantidad}
-                onChange={(e) => setFormData({...formData, cantidad: parseInt(e.target.value)})}
-                className="w-24 bg-transparent border-b py-2 text-sm focus:outline-none tabular-nums"
-                style={{ borderColor: 'var(--line-strong)', color: 'var(--ink)', fontFamily: 'var(--font-mono)' }}
-                min="1"
-                required
-              />
-            </div>
-            <Button type="submit" size="md">Registrar</Button>
-          </form>
-        </motion.div>
-      )}
-
-      <div className="space-y-12">
-        {Object.entries(groupedByDate).map(([date, items], dateIndex) => (
+      <AnimatePresence initial={false}>
+        {formOpen && (
           <motion.div
-            key={date}
-            initial={{ opacity: 0, y: 20 }}
+            className="movement-form"
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: dateIndex * 0.1 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.3, ease: EASE_OUT }}
           >
-            <div className="flex items-center gap-4 mb-6">
-              <h2 className="text-2xl" style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', color: 'var(--ink)' }}>
-                {date}
-              </h2>
-              <div className="flex-1 h-px" style={{ backgroundColor: 'var(--line)' }} />
-            </div>
-            <div className="space-y-2 ml-4 border-l" style={{ borderColor: 'var(--line)' }}>
-              {items.map((mov, idx) => (
-                <motion.div
-                  key={mov.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: idx * 0.05 }}
-                  className="relative pl-8 py-3 group"
-                >
-                  <div className="absolute left-[-5px] top-1/2 -translate-y-1/2 w-2.5 h-2.5 border-2" style={{ borderColor: mov.tipo === 'Entrada' ? 'var(--moss)' : 'var(--accent)', backgroundColor: 'var(--bg)' }} />
-                  <div className="flex items-center justify-between p-4 border transition-colors duration-300 group-hover:bg-[var(--bg-surface)]" style={{ borderColor: 'var(--line)' }}>
-                    <div className="flex items-center gap-4">
-                      {mov.tipo === 'Entrada' ? (
-                        <ArrowUp size={16} strokeWidth={1.25} style={{ color: 'var(--moss)' }} />
-                      ) : (
-                        <ArrowDown size={16} strokeWidth={1.25} style={{ color: 'var(--accent)' }} />
-                      )}
-                      <div>
-                        <p className="text-sm" style={{ color: 'var(--ink)' }}>{mov.producto}</p>
-                        <p className="text-xs" style={{ color: 'var(--ink-subtle)' }}>{mov.tipo} • {mov.usuario}</p>
+            <form onSubmit={handleSubmit} noValidate>
+              <div className="movement-form__grid">
+                <div className="field-line">
+                  <label className="field-line__label" htmlFor="movement-product">
+                    Producto
+                  </label>
+                  <select
+                    id="movement-product"
+                    className="field-line__control"
+                    value={productoId}
+                    onChange={(event) => {
+                      setProductoId(Number(event.target.value))
+                      setError('')
+                    }}
+                    aria-invalid={Boolean(error)}
+                    aria-describedby={error ? 'movement-error' : undefined}
+                  >
+                    <option value={0}>Seleccionar referencia…</option>
+                    {products.map((product) => (
+                      <option key={product.id} value={product.id}>
+                        {product.codigo} · {product.producto} ({product.cantidad})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="field-line">
+                  <span className="field-line__label" id="movement-type-label">
+                    Tipo
+                  </span>
+                  <div className="segmented" role="group" aria-labelledby="movement-type-label">
+                    {(['Entrada', 'Salida'] as const).map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        className={[
+                          'segmented__option',
+                          tipo === option ? 'segmented__option--active' : '',
+                          option === 'Entrada' ? 'segmented__option--in' : 'segmented__option--out',
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
+                        onClick={() => {
+                          setTipo(option)
+                          setError('')
+                        }}
+                        aria-pressed={tipo === option}
+                      >
+                        {option}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="field-line">
+                  <label className="field-line__label" htmlFor="movement-quantity">
+                    Cantidad
+                  </label>
+                  <input
+                    id="movement-quantity"
+                    className="field-line__control mono"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value={cantidad}
+                    onChange={(event) => {
+                      setCantidad(Number(event.target.value))
+                      setError('')
+                    }}
+                    aria-invalid={Boolean(error)}
+                    aria-describedby={error ? 'movement-error' : undefined}
+                  />
+                </div>
+
+                <div className="movement-form__actions">
+                  <Button type="submit">Registrar</Button>
+                  <Button type="button" variant="ghost" onClick={closeForm}>
+                    Cancelar
+                  </Button>
+                </div>
+              </div>
+
+              {error && (
+                <p className="form-error" id="movement-error" role="alert">
+                  {error}
+                </p>
+              )}
+              {selectedProduct && !error && (
+                <p className="form-help">
+                  Stock actual de {selectedProduct.producto}: {selectedProduct.cantidad} uds.
+                  {tipo === 'Salida' && cantidad > 0
+                    ? ` · quedarían ${Math.max(0, selectedProduct.cantidad - cantidad)} uds.`
+                    : ''}
+                </p>
+              )}
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {groups.length === 0 ? (
+        <div className="panel">
+          <EmptyState
+            illustration={<PalletArrows />}
+            title="La bitácora está en blanco."
+            description="Registra la primera entrada o salida y el historial empezará a escribirse."
+          />
+        </div>
+      ) : (
+        <div className="timeline">
+          {groups.map((group, groupIndex) => (
+            <motion.section
+              key={group.date}
+              className="timeline-day"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: groupIndex * 0.06, ease: EASE_OUT }}
+              aria-label={group.date}
+            >
+              <div className="timeline-day__head">
+                <h2 className="timeline-day__title">{group.date}</h2>
+                <span className="timeline-day__rule" aria-hidden="true" />
+                <span className="timeline-day__count">
+                  {group.movements.length}{' '}
+                  {pluralize(group.movements.length, 'movimiento', 'movimientos')}
+                </span>
+              </div>
+
+              <div className="timeline-day__list">
+                {group.movements.map((movement) => {
+                  const isIn = movement.tipo === 'Entrada'
+                  return (
+                    <div className="timeline-item" key={movement.id}>
+                      <span
+                        className={[
+                          'timeline-item__node',
+                          isIn ? '' : 'timeline-item__node--out',
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
+                        aria-hidden="true"
+                      />
+                      <div className="timeline-card">
+                        <span
+                          className={[
+                            'timeline-card__icon',
+                            isIn ? 'timeline-card__icon--in' : 'timeline-card__icon--out',
+                          ].join(' ')}
+                          aria-hidden="true"
+                        >
+                          {isIn ? (
+                            <ArrowUp size={16} strokeWidth={1.4} />
+                          ) : (
+                            <ArrowDown size={16} strokeWidth={1.4} />
+                          )}
+                        </span>
+                        <div className="timeline-card__body">
+                          <p className="timeline-card__product">{movement.producto}</p>
+                          <p className="timeline-card__meta">
+                            {movement.tipo} · {movement.usuario}
+                          </p>
+                        </div>
+                        <div className="timeline-card__right">
+                          <p
+                            className={[
+                              'timeline-card__amount',
+                              isIn
+                                ? 'timeline-card__amount--in'
+                                : 'timeline-card__amount--out',
+                            ].join(' ')}
+                          >
+                            {isIn ? '+' : '−'}
+                            {movement.cantidad}
+                          </p>
+                          <p className="timeline-card__time">{formatTime(movement.fecha)}</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p 
-                        className="text-lg tabular-nums"
-                        style={{ 
-                          fontFamily: 'var(--font-mono)',
-                          color: mov.tipo === 'Entrada' ? 'var(--moss)' : 'var(--accent)'
-                        }}
-                      >
-                        {mov.tipo === 'Entrada' ? '+' : '-'}{mov.cantidad}
-                      </p>
-                      <p className="text-xs" style={{ color: 'var(--ink-subtle)' }}>
-                        {new Date(mov.fecha).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        ))}
-      </div>
+                  )
+                })}
+              </div>
+            </motion.section>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
