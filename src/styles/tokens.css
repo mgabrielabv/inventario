@@ -1,6 +1,6 @@
 /* ==========================================================================
-   Atelier de Almacén — Sistema de diseño
-   Paleta natural: borgoña, arcilla, crema y arena.
+   Atelier de Almacén — rotulado de bodega
+   Paleta: burdeos de sello, arcilla, crema y papel kraft.
    ========================================================================== */
 
 :root {
@@ -14,16 +14,22 @@
 
   /* Superficies */
   --bg: #fff4ed;
-  --bg-deep: #f7e7dd;
-  --surface: #fff9f5;
-  --surface-2: #f8eae1;
-  --surface-3: #f1dcd0;
+  --bg-deep: #f6e5d8;
+  --surface: #fff9f4;
+  --surface-2: #f7e8dd;
+  --surface-3: #efd9ca;
+
+  /* Papel kraft */
+  --kraft: #d2b48c;
+  --kraft-deep: #bd9c70;
+  --kraft-ink: #2a0a08;
+  --kraft-line: rgba(42, 10, 8, 0.24);
 
   /* Tinta */
   --ink: #2a0a08;
-  --ink-soft: #56322c;
-  --ink-subtle: #6f4b43;
-  --ink-faint: #7c564c;
+  --ink-soft: #4d2a24;
+  --ink-subtle: #66443c;
+  --ink-faint: #7a574e;
 
   /* Acento e interacción */
   --accent: #890000;
@@ -32,31 +38,42 @@
   --accent-soft: rgba(137, 0, 0, 0.07);
   --accent-soft-strong: rgba(137, 0, 0, 0.14);
 
-  /* Líneas y sombras */
-  --line: rgba(137, 0, 0, 0.14);
-  --line-strong: rgba(137, 0, 0, 0.32);
-  --line-ink: rgba(42, 10, 8, 0.16);
-  --shadow-soft: 0 24px 60px rgba(84, 26, 18, 0.1);
-  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  /* Líneas y reglas */
+  --line: rgba(137, 0, 0, 0.16);
+  --line-strong: rgba(137, 0, 0, 0.36);
+  --line-ink: rgba(42, 10, 8, 0.22);
+  --rule: #2a0a08;
+  --shadow-soft: 0 24px 60px rgba(84, 26, 18, 0.14);
 
-  /* Estados (siempre con icono + texto) */
-  --status-normal: #6b7a4b;
-  --status-normal-ink: #4f5c36;
-  --status-normal-soft: rgba(107, 122, 75, 0.12);
-  --status-low: #b8893f;
-  --status-low-ink: #7a5422;
-  --status-low-soft: rgba(184, 137, 63, 0.14);
+  /* Estados: etiqueta de envío (siempre icono + texto) */
+  --label-normal-bg: #d2b48c;
+  --label-normal-ink: #2a0a08;
+  --label-low-bg: #ba8376;
+  --label-low-ink: #2a0a08;
+  --label-critical-bg: #890000;
+  --label-critical-ink: #fff4ed;
+  --status-normal: #4f5c36;
+  --status-normal-ink: #464f30;
+  --status-normal-soft: rgba(107, 122, 75, 0.14);
+  --status-low: #9a6a2c;
+  --status-low-ink: #6f4a17;
+  --status-low-soft: rgba(184, 137, 63, 0.16);
   --status-critical: #890000;
   --status-critical-ink: #890000;
   --status-critical-soft: rgba(137, 0, 0, 0.1);
 
-  /* Vitrina del login */
+  /* Sello de goma */
+  --stamp-ink: #890000;
+  --stamp-border: #890000;
+  --stamp-blend: multiply;
+
+  /* Panel de acceso (burdeos) */
   --showcase-bg: #890000;
   --showcase-bg-deep: #5e0000;
   --showcase-ink: #fff4ed;
-  --showcase-muted: rgba(255, 244, 237, 0.68);
-  --showcase-line: rgba(255, 244, 237, 0.26);
-  --showcase-line-strong: rgba(255, 244, 237, 0.5);
+  --showcase-muted: rgba(255, 244, 237, 0.72);
+  --showcase-line: rgba(255, 244, 237, 0.3);
+  --showcase-line-strong: rgba(255, 244, 237, 0.55);
   --showcase-accent: #d2b48c;
 
   /* Ilustraciones (fondo oscuro por defecto) */
@@ -73,9 +90,18 @@
   --illus-out: #e5bc77;
 
   /* Tipografía */
-  --font-display: 'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
-  --font-sans: 'Figtree', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SFMono-Regular', 'Cascadia Mono', Consolas, monospace;
+  --font-display: 'Archivo Variable', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --font-ui: 'Archivo Variable', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --font-data: 'IBM Plex Mono', 'SFMono-Regular', 'Cascadia Mono', Consolas, monospace;
+  /* Alias de compatibilidad */
+  --font-sans: var(--font-ui);
+  --font-mono: var(--font-data);
+
+  /* Métricas del rotulado */
+  --display-stretch: 68%;
+  --display-weight: 880;
+  --display-leading: 0.86;
+  --display-tracking: -0.005em;
 
   /* Espaciado y forma */
   --space-1: 4px;
@@ -103,7 +129,7 @@
   --z-drawer: 70;
 
   /* Medidas de layout */
-  --sidebar-width: 264px;
+  --sidebar-width: 268px;
   --header-height: 76px;
 }
 
@@ -116,10 +142,15 @@
   --surface-2: #2e1613;
   --surface-3: #3a1d19;
 
+  --kraft: #6b4a38;
+  --kraft-deep: #563a2c;
+  --kraft-ink: #fff4ed;
+  --kraft-line: rgba(255, 244, 237, 0.24);
+
   --ink: #fff4ed;
   --ink-soft: #ead2c9;
-  --ink-subtle: #c9a79c;
-  --ink-faint: #b28d81;
+  --ink-subtle: #d6b8ad;
+  --ink-faint: #bd9b90;
 
   --accent: #e3a493;
   --accent-hover: #f0bbae;
@@ -127,28 +158,38 @@
   --accent-soft: rgba(227, 164, 147, 0.12);
   --accent-soft-strong: rgba(227, 164, 147, 0.22);
 
-  --line: rgba(255, 244, 237, 0.14);
-  --line-strong: rgba(255, 244, 237, 0.32);
-  --line-ink: rgba(255, 244, 237, 0.12);
+  --line: rgba(255, 244, 237, 0.16);
+  --line-strong: rgba(255, 244, 237, 0.36);
+  --line-ink: rgba(255, 244, 237, 0.2);
+  --rule: rgba(255, 244, 237, 0.72);
   --shadow-soft: 0 28px 70px rgba(0, 0, 0, 0.5);
-  --shadow-card: 0 1px 0 rgba(255, 244, 237, 0.04) inset;
 
-  --status-normal: #9cae79;
-  --status-normal-ink: #b9c99a;
+  --label-normal-bg: #d2b48c;
+  --label-normal-ink: #2a0a08;
+  --label-low-bg: #ba8376;
+  --label-low-ink: #2a0a08;
+  --label-critical-bg: #a51212;
+  --label-critical-ink: #fff4ed;
+  --status-normal: #b9c99a;
+  --status-normal-ink: #d5e0c0;
   --status-normal-soft: rgba(156, 174, 121, 0.16);
-  --status-low: #d9a552;
-  --status-low-ink: #e5bc77;
+  --status-low: #e5bc77;
+  --status-low-ink: #f0d09d;
   --status-low-soft: rgba(217, 165, 82, 0.16);
-  --status-critical: #de8f82;
-  --status-critical-ink: #f0b3a8;
+  --status-critical: #f0b3a8;
+  --status-critical-ink: #f5c6bd;
   --status-critical-soft: rgba(222, 143, 130, 0.16);
+
+  --stamp-ink: #e3a493;
+  --stamp-border: #e3a493;
+  --stamp-blend: screen;
 
   --showcase-bg: #24100e;
   --showcase-bg-deep: #1a0807;
   --showcase-ink: #fff4ed;
-  --showcase-muted: rgba(255, 244, 237, 0.62);
-  --showcase-line: rgba(255, 244, 237, 0.18);
-  --showcase-line-strong: rgba(255, 244, 237, 0.4);
+  --showcase-muted: rgba(255, 244, 237, 0.7);
+  --showcase-line: rgba(255, 244, 237, 0.2);
+  --showcase-line-strong: rgba(255, 244, 237, 0.44);
   --showcase-accent: #e3a493;
 
   --illus-line: #d6a596;
