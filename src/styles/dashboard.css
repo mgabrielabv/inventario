@@ -389,11 +389,6 @@
 }
 
 @media (max-width: 560px) {
-  .dash__total .mega-number,
-  .dash__alerts .mega-number {
-    font-size: clamp(120px, 34vw, 168px);
-  }
-
   .dash__total-label,
   .dash__alerts-label {
     font-size: 14px;
