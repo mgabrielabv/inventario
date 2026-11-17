@@ -11,6 +11,8 @@ import { formatNumber, pluralize } from '../../logic/services/formatters'
 import { Button } from '../../components/ui/button'
 import { EmptyState } from '../../components/ui/empty-state'
 import { StatusBadge } from '../../components/ui/status-badge'
+import { PageTitle } from '../../components/ui/page-title'
+import { Stamp } from '../../components/ui/stamp'
 import { OpenBox } from '../../components/illustrations/open-box'
 import { EASE_OUT } from '../../components/illustrations/motion'
 
@@ -36,6 +38,7 @@ export const InventarioPage = () => {
   const [draft, setDraft] = useState<ProductDraft>(EMPTY_DRAFT)
   const [errors, setErrors] = useState<ProductDraftErrors>({})
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null)
+  const [intro, setIntro] = useState(true)
 
   const filtered = useProducts(search, category)
 
@@ -46,6 +49,16 @@ export const InventarioPage = () => {
     }
     return counts
   }, [products])
+
+  const totalUnits = useMemo(
+    () => products.reduce((total, product) => total + product.cantidad, 0),
+    [products],
+  )
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setIntro(false), 1600)
+    return () => window.clearTimeout(timeout)
+  }, [])
 
   useEffect(() => {
     if (!drawerOpen) return
@@ -105,10 +118,10 @@ export const InventarioPage = () => {
 
     if (editing) {
       updateProduct(editing.id, cleanDraft)
-      toast.success('Producto actualizado')
+      toast.success('Ficha actualizada')
     } else {
       addProduct(cleanDraft)
-      toast.success('Producto agregado al catálogo')
+      toast.success('Producto anotado en el libro')
     }
     setDrawerOpen(false)
   }
@@ -117,7 +130,7 @@ export const InventarioPage = () => {
     if (deleteConfirm === product.id) {
       deleteProduct(product.id)
       setDeleteConfirm(null)
-      toast.success(`${product.producto} eliminado del catálogo`)
+      toast.success(`${product.producto} salió del libro`)
       return
     }
     setDeleteConfirm(product.id)
@@ -126,88 +139,106 @@ export const InventarioPage = () => {
   return (
     <div className="page inventory">
       <header className="page-head">
-        <div>
-          <div className="page-head__meta">
-            <span className="page-head__index">02 / CATÁLOGO</span>
-            <span className="page-head__rule" aria-hidden="true" />
-            <span className="eyebrow">
-              {formatNumber(products.length)} referencias · {CATEGORIES.length} categorías
-            </span>
-          </div>
-          <h1 className="page-title">
-            Inventario<em>.</em>
-          </h1>
+        <div className="page-head__main">
+          <PageTitle lines={['TODO LO', 'QUE HAY']} />
           <p className="page-head__sub">
-            Catálogo curado con control preciso de existencias. Cada código conserva su
-            historia y su nivel de stock.
+            <strong>{formatNumber(products.length)} productos.</strong>{' '}
+            {category === 'Todas'
+              ? 'Todo lo que está en el estante, con su código y su saldo.'
+              : `${categoryCounts.get(category) ?? 0} en ${category.toLowerCase()}, con su código y su saldo.`}
           </p>
+        </div>
+        <div className="page-head__aside">
+          <div className="page-head__stat">
+            <span className="page-head__stat-value">{formatNumber(totalUnits)}</span>
+            <span className="page-head__stat-label">Unidades</span>
+          </div>
+          <div className="page-head__stat">
+            <span className="page-head__stat-value">{CATEGORIES.length}</span>
+            <span className="page-head__stat-label">Categorías</span>
+          </div>
         </div>
       </header>
 
       <div className="toolbar">
-        <div className="toolbar__group inventory-filters" role="group" aria-label="Filtrar por categoría">
+        <div className="filter-bar" role="group" aria-label="Filtrar por categoría">
           <button
             type="button"
-            className={['chip', category === 'Todas' ? 'chip--active' : ''].filter(Boolean).join(' ')}
+            className={['filter-tab', category === 'Todas' ? 'filter-tab--active' : '']
+              .filter(Boolean)
+              .join(' ')}
             onClick={() => setCategory('Todas')}
             aria-pressed={category === 'Todas'}
           >
-            Todas <span className="chip__count">{products.length}</span>
+            Todas {products.length}
           </button>
           {CATEGORIES.map((item) => (
             <button
               key={item}
               type="button"
-              className={['chip', category === item ? 'chip--active' : ''].filter(Boolean).join(' ')}
+              className={['filter-tab', category === item ? 'filter-tab--active' : '']
+                .filter(Boolean)
+                .join(' ')}
               onClick={() => setCategory(item)}
               aria-pressed={category === item}
             >
-              {item} <span className="chip__count">{categoryCounts.get(item) ?? 0}</span>
+              {item} {categoryCounts.get(item) ?? 0}
             </button>
           ))}
         </div>
 
         <div className="toolbar__group">
           <div className="search">
-            <Search className="search__icon" size={15} strokeWidth={1.4} aria-hidden="true" />
+            <Search className="search__icon" size={15} strokeWidth={1.6} aria-hidden="true" />
             <input
               className="search__input"
               type="search"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Buscar por código, producto o categoría"
+              placeholder="Buscar código o producto"
               aria-label="Buscar en el inventario"
             />
           </div>
           <Button type="button" onClick={openCreate}>
-            <Plus size={14} strokeWidth={1.5} aria-hidden="true" />
+            <Plus size={16} strokeWidth={1.8} aria-hidden="true" />
             Agregar
           </Button>
         </div>
       </div>
 
-      <p className="inventory__count" role="status">
-        Mostrando {filtered.length} de {products.length}{' '}
-        {pluralize(products.length, 'referencia', 'referencias')}
-        {search ? ` para «${search}»` : ''}
-      </p>
+      <div className="inventory-ledger">
+        <div className="inventory-ledger__head">
+          <p className="label" role="status">
+            {filtered.length} de {products.length}{' '}
+            {pluralize(products.length, 'producto', 'productos')}
+            {search ? ` · «${search}»` : ''}
+          </p>
+          <p className="inventory-ledger__note">
+            {filtered.length === 0 ? 'Sin coincidencias' : 'Saldo al día de hoy'}
+          </p>
+        </div>
 
-      <div className="panel inventory-panel">
         {filtered.length === 0 ? (
           <EmptyState
             illustration={<OpenBox />}
-            title="Nada por aquí todavía."
-            description="Ningún producto coincide con tu búsqueda o con la categoría seleccionada. Ajusta los filtros o agrega una referencia nueva."
+            stamp="Sin ficha"
+            title="Nada por aquí."
+            description="Ningún producto coincide con la búsqueda o con la categoría elegida. Cambia el filtro o anota uno nuevo."
           />
         ) : (
           <div className="table-wrap">
-            <table className="data-table">
+            <table
+              className={['data-table ledger', intro ? 'ledger-intro' : ''].filter(Boolean).join(' ')}
+              aria-label="Libro de inventario"
+            >
               <thead>
                 <tr>
                   <th scope="col">Código</th>
                   <th scope="col">Producto</th>
                   <th scope="col">Categoría</th>
-                  <th scope="col">Cantidad</th>
+                  <th scope="col" className="is-right">
+                    Cantidad
+                  </th>
                   <th scope="col">Estado</th>
                   <th scope="col" className="is-right">
                     Acciones
@@ -215,23 +246,26 @@ export const InventarioPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((product) => {
+                {filtered.map((product, index) => {
                   const status = getProductStatus(product.cantidad)
                   const meter = Math.min(100, (product.cantidad / METER_MAX) * 100)
                   return (
-                    <tr key={product.id}>
+                    <tr
+                      key={product.id}
+                      style={{ '--row-index': index } as CSSProperties}
+                    >
                       <td data-label="Código">
                         <span className="cell-code">{product.codigo}</span>
                       </td>
                       <td data-label="Producto">
-                        <span className="cell-product">{product.producto}</span>
+                        <span className="cell-strong">{product.producto}</span>
                       </td>
-                      <td data-label="Categoría">
-                        <span className="cell-category">{product.categoria}</span>
+                      <td data-label="Categoría" className="cell-muted">
+                        {product.categoria}
                       </td>
-                      <td data-label="Cantidad">
+                      <td data-label="Cantidad" className="is-right">
                         <div className="stock-meter">
-                          <span className="stock-meter__value">{product.cantidad}</span>
+                          <span className="stock-meter__value">{formatNumber(product.cantidad)}</span>
                           <span className="stock-meter__track" aria-hidden="true">
                             <span
                               className={[
@@ -257,7 +291,7 @@ export const InventarioPage = () => {
                             onClick={() => openEdit(product)}
                             aria-label={`Editar ${product.producto}`}
                           >
-                            <Edit2 size={14} strokeWidth={1.4} aria-hidden="true" />
+                            <Edit2 size={15} strokeWidth={1.7} aria-hidden="true" />
                           </button>
                           <button
                             type="button"
@@ -277,7 +311,7 @@ export const InventarioPage = () => {
                             {deleteConfirm === product.id ? (
                               <span className="row-action__confirm">Confirmar</span>
                             ) : (
-                              <Trash2 size={14} strokeWidth={1.4} aria-hidden="true" />
+                              <Trash2 size={15} strokeWidth={1.7} aria-hidden="true" />
                             )}
                           </button>
                         </div>
@@ -315,9 +349,9 @@ export const InventarioPage = () => {
             >
               <div className="drawer__head">
                 <div>
-                  <p className="drawer__eyebrow">{editing ? 'Modificación' : 'Alta de catálogo'}</p>
+                  <p className="drawer__eyebrow">{editing ? 'Corregir ficha' : 'Ficha nueva'}</p>
                   <h2 className="drawer__title" id="inventory-drawer-title">
-                    {editing ? 'Editar producto' : 'Nuevo producto'}
+                    {editing ? 'Editar producto' : 'Anotar producto'}
                   </h2>
                 </div>
                 <button
@@ -326,7 +360,7 @@ export const InventarioPage = () => {
                   onClick={closeDrawer}
                   aria-label="Cerrar panel de producto"
                 >
-                  <X size={18} strokeWidth={1.4} aria-hidden="true" />
+                  <X size={18} strokeWidth={1.8} aria-hidden="true" />
                 </button>
               </div>
 
@@ -374,7 +408,7 @@ export const InventarioPage = () => {
                     }
                     aria-invalid={Boolean(errors.producto)}
                     aria-describedby={errors.producto ? 'product-name-error' : undefined}
-                    placeholder="Nombre de la referencia"
+                    placeholder="Nombre del producto"
                     autoComplete="off"
                   />
                   {errors.producto && (
@@ -437,9 +471,15 @@ export const InventarioPage = () => {
                   </p>
                 </div>
 
+                <div className="inventory-form__stamp">
+                  <Stamp size="sm" tilt="right">
+                    {editing ? 'Corregido' : 'Anotado'}
+                  </Stamp>
+                </div>
+
                 <div className="form-actions">
                   <Button type="submit" size="lg">
-                    {editing ? 'Guardar cambios' : 'Agregar producto'}
+                    {editing ? 'Guardar cambios' : 'Anotar producto'}
                   </Button>
                   <Button type="button" variant="ghost" size="lg" onClick={closeDrawer}>
                     Cancelar
