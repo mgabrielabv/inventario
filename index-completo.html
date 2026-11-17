@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Control e Inventario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F2EAE0;
+            --surface-1: #FBF8F3;
+            --surface-2: #F5EDE3;
+            --text-primary: #2A2019;
+            --text-secondary: #76665A;
+            --border: #E2D5C6;
+            --accent: #B84E2E;
+            --accent-soft: #F4DED3;
+            --accent-text: #8E391F;
+            --success: #56703F;
+            --success-soft: #E6EDE0;
+            --warning: #9A6C06;
+            --warning-soft: #F5EEE0;
+            --danger: #B3301E;
+            --danger-soft: #F4E2DE;
+            --radius-sm: 10px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow: 0 1px 2px rgba(42, 32, 25, 0.02), 0 8px 24px rgba(42, 32, 25, 0.04);
+        }
+
+        [data-theme="dark"] {
+            --bg: #1A1410;
+            --surface-1: #241C16;
+            --surface-2: #2C231C;
+            --text-primary: #F2E8DD;
+            --text-secondary: #B8A99A;
+            --border: #3A2F26;
+            --accent: #E07850;
+            --accent-soft: #3A251C;
+            --accent-text: #F2A080;
+            --success: #7A9160;
+            --success-soft: #2A3322;
+            --warning: #B89440;
+            --warning-soft: #332B1C;
+            --danger: #D45040;
+            --danger-soft: #33201C;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Figtree', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .display {
+            font-family: 'Bricolage Grotesque', sans-serif;
+        }
+
+        /* Layout */
+        .app {
+            display: flex;
+            min-height: 100vh;
+            gap: 24px;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--surface-1);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            margin: 16px 0 16px 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            height: calc(100vh - 32px);
+            position: sticky;
+            top: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-cube {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .logo-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: background 0.2s ease;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            background: var(--surface-2);
+        }
+
+        .nav-item.active {
+            background: var(--accent-soft);
+            color: var(--accent-text);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 0 2px 2px 0;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--accent);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .sidebar-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            color: var(--accent-text);
+            display: grid;
+            place-items: center;
+            font-weight: 600;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Figtree', sans-serif;
+            transition: background 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background: var(--surface-2);
+        }
+
+        .main {
+            flex: 1;
+            max-width: 1480px;
+            margin: 0 auto;
+            padding: 16px 16px 16px 0;
+            width: 100%;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-date {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .page-title {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+        }
+
+        .grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .grid-kpi {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .card {
+            background: var(--surface-1);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                padding: 18px;
+            }
+        }
+
+        .kpi-card.terracotta {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .kpi-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .kpi-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .kpi-card.terracotta .kpi-label {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .kpi-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .kpi-value {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-size: clamp(40px, 8vw, 64px);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 12px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .kpi-footer {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .kpi-card.terracotta .kpi-footer {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 4px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 999px;
+            font-size: 12px;
+        }
+
+        .grid-charts {
+            grid-template-columns: 2fr 1fr;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-charts {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-family: 'Bricolage Grotesque', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .bars {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .bar-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 60px;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bar-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .bar-track {
+            height: 10px;
+            background: var(--surface-2);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent) 0%, rgba(184, 78, 46, 0.6) 100%);
+            border-radius: 999px;
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: grow 0.8s ease forwards;
+        }
+
+        .bar-fill.top {
+            background: var(--accent);
+        }
+
+        @keyframes grow {
+            to { transform: scaleX(1); }
+        }
+
+        .bar-value {
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+        }
+
+        .movement-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .movement-item {
+            display: grid;
+            grid-template-columns: 40px 1fr auto;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .movement-item:last-child {
+            border-bottom: none;
+        }
+
+        .movement-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+        }
+
+        .movement-icon.in {
+            background: var(--success-soft);
+            color: var(--success);
+        }
+
+        .movement-icon.out {
+            background: var(--danger-soft);
+            color: var(--danger);
+        }
+
+        .movement-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .movement-product {
+            font-weight: 500;
+        }
+
+        .movement-meta {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .movement-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .movement-amount.in {
+            color: var(--success);
+        }
+
+        .movement-amount.out {
+            color: var(--danger);
+        }
+
+        .link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Mobile */
+        .mobile-header {
+            display: none;
+        }
+
+        .mobile-nav {
+            display: none;
+        }
+
+        @media (max-width: 968px) {
+            .app {
+                flex-direction: column;
+                gap: 0;
+            }
+            .sidebar {
+                display: none;
+            }
+            .main {
+                padding: 0 16px 80px 16px;
+                max-width: 100%;
+            }
+            .mobile-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 16px;
+                background: var(--surface-1);
+                border-bottom: 1px solid var(--border);
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+            .mobile-nav {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: var(--surface-1);
+                border-top: 1px solid var(--border);
+                padding: 8px 4px calc(8px + env(safe-area-inset-bottom));
+                z-index: 10;
+            }
+            .mobile-nav-item {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+                padding: 6px 4px;
+                text-decoration: none;
+                color: var(--text-secondary);
+                font-size: 11px;
+            }
+            .mobile-nav-item.active {
+                color: var(--accent);
+            }
+            .page {
+                padding-top: 16px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .bar-row {
+                grid-template-columns: 80px 1fr 50px;
+            }
+            .movement-item {
+                grid-template-columns: 36px 1fr auto;
+            }
+            .movement-icon {
+                width: 36px;
+                height: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-cube">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 4L6 9V23L16 28L26 23V9L16 4Z" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
+                        <path d="M16 4V16M16 16L6 9M16 16L26 9" stroke="var(--accent)" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">Inventario</span>
+                    <span class="logo-subtitle">Control & Almacén</span>
+                </div>
+            </div>
+
+            <nav class="nav">
+                <a href="#inicio" class="nav-item active" data-page="inicio">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="2" width="6" height="6" rx="1"/>
+                        <rect x="10" y="2" width="6" height="6" rx="1"/>
+                        <rect x="2" y="10" width="6" height="6" rx="1"/>
+                        <rect x="10" y="10" width="6" height="6" rx="1"/>
+                    </svg>
+                    <span>Inicio</span>
+                </a>
+                <a href="#inventario" class="nav-item" data-page="inventario">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M2 5L9 2L16 5V13L9 16L2 13V5Z"/>
+                        <path d="M9 2V16M2 5L9 9M16 5L9 9"/>
+                    </svg>
+                    <span>Inventario</span>
+                </a>
+                <a href="#movimientos" class="nav-item" data-page="movimientos">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 9L7 6M7 6L4 3M7 6H14M14 9L11 12M11 12L14 15M11 12H4"/>
+                    </svg>
+                    <span>Movimientos</span>
+                </a>
+                <a href="#alertas" class="nav-item" data-page="alertas">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 2L15 14H3L9 2Z"/>
+                        <path d="M9 7V10M9 13H9.01"/>
+                    </svg>
+                    <span>Alertas</span>
+                    <span class="nav-badge" id="nav-alerts">7</span>
+                </a>
+                <a href="#reportes" class="nav-item" data-page="reportes">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M3 3H15V15H3V3Z"/>
+                        <path d="M6 12V9M9 12V6M12 12V8"/>
+                    </svg>
+                    <span>Reportes</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">A</div>
+                    <div class="user-details">
+                        <span class="user-name">Administrador</span>
+                        <span class="user-role">Acceso completo</span>
+                    </div>
+                </div>
+                <div class="sidebar-actions">
+                    <button class="icon-btn" id="theme-toggle">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="8" cy="8" r="3"/>
+                            <path d="M8 1V3M8 13V15M15 8H13M3 8H1M12.95 12.95L11.536 11.536M4.464 4.464L3.05 3.05M12.95 3.05L11.536 4.464M4.464 11.536L3.05 12.95"/>
+                        </svg>
+                        Tema
+                    </button>
+                    <button class="icon-btn" onclick="logout()">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M6 14H3C2.44772 14 2 13.5523 2 13V3C2 2.44772 2.44772 2 3 2H6M10 11L14 8M14 8L10 5M14 8H6"/>
+                        </svg>
+                        Salir
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="logo">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 4L6 9V23L16 28L26 23V9L16 4Z" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
+                    <path d="M16 4V16M16 16L6 9M16 16L26 9" stroke="var(--accent)" stroke-width="1.5"/>
+                </svg>
+                <span class="logo-title">Inventario</span>
+            </div>
+            <button class="icon-btn" style="flex: 0 0 auto; padding: 8px;" onclick="logout()">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M7 16H4C3.44772 16 3 15.5523 3 15V3C3 2.44772 3.44772 2 4 2H7M11 13L15 9M15 9L11 5M15 9H7"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Main -->
+        <main class="main">
+            <!-- INICIO PAGE -->
+            <section class="page active" id="page-inicio">
+                <header class="page-header">
+                    <div class="page-date" id="current-date"></div>
+                    <h1 class="page-title display" id="greeting"></h1>
+                    <p class="page-subtitle" id="reposition-text"></p>
+                </header>
+
+                <div class="grid grid-kpi">
+                    <article class="card kpi-card">
+                        <header class="kpi-header">
+                            <span class="kpi-label">Total de productos</span>
+                        </header>
+                        <div class="kpi-value mono" id="kpi-total">0</div>
+                        <footer class="kpi-footer">Diferentes referencias</footer>
+                    </article>
+
+                    <article class="card kpi-card">
+                        <header class="kpi-header">
+                            <span class="kpi-label">Unidades en stock</span>
+                        </header>
+                        <div class="kpi-value mono" id="kpi-units">0</div>
+                        <footer class="kpi-footer">Total acumulado</footer>
+                    </article>
+
+                    <article class="card kpi-card terracotta">
+                        <header class="kpi-header">
+                            <span class="kpi-label">Alertas de stock</span>
+                            <div class="kpi-pulse"></div>
+                        </header>
+                        <div class="kpi-value mono" id="kpi-alerts">0</div>
+                        <footer class="kpi-footer">
+                            <div class="chips">
+                                <span class="chip"><span id="kpi-critical">0</span> críticos</span>
+                                <span class="chip"><span id="kpi-warning">0</span> en advertencia</span>
+                            </div>
+                        </footer>
+                    </article>
+
+                    <article class="card kpi-card">
+                        <header class="kpi-header">
+                            <span class="kpi-label">Movimientos últimos 7 días</span>
+                        </header>
+                        <div class="kpi-value mono" id="kpi-movements">0</div>
+                        <footer class="kpi-footer">Entradas y salidas</footer>
+                    </article>
+                </div>
+
+                <div class="grid grid-charts" style="margin-top: 16px;">
+                    <article class="card">
+                        <header class="card-header">
+                            <h2 class="card-title display">Stock por categoría</h2>
+                        </header>
+                        <div class="bars" id="category-bars"></div>
+                    </article>
+
+                    <article class="card">
+                        <header class="card-header">
+                            <h2 class="card-title display">Últimos movimientos</h2>
+                            <a href="#movimientos" class="link">
+                                Ver todos
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M6 3L11 8L6 13"/>
+                                </svg>
+                            </a>
+                        </header>
+                        <div class="movement-list" id="recent-movements"></div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- INVENTARIO PAGE -->
+            <section class="page" id="page-inventario">
+                <header class="page-header">
+                    <h1 class="page-title display">Inventario</h1>
+                    <p class="page-subtitle">Catálogo de productos</p>
+                </header>
+                <div class="card" style="margin-bottom: 16px;">
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                        <input type="text" id="inventory-search" placeholder="Buscar producto... ( / )" style="flex: 1; min-width: 200px; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface-2); color: var(--text-primary); font-family: 'Figtree', sans-serif;">
+                        <button class="icon-btn" style="flex: 0 0 auto;" onclick="openInventoryDrawer()">+ Nuevo producto</button>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;" id="category-chips"></div>
+                </div>
+                <div class="card" style="padding: 0; overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <th style="text-align: left; padding: 13px 16px; font-weight: 600; color: var(--text-secondary); font-size: 13px;">Código</th>
+                                <th style="text-align: left; padding: 13px 16px; font-weight: 600; color: var(--text-secondary); font-size: 13px;">Producto</th>
+                                <th style="text-align: left; padding: 13px 16px; font-weight: 600; color: var(--text-secondary); font-size: 13px;">Categoría</th>
+                                <th style="text-align: left; padding: 13px 16px; font-weight: 600; color: var(--text-secondary); font-size: 13px;">Cantidad</th>
+                                <th style="text-align: left; padding: 13px 16px; font-weight: 600; color: var(--text-secondary); font-size: 13px;">Estado</th>
+                                <th style="text-align: left; padding: 13px 16px; font-weight: 600; color: var(--text-secondary); font-size: 13px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Otros páginas simplificadas -->
+            <section class="page" id="page-movimientos">
+                <header class="page-header">
+                    <h1 class="page-title display">Movimientos</h1>
+                    <p class="page-subtitle">Historial de entradas y salidas</p>
+                </header>
+                <div class="card">
+                    <p style="color: var(--text-secondary);">Sección de movimientos</p>
+                </div>
+            </section>
+
+            <section class="page" id="page-alertas">
+                <header class="page-header">
+                    <h1 class="page-title display">Alertas</h1>
+                    <p class="page-subtitle">Productos que necesitan reposición</p>
+                </header>
+                <div class="grid grid-kpi" id="alerts-grid"></div>
+            </section>
+
+            <section class="page" id="page-reportes">
+                <header class="page-header">
+                    <h1 class="page-title display">Reportes</h1>
+                    <p class="page-subtitle">Análisis e informes</p>
+                </header>
+                <div class="card">
+                    <p style="color: var(--text-secondary);">Sección de reportes</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Mobile Nav -->
+    <nav class="mobile-nav">
+        <a href="#inicio" class="mobile-nav-item active" data-page="inicio">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="6" height="6" rx="1"/>
+                <rect x="11" y="3" width="6" height="6" rx="1"/>
+                <rect x="3" y="11" width="6" height="6" rx="1"/>
+                <rect x="11" y="11" width="6" height="6" rx="1"/>
+            </svg>
+            <span>Inicio</span>
+        </a>
+        <a href="#inventario" class="mobile-nav-item" data-page="inventario">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 6L10 3L17 6V14L10 17L3 14V6Z"/>
+                <path d="M10 3V17M3 6L10 10M17 6L10 10"/>
+            </svg>
+            <span>Inventario</span>
+        </a>
+        <a href="#movimientos" class="mobile-nav-item" data-page="movimientos">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M5 10L8 7M8 7L5 4M8 7H15M15 10L12 13M12 13L15 16M12 13H5"/>
+            </svg>
+            <span>Movs</span>
+        </a>
+        <a href="#alertas" class="mobile-nav-item" data-page="alertas">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M10 3L16 15H4L10 3Z"/>
+                <path d="M10 8V11M10 14H10.01"/>
+            </svg>
+            <span>Alertas</span>
+        </a>
+        <a href="#reportes" class="mobile-nav-item" data-page="reportes">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 4H16V16H4V4Z"/>
+                <path d="M7 13V10M10 13V7M13 13V9"/>
+            </svg>
+            <span>Reportes</span>
+        </a>
+    </nav>
+
+    <script>
+        // Estado
+        let state = {
+            user: null,
+            theme: localStorage.getItem('theme') || 'light',
+            products: [
+                { id: 1, codigo: '001', producto: 'Laptop', categoria: 'Electrónica', cantidad: 15 },
+                { id: 2, codigo: '002', producto: 'Mouse', categoria: 'Accesorios', cantidad: 50 },
+                { id: 3, codigo: '003', producto: 'Teclado', categoria: 'Accesorios', cantidad: 8 },
+                { id: 4, codigo: '004', producto: 'Monitor', categoria: 'Electrónica', cantidad: 12 },
+                { id: 5, codigo: '005', producto: 'Audífonos', categoria: 'Accesorios', cantidad: 4 },
+                { id: 6, codigo: '006', producto: 'Cargador USB-C', categoria: 'Accesorios', cantidad: 23 },
+                { id: 7, codigo: '007', producto: 'Cuaderno A4', categoria: 'Papelería', cantidad: 35 },
+                { id: 8, codigo: '008', producto: 'Resma de papel', categoria: 'Papelería', cantidad: 7 },
+                { id: 9, codigo: '009', producto: 'Bolígrafos', categoria: 'Papelería', cantidad: 120 },
+                { id: 10, codigo: '010', producto: 'Lámpara de escritorio', categoria: 'Hogar', cantidad: 6 },
+                { id: 11, codigo: '011', producto: 'Organizador', categoria: 'Hogar', cantidad: 14 },
+                { id: 12, codigo: '012', producto: 'Tablet', categoria: 'Electrónica', cantidad: 3 },
+                { id: 13, codigo: '013', producto: 'Cinta de embalaje', categoria: 'Otras', cantidad: 42 }
+            ],
+            movements: [
+                { id: 1, fecha: '2026-10-26', hora: '09:15', producto: 'Mouse', tipo: 'Entrada', cantidad: 10, usuario: 'admin', nota: '' },
+                { id: 2, fecha: '2026-10-26', hora: '10:30', producto: 'Teclado', tipo: 'Salida', cantidad: 2, usuario: 'operador', nota: '' },
+                { id: 3, fecha: '2026-10-26', hora: '11:20', producto: 'Laptop', tipo: 'Salida', cantidad: 3, usuario: 'admin', nota: '' },
+                { id: 4, fecha: '2026-10-25', hora: '14:10', producto: 'Audífonos', tipo: 'Salida', cantidad: 1, usuario: 'operador', nota: '' },
+                { id: 5, fecha: '2026-10-25', hora: '16:00', producto: 'Cargador USB-C', tipo: 'Entrada', cantidad: 15, usuario: 'admin', nota: '' },
+                { id: 6, fecha: '2026-10-24', hora: '09:30', producto: 'Tablet', tipo: 'Entrada', cantidad: 5, usuario: 'admin', nota: '' },
+                { id: 7, fecha: '2026-10-24', hora: '13:45', producto: 'Resma de papel', tipo: 'Salida', cantidad: 10, usuario: 'operador', nota: '' },
+                { id: 8, fecha: '2026-10-23', hora: '11:15', producto: 'Monitor', tipo: 'Salida', cantidad: 2, usuario: 'admin', nota: '' }
+            ]
+        };
+
+        // Inicializar tema
+        document.documentElement.setAttribute('data-theme', state.theme);
+
+        // Fecha
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        
+        const hour = new Date().getHours();
+        let greeting = hour < 12 ? 'Buenos días' : hour < 20 ? 'Buenas tardes' : 'Buenas noches';
+        document.getElementById('greeting').textContent = greeting + ', Administrador.';
+        
+        const alertsCount = state.products.filter(p => p.cantidad < 10).length;
+        document.getElementById('reposition-text').textContent = alertsCount + (alertsCount === 1 ? ' producto necesita reposición' : ' productos necesitan reposición');
+
+        // KPIs
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+
+        const totalProducts = state.products.length;
+        const totalUnits = state.products.reduce((sum, p) => sum + p.cantidad, 0);
+        const criticalCount = state.products.filter(p => p.cantidad < 5).length;
+        const warningCount = alertsCount - criticalCount;
+        const recentMovements7Days = state.movements.filter(m => {
+            const movDate = new Date(m.fecha);
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            return movDate >= weekAgo;
+        }).length;
+
+        animateCounter(document.getElementById('kpi-total'), totalProducts);
+        animateCounter(document.getElementById('kpi-units'), totalUnits);
+        animateCounter(document.getElementById('kpi-alerts'), alertsCount);
+        animateCounter(document.getElementById('kpi-movements'), recentMovements7Days);
+        document.getElementById('kpi-critical').textContent = criticalCount;
+        document.getElementById('kpi-warning').textContent = warningCount;
+        document.getElementById('nav-alerts').textContent = alertsCount;
+
+        // Categorías
+        const categoryData = state.products.reduce((acc, p) => {
+            acc[p.categoria] = (acc[p.categoria] || 0) + p.cantidad;
+            return acc;
+        }, {});
+        const categories = ['Electrónica', 'Accesorios', 'Papelería', 'Hogar', 'Otras'];
+        const maxUnits = Math.max(...Object.values(categoryData));
+        const barsContainer = document.getElementById('category-bars');
+        categories.forEach((cat, idx) => {
+            const val = categoryData[cat] || 0;
+            const row = document.createElement('div');
+            row.className = 'bar-row';
+            row.innerHTML = `
+                <span class="bar-label">${cat}</span>
+                <div class="bar-track">
+                    <div class="bar-fill ${idx === 0 ? 'top' : ''}" style="width: ${(val / maxUnits) * 100}%; animation-delay: ${idx * 0.1}s"></div>
+                </div>
+                <span class="bar-value mono">${val}</span>
+            `;
+            barsContainer.appendChild(row);
+        });
+
+        // Últimos movimientos
+        const recentMoves = state.movements.slice(0, 5);
+        const movesContainer = document.getElementById('recent-movements');
+        recentMoves.forEach(mov => {
+            const item = document.createElement('div');
+            item.className = 'movement-item';
+            const isIn = mov.tipo === 'Entrada';
+            item.innerHTML = `
+                <div class="movement-icon ${isIn ? 'in' : 'out'}">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        ${isIn ? '<path d="M8 3V13M3 8L8 3L13 8"/>' : '<path d="M8 13V3M13 8L8 13L3 8"/>'}
+                    </svg>
+                </div>
+                <div class="movement-info">
+                    <span class="movement-product">${mov.producto}</span>
+                    <span class="movement-meta">${mov.fecha} ${mov.hora} · ${mov.usuario}</span>
+                </div>
+                <span class="movement-amount mono ${isIn ? 'in' : 'out'}">${isIn ? '+' : '-'}${mov.cantidad}</span>
+            `;
+            movesContainer.appendChild(item);
+        });
+
+        // Navegación
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + page).classList.add('active');
+            document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(item => {
+                item.classList.toggle('active', item.getAttribute('data-page') === page);
+            });
+            window.location.hash = page;
+        }
+
+        document.querySelectorAll('.nav-item, .mobile-nav-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage(item.getAttribute('data-page'));
+            });
+        });
+
+        // Hash routing
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.slice(1) || 'inicio';
+            showPage(hash);
+        });
+
+        // Theme
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            state.theme = state.theme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', state.theme);
+            localStorage.setItem('theme', state.theme);
+        });
+
+        function logout() {
+            window.location.href = '#inicio';
+            alert('Sesión cerrada');
+        }
+    </script>
+</body>
+</html>
