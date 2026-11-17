@@ -75,12 +75,12 @@ export const BarcodeScan = ({ reducedMotion = false }: IllustrationProps) => (
           x="124"
           y="70"
           fill="var(--illus-ink)"
-          fontFamily="var(--font-mono)"
+          fontFamily="var(--font-display)"
           fontSize="7.5"
           letterSpacing="1.8"
           opacity="0.7"
         >
-          ATELIER / ALM-01
+          RECEPCIÓN / MUELLE
         </text>
 
         <rect
@@ -135,7 +135,7 @@ export const BarcodeScan = ({ reducedMotion = false }: IllustrationProps) => (
           x="124"
           y="200"
           fill="var(--illus-ink)"
-          fontFamily="var(--font-mono)"
+          fontFamily="var(--font-display)"
           fontSize="12"
           letterSpacing="3.2"
         >
@@ -145,11 +145,11 @@ export const BarcodeScan = ({ reducedMotion = false }: IllustrationProps) => (
           x="124"
           y="220"
           fill="var(--illus-line)"
-          fontFamily="var(--font-mono)"
+          fontFamily="var(--font-display)"
           fontSize="7.5"
           letterSpacing="2"
         >
-          STOCK / TRAZABILIDAD
+          LECTOR / CONTROL
         </text>
 
         <path
@@ -186,17 +186,17 @@ export const BarcodeScan = ({ reducedMotion = false }: IllustrationProps) => (
         x="76"
         y="272"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="1.6"
       >
-        LECTURA 2048 / OK
+        LECTURA OK
       </text>
       <text
         x="366"
         y="272"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="1.6"
         textAnchor="end"

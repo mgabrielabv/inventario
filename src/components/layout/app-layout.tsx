@@ -21,11 +21,11 @@ import { EASE_OUT } from '../illustrations/motion'
 import { OpenBox } from '../illustrations/open-box'
 
 const NAV_ITEMS = [
-  { to: '/', icon: Home, label: 'Inicio', num: '01' },
-  { to: '/inventario', icon: Package, label: 'Inventario', num: '02' },
-  { to: '/movimientos', icon: ArrowLeftRight, label: 'Movimientos', num: '03' },
-  { to: '/alertas', icon: Bell, label: 'Alertas', num: '04' },
-  { to: '/reportes', icon: FileText, label: 'Reportes', num: '05' },
+  { to: '/', icon: Home, label: 'Hoy' },
+  { to: '/inventario', icon: Package, label: 'Inventario' },
+  { to: '/movimientos', icon: ArrowLeftRight, label: 'Movimientos' },
+  { to: '/alertas', icon: Bell, label: 'Alertas' },
+  { to: '/reportes', icon: FileText, label: 'Cuentas' },
 ] as const
 
 export const AppLayout = () => {
@@ -74,13 +74,13 @@ export const AppLayout = () => {
                 ['sidebar__link', isActive ? 'sidebar__link--active' : ''].filter(Boolean).join(' ')
               }
             >
-              <item.icon size={18} strokeWidth={1.25} aria-hidden="true" />
+              <item.icon size={18} strokeWidth={1.7} aria-hidden="true" />
               <span className="sidebar__label">{item.label}</span>
-              <span className="sidebar__index" aria-hidden="true">
-                {item.num}
-              </span>
               {badgeFor(item.to) && (
-                <span className="sidebar__badge" aria-label={`${badgeFor(item.to)} alertas`}>
+                <span
+                  className="ship-label ship-label--critical sidebar__badge"
+                  aria-label={`${badgeFor(item.to)} alertas`}
+                >
                   {badgeFor(item.to)}
                 </span>
               )}
@@ -99,7 +99,7 @@ export const AppLayout = () => {
             </div>
           </div>
           <button type="button" className="sidebar__action" onClick={handleLogout}>
-            <LogOut size={16} strokeWidth={1.25} aria-hidden="true" />
+            <LogOut size={16} strokeWidth={1.7} aria-hidden="true" />
             <span className="sidebar__label">Cerrar sesión</span>
           </button>
         </div>
@@ -113,7 +113,7 @@ export const AppLayout = () => {
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Abrir menú de navegación"
           >
-            <Menu size={20} strokeWidth={1.25} aria-hidden="true" />
+            <Menu size={20} strokeWidth={1.7} aria-hidden="true" />
           </button>
 
           <div className="app-header__meta">
@@ -135,9 +135,9 @@ export const AppLayout = () => {
               aria-label={theme === 'light' ? 'Activar modo oscuro' : 'Activar modo claro'}
             >
               {theme === 'light' ? (
-                <Moon size={17} strokeWidth={1.25} aria-hidden="true" />
+                <Moon size={17} strokeWidth={1.7} aria-hidden="true" />
               ) : (
-                <Sun size={17} strokeWidth={1.25} aria-hidden="true" />
+                <Sun size={17} strokeWidth={1.7} aria-hidden="true" />
               )}
             </button>
             <div className="app-header__avatar" aria-hidden="true">
@@ -186,7 +186,7 @@ export const AppLayout = () => {
                   onClick={() => setMobileMenuOpen(false)}
                   aria-label="Cerrar menú"
                 >
-                  <X size={20} strokeWidth={1.25} aria-hidden="true" />
+                  <X size={20} strokeWidth={1.7} aria-hidden="true" />
                 </button>
               </div>
 
@@ -203,10 +203,13 @@ export const AppLayout = () => {
                         .join(' ')
                     }
                   >
-                    <item.icon size={18} strokeWidth={1.25} aria-hidden="true" />
+                    <item.icon size={18} strokeWidth={1.7} aria-hidden="true" />
                     <span>{item.label}</span>
-                    <span className="mobile-menu__index">{item.num}</span>
-                    {badgeFor(item.to) && <span className="sidebar__badge">{badgeFor(item.to)}</span>}
+                    {badgeFor(item.to) && (
+                      <span className="ship-label ship-label--critical sidebar__badge">
+                        {badgeFor(item.to)}
+                      </span>
+                    )}
                   </NavLink>
                 ))}
               </nav>
@@ -224,14 +227,14 @@ export const AppLayout = () => {
                 <div className="mobile-menu__actions">
                   <button type="button" className="btn btn--outline btn--sm" onClick={toggleTheme}>
                     {theme === 'light' ? (
-                      <Moon size={15} strokeWidth={1.25} aria-hidden="true" />
+                      <Moon size={15} strokeWidth={1.7} aria-hidden="true" />
                     ) : (
-                      <Sun size={15} strokeWidth={1.25} aria-hidden="true" />
+                      <Sun size={15} strokeWidth={1.7} aria-hidden="true" />
                     )}
                     {theme === 'light' ? 'Modo oscuro' : 'Modo claro'}
                   </button>
                   <button type="button" className="btn btn--ghost btn--sm" onClick={handleLogout}>
-                    <LogOut size={15} strokeWidth={1.25} aria-hidden="true" />
+                    <LogOut size={15} strokeWidth={1.7} aria-hidden="true" />
                     Salir
                   </button>
                 </div>

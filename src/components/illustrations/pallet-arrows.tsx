@@ -35,12 +35,12 @@ export const PalletArrows = ({ reducedMotion = false }: IllustrationProps) => (
         x="210"
         y="52"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="2"
         textAnchor="middle"
       >
-        MUELLE / PALÉ 03
+        MUELLE / PALÉ
       </text>
     </motion.g>
 
@@ -122,7 +122,7 @@ export const PalletArrows = ({ reducedMotion = false }: IllustrationProps) => (
         x="62"
         y="222"
         fill="var(--illus-in)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="1.8"
         textAnchor="middle"
@@ -155,7 +155,7 @@ export const PalletArrows = ({ reducedMotion = false }: IllustrationProps) => (
         x="358"
         y="222"
         fill="var(--illus-out)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="1.8"
         textAnchor="middle"
@@ -169,22 +169,22 @@ export const PalletArrows = ({ reducedMotion = false }: IllustrationProps) => (
         x="94"
         y="306"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="1.6"
       >
-        IN:072 / OUT:056
+        CONTADO / ANOTADO
       </text>
       <text
         x="338"
         y="306"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="1.6"
         textAnchor="end"
       >
-        PESO: 128 KG
+        CON NOMBRE
       </text>
     </motion.g>
   </svg>

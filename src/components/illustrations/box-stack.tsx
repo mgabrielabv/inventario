@@ -100,17 +100,17 @@ export const BoxStack = ({ reducedMotion = false }: IllustrationProps) => (
         x="88"
         y="306"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="1.6"
       >
-        RECEPCIÓN / CAJA 004
+        RECEPCIÓN / CAJA
       </text>
       <text
         x="330"
         y="306"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="1.6"
         textAnchor="end"

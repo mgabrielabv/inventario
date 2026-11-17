@@ -25,7 +25,7 @@ export const WarehouseShelf = ({ reducedMotion = false }: IllustrationProps) => 
         x="76"
         y="106"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="7.5"
         letterSpacing="1.4"
       >
@@ -35,7 +35,7 @@ export const WarehouseShelf = ({ reducedMotion = false }: IllustrationProps) => 
         x="76"
         y="190"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="7.5"
         letterSpacing="1.4"
       >
@@ -45,7 +45,7 @@ export const WarehouseShelf = ({ reducedMotion = false }: IllustrationProps) => 
         x="76"
         y="274"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="7.5"
         letterSpacing="1.4"
       >
@@ -55,12 +55,12 @@ export const WarehouseShelf = ({ reducedMotion = false }: IllustrationProps) => 
         x="342"
         y="32"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="1.6"
         textAnchor="end"
       >
-        ALM-02 / PASILLO B
+        PASILLO B
       </text>
     </motion.g>
 
@@ -112,7 +112,7 @@ export const WarehouseShelf = ({ reducedMotion = false }: IllustrationProps) => 
         x="291"
         y="164"
         fill="var(--illus-accent)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="1.8"
         textAnchor="middle"
@@ -161,11 +161,11 @@ export const WarehouseShelf = ({ reducedMotion = false }: IllustrationProps) => 
         x="58"
         y="308"
         fill="var(--illus-line)"
-        fontFamily="var(--font-mono)"
+        fontFamily="var(--font-display)"
         fontSize="8"
         letterSpacing="1.6"
       >
-        STOCK MÍNIMO / REPOSICIÓN
+        MÍNIMO / REPONER
       </text>
     </motion.g>
   </svg>

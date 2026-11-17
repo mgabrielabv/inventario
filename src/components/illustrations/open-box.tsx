@@ -6,23 +6,13 @@ export const OpenBox = ({ className = '' }: { className?: string }) => (
     aria-hidden="true"
   >
     <path
-      d="M5 13.5L16 8L27 13.5V25L16 30L5 25V13.5Z"
+      d="M5 12L16 17L27 12V25L16 30L5 25V12Z"
       stroke="currentColor"
-      strokeWidth="1.3"
+      strokeWidth="2.5"
       strokeLinejoin="round"
     />
-    <path
-      d="M5 13.5L16 18.5L27 13.5M16 18.5V30"
-      stroke="currentColor"
-      strokeWidth="1.3"
-      strokeLinejoin="round"
-    />
-    <path
-      d="M5 13.5L2 9.5L13 4L16 8M27 13.5L30 9.5L19 4L16 8"
-      stroke="currentColor"
-      strokeWidth="1.3"
-      strokeLinejoin="round"
-    />
-    <path d="M10 15.75L21 20.75" stroke="currentColor" strokeWidth="1.1" opacity="0.45" />
+    <path d="M5 12L3 7L14 2L16 7.5" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
+    <path d="M27 12L29 7L18 2L16 7.5" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
+    <path d="M16 17V30" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
   </svg>
 )
