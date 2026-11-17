@@ -4,10 +4,10 @@ import {
   useState,
   type CSSProperties,
   type KeyboardEvent,
+  type MouseEvent,
   type PointerEvent,
 } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
 import type { Slide } from '../../logic/types'
 import { pad2 } from '../../logic/services/formatters'
 import { useSlideshow } from '../../logic/hooks/useSlideshow'
@@ -26,6 +26,13 @@ const progressValue = (slideIndex: number, activeIndex: number, progress: number
   return 0
 }
 
+interface CursorState {
+  x: number
+  y: number
+  side: 'left' | 'right'
+  visible: boolean
+}
+
 export const HeroSlideshow = ({ slides }: { slides: Slide[] }) => {
   const {
     index,
@@ -41,7 +48,14 @@ export const HeroSlideshow = ({ slides }: { slides: Slide[] }) => {
     setFocused,
   } = useSlideshow({ count: slides.length })
   const [parallax, setParallax] = useState({ x: 0, y: 0 })
+  const [cursor, setCursor] = useState<CursorState>({
+    x: 0,
+    y: 0,
+    side: 'right',
+    visible: false,
+  })
   const swipeStart = useRef<{ x: number; y: number } | null>(null)
+  const suppressClick = useRef(false)
   const activeSlide = slides[index]
 
   const handlePointerMove = useCallback(
@@ -50,7 +64,10 @@ export const HeroSlideshow = ({ slides }: { slides: Slide[] }) => {
       const rect = event.currentTarget.getBoundingClientRect()
       const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2 * PARALLAX_LIMIT
       const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2 * PARALLAX_LIMIT
-      setParallax({ x: clamp(x, -PARALLAX_LIMIT, PARALLAX_LIMIT), y: clamp(y, -PARALLAX_LIMIT, PARALLAX_LIMIT) })
+      setParallax({
+        x: clamp(x, -PARALLAX_LIMIT, PARALLAX_LIMIT),
+        y: clamp(y, -PARALLAX_LIMIT, PARALLAX_LIMIT),
+      })
     },
     [reducedMotion],
   )
@@ -66,11 +83,15 @@ export const HeroSlideshow = ({ slides }: { slides: Slide[] }) => {
     const deltaX = event.clientX - start.x
     const deltaY = event.clientY - start.y
     if (Math.abs(deltaX) < SWIPE_THRESHOLD || Math.abs(deltaX) < Math.abs(deltaY)) return
+    suppressClick.current = true
     if (deltaX < 0) next()
     else previous()
   }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    const target = event.target as HTMLElement
+    if (target.closest('button, a, input, select, textarea')) return
+
     if (event.key === 'ArrowRight') {
       event.preventDefault()
       next()
@@ -94,6 +115,27 @@ export const HeroSlideshow = ({ slides }: { slides: Slide[] }) => {
     }
   }
 
+  const handleStageMove = (event: PointerEvent<HTMLElement>) => {
+    if (event.pointerType === 'touch') return
+    const rect = event.currentTarget.getBoundingClientRect()
+    setCursor({
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+      side: event.clientX - rect.left < rect.width / 2 ? 'left' : 'right',
+      visible: true,
+    })
+  }
+
+  const handleStageClick = (event: MouseEvent<HTMLElement>) => {
+    if (suppressClick.current) {
+      suppressClick.current = false
+      return
+    }
+    const rect = event.currentTarget.getBoundingClientRect()
+    if (event.clientX - rect.left < rect.width / 2) previous()
+    else next()
+  }
+
   const togglePause = () => {
     if (paused) {
       setFocused(false)
@@ -111,12 +153,13 @@ export const HeroSlideshow = ({ slides }: { slides: Slide[] }) => {
       className="slideshow"
       role="region"
       aria-roledescription="carousel"
-      aria-label="El almacén en cuatro gestos"
+      aria-label="Cuatro gestos de bodega"
       tabIndex={0}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => {
         setHovering(false)
         setParallax({ x: 0, y: 0 })
+        setCursor((current) => ({ ...current, visible: false }))
       }}
       onFocusCapture={() => setFocused(true)}
       onBlurCapture={() => setFocused(false)}
@@ -125,14 +168,26 @@ export const HeroSlideshow = ({ slides }: { slides: Slide[] }) => {
       onPointerMove={handlePointerMove}
       onKeyDown={handleKeyDown}
     >
-      <div className="slideshow__corners" aria-hidden="true">
-        <span className="slideshow__corner slideshow__corner--tl">{activeSlide.corners.topLeft}</span>
-        <span className="slideshow__corner slideshow__corner--tr">{activeSlide.corners.topRight}</span>
-        <span className="slideshow__corner slideshow__corner--bl">{activeSlide.corners.bottomLeft}</span>
-        <span className="slideshow__corner slideshow__corner--br">{activeSlide.corners.bottomRight}</span>
-      </div>
+      <div
+        className="slideshow__stage"
+        onClick={handleStageClick}
+        onPointerMove={handleStageMove}
+        onPointerLeave={() => setCursor((current) => ({ ...current, visible: false }))}
+      >
+        <AnimatePresence initial={false} mode="sync">
+          <motion.span
+            key={`ghost-${activeSlide.id}`}
+            className="slideshow__ghost"
+            aria-hidden="true"
+            initial={{ opacity: 0, y: reducedMotion ? 0 : 36 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: reducedMotion ? 0 : -30 }}
+            transition={{ duration: reducedMotion ? 0 : 0.7, ease: EASE_OUT }}
+          >
+            {pad2(index + 1)}
+          </motion.span>
+        </AnimatePresence>
 
-      <div className="slideshow__stage">
         <AnimatePresence initial={false} mode="sync">
           <motion.div
             key={activeSlide.id}
@@ -164,78 +219,74 @@ export const HeroSlideshow = ({ slides }: { slides: Slide[] }) => {
             </div>
           </motion.div>
         </AnimatePresence>
+
+        {cursor.visible && (
+          <span
+            className="slideshow__cursor"
+            style={{ left: `${cursor.x}px`, top: `${cursor.y}px` }}
+            aria-hidden="true"
+          >
+            {cursor.side === 'left' ? '←' : '→'}
+          </span>
+        )}
       </div>
 
-      <div className="slideshow__controls">
+      <div className="slideshow__index">
+        <div className="slideshow__words" role="group" aria-label="Ir a una sección">
+          {slides.map((slide, slideIndex) => (
+            <span className="slideshow__word-wrap" key={slide.id}>
+              <button
+                type="button"
+                className={[
+                  'slideshow__word',
+                  slideIndex === index ? 'slideshow__word--active' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+                onClick={() => goTo(slideIndex)}
+                aria-current={slideIndex === index ? 'true' : undefined}
+                aria-label={`Ir a ${slide.label}`}
+                style={
+                  {
+                    '--slide-progress': `${progressValue(slideIndex, index, progress)}`,
+                  } as CSSProperties
+                }
+              >
+                {slide.label}
+              </button>
+              {slideIndex < slides.length - 1 && (
+                <span className="slideshow__sep" aria-hidden="true">
+                  ·
+                </span>
+              )}
+            </span>
+          ))}
+        </div>
+
         <button
           type="button"
-          className="slideshow__control"
+          className="slideshow__pause"
           onClick={togglePause}
           disabled={reducedMotion}
           aria-label={
             reducedMotion
               ? 'Reproducción automática desactivada por preferencia de movimiento reducido'
               : paused
-                ? 'Reproducir presentación'
+                ? 'Reanudar presentación'
                 : 'Pausar presentación'
           }
         >
-          {paused ? (
-            <Play size={14} strokeWidth={1.5} aria-hidden="true" />
-          ) : (
-            <Pause size={14} strokeWidth={1.5} aria-hidden="true" />
-          )}
+          {paused ? 'Seguir' : 'Pausar'}
         </button>
+      </div>
 
-        <div className="slideshow__indicators" aria-label="Diapositivas">
-          {slides.map((slide, slideIndex) => (
-            <button
-              key={slide.id}
-              type="button"
-              className={[
-                'slideshow__indicator',
-                slideIndex === index ? 'slideshow__indicator--active' : '',
-              ]
-                .filter(Boolean)
-                .join(' ')}
-              onClick={() => goTo(slideIndex)}
-              aria-label={`Ir a la diapositiva ${slideIndex + 1}: ${slide.title}`}
-              aria-current={slideIndex === index ? 'true' : 'false'}
-            >
-              <span
-                className="slideshow__indicator-fill"
-                style={
-                  {
-                    '--slide-progress': `${progressValue(slideIndex, index, progress)}`,
-                  } as CSSProperties
-                }
-              />
-            </button>
-          ))}
-        </div>
-
-        <span className="slideshow__counter" aria-hidden="true">
-          {pad2(index + 1)} <span>/</span> {pad2(slides.length)}
-        </span>
-
-        <div className="slideshow__arrows">
-          <button
-            type="button"
-            className="slideshow__arrow"
-            onClick={previous}
-            aria-label="Diapositiva anterior"
-          >
-            <ChevronLeft size={16} strokeWidth={1.4} aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            className="slideshow__arrow"
-            onClick={next}
-            aria-label="Diapositiva siguiente"
-          >
-            <ChevronRight size={16} strokeWidth={1.4} aria-hidden="true" />
-          </button>
-        </div>
+      <div className="visually-hidden">
+        <button type="button" onClick={previous}>
+          Diapositiva anterior
+        </button>
+        <button type="button" onClick={next}>
+          Diapositiva siguiente
+        </button>
       </div>
 
       <p className="visually-hidden" aria-live="polite">

@@ -82,19 +82,12 @@ export interface AlertSummary {
 
 export type SlideId = 'boxes' | 'shelf' | 'scanner' | 'pallet'
 
-export interface SlideCorners {
-  topLeft: string
-  topRight: string
-  bottomLeft: string
-  bottomRight: string
-}
-
 export interface Slide {
   id: SlideId
+  label: string
   kicker: string
   title: string
   support: string
-  corners: SlideCorners
 }
 
 export interface ReportDefinition {
