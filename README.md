@@ -1,144 +1,120 @@
 # Sistema de Control e Inventario — Atelier de Almacén
 
-Una aplicación web premium para gestión de inventario con dirección visual editorial e industrial. Inspirada en catálogos de museo y cuartos de control de precisión.
+Aplicación de inventario con dirección editorial e industrial: catálogo de museo, cuarto de control. Tipografía de revista, líneas finas, códigos monoespaciados y una paleta natural de borgoña, arcilla, crema y arena.
 
-## Concepto Creativo
+*"Cada cosa, en su lugar."*
 
-*"Cada cosa, en su lugar."* 
+## Stack
 
-Inventario tratado como colección curada: editorial, cálido, táctil, con carácter. Cada número es protagonista y cada pantalla se siente compuesta, no ensamblada.
+- **React 19** + **TypeScript estricto** + **Vite 8**
+- **Framer Motion** — transiciones y crossfade del slideshow
+- **Zustand** — estado del inventario con persistencia en localStorage
+- **React Router 7** (`createHashRouter`, compatible con `file://`)
+- **Lucide React** — iconos de línea fina
+- **Sonner** — avisos
+- **CSS propio** — sin Tailwind; variables, capas y clases semánticas
+- **Exportación PDF sin dependencias** — generador propio en `src/logic/services/exportPdf.ts`
 
-## Stack Tecnológico
+## Paleta
 
-- **React 19** + **TypeScript** + **Vite**
-- **Tailwind CSS v4** con tokens propios en variables CSS
-- **Framer Motion** - Animaciones y transiciones
-- **Zustand** - Estado global con persistencia en localStorage
-- **React Router** - Navegación
-- **Lucide React** - Iconos de línea fina
-- **Sonner** - Toasts personalizados
-- **jsPDF** - Exportación a PDF
+Variables en `src/styles/tokens.css`. No se usan colores fuera de la paleta.
 
-## Paleta de Colores
+| Token | Claro | Oscuro |
+| --- | --- | --- |
+| Fondo | `#FFF4ED` crema | `#1A0807` borgoña casi negro |
+| Superficie | `#FFF9F5` | `#24100E` |
+| Tinta | `#2A0A08` | `#FFF4ED` |
+| Acento | `#890000` borgoña | `#E3A493` arcilla |
+| Línea | borgoña 14% | arcilla/crema 14% |
+| Crítico | `#890000` | `#DE8F82` |
+| Bajo | `#B8893F` | `#D9A552` |
+| Normal | `#6B7A4B` | `#9CAE79` |
 
-**Modo Claro "Papel"**
-- Fondo: `#F4F1EA` (marfil cálido)
-- Superficies: `#FBFAF6`
-- Tinta: `#14130F`
-- Acento: `#FF4A1C` (bermellón)
-- Musgo: `#5E7A4B` (Normal)
-- Ocre: `#C9A227` (Advertencia)
-
-**Modo Oscuro "Tinta"**
-- Fondo: `#0E0E0C`
-- Superficies: `#171714`
-- Texto: `#ECE8DD`
-- Acentos cálidos, nunca azulados
+Estados siempre con **icono + texto**, nunca solo color. Los gráficos llevan etiquetas directas. Todos los textos visibles cumplen **WCAG AA (4.5:1)** en claro y oscuro.
 
 ## Tipografía
 
-- **Display**: Instrument Serif (títulos, cifras grandes)
-- **Interfaz**: Satoshi (UI general)
-- **Datos/Códigos**: JetBrains Mono (cifras tabulares)
+- **Instrument Serif** — títulos y cifras editoriales
+- **Figtree** — interfaz
+- **JetBrains Mono** — códigos, etiquetas y datos tabulares
 
-## Instalación y Ejecución
+Las tres familias están **embebidas como woff2 base64** en `src/styles/fonts.css` (subconjunto latin + signos de apertura, comillas, guiones, € y flechas), de modo que el HTML final no solicita archivos externos.
 
-```bash
-# Instalar dependencias
-npm install
+## Arquitectura
 
-# Ejecutar en modo desarrollo
-npm run dev
-
-# Build para producción
-npm run build
-
-# Previsualizar build
-npm run preview
+```text
+src/
+├── app/                 # providers (auth, tema), router y ruta protegida
+├── components/
+│   ├── illustrations/   # SVG: caja, estantería, escáner, pallet, código
+│   ├── layout/          # sidebar, header, menú móvil
+│   ├── slideshow/       # HeroSlideshow + SlideFigure
+│   └── ui/              # botón, estado, estado vacío
+├── data/                # productos y diapositivas (datos puros)
+├── logic/
+│   ├── hooks/           # slideshow, contadores, estadísticas, exportación
+│   ├── services/        # auth, almacenamiento, formato, validación, CSV, PDF
+│   ├── store/           # Zustand + selectores
+│   └── types/           # contratos TypeScript
+├── pages/               # login, dashboard, inventario, movimientos, alertas, reportes
+└── styles/              # tokens, base, componentes, layout y una hoja por página
 ```
 
-La aplicación estará disponible en `http://localhost:5173`
+La lógica de negocio vive en hooks y funciones puras. Los componentes no contienen CSS; solo usan variables CSS dinámicas cuando el valor depende del estado (`--parallax-*`, `--slide-progress`, `--meter-size`, etc.).
 
-## Credenciales de Acceso
+## Login accesible
 
-**Administrador (acceso completo)**
-- Usuario: `admin`
-- Contraseña: `admin123`
+El antiguo cubo 3D se sustituyó por un **slideshow editorial de cuatro diapositivas** con ilustraciones SVG:
 
-**Operador (solo lectura en Reportes)**
-- Usuario: `operador`
-- Contraseña: `operador123`
+- Autoplay de ~5 s con progreso por diapositiva
+- Pausa al pasar el ratón, al enfocar o al ocultar la pestaña
+- Pausa/play visible, puntos de navegación, flechas, teclado (`←`, `→`, `Home`, `End`, `Espacio`) y swipe táctil
+- Crossfade con Framer Motion y `cubic-bezier(0.22, 1, 0.36, 1)`
+- Parallax de ratón limitado a ±8 px
+- `role="region"` + `aria-roledescription="carousel"`; cada slide es `role="group"` con `aria-label="1 de 4"`; aviso `aria-live="polite"` al pausar
+- Con `prefers-reduced-motion` se desactivan autoplay y parallax
 
 ## Funcionalidades
 
-### 0. Login Cinematográfico
-- Layout dividido con formulario sobrio y panel 3D interactivo
-- Cubo isométrico que rota con el movimiento del mouse
-- Animación de expansión del panel al iniciar sesión
-- Validación con vibración sutil
-- Chips para autocompletar credenciales
+- **Dashboard** — KPIs con contador animado, alerta crítica, gráfico de categorías con etiquetas directas y últimos movimientos.
+- **Inventario** — búsqueda instantánea, filtro por categoría y estado, tabla responsive, panel lateral para alta/edición, validación y eliminación con confirmación.
+- **Movimientos** — registro de entradas/salidas con validación de stock, actualización inmediata y línea de tiempo agrupada por día.
+- **Alertas** — fichas por producto en riesgo, medidor de umbral y reposición en un clic.
+- **Reportes** — cuatro informes, filtros por categoría y estado, exportación CSV y PDF; los operadores ven acceso restringido.
 
-### Layout General
-- Sidebar estrecha de 72px que se expande al hover
-- Navegación con ítems numerados editorialmente
-- Indicador activo con barra bermellón
-- Header minimalista con fecha en serif cursiva
-- Toggle de tema con transición
-- Responsive con menú móvil
+## Uso
 
-### 1. Dashboard
-- Saludo editorial con resumen inteligente
-- KPI gigante con contador animado tipo odómetro
-- Alerta de stock en color bermellón sólido con pulso
-- Gráfico SVG de barras finas con animación
-- Lista de últimos movimientos
+```bash
+npm install
+npm run dev          # http://localhost:5173
+npm run build        # build normal + verificación de tipos
+npm run build:single # build y copia a "Sistema de Control e Inventario.html"
+npm run preview      # sirve dist/
+```
 
-### 2. Inventario
-- Encabezado gigante con conteo
-- Búsqueda instantánea con filtro por categoría
-- Tabla estilo plano técnico sin cajas
-- Estados con puntos de color y pulso
-- Barra de nivel de stock por fila
-- Drawer lateral con spring physics para CRUD
-- Confirmación "mantén presionado" para eliminar
+`npm run build:single` genera un **único HTML autocontenido** (CSS, JS, fuentes, favicon y textura de ruido en línea) y lo copia a la raíz del proyecto. Pesa ~0.73 MB y funciona abriéndolo directamente con `file://`, sin servidor.
 
-### 3. Movimientos
-- Línea de tiempo vertical editorial
-- Agrupado por día
-- Formulario rápido para registrar entradas/salidas
-- Actualización automática de stock
+## Credenciales de demostración
 
-### 4. Alertas
-- Fichas por producto en riesgo
-- Indicador de severidad visual
-- Medidor de nivel
-- Acciones para atender o reabastecer
+| Rol | Usuario | Contraseña | Alcance |
+| --- | --- | --- | --- |
+| Administrador | `admin` | `admin123` | Todo |
+| Operador | `operador` | `operador123` | Lectura; reportes restringidos |
 
-### 5. Reportes
-- Tarjetas selectoras invertidas cuando activas
-- Filtros con segmented controls
-- Tabla de resultados
-- Exportación a CSV y PDF
+## Datos
 
-## Decisiones de Diseño
+25 productos en cinco categorías y cinco movimientos de ejemplo (26 oct 2026). El estado se guarda en `localStorage` con claves `atelier-inventory-storage`, `atelier-user` y `atelier-theme`; si el almacenamiento no está disponible (por ejemplo, en algunos contextos `file://`), la aplicación sigue funcionando en memoria.
 
-- **Paleta cálida**: Evitamos azules/fríos. Usamos marfil, tinta y un único bermellón como acento
-- **Tipografía dramática**: Cifras gigantes en Instrument Serif contra etiquetas diminutas en mayúsculas
-- **Sin sombras difusas**: Usamos líneas finas de 1px como estructura
-- **Movimiento intencional**: Curvas `cubic-bezier(0.22, 1, 0.36, 1)` y spring physics sutiles
-- **Textura artesanal**: Grano sutil de ruido SVG (3-5% opacidad)
-- **Números como protagonistas**: Uso extensivo de `tabular-nums` y `JetBrains Mono`
-- **Editorial**: Numeración "01 / Inicio", superíndices, itálicas para énfasis
-- **Sin plantillas genéricas**: Cada componente diseñado con intención, sin elementos pre-fabricados
+## Verificación
 
-## Datos Iniciales
+La build final se comprobó con Playwright sobre `file://`:
 
-25 productos distribuidos en las categorías con stock variado, incluyendo productos con bajo stock (3, 4, 6, 7, 8 unidades) para demostrar las alertas.
+- 4 diapositivas, autoplay, pausa, puntos, flechas, teclado y swipe
+- 6 rutas (`login`, dashboard, inventario, movimientos, alertas, reportes)
+- Alta de producto, registro de movimiento, reposición de alerta
+- Exportación CSV y PDF (cabecera `%PDF-1.4` y `%%EOF` válidos)
+- Sin desbordamiento horizontal en 375, 768 y 1440 px
+- Contraste AA en claro y oscuro en las seis pantallas
+- Sin errores de consola ni referencias a la paleta anterior, Tailwind, jsPDF o al cubo
 
-## Notas
-
-- Respeta `prefers-reduced-motion`
-- Datos persistidos en localStorage
-- Diseño 100% responsive
-- Navegación completa por teclado
-- Sin emojis, sin degradados, sin glassmorphism
+Las capturas están en `docs/capturas/`.
