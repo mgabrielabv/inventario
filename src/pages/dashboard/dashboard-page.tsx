@@ -177,7 +177,7 @@ export const DashboardPage = () => {
       <p className="footer-note">
         <span>Libro abierto</span>
         <span aria-hidden="true">·</span>
-        <span>Atelier de Almacén · Control de inventario</span>
+        <span>INVENTARIO · Control de bodega</span>
       </p>
     </div>
   )

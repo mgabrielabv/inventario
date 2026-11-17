@@ -128,7 +128,7 @@ const buildPdf = (options: PdfReportOptions): string => {
 
   const drawPageChrome = () => {
     rect(0, PAGE_HEIGHT, PAGE_WIDTH, 6, BURGUNDY)
-    text('ATELIER DE ALMACÉN', MARGIN, PAGE_HEIGHT - 42, 7.5, 'F2', BURGUNDY)
+    text('INVENTARIO', MARGIN, PAGE_HEIGHT - 42, 7.5, 'F2', BURGUNDY)
     text('Sistema de Control e Inventario', PAGE_WIDTH - MARGIN, PAGE_HEIGHT - 42, 7.5, 'F1', INK_SUBTLE, 'right')
   }
 
@@ -205,7 +205,7 @@ const buildPdf = (options: PdfReportOptions): string => {
   const pageContents = pages.map((content, index) => {
     content.push(
       `BT /F1 7.5 Tf ${color(INK_SUBTLE)} rg 1 0 0 1 ${MARGIN} ${MARGIN - 14} Tm (${escapeText(
-        'Atelier de Almacén · Documento interno',
+        'INVENTARIO · Documento interno',
       )}) Tj ET`,
     )
     const label = `Página ${index + 1} de ${pages.length}`

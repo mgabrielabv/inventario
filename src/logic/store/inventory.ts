@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { initialMovements, initialProducts } from '../../data/products'
 import type { Movement, Product } from '../types'
-import { safeStorage } from '../services/storage'
+import { safeStorage, storageKey } from '../services/storage'
 
 interface InventoryStore {
   products: Product[]
@@ -60,7 +60,7 @@ export const useInventoryStore = create<InventoryStore>()(
       },
     }),
     {
-      name: 'atelier-inventory-storage',
+      name: storageKey('inventory-storage'),
       storage: createJSONStorage(() => safeStorage),
       version: 2,
       migrate: (persisted, version) => {

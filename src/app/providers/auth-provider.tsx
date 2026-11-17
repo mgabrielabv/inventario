@@ -9,9 +9,9 @@ import {
 } from 'react'
 import type { User } from '../../logic/types'
 import { authenticate, isUser } from '../../logic/services/auth'
-import { safeStorage } from '../../logic/services/storage'
+import { safeStorage, storageKey } from '../../logic/services/storage'
 
-const STORAGE_KEY = 'atelier-user'
+const STORAGE_KEY = storageKey('user')
 
 interface LoginResult {
   success: boolean

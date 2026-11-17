@@ -71,7 +71,7 @@ export const LoginPage = () => {
         <div className="login__inner">
           <div className="login__brand">
             <OpenBox className="login__mark" />
-            <span className="login__brand-name">Atelier de Almacén</span>
+            <span className="login__brand-name">INVENTARIO</span>
           </div>
 
           <div className="login__heading">

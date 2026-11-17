@@ -1,8 +1,6 @@
-# Sistema de Control e Inventario — Atelier de Almacén
+# INVENTARIO — Control de bodega
 
 Aplicación de inventario con lenguaje de **rotulado de bodega**: etiquetas de envío, sellos de goma, papel kraft, renglones punteados y cifras de señalética industrial. La interfaz es corta y operativa: qué hay, qué falta y qué se movió.
-
-*"Cada cosa, en su lugar."*
 
 ## Stack
 
@@ -17,7 +15,7 @@ Aplicación de inventario con lenguaje de **rotulado de bodega**: etiquetas de e
 
 ## Concepto visual
 
-La dirección anterior de catálogo editorial se sustituyó por la señalética de una bodega real. No hay marcos de museo ni pies de foto: hay rótulos, sellos y libros de registro.
+El sistema se ve y suena como una bodega real que lleva sus cuentas a mano: letras de señalética, cartón, tinta de sello y un libro de registro. Sin marcos de museo, sin pies de foto y sin códigos decorativos.
 
 Cinco elementos se repiten en todas las pantallas:
 
@@ -122,7 +120,7 @@ npm run preview      # sirve dist/
 
 25 productos en cinco categorías y siete movimientos de ejemplo. Las fechas semilla se generan **relativas al momento de abrir la app** (hoy, ayer y hasta cinco días atrás), así que el libro siempre parece vivo.
 
-El estado se guarda en `localStorage` con claves `atelier-inventory-storage`, `atelier-user` y `atelier-theme`. La versión 2 migra los movimientos semilla antiguos sin perder los del usuario. Si el almacenamiento no está disponible (por ejemplo, en algunos contextos `file://`), la aplicación sigue funcionando en memoria.
+El estado se guarda en `localStorage` con claves `inventario-inventory-storage`, `inventario-user` e `inventario-theme`. Al abrir una versión anterior, la app renombra esas claves sin perder la sesión, el tema ni los movimientos. La versión 2 migra los movimientos semilla antiguos sin perder los del usuario. Si el almacenamiento no está disponible (por ejemplo, en algunos contextos `file://`), la aplicación sigue funcionando en memoria.
 
 ## Verificación
 

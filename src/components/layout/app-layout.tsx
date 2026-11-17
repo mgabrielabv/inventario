@@ -59,8 +59,8 @@ export const AppLayout = () => {
         <div className="sidebar__brand">
           <OpenBox className="sidebar__mark" />
           <div className="sidebar__brand-text">
-            <span className="sidebar__brand-title">Atelier</span>
-            <span className="sidebar__brand-sub">de Almacén</span>
+            <span className="sidebar__brand-title">INVENTARIO</span>
+            <span className="sidebar__brand-sub">Control de bodega</span>
           </div>
         </div>
 
@@ -176,8 +176,8 @@ export const AppLayout = () => {
                 <div className="sidebar__brand">
                   <OpenBox className="sidebar__mark" />
                   <div className="sidebar__brand-text">
-                    <span className="sidebar__brand-title">Atelier</span>
-                    <span className="sidebar__brand-sub">de Almacén</span>
+                    <span className="sidebar__brand-title">INVENTARIO</span>
+                    <span className="sidebar__brand-sub">Control de bodega</span>
                   </div>
                 </div>
                 <button

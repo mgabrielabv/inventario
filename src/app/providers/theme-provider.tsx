@@ -7,11 +7,11 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { safeStorage } from '../../logic/services/storage'
+import { safeStorage, storageKey } from '../../logic/services/storage'
 
 export type Theme = 'light' | 'dark'
 
-const STORAGE_KEY = 'atelier-theme'
+const STORAGE_KEY = storageKey('theme')
 
 interface ThemeContextValue {
   theme: Theme
