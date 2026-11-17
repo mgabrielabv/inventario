@@ -1,115 +1,84 @@
 /* ==========================================================================
-   Reportes — informes y exportación
+   Las cuentas — informes y exportación
    ========================================================================== */
 
 .report-tabs {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 22px;
+  margin-bottom: 28px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--line-strong);
+  gap: 6px 26px;
 }
 
-.report-tab {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-  min-height: 116px;
-  padding: 18px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  color: var(--ink-soft);
-  text-align: left;
-  transition:
-    border-color var(--dur-fast) var(--ease-out),
-    background-color var(--dur-fast) var(--ease-out),
-    color var(--dur-fast) var(--ease-out);
-}
-
-.report-tab:hover {
-  border-color: var(--line-strong);
-  background: var(--surface-2);
-}
-
-.report-tab--active {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--bg);
-}
-
-.dark .report-tab--active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-contrast);
-}
-
-.report-tab__icon {
-  color: var(--accent);
-}
-
-.report-tab--active .report-tab__icon {
-  color: inherit;
-}
-
-.report-tab__label {
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.25;
-}
-
-.report-tab__code {
-  margin-top: auto;
-  font-family: var(--font-mono);
-  font-size: 8px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-
-.report-tab--active .report-tab__code {
-  color: currentColor;
-  opacity: 0.7;
+.report-tabs .filter-tab {
+  font-size: 14px;
 }
 
 .report-panel {
-  overflow: hidden;
+  min-height: 320px;
+}
+
+.report-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  margin-bottom: 2px;
+  border-bottom: 3px double var(--rule);
+}
+
+.report-head__title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3vw, 42px);
+  font-stretch: 70%;
+  font-weight: 860;
+  line-height: 0.9;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.report-head__caption {
+  margin-top: 5px;
+  font-family: var(--font-data);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-subtle);
 }
 
 .report-toolbar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+  align-items: flex-end;
+  gap: 20px;
   flex-wrap: wrap;
-  padding: 16px 18px;
-  border-bottom: 1px solid var(--line);
 }
 
 .report-toolbar__filters {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 18px;
   flex-wrap: wrap;
 }
 
-.report-toolbar__actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.report-toolbar__select {
+  height: 38px;
+  padding: 0 22px 0 2px;
+  border: 0;
+  border-bottom: 2px solid var(--line-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease-out);
 }
 
-.report-toolbar__select {
-  height: 36px;
-  padding: 0 10px;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-xs);
-  background: transparent;
-  color: var(--ink-soft);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  cursor: pointer;
+.report-toolbar__select:focus {
+  outline: none;
+  border-bottom-color: var(--burgundy);
 }
 
 .report-toolbar__select option {
@@ -117,38 +86,21 @@
   color: var(--ink);
 }
 
-.report-caption {
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--line);
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
+.report-toolbar__actions {
+  display: flex;
+  gap: 8px;
 }
 
-.report-panel .data-table {
-  min-width: 680px;
-}
-
-.report-panel .cell-amount--in {
-  color: var(--status-normal-ink);
-}
-
-.report-panel .cell-amount--out {
-  color: var(--status-critical-ink);
-}
+/* Bloqueo por rol -------------------------------------------------------- */
 
 .report-locked {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  padding: 72px 24px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  text-align: center;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 620px;
+  padding: 44px 0 0;
+  border-top: 3px solid var(--rule);
 }
 
 .report-locked__icon {
@@ -156,44 +108,62 @@
   place-items: center;
   width: 54px;
   height: 54px;
-  border: 1px solid var(--line-strong);
-  border-radius: 50%;
-  color: var(--accent);
+  border: 3px solid var(--burgundy);
+  color: var(--burgundy);
+}
+
+.dark .report-locked__icon {
+  border-color: var(--clay);
+  color: var(--clay);
 }
 
 .report-locked__title {
   font-family: var(--font-display);
-  font-size: 34px;
+  font-size: clamp(32px, 4vw, 52px);
+  font-stretch: 66%;
+  font-weight: 880;
+  line-height: 0.88;
+  text-transform: uppercase;
   color: var(--ink);
 }
 
 .report-locked__text {
-  max-width: 44ch;
-  font-size: 13px;
+  max-width: 52ch;
+  font-size: 15px;
+  line-height: 1.5;
   color: var(--ink-subtle);
 }
 
-@media (max-width: 900px) {
-  .report-tabs {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (max-width: 860px) {
+  .report-head {
+    align-items: flex-start;
+  }
+
+  .report-toolbar {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 
 @media (max-width: 560px) {
-  .report-tabs {
-    grid-template-columns: 1fr;
+  .report-toolbar__filters {
+    width: 100%;
   }
 
-  .report-tab {
-    min-height: 0;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
-    padding: 14px;
+  .report-toolbar__select {
+    flex: 1;
+    min-width: 0;
   }
 
-  .report-tab__code {
-    margin-top: 0;
-    margin-left: auto;
+  .report-toolbar__actions {
+    width: 100%;
+  }
+
+  .report-toolbar__actions .btn {
+    flex: 1;
+  }
+
+  .report-tabs .filter-tab {
+    font-size: 13px;
   }
 }

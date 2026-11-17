@@ -1,13 +1,6 @@
 import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import {
-  ArrowLeftRight,
-  CalendarDays,
-  Download,
-  FileText,
-  Lock,
-  TrendingUp,
-} from 'lucide-react'
+import { Download, Lock } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { useAuth } from '../../app/providers/auth-provider'
@@ -27,16 +20,18 @@ import { useExportCsv, useExportPdf } from '../../logic/hooks/useExportPdf'
 import { CATEGORIES, type CategoryFilter, type ProductStatus } from '../../logic/types'
 import { StatusBadge } from '../../components/ui/status-badge'
 import { EmptyState } from '../../components/ui/empty-state'
+import { PageTitle } from '../../components/ui/page-title'
+import { Stamp } from '../../components/ui/stamp'
 import { BarcodeScan } from '../../components/illustrations/barcode-scan'
 import { EASE_OUT } from '../../components/illustrations/motion'
 
 type ReportId = 'stock' | 'movimientos' | 'fecha' | 'top'
 
 const REPORTS = [
-  { id: 'stock', label: 'Stock actual', icon: FileText, code: 'R-01' },
-  { id: 'movimientos', label: 'Movimientos', icon: ArrowLeftRight, code: 'R-02' },
-  { id: 'fecha', label: 'Por fecha', icon: CalendarDays, code: 'R-03' },
-  { id: 'top', label: 'Más movidos', icon: TrendingUp, code: 'R-04' },
+  { id: 'stock', label: 'Stock actual' },
+  { id: 'movimientos', label: 'Movimientos' },
+  { id: 'fecha', label: 'Por fecha' },
+  { id: 'top', label: 'Más movidos' },
 ] as const
 
 const STATUS_OPTIONS = ['Todos', 'Normal', 'Bajo', 'Crítico'] as const
@@ -105,7 +100,7 @@ export const ReportesPage = () => {
     if (activeReport === 'stock') {
       return {
         title: 'Stock actual',
-        caption: `${filteredProducts.length} ${pluralize(filteredProducts.length, 'referencia', 'referencias')} · ${formatNumber(
+        caption: `${filteredProducts.length} ${pluralize(filteredProducts.length, 'producto', 'productos')} · ${formatNumber(
           filteredProducts.reduce((sum, product) => sum + product.cantidad, 0),
         )} unidades`,
         columns: [
@@ -134,18 +129,18 @@ export const ReportesPage = () => {
 
     if (activeReport === 'movimientos') {
       return {
-        title: 'Registro de movimientos',
+        title: 'Libro de movimientos',
         caption: `${filteredMovements.length} ${pluralize(
           filteredMovements.length,
-          'movimiento',
-          'movimientos',
-        )} · bitácora completa`,
+          'registro',
+          'registros',
+        )} · todo lo que entró y salió`,
         columns: [
           { key: 'fecha', label: 'Fecha' },
           { key: 'producto', label: 'Producto' },
           { key: 'tipo', label: 'Tipo' },
           { key: 'cantidad', label: 'Cantidad', align: 'right' },
-          { key: 'usuario', label: 'Usuario' },
+          { key: 'usuario', label: 'Firmado por' },
         ],
         rows: filteredMovements.map((movement) => {
           const isIn = movement.tipo === 'Entrada'
@@ -223,7 +218,7 @@ export const ReportesPage = () => {
 
     return {
       title: 'Productos más movidos',
-      caption: `${ranking.length} ${pluralize(ranking.length, 'referencia', 'referencias')} con rotación`,
+      caption: `${ranking.length} ${pluralize(ranking.length, 'producto', 'productos')} con rotación`,
       columns: [
         { key: 'puesto', label: '#' },
         { key: 'producto', label: 'Producto' },
@@ -257,7 +252,7 @@ export const ReportesPage = () => {
       subtitle: `${view.caption} · ${category === 'Todas' ? 'Todas las categorías' : category}`,
       products: filteredProducts,
       notes: [
-        'Documento generado desde el módulo de reportes.',
+        'Documento generado desde el módulo de cuentas.',
         `Filtro de estado: ${statusFilter}.`,
       ],
     })
@@ -268,28 +263,23 @@ export const ReportesPage = () => {
     return (
       <div className="page reportes">
         <header className="page-head">
-          <div>
-            <div className="page-head__meta">
-              <span className="page-head__index">05 / INFORMES</span>
-              <span className="page-head__rule" aria-hidden="true" />
-              <span className="eyebrow">Acceso restringido</span>
-            </div>
-            <h1 className="page-title">
-              Reportes<em>.</em>
-            </h1>
+          <div className="page-head__main">
+            <PageTitle lines={['LAS CUENTAS']} />
+            <p className="page-head__sub">Los números completos quedan bajo llave.</p>
           </div>
         </header>
         <div className="report-locked">
-          <span className="report-locked__icon" aria-hidden="true">
-            <Lock size={22} strokeWidth={1.4} />
-          </span>
-          <h2 className="report-locked__title">Solo lectura para operadores</h2>
+          <Stamp tilt="left">Solo administrador</Stamp>
+          <p className="report-locked__icon" aria-hidden="true">
+            <Lock size={22} strokeWidth={1.8} />
+          </p>
+          <h2 className="report-locked__title">Esta página no se abre con tu llave</h2>
           <p className="report-locked__text">
-            Los informes y la exportación están reservados al rol Administrador. Puedes
-            consultar el inventario, registrar movimientos y revisar alertas.
+            Exportar y revisar los informes está reservado al rol Administrador. Puedes
+            consultar el inventario, anotar movimientos y revisar alertas.
           </p>
           <Link className="btn btn--outline" to="/">
-            Volver al inicio
+            Volver a hoy
           </Link>
         </div>
       </div>
@@ -299,50 +289,48 @@ export const ReportesPage = () => {
   return (
     <div className="page reportes">
       <header className="page-head">
-        <div>
-          <div className="page-head__meta">
-            <span className="page-head__index">05 / INFORMES</span>
-            <span className="page-head__rule" aria-hidden="true" />
-            <span className="eyebrow">Exportación CSV / PDF</span>
-          </div>
-          <h1 className="page-title">
-            Reportes<em>.</em>
-          </h1>
+        <div className="page-head__main">
+          <PageTitle lines={['LAS CUENTAS']} />
           <p className="page-head__sub">
-            Informes para decidir con claridad. Filtra el catálogo, revisa la bitácora y
-            exporta el documento que necesites.
+            Lo que hay, lo que se movió y lo que más rota. Para decidir sin adivinar.
           </p>
+        </div>
+        <div className="page-head__aside">
+          <div className="page-head__stat">
+            <span className="page-head__stat-value">{formatNumber(products.length)}</span>
+            <span className="page-head__stat-label">Productos</span>
+          </div>
+          <div className="page-head__stat">
+            <span className="page-head__stat-value">{formatNumber(movements.length)}</span>
+            <span className="page-head__stat-label">Movimientos</span>
+          </div>
         </div>
       </header>
 
-      <div className="report-tabs" role="tablist" aria-label="Tipo de reporte">
+      <div className="filter-bar report-tabs" role="tablist" aria-label="Tipo de informe">
         {REPORTS.map((report) => {
           const isActive = activeReport === report.id
           return (
-            <motion.button
+            <button
               key={report.id}
               type="button"
               role="tab"
               id={`report-tab-${report.id}`}
               aria-selected={isActive}
               aria-controls="report-panel"
-              className={['report-tab', isActive ? 'report-tab--active' : '']
+              className={['filter-tab', isActive ? 'filter-tab--active' : '']
                 .filter(Boolean)
                 .join(' ')}
               onClick={() => setActiveReport(report.id)}
-              whileTap={{ scale: 0.99 }}
-              transition={{ duration: 0.2, ease: EASE_OUT }}
             >
-              <report.icon size={19} strokeWidth={1.3} className="report-tab__icon" aria-hidden="true" />
-              <span className="report-tab__label">{report.label}</span>
-              <span className="report-tab__code">{report.code}</span>
-            </motion.button>
+              {report.label}
+            </button>
           )
         })}
       </div>
 
-      <motion.div
-        className="panel report-panel"
+      <motion.section
+        className="report-panel"
         id="report-panel"
         role="tabpanel"
         aria-labelledby={`report-tab-${activeReport}`}
@@ -350,71 +338,75 @@ export const ReportesPage = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: EASE_OUT }}
       >
-        <div className="report-toolbar">
-          <div className="report-toolbar__filters">
-            <label className="visually-hidden" htmlFor="report-category">
-              Categoría
-            </label>
-            <select
-              id="report-category"
-              className="report-toolbar__select"
-              value={category}
-              onChange={(event) => setCategory(event.target.value as CategoryFilter)}
-            >
-              <option value="Todas">Todas las categorías</option>
-              {CATEGORIES.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
-
-            {activeReport === 'stock' && (
-              <>
-                <label className="visually-hidden" htmlFor="report-status">
-                  Estado
-                </label>
-                <select
-                  id="report-status"
-                  className="report-toolbar__select"
-                  value={statusFilter}
-                  onChange={(event) => setStatusFilter(event.target.value as StatusFilter)}
-                >
-                  {STATUS_OPTIONS.map((option) => (
-                    <option key={option} value={option}>
-                      {option === 'Todos' ? 'Todos los estados' : option}
-                    </option>
-                  ))}
-                </select>
-              </>
-            )}
+        <div className="report-head">
+          <div>
+            <h2 className="report-head__title">{view.title}</h2>
+            <p className="report-head__caption">{view.caption}</p>
           </div>
 
-          <div className="report-toolbar__actions">
-            <button type="button" className="btn btn--outline btn--sm" onClick={handleExportCsv}>
-              <Download size={12} strokeWidth={1.5} aria-hidden="true" />
-              CSV
-            </button>
-            <button type="button" className="btn btn--primary btn--sm" onClick={handleExportPdf}>
-              <Download size={12} strokeWidth={1.5} aria-hidden="true" />
-              PDF
-            </button>
-          </div>
-        </div>
+          <div className="report-toolbar">
+            <div className="report-toolbar__filters">
+              <label className="visually-hidden" htmlFor="report-category">
+                Categoría
+              </label>
+              <select
+                id="report-category"
+                className="report-toolbar__select"
+                value={category}
+                onChange={(event) => setCategory(event.target.value as CategoryFilter)}
+              >
+                <option value="Todas">Todas las categorías</option>
+                {CATEGORIES.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
 
-        <div className="report-caption">
-          {view.title} · {view.caption}
+              {activeReport === 'stock' && (
+                <>
+                  <label className="visually-hidden" htmlFor="report-status">
+                    Estado
+                  </label>
+                  <select
+                    id="report-status"
+                    className="report-toolbar__select"
+                    value={statusFilter}
+                    onChange={(event) => setStatusFilter(event.target.value as StatusFilter)}
+                  >
+                    {STATUS_OPTIONS.map((option) => (
+                      <option key={option} value={option}>
+                        {option === 'Todos' ? 'Todos los estados' : option}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
+            </div>
+
+            <div className="report-toolbar__actions">
+              <button type="button" className="btn btn--outline btn--sm" onClick={handleExportCsv}>
+                <Download size={15} strokeWidth={1.8} aria-hidden="true" />
+                CSV
+              </button>
+              <button type="button" className="btn btn--primary btn--sm" onClick={handleExportPdf}>
+                <Download size={15} strokeWidth={1.8} aria-hidden="true" />
+                PDF
+              </button>
+            </div>
+          </div>
         </div>
 
         {view.rows.length === 0 ? (
           <EmptyState
             illustration={<BarcodeScan />}
-            title="Sin datos para este informe."
-            description="Ajusta los filtros o registra movimientos para que el reporte tenga contenido."
+            stamp="Sin datos"
+            title="Este informe está vacío."
+            description="Cambia los filtros o anota movimientos para que la cuenta tenga contenido."
           />
         ) : (
           <div className="table-wrap">
-            <table className="data-table">
+            <table className="data-table ledger" aria-label={view.title}>
               <thead>
                 <tr>
                   {view.columns.map((column) => (
@@ -457,7 +449,7 @@ export const ReportesPage = () => {
             </table>
           </div>
         )}
-      </motion.div>
+      </motion.section>
     </div>
   )
 }
