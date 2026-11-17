@@ -10,6 +10,7 @@ import { validateMovementQuantity } from '../../logic/services/validation'
 import type { MovementType } from '../../logic/types'
 import { Button } from '../../components/ui/button'
 import { EmptyState } from '../../components/ui/empty-state'
+import { PageTitle } from '../../components/ui/page-title'
 import { PalletArrows } from '../../components/illustrations/pallet-arrows'
 import { EASE_OUT } from '../../components/illustrations/motion'
 
@@ -55,7 +56,7 @@ export const MovimientosPage = () => {
     setError('')
 
     if (!selectedProduct) {
-      setError('Selecciona un producto para registrar el movimiento')
+      setError('Elige un producto para anotar el movimiento')
       return
     }
 
@@ -81,63 +82,59 @@ export const MovimientosPage = () => {
   return (
     <div className="page movements">
       <header className="page-head">
-        <div>
-          <div className="page-head__meta">
-            <span className="page-head__index">03 / BITÁCORA</span>
-            <span className="page-head__rule" aria-hidden="true" />
-            <span className="eyebrow">
-              {movements.length} {pluralize(movements.length, 'registro', 'registros')}
-            </span>
-          </div>
-          <h1 className="page-title">
-            Movimientos<em>.</em>
-          </h1>
+        <div className="page-head__main">
+          <PageTitle lines={['LO QUE ENTRÓ', 'Y SALIÓ']} />
           <p className="page-head__sub">
-            Entradas y salidas con trazabilidad completa. Cada lectura deja rastro y cada
-            cantidad actualiza el stock.
+            Cada entrada y cada salida queda firmada. Quién, qué, cuánto y a qué hora.
           </p>
         </div>
-        <Button type="button" onClick={() => (formOpen ? closeForm() : setFormOpen(true))}>
-          {formOpen ? (
-            <X size={14} strokeWidth={1.5} aria-hidden="true" />
-          ) : (
-            <Plus size={14} strokeWidth={1.5} aria-hidden="true" />
-          )}
-          {formOpen ? 'Cerrar' : 'Registrar movimiento'}
-        </Button>
+        <div className="page-head__aside">
+          <div className="page-head__stat">
+            <span className="page-head__stat-value">{formatNumber(totals.registros)}</span>
+            <span className="page-head__stat-label">Registros</span>
+          </div>
+          <Button type="button" onClick={() => (formOpen ? closeForm() : setFormOpen(true))}>
+            {formOpen ? (
+              <X size={16} strokeWidth={1.8} aria-hidden="true" />
+            ) : (
+              <Plus size={16} strokeWidth={1.8} aria-hidden="true" />
+            )}
+            {formOpen ? 'Cerrar' : 'Anotar movimiento'}
+          </Button>
+        </div>
       </header>
 
-      <div className="movements-summary">
-        <div className="movements-summary__item">
-          <span className="movements-summary__label">Entradas</span>
-          <span className="movements-summary__value movements-summary__value--in">
+      <div className="movements-tally" role="group" aria-label="Totales del libro">
+        <div className="movements-tally__item">
+          <span className="movements-tally__label">Entradas</span>
+          <span className="movements-tally__value movements-tally__value--in">
             +{formatNumber(totals.entradas)}
           </span>
         </div>
-        <div className="movements-summary__item">
-          <span className="movements-summary__label">Salidas</span>
-          <span className="movements-summary__value movements-summary__value--out">
+        <div className="movements-tally__item">
+          <span className="movements-tally__label">Salidas</span>
+          <span className="movements-tally__value movements-tally__value--out">
             −{formatNumber(totals.salidas)}
           </span>
         </div>
-        <div className="movements-summary__item">
-          <span className="movements-summary__label">Registros</span>
-          <span className="movements-summary__value">{formatNumber(totals.registros)}</span>
+        <div className="movements-tally__item">
+          <span className="movements-tally__label">Anotaciones</span>
+          <span className="movements-tally__value">{formatNumber(totals.registros)}</span>
         </div>
       </div>
 
       <AnimatePresence initial={false}>
         {formOpen && (
           <motion.div
-            className="movement-form"
-            initial={{ opacity: 0, y: -8 }}
+            className="movement-form kraft"
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
+            exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3, ease: EASE_OUT }}
           >
             <form onSubmit={handleSubmit} noValidate>
               <div className="movement-form__grid">
-                <div className="field-line">
+                <div className="field-line movement-form__product">
                   <label className="field-line__label" htmlFor="movement-product">
                     Producto
                   </label>
@@ -152,7 +149,7 @@ export const MovimientosPage = () => {
                     aria-invalid={Boolean(error)}
                     aria-describedby={error ? 'movement-error' : undefined}
                   >
-                    <option value={0}>Seleccionar referencia…</option>
+                    <option value={0}>Elige un producto…</option>
                     {products.map((product) => (
                       <option key={product.id} value={product.id}>
                         {product.codigo} · {product.producto} ({product.cantidad})
@@ -210,8 +207,8 @@ export const MovimientosPage = () => {
                 </div>
 
                 <div className="movement-form__actions">
-                  <Button type="submit">Registrar</Button>
-                  <Button type="button" variant="ghost" onClick={closeForm}>
+                  <Button type="submit">Anotar</Button>
+                  <Button type="button" variant="outline" onClick={closeForm}>
                     Cancelar
                   </Button>
                 </div>
@@ -223,10 +220,10 @@ export const MovimientosPage = () => {
                 </p>
               )}
               {selectedProduct && !error && (
-                <p className="form-help">
-                  Stock actual de {selectedProduct.producto}: {selectedProduct.cantidad} uds.
+                <p className="movement-form__help">
+                  Quedan {selectedProduct.cantidad} uds. de {selectedProduct.producto}
                   {tipo === 'Salida' && cantidad > 0
-                    ? ` · quedarían ${Math.max(0, selectedProduct.cantidad - cantidad)} uds.`
+                    ? ` · después de esta salida: ${Math.max(0, selectedProduct.cantidad - cantidad)}`
                     : ''}
                 </p>
               )}
@@ -236,82 +233,63 @@ export const MovimientosPage = () => {
       </AnimatePresence>
 
       {groups.length === 0 ? (
-        <div className="panel">
-          <EmptyState
-            illustration={<PalletArrows />}
-            title="La bitácora está en blanco."
-            description="Registra la primera entrada o salida y el historial empezará a escribirse."
-          />
-        </div>
+        <EmptyState
+          illustration={<PalletArrows />}
+          stamp="Sin anotar"
+          title="El libro está en blanco."
+          description="Anota la primera entrada o salida y el historial empieza a escribirse."
+        />
       ) : (
-        <div className="timeline">
+        <div className="ledger-book">
           {groups.map((group, groupIndex) => (
             <motion.section
               key={group.date}
-              className="timeline-day"
+              className="ledger-day"
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: groupIndex * 0.06, ease: EASE_OUT }}
               aria-label={group.date}
             >
-              <div className="timeline-day__head">
-                <h2 className="timeline-day__title">{group.date}</h2>
-                <span className="timeline-day__rule" aria-hidden="true" />
-                <span className="timeline-day__count">
+              <div className="ledger-day__head">
+                <h2 className="ledger-day__title">{group.date}</h2>
+                <span className="ledger-day__rule" aria-hidden="true" />
+                <span className="ledger-day__count">
                   {group.movements.length}{' '}
                   {pluralize(group.movements.length, 'movimiento', 'movimientos')}
                 </span>
               </div>
 
-              <div className="timeline-day__list">
+              <div className="ledger-day__list">
                 {group.movements.map((movement) => {
                   const isIn = movement.tipo === 'Entrada'
                   return (
-                    <div className="timeline-item" key={movement.id}>
+                    <div
+                      className={['ledger-move', isIn ? 'ledger-move--in' : 'ledger-move--out']
+                        .filter(Boolean)
+                        .join(' ')}
+                      key={movement.id}
+                    >
+                      <span className="ledger-move__sign" aria-hidden="true">
+                        {isIn ? (
+                          <ArrowUp size={17} strokeWidth={2} />
+                        ) : (
+                          <ArrowDown size={17} strokeWidth={2} />
+                        )}
+                      </span>
+                      <span className="ledger-move__product">{movement.producto}</span>
+                      <span className="ledger-move__meta">
+                        {movement.tipo} · {movement.usuario}
+                      </span>
                       <span
                         className={[
-                          'timeline-item__node',
-                          isIn ? '' : 'timeline-item__node--out',
-                        ]
-                          .filter(Boolean)
-                          .join(' ')}
-                        aria-hidden="true"
-                      />
-                      <div className="timeline-card">
-                        <span
-                          className={[
-                            'timeline-card__icon',
-                            isIn ? 'timeline-card__icon--in' : 'timeline-card__icon--out',
-                          ].join(' ')}
-                          aria-hidden="true"
-                        >
-                          {isIn ? (
-                            <ArrowUp size={16} strokeWidth={1.4} />
-                          ) : (
-                            <ArrowDown size={16} strokeWidth={1.4} />
-                          )}
-                        </span>
-                        <div className="timeline-card__body">
-                          <p className="timeline-card__product">{movement.producto}</p>
-                          <p className="timeline-card__meta">
-                            {movement.tipo} · {movement.usuario}
-                          </p>
-                        </div>
-                        <div className="timeline-card__right">
-                          <p
-                            className={[
-                              'timeline-card__amount',
-                              isIn
-                                ? 'timeline-card__amount--in'
-                                : 'timeline-card__amount--out',
-                            ].join(' ')}
-                          >
-                            {isIn ? '+' : '−'}
-                            {movement.cantidad}
-                          </p>
-                          <p className="timeline-card__time">{formatTime(movement.fecha)}</p>
-                        </div>
-                      </div>
+                          'ledger-move__amount',
+                          isIn ? 'ledger-move__amount--in' : 'ledger-move__amount--out',
+                        ].join(' ')}
+                      >
+                        {isIn ? '+' : '−'}
+                        {formatNumber(movement.cantidad)}
+                      </span>
+                      <span className="ledger-move__time">{formatTime(movement.fecha)}</span>
                     </div>
                   )
                 })}
