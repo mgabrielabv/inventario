@@ -62,7 +62,27 @@ export const useInventoryStore = create<InventoryStore>()(
     {
       name: 'atelier-inventory-storage',
       storage: createJSONStorage(() => safeStorage),
-      version: 1,
+      version: 2,
+      migrate: (persisted, version) => {
+        const state = persisted as Partial<InventoryStore> | undefined
+        if (!state || version >= 2) return state as InventoryStore
+
+        // Los movimientos semilla de la v1 quedaron anclados a octubre de 2026.
+        // Se reemplazan por los relativos a hoy y se conservan los del usuario.
+        const isLegacySeed = (movement: Movement) =>
+          movement.id >= 1 && movement.id <= 5 && movement.fecha.startsWith('2026-10-26')
+
+        const userMovements = (state.movements ?? []).filter(
+          (movement) => !isLegacySeed(movement),
+        )
+
+        return {
+          ...state,
+          movements: [...initialMovements, ...userMovements].sort(
+            (a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime(),
+          ),
+        } as InventoryStore
+      },
     },
   ),
 )

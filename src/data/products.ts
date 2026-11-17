@@ -28,10 +28,18 @@ export const initialProducts: Product[] = [
   { id: 25, codigo: '025', producto: 'Portavela', categoria: 'Otras', cantidad: 13 },
 ]
 
+/** Fecha relativa al momento de abrir la aplicación, en minutos hacia atrás. */
+const minutesAgo = (minutes: number): string =>
+  new Date(Date.now() - minutes * 60_000).toISOString()
+
+/**
+ * Movimientos semilla fechados respecto a ahora para que el libro siempre
+ * muestre hoy, ayer y los últimos días, sin importar cuándo se abra.
+ */
 export const initialMovements: Movement[] = [
   {
     id: 1,
-    fecha: '2026-10-26T09:15:00',
+    fecha: minutesAgo(35),
     productoId: 2,
     producto: 'Mouse',
     tipo: 'Entrada',
@@ -40,7 +48,7 @@ export const initialMovements: Movement[] = [
   },
   {
     id: 2,
-    fecha: '2026-10-26T10:30:00',
+    fecha: minutesAgo(130),
     productoId: 3,
     producto: 'Teclado',
     tipo: 'Salida',
@@ -49,7 +57,7 @@ export const initialMovements: Movement[] = [
   },
   {
     id: 3,
-    fecha: '2026-10-26T11:20:00',
+    fecha: minutesAgo(245),
     productoId: 1,
     producto: 'Laptop',
     tipo: 'Salida',
@@ -58,7 +66,7 @@ export const initialMovements: Movement[] = [
   },
   {
     id: 4,
-    fecha: '2026-10-26T13:45:00',
+    fecha: minutesAgo(1560),
     productoId: 9,
     producto: 'Cargador USB-C',
     tipo: 'Entrada',
@@ -67,11 +75,29 @@ export const initialMovements: Movement[] = [
   },
   {
     id: 5,
-    fecha: '2026-10-26T14:10:00',
+    fecha: minutesAgo(3060),
     productoId: 5,
     producto: 'Audífonos',
     tipo: 'Salida',
     cantidad: 1,
     usuario: 'operador',
+  },
+  {
+    id: 6,
+    fecha: minutesAgo(4620),
+    productoId: 10,
+    producto: 'Webcam HD',
+    tipo: 'Entrada',
+    cantidad: 5,
+    usuario: 'admin',
+  },
+  {
+    id: 7,
+    fecha: minutesAgo(7320),
+    productoId: 4,
+    producto: 'Monitor',
+    tipo: 'Salida',
+    cantidad: 2,
+    usuario: 'admin',
   },
 ]
