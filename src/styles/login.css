@@ -52,7 +52,6 @@
 }
 
 .login__title {
-  font-size: clamp(64px, 6.6vw, 104px);
   font-stretch: 64%;
   line-height: 0.82;
 }
@@ -292,10 +291,6 @@
 
   .login__brand {
     margin-bottom: 34px;
-  }
-
-  .login__title {
-    font-size: clamp(56px, 16vw, 76px);
   }
 
   .login__heading {
