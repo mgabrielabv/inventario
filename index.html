@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="INVENTARIO: control de existencias de bodega. Entradas, salidas, alertas y reportes en un solo libro."
+      content="INVENTARIO: tienda y control de existencias. Explora el catálogo, haz tu pedido y recibe o retira en tienda."
     />
     <meta name="theme-color" content="#890000" />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23890000'/%3E%3Cpath d='M7 12.5L16 8l9 4.5V25l-9 4-9-4V12.5Z' fill='none' stroke='%23FFF4ED' stroke-width='1.4' stroke-linejoin='round'/%3E%3Cpath d='M7 12.5L16 17l9-4.5M16 17v12' fill='none' stroke='%23FFF4ED' stroke-width='1.4' stroke-linejoin='round'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23890000'/%3E%3Cpath d='M6 12L16 7l10 5v13l-10 5-10-5V12Z' fill='none' stroke='%23FFF4ED' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M6 12l10 5 10-5M16 17v13' fill='none' stroke='%23FFF4ED' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E"
     />
-    <title>INVENTARIO — Control de bodega</title>
+    <title>INVENTARIO — Disponible hoy</title>
     <script>
       ;(() => {
         try {
@@ -38,7 +38,7 @@
           document.documentElement.classList.remove('light', 'dark')
           document.documentElement.classList.add(theme)
           document.documentElement.style.background =
-            theme === 'dark' ? '#1A0807' : '#FFF4ED'
+            theme === 'dark' ? '#140606' : '#FFF4ED'
         } catch {
           document.documentElement.classList.add('light')
         }

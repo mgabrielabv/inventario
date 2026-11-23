@@ -1,0 +1,108 @@
+/* ==========================================================================
+   Tipografía — frase normal, tracking negativo, sin condensados ni mayúsculas
+   decorativas. Escala con clamp; mínimo absoluto 12 px.
+   ========================================================================== */
+
+html {
+  font-family: var(--font-ui);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-size: var(--fs-ui);
+  line-height: 1.47;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4, p {
+  margin: 0;
+  font-weight: inherit;
+}
+
+h1, h2, h3, h4 {
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.t-hero {
+  font-size: var(--fs-hero);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.t-detail-title {
+  font-size: var(--fs-detail-title);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.t-section {
+  font-size: var(--fs-section);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+}
+
+.t-catalog {
+  font-size: var(--fs-catalog);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.028em;
+}
+
+.t-subtitle {
+  font-size: var(--fs-subtitle);
+  font-weight: 400;
+  line-height: 1.32;
+  letter-spacing: -0.015em;
+  color: var(--text-2);
+}
+
+.t-statement {
+  font-size: var(--fs-statement);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.024em;
+}
+
+.t-body { font-size: var(--fs-body); line-height: 1.47; }
+.t-ui { font-size: var(--fs-ui); }
+.t-caption { font-size: var(--fs-caption); color: var(--text-2); }
+.t-min { font-size: var(--fs-min); color: var(--text-2); }
+
+.t-lead {
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--text-2);
+  letter-spacing: -0.012em;
+}
+
+.t-num, .num, td.num, .price, .kpi-value, .rolling-number {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.code, .product-code, .order-code {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.t-strong { font-weight: 600; color: var(--text); }
+.t-mid { font-weight: 500; }
+.t-muted { color: var(--text-2); }
+.t-primary { color: var(--primary-text); }
+.t-clay { color: var(--clay-text); }
+
+.t-balance { text-wrap: balance; }
+.t-pretty { text-wrap: pretty; }
+
+@media (max-width: 640px) {
+  .t-lead { font-size: 17px; }
+  .t-body { font-size: 16px; }
+}

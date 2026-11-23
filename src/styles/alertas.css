@@ -195,11 +195,15 @@
   background: currentColor;
 }
 
-.alerts-row--critical .alerts-row__fill {
+.alerts-row--critical .alerts-row__fill,
+.alerts-row--critico .alerts-row__fill,
+.alerts-row--agotado .alerts-row__fill {
   background: var(--burgundy);
 }
 
-.dark .alerts-row--critical .alerts-row__fill {
+.dark .alerts-row--critical .alerts-row__fill,
+.dark .alerts-row--critico .alerts-row__fill,
+.dark .alerts-row--agotado .alerts-row__fill {
   background: #f0b3a8;
 }
 

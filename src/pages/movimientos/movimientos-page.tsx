@@ -1,13 +1,20 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowDown, ArrowUp, Plus, X } from 'lucide-react'
+import { ArrowDown, ArrowUp, Equal, Plus, X } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuth } from '../../app/providers/auth-provider'
+import { errorMessage } from '../../logic/errors'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { groupMovementsByDate } from '../../logic/store/selectors'
 import { formatNumber, formatTime, pluralize } from '../../logic/services/formatters'
+import { getMovementSummary } from '../../logic/services/stock'
 import { validateMovementQuantity } from '../../logic/services/validation'
-import type { MovementType } from '../../logic/types'
+import {
+  MOTIVOS_BY_TYPE,
+  MOVEMENT_TYPES,
+  type Motivo,
+  type MovementType,
+} from '../../logic/types'
 import { Button } from '../../components/ui/button'
 import { EmptyState } from '../../components/ui/empty-state'
 import { PageTitle } from '../../components/ui/page-title'
@@ -21,9 +28,12 @@ export const MovimientosPage = () => {
   const { user } = useAuth()
 
   const [formOpen, setFormOpen] = useState(false)
-  const [productoId, setProductoId] = useState(0)
+  const [productoId, setProductoId] = useState('')
   const [tipo, setTipo] = useState<MovementType>('Entrada')
+  const [motivo, setMotivo] = useState<Motivo>('Compra')
   const [cantidad, setCantidad] = useState(1)
+  const [referencia, setReferencia] = useState('')
+  const [nota, setNota] = useState('')
   const [error, setError] = useState('')
 
   const groups = useMemo(() => groupMovementsByDate(movements), [movements])
@@ -38,11 +48,37 @@ export const MovimientosPage = () => {
   }, [movements])
 
   const selectedProduct = products.find((product) => product.id === productoId)
+  const previewStock =
+    selectedProduct && Number.isFinite(cantidad)
+      ? tipo === 'Entrada'
+        ? selectedProduct.stock + cantidad
+        : tipo === 'Salida'
+          ? Math.max(0, selectedProduct.stock - cantidad)
+          : Math.max(0, cantidad)
+      : null
+
+  const handleProductChange = (id: string) => {
+    setProductoId(id)
+    if (tipo === 'Ajuste') {
+      setCantidad(products.find((product) => product.id === id)?.stock ?? 0)
+    }
+    setError('')
+  }
+
+  const handleTipoChange = (option: MovementType) => {
+    setTipo(option)
+    setMotivo(MOTIVOS_BY_TYPE[option][0] ?? 'Compra')
+    setCantidad(option === 'Ajuste' ? (selectedProduct?.stock ?? 0) : 1)
+    setError('')
+  }
 
   const resetForm = () => {
-    setProductoId(0)
+    setProductoId('')
     setTipo('Entrada')
+    setMotivo('Compra')
     setCantidad(1)
+    setReferencia('')
+    setNota('')
     setError('')
   }
 
@@ -60,21 +96,29 @@ export const MovimientosPage = () => {
       return
     }
 
-    const validation = validateMovementQuantity(tipo, cantidad, selectedProduct.cantidad)
+    const validation = validateMovementQuantity(tipo, cantidad, selectedProduct.stock)
     if (validation) {
       setError(validation)
       return
     }
 
-    addMovement({
-      productoId: selectedProduct.id,
-      producto: selectedProduct.producto,
-      tipo,
-      cantidad,
-      usuario: user?.username ?? 'admin',
-    })
+    try {
+      addMovement({
+        productoId: selectedProduct.id,
+        tipo,
+        cantidad,
+        motivo,
+        referencia,
+        nota,
+        usuario: user?.username ?? 'admin',
+      })
+    } catch (error) {
+      toast.error(errorMessage(error))
+      return
+    }
+
     toast.success(
-      `${tipo} de ${cantidad} ${pluralize(cantidad, 'unidad', 'unidades')} · ${selectedProduct.producto}`,
+      `${tipo} de ${cantidad} ${pluralize(cantidad, 'unidad', 'unidades')} · ${selectedProduct.nombre}`,
     )
     closeForm()
   }
@@ -142,17 +186,14 @@ export const MovimientosPage = () => {
                     id="movement-product"
                     className="field-line__control"
                     value={productoId}
-                    onChange={(event) => {
-                      setProductoId(Number(event.target.value))
-                      setError('')
-                    }}
+                    onChange={(event) => handleProductChange(event.target.value)}
                     aria-invalid={Boolean(error)}
                     aria-describedby={error ? 'movement-error' : undefined}
                   >
-                    <option value={0}>Elige un producto…</option>
+                    <option value="">Elige un producto…</option>
                     {products.map((product) => (
                       <option key={product.id} value={product.id}>
-                        {product.codigo} · {product.producto} ({product.cantidad})
+                        {product.codigo} · {product.nombre} ({product.stock})
                       </option>
                     ))}
                   </select>
@@ -163,21 +204,22 @@ export const MovimientosPage = () => {
                     Tipo
                   </span>
                   <div className="segmented" role="group" aria-labelledby="movement-type-label">
-                    {(['Entrada', 'Salida'] as const).map((option) => (
+                    {MOVEMENT_TYPES.map((option) => (
                       <button
                         key={option}
                         type="button"
                         className={[
                           'segmented__option',
                           tipo === option ? 'segmented__option--active' : '',
-                          option === 'Entrada' ? 'segmented__option--in' : 'segmented__option--out',
+                          option === 'Entrada'
+                            ? 'segmented__option--in'
+                            : option === 'Salida'
+                              ? 'segmented__option--out'
+                              : '',
                         ]
                           .filter(Boolean)
                           .join(' ')}
-                        onClick={() => {
-                          setTipo(option)
-                          setError('')
-                        }}
+                        onClick={() => handleTipoChange(option)}
                         aria-pressed={tipo === option}
                       >
                         {option}
@@ -188,13 +230,13 @@ export const MovimientosPage = () => {
 
                 <div className="field-line">
                   <label className="field-line__label" htmlFor="movement-quantity">
-                    Cantidad
+                    {tipo === 'Ajuste' ? 'Conteo real (stock)' : 'Cantidad'}
                   </label>
                   <input
                     id="movement-quantity"
                     className="field-line__control mono"
                     type="number"
-                    min="1"
+                    min={tipo === 'Ajuste' ? 0 : 1}
                     step="1"
                     value={cantidad}
                     onChange={(event) => {
@@ -212,6 +254,55 @@ export const MovimientosPage = () => {
                     Cancelar
                   </Button>
                 </div>
+
+                <div className="field-line">
+                  <label className="field-line__label" htmlFor="movement-motivo">
+                    Motivo
+                  </label>
+                  <select
+                    id="movement-motivo"
+                    className="field-line__control"
+                    value={motivo}
+                    onChange={(event) => {
+                      setMotivo(event.target.value as Motivo)
+                      setError('')
+                    }}
+                  >
+                    {MOTIVOS_BY_TYPE[tipo].map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="field-line">
+                  <label className="field-line__label" htmlFor="movement-referencia">
+                    Referencia
+                  </label>
+                  <input
+                    id="movement-referencia"
+                    className="field-line__control"
+                    type="text"
+                    placeholder="Opcional"
+                    value={referencia}
+                    onChange={(event) => setReferencia(event.target.value)}
+                  />
+                </div>
+
+                <div className="field-line">
+                  <label className="field-line__label" htmlFor="movement-nota">
+                    Nota
+                  </label>
+                  <input
+                    id="movement-nota"
+                    className="field-line__control"
+                    type="text"
+                    placeholder="Opcional"
+                    value={nota}
+                    onChange={(event) => setNota(event.target.value)}
+                  />
+                </div>
               </div>
 
               {error && (
@@ -221,9 +312,9 @@ export const MovimientosPage = () => {
               )}
               {selectedProduct && !error && (
                 <p className="movement-form__help">
-                  Quedan {selectedProduct.cantidad} uds. de {selectedProduct.producto}
-                  {tipo === 'Salida' && cantidad > 0
-                    ? ` · después de esta salida: ${Math.max(0, selectedProduct.cantidad - cantidad)}`
+                  {selectedProduct.stock} uds. de {selectedProduct.nombre}
+                  {previewStock !== null
+                    ? ` · ${selectedProduct.stock} → ${previewStock} uds.`
                     : ''}
                 </p>
               )}
@@ -262,9 +353,14 @@ export const MovimientosPage = () => {
               <div className="ledger-day__list">
                 {group.movements.map((movement) => {
                   const isIn = movement.tipo === 'Entrada'
+                  const isOut = movement.tipo === 'Salida'
                   return (
                     <div
-                      className={['ledger-move', isIn ? 'ledger-move--in' : 'ledger-move--out']
+                      className={[
+                        'ledger-move',
+                        isIn ? 'ledger-move--in' : '',
+                        isOut ? 'ledger-move--out' : '',
+                      ]
                         .filter(Boolean)
                         .join(' ')}
                       key={movement.id}
@@ -272,21 +368,29 @@ export const MovimientosPage = () => {
                       <span className="ledger-move__sign" aria-hidden="true">
                         {isIn ? (
                           <ArrowUp size={17} strokeWidth={2} />
-                        ) : (
+                        ) : isOut ? (
                           <ArrowDown size={17} strokeWidth={2} />
+                        ) : (
+                          <Equal size={17} strokeWidth={2} />
                         )}
                       </span>
-                      <span className="ledger-move__product">{movement.producto}</span>
+                      <span className="ledger-move__product">{movement.productoNombre}</span>
                       <span className="ledger-move__meta">
                         {movement.tipo} · {movement.usuario}
+                        {movement.tipo === 'Ajuste'
+                          ? ` · ${movement.motivo} · ${getMovementSummary(movement)}`
+                          : ''}
                       </span>
                       <span
                         className={[
                           'ledger-move__amount',
-                          isIn ? 'ledger-move__amount--in' : 'ledger-move__amount--out',
-                        ].join(' ')}
+                          isIn ? 'ledger-move__amount--in' : '',
+                          isOut ? 'ledger-move__amount--out' : '',
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
                       >
-                        {isIn ? '+' : '−'}
+                        {isIn ? '+' : isOut ? '−' : ''}
                         {formatNumber(movement.cantidad)}
                       </span>
                       <span className="ledger-move__time">{formatTime(movement.fecha)}</span>

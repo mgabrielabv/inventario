@@ -1,8 +1,34 @@
+/* Almacenamiento versionado. El HTML puede abrirse con file://; si localStorage
+   no está disponible, se usa un mapa en memoria sin romper la app. */
+
 export interface SafeStorage {
   getItem: (name: string) => string | null
   setItem: (name: string, value: string) => void
   removeItem: (name: string) => void
 }
+
+export const KEYS = {
+  inventory: 'inventario-storage',
+  theme: 'inventario-theme',
+  user: 'inventario-user',
+  users: 'inventario-users',
+  orders: 'inventario-orders',
+  cart: 'inventario-cart-v2',
+  favorites: 'inventario-favorites-v2',
+  settings: 'inventario-settings-v2',
+  customer: 'inventario-customer-v2',
+  activity: 'inventario-activity',
+} as const
+
+export type StorageKey = (typeof KEYS)[keyof typeof KEYS]
+
+/** Claves de la versión anterior (prefijo atelier / inventario-inventory-storage). */
+const LEGACY: Array<[StorageKey, string[]]> = [
+  [KEYS.inventory, ['atelier-inventory-storage', 'inventario-inventory-storage']],
+  [KEYS.theme, ['atelier-theme']],
+  [KEYS.user, ['atelier-user']],
+  [KEYS.orders, ['atelier-orders']],
+]
 
 const memory = new Map<string, string>()
 
@@ -17,72 +43,61 @@ const canUseLocalStorage = (): boolean => {
   }
 }
 
-const persistent = canUseLocalStorage()
+const persistent = typeof window !== 'undefined' && canUseLocalStorage()
 
-export const storageKey = (suffix: 'theme' | 'user' | 'inventory-storage'): string =>
-  `inventario-${suffix}`
-
-const PERSISTED_SUFFIXES = ['theme', 'user', 'inventory-storage'] as const
-
-/**
- * Renombra las claves de la versión anterior a `inventario-*` sin tocar su
- * contenido, de modo que la sesión, el tema y los movimientos sobrevivan.
- * Se localiza la clave antigua por su sufijo para no volver a nombrarla.
- */
 export const migrateLegacyStorage = (): void => {
   if (!persistent) return
-
-  for (const suffix of PERSISTED_SUFFIXES) {
-    const target = storageKey(suffix)
+  for (const [target, legacyKeys] of LEGACY) {
     try {
       if (window.localStorage.getItem(target) !== null) continue
-      const legacy = Object.keys(window.localStorage).find(
-        (key) => key !== target && key.endsWith(`-${suffix}`),
-      )
-      if (!legacy) continue
-      const value = window.localStorage.getItem(legacy)
+      const source = legacyKeys.find((key) => window.localStorage.getItem(key) !== null)
+      if (!source) continue
+      const value = window.localStorage.getItem(source)
       if (value === null) continue
       window.localStorage.setItem(target, value)
-      window.localStorage.removeItem(legacy)
+      window.localStorage.removeItem(source)
     } catch {
-      // Sin persistencia disponible: no hay nada que migrar.
+      /* Sin persistencia: nada que migrar. */
     }
   }
+  // Sesión anterior guardada bajo otra clave.
+  try {
+    if (window.localStorage.getItem(KEYS.user) === null) {
+      for (const key of Object.keys(window.localStorage)) {
+        if (key.endsWith('-user') && key !== KEYS.user) {
+          const value = window.localStorage.getItem(key)
+          if (value) window.localStorage.setItem(KEYS.user, value)
+          break
+        }
+      }
+    }
+  } catch { /* ignore */ }
 }
 
 migrateLegacyStorage()
 
-/**
- * localStorage puede no estar disponible al abrir el HTML con file:// en
- * algunos navegadores. En ese caso la app sigue funcionando en memoria.
- */
 export const safeStorage: SafeStorage = {
   getItem: (name) => {
     if (!persistent) return memory.get(name) ?? null
-    try {
-      return window.localStorage.getItem(name)
-    } catch {
-      return memory.get(name) ?? null
-    }
+    try { return window.localStorage.getItem(name) } catch { return memory.get(name) ?? null }
   },
   setItem: (name, value) => {
-    if (!persistent) {
-      memory.set(name, value)
-      return
-    }
-    try {
-      window.localStorage.setItem(name, value)
-    } catch {
-      memory.set(name, value)
-    }
+    if (!persistent) { memory.set(name, value); return }
+    try { window.localStorage.setItem(name, value) } catch { memory.set(name, value) }
   },
   removeItem: (name) => {
     memory.delete(name)
     if (!persistent) return
-    try {
-      window.localStorage.removeItem(name)
-    } catch {
-      // Sin persistencia disponible: la copia en memoria ya fue eliminada.
-    }
+    try { window.localStorage.removeItem(name) } catch { /* ignore */ }
   },
+}
+
+export const readJson = <T>(key: StorageKey, fallback: T): T => {
+  const raw = safeStorage.getItem(key)
+  if (!raw) return fallback
+  try { return JSON.parse(raw) as T } catch { return fallback }
+}
+
+export const writeJson = (key: StorageKey, value: unknown): void => {
+  safeStorage.setItem(key, JSON.stringify(value))
 }

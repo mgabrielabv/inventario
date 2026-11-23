@@ -1,37 +1,34 @@
-import { CATEGORIES } from '../types'
+import {
+  compareUrgency,
+  getCategoryStock as getStockByCategory,
+  getInventorySummary,
+  getProductStatus,
+  needsReplenishment,
+} from '../services/stock'
+import { formatGroupDate, normalizeText } from '../services/formatters'
 import type {
   AlertSummary,
-  Category,
   CategoryFilter,
-  CategoryStock,
+  CategoryShare,
   InventoryStats,
   Movement,
   MovementGroup,
   Product,
-  StatusInfo,
 } from '../types'
-import { formatGroupDate, normalizeText } from '../services/formatters'
 
-const ALERT_THRESHOLD = 10
-const CRITICAL_THRESHOLD = 5
-
-export const getProductStatus = (cantidad: number): StatusInfo => {
-  if (cantidad < CRITICAL_THRESHOLD) return { status: 'critical', label: 'Crítico' }
-  if (cantidad < ALERT_THRESHOLD) return { status: 'low', label: 'Bajo' }
-  return { status: 'normal', label: 'Normal' }
-}
+export { getProductStatus, getStockStatus } from '../services/stock'
 
 export const getAlerts = (products: Product[]): AlertSummary => {
   const alerts = products
-    .filter((product) => product.cantidad < ALERT_THRESHOLD)
-    .sort((a, b) => a.cantidad - b.cantidad)
+    .filter((product) => !product.archivado && needsReplenishment(product))
+    .sort(compareUrgency)
 
   return {
     alerts,
-    critical: alerts.filter((product) => product.cantidad < CRITICAL_THRESHOLD),
-    warning: alerts.filter(
-      (product) => product.cantidad >= CRITICAL_THRESHOLD && product.cantidad < ALERT_THRESHOLD,
+    critical: alerts.filter((product) =>
+      ['agotado', 'critico'].includes(getProductStatus(product).status),
     ),
+    warning: alerts.filter((product) => getProductStatus(product).status === 'bajo'),
   }
 }
 
@@ -39,13 +36,13 @@ export const getInventoryStats = (
   products: Product[],
   movements: Movement[],
 ): InventoryStats => {
-  const totalUnits = products.reduce((sum, product) => sum + product.cantidad, 0)
+  const summary = getInventorySummary(products, movements)
   const { alerts, critical, warning } = getAlerts(products)
   const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000
 
   return {
-    totalProducts: products.length,
-    totalUnits,
+    totalProducts: summary.activeProducts,
+    totalUnits: summary.units,
     alertsCount: alerts.length,
     criticalCount: critical.length,
     warningCount: warning.length,
@@ -55,22 +52,15 @@ export const getInventoryStats = (
   }
 }
 
-export const getCategoryStock = (products: Product[]): CategoryStock[] => {
-  const totalUnits = products.reduce((sum, product) => sum + product.cantidad, 0)
-  const totals = new Map<Category, number>(CATEGORIES.map((category) => [category, 0]))
+export const getCategoryStock = (products: Product[]): CategoryShare[] => {
+  const byCategory = getStockByCategory(products)
+  const totalUnits = byCategory.reduce((sum, entry) => sum + entry.units, 0)
 
-  for (const product of products) {
-    totals.set(product.categoria, (totals.get(product.categoria) ?? 0) + product.cantidad)
-  }
-
-  return CATEGORIES.map((category) => {
-    const units = totals.get(category) ?? 0
-    return {
-      category,
-      units,
-      percentage: totalUnits > 0 ? Math.round((units / totalUnits) * 100) : 0,
-    }
-  }).sort((a, b) => b.units - a.units)
+  return byCategory.map((entry) => ({
+    category: entry.categoria,
+    units: entry.units,
+    percentage: totalUnits > 0 ? Math.round((entry.units / totalUnits) * 100) : 0,
+  }))
 }
 
 export const filterProducts = (
@@ -86,7 +76,7 @@ export const filterProducts = (
     if (!query) return true
 
     return (
-      normalizeText(product.producto).includes(query) ||
+      normalizeText(product.nombre).includes(query) ||
       normalizeText(product.codigo).includes(query) ||
       normalizeText(product.categoria).includes(query)
     )
@@ -116,7 +106,10 @@ export const getMostMovedProduct = (
 
   const totals = new Map<string, number>()
   for (const movement of movements) {
-    totals.set(movement.producto, (totals.get(movement.producto) ?? 0) + movement.cantidad)
+    totals.set(
+      movement.productoNombre,
+      (totals.get(movement.productoNombre) ?? 0) + movement.cantidad,
+    )
   }
 
   const [producto, units] = Array.from(totals.entries()).sort((a, b) => b[1] - a[1])[0] ?? []
@@ -131,6 +124,6 @@ export const filterReportProducts = (
   products.filter((product) => {
     const matchesCategory = category === 'Todas' || product.categoria === category
     const matchesStatus =
-      statusLabel === 'Todos' || getProductStatus(product.cantidad).label === statusLabel
+      statusLabel === 'Todos' || getProductStatus(product).label === statusLabel
     return matchesCategory && matchesStatus
   })

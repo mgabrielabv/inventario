@@ -5,7 +5,15 @@ import { toast } from 'sonner'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useProducts } from '../../logic/hooks/useProducts'
 import { getProductStatus } from '../../logic/store/selectors'
-import { CATEGORIES, type Category, type CategoryFilter, type Product, type ProductDraft } from '../../logic/types'
+import {
+  CATEGORIES,
+  UNITS,
+  type Category,
+  type CategoryFilter,
+  type Product,
+  type ProductDraft,
+  type Unit,
+} from '../../logic/types'
 import { firstError, validateProductDraft, type ProductDraftErrors } from '../../logic/services/validation'
 import { formatNumber, pluralize } from '../../logic/services/formatters'
 import { Button } from '../../components/ui/button'
@@ -18,12 +26,25 @@ import { EASE_OUT } from '../../components/illustrations/motion'
 
 const EMPTY_DRAFT: ProductDraft = {
   codigo: '',
-  producto: '',
+  nombre: '',
   categoria: 'Electrónica',
-  cantidad: 0,
+  unidad: 'unidad',
+  stockInicial: 0,
+  stockMinimo: 0,
+  stockObjetivo: 0,
+  ubicacion: '',
+  costo: null,
+  precio: null,
+  proveedor: '',
+  notas: '',
 }
 
 const METER_MAX = 60
+
+const toCount = (value: number): number => (Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : 0)
+
+const toAmount = (value: number | null): number | null =>
+  value === null || !Number.isFinite(value) ? null : Math.max(0, Math.round(value * 100) / 100)
 
 export const InventarioPage = () => {
   const products = useInventoryStore((state) => state.products)
@@ -37,7 +58,7 @@ export const InventarioPage = () => {
   const [editing, setEditing] = useState<Product | null>(null)
   const [draft, setDraft] = useState<ProductDraft>(EMPTY_DRAFT)
   const [errors, setErrors] = useState<ProductDraftErrors>({})
-  const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null)
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
   const [intro, setIntro] = useState(true)
 
   const filtered = useProducts(search, category)
@@ -51,7 +72,7 @@ export const InventarioPage = () => {
   }, [products])
 
   const totalUnits = useMemo(
-    () => products.reduce((total, product) => total + product.cantidad, 0),
+    () => products.reduce((total, product) => total + product.stock, 0),
     [products],
   )
 
@@ -86,9 +107,17 @@ export const InventarioPage = () => {
     setEditing(product)
     setDraft({
       codigo: product.codigo,
-      producto: product.producto,
+      nombre: product.nombre,
       categoria: product.categoria,
-      cantidad: product.cantidad,
+      unidad: product.unidad,
+      stockInicial: product.stock,
+      stockMinimo: product.stockMinimo,
+      stockObjetivo: product.stockObjetivo,
+      ubicacion: product.ubicacion,
+      costo: product.costo,
+      precio: product.precio,
+      proveedor: product.proveedor,
+      notas: product.notas,
     })
     setErrors({})
     setDrawerOpen(true)
@@ -111,13 +140,22 @@ export const InventarioPage = () => {
 
     const cleanDraft: ProductDraft = {
       codigo: draft.codigo.trim(),
-      producto: draft.producto.trim(),
+      nombre: draft.nombre.trim(),
       categoria: draft.categoria,
-      cantidad: Math.max(0, Math.trunc(draft.cantidad)),
+      unidad: draft.unidad,
+      stockInicial: toCount(draft.stockInicial),
+      stockMinimo: toCount(draft.stockMinimo),
+      stockObjetivo: toCount(draft.stockObjetivo),
+      ubicacion: draft.ubicacion.trim(),
+      costo: toAmount(draft.costo),
+      precio: toAmount(draft.precio),
+      proveedor: draft.proveedor.trim(),
+      notas: draft.notas.trim(),
     }
 
     if (editing) {
-      updateProduct(editing.id, cleanDraft)
+      const { stockInicial, ...fields } = cleanDraft
+      updateProduct(editing.id, { ...fields, stock: stockInicial })
       toast.success('Ficha actualizada')
     } else {
       addProduct(cleanDraft)
@@ -130,7 +168,7 @@ export const InventarioPage = () => {
     if (deleteConfirm === product.id) {
       deleteProduct(product.id)
       setDeleteConfirm(null)
-      toast.success(`${product.producto} salió del libro`)
+      toast.success(`${product.nombre} salió del libro`)
       return
     }
     setDeleteConfirm(product.id)
@@ -247,8 +285,8 @@ export const InventarioPage = () => {
               </thead>
               <tbody>
                 {filtered.map((product, index) => {
-                  const status = getProductStatus(product.cantidad)
-                  const meter = Math.min(100, (product.cantidad / METER_MAX) * 100)
+                  const status = getProductStatus(product)
+                  const meter = Math.min(100, (product.stock / METER_MAX) * 100)
                   return (
                     <tr
                       key={product.id}
@@ -258,20 +296,21 @@ export const InventarioPage = () => {
                         <span className="cell-code">{product.codigo}</span>
                       </td>
                       <td data-label="Producto">
-                        <span className="cell-strong">{product.producto}</span>
+                        <span className="cell-strong">{product.nombre}</span>
                       </td>
                       <td data-label="Categoría" className="cell-muted">
                         {product.categoria}
                       </td>
                       <td data-label="Cantidad" className="is-right">
                         <div className="stock-meter">
-                          <span className="stock-meter__value">{formatNumber(product.cantidad)}</span>
+                          <span className="stock-meter__value">{formatNumber(product.stock)}</span>
                           <span className="stock-meter__track" aria-hidden="true">
                             <span
                               className={[
                                 'stock-meter__fill',
-                                status.status === 'low' ? 'stock-meter__fill--low' : '',
-                                status.status === 'critical' ? 'stock-meter__fill--critical' : '',
+                                status.status === 'bajo' ? 'stock-meter__fill--bajo' : '',
+                                status.status === 'critico' ? 'stock-meter__fill--critico' : '',
+                                status.status === 'agotado' ? 'stock-meter__fill--agotado' : '',
                               ]
                                 .filter(Boolean)
                                 .join(' ')}
@@ -289,7 +328,7 @@ export const InventarioPage = () => {
                             type="button"
                             className="row-action"
                             onClick={() => openEdit(product)}
-                            aria-label={`Editar ${product.producto}`}
+                            aria-label={`Editar ${product.nombre}`}
                           >
                             <Edit2 size={15} strokeWidth={1.7} aria-hidden="true" />
                           </button>
@@ -304,8 +343,8 @@ export const InventarioPage = () => {
                             onClick={() => handleDelete(product)}
                             aria-label={
                               deleteConfirm === product.id
-                                ? `Confirmar eliminación de ${product.producto}`
-                                : `Eliminar ${product.producto}`
+                                ? `Confirmar eliminación de ${product.nombre}`
+                                : `Eliminar ${product.nombre}`
                             }
                           >
                             {deleteConfirm === product.id ? (
@@ -402,18 +441,18 @@ export const InventarioPage = () => {
                   <input
                     id="product-name"
                     className="form-input"
-                    value={draft.producto}
+                    value={draft.nombre}
                     onChange={(event) =>
-                      setDraft((current) => ({ ...current, producto: event.target.value }))
+                      setDraft((current) => ({ ...current, nombre: event.target.value }))
                     }
-                    aria-invalid={Boolean(errors.producto)}
-                    aria-describedby={errors.producto ? 'product-name-error' : undefined}
+                    aria-invalid={Boolean(errors.nombre)}
+                    aria-describedby={errors.nombre ? 'product-name-error' : undefined}
                     placeholder="Nombre del producto"
                     autoComplete="off"
                   />
-                  {errors.producto && (
+                  {errors.nombre && (
                     <p className="form-error" id="product-name-error">
-                      {errors.producto}
+                      {errors.nombre}
                     </p>
                   )}
                 </div>
@@ -442,33 +481,198 @@ export const InventarioPage = () => {
                 </div>
 
                 <div className="form-field">
-                  <label className="form-label" htmlFor="product-quantity">
-                    Cantidad
+                  <label className="form-label" htmlFor="product-unit">
+                    Unidad
+                  </label>
+                  <select
+                    id="product-unit"
+                    className="form-select"
+                    value={draft.unidad}
+                    onChange={(event) =>
+                      setDraft((current) => ({
+                        ...current,
+                        unidad: event.target.value as Unit,
+                      }))
+                    }
+                  >
+                    {UNITS.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-field">
+                  <label className="form-label" htmlFor="product-stock">
+                    Stock actual
                   </label>
                   <input
-                    id="product-quantity"
+                    id="product-stock"
                     className="form-input form-input--mono"
                     type="number"
                     min="0"
                     step="1"
-                    value={draft.cantidad}
+                    value={draft.stockInicial}
                     onChange={(event) =>
                       setDraft((current) => ({
                         ...current,
-                        cantidad: Number(event.target.value),
+                        stockInicial: Number(event.target.value),
                       }))
                     }
-                    aria-invalid={Boolean(errors.cantidad)}
-                    aria-describedby={errors.cantidad ? 'product-quantity-error' : undefined}
+                    aria-invalid={Boolean(errors.stockInicial)}
+                    aria-describedby={errors.stockInicial ? 'product-stock-error' : undefined}
                   />
-                  {errors.cantidad && (
-                    <p className="form-error" id="product-quantity-error">
-                      {errors.cantidad}
+                  {errors.stockInicial && (
+                    <p className="form-error" id="product-stock-error">
+                      {errors.stockInicial}
                     </p>
                   )}
                   <p className="form-help">
-                    Menos de 5 unidades se considera crítico; menos de 10, bajo.
+                    El estado se calcula con este saldo: 0 es agotado, hasta la mitad del mínimo es
+                    crítico y hasta el mínimo es bajo.
                   </p>
+                </div>
+
+                <div className="form-field">
+                  <label className="form-label" htmlFor="product-minimum">
+                    Mínimo
+                  </label>
+                  <input
+                    id="product-minimum"
+                    className="form-input form-input--mono"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={draft.stockMinimo}
+                    onChange={(event) =>
+                      setDraft((current) => ({
+                        ...current,
+                        stockMinimo: Number(event.target.value),
+                      }))
+                    }
+                    aria-invalid={Boolean(errors.stockMinimo)}
+                    aria-describedby={errors.stockMinimo ? 'product-minimum-error' : undefined}
+                  />
+                  {errors.stockMinimo && (
+                    <p className="form-error" id="product-minimum-error">
+                      {errors.stockMinimo}
+                    </p>
+                  )}
+                </div>
+
+                <div className="form-field">
+                  <label className="form-label" htmlFor="product-target">
+                    Objetivo
+                  </label>
+                  <input
+                    id="product-target"
+                    className="form-input form-input--mono"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={draft.stockObjetivo}
+                    onChange={(event) =>
+                      setDraft((current) => ({
+                        ...current,
+                        stockObjetivo: Number(event.target.value),
+                      }))
+                    }
+                    aria-invalid={Boolean(errors.stockObjetivo)}
+                    aria-describedby={errors.stockObjetivo ? 'product-target-error' : undefined}
+                  />
+                  {errors.stockObjetivo && (
+                    <p className="form-error" id="product-target-error">
+                      {errors.stockObjetivo}
+                    </p>
+                  )}
+                  <p className="form-help">El saldo que se busca alcanzar al reponer.</p>
+                </div>
+
+                <div className="form-field">
+                  <label className="form-label" htmlFor="product-location">
+                    Ubicación
+                  </label>
+                  <input
+                    id="product-location"
+                    className="form-input"
+                    value={draft.ubicacion}
+                    onChange={(event) =>
+                      setDraft((current) => ({ ...current, ubicacion: event.target.value }))
+                    }
+                    placeholder="A-01"
+                    autoComplete="off"
+                  />
+                </div>
+
+                <div className="form-field">
+                  <label className="form-label" htmlFor="product-cost">
+                    Costo
+                  </label>
+                  <input
+                    id="product-cost"
+                    className="form-input form-input--mono"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={draft.costo ?? ''}
+                    onChange={(event) =>
+                      setDraft((current) => ({
+                        ...current,
+                        costo: event.target.value === '' ? null : Number(event.target.value),
+                      }))
+                    }
+                  />
+                </div>
+
+                <div className="form-field">
+                  <label className="form-label" htmlFor="product-price">
+                    Precio
+                  </label>
+                  <input
+                    id="product-price"
+                    className="form-input form-input--mono"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={draft.precio ?? ''}
+                    onChange={(event) =>
+                      setDraft((current) => ({
+                        ...current,
+                        precio: event.target.value === '' ? null : Number(event.target.value),
+                      }))
+                    }
+                  />
+                </div>
+
+                <div className="form-field">
+                  <label className="form-label" htmlFor="product-supplier">
+                    Proveedor
+                  </label>
+                  <input
+                    id="product-supplier"
+                    className="form-input"
+                    value={draft.proveedor}
+                    onChange={(event) =>
+                      setDraft((current) => ({ ...current, proveedor: event.target.value }))
+                    }
+                    autoComplete="off"
+                  />
+                </div>
+
+                <div className="form-field">
+                  <label className="form-label" htmlFor="product-notes">
+                    Notas
+                  </label>
+                  <input
+                    id="product-notes"
+                    className="form-input"
+                    value={draft.notas}
+                    onChange={(event) =>
+                      setDraft((current) => ({ ...current, notas: event.target.value }))
+                    }
+                    autoComplete="off"
+                  />
                 </div>
 
                 <div className="inventory-form__stamp">

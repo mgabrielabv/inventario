@@ -7,6 +7,8 @@ import { useAuth } from '../../app/providers/auth-provider'
 import { useAlerts } from '../../logic/hooks/useInventoryStats'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { getProductStatus } from '../../logic/store/selectors'
+import { errorMessage } from '../../logic/errors'
+import { getSuggestedQuantity } from '../../logic/services/stock'
 import { formatNumber, pluralize } from '../../logic/services/formatters'
 import type { Product } from '../../logic/types'
 import { Button } from '../../components/ui/button'
@@ -17,23 +19,32 @@ import { Stamp } from '../../components/ui/stamp'
 import { WarehouseShelf } from '../../components/illustrations/warehouse-shelf'
 import { EASE_OUT } from '../../components/illustrations/motion'
 
-const ALERT_THRESHOLD = 10
-const REPLENISH_AMOUNT = 10
+/** Sólo se usa si no hay una cantidad sugerida calculada. */
+const FALLBACK_REPLENISH_AMOUNT = 10
 
 export const AlertasPage = () => {
   const { alerts, critical, warning } = useAlerts()
   const addMovement = useInventoryStore((state) => state.addMovement)
   const { user } = useAuth()
 
-  const handleReplenish = (product: Product) => {
-    addMovement({
-      productoId: product.id,
-      producto: product.producto,
-      tipo: 'Entrada',
-      cantidad: REPLENISH_AMOUNT,
-      usuario: user?.username ?? 'admin',
-    })
-    toast.success(`Repuesto: +${REPLENISH_AMOUNT} unidades de ${product.producto}`)
+  const handleReplenish = (product: Product, amount: number) => {
+    try {
+      addMovement({
+        productoId: product.id,
+        tipo: 'Entrada',
+        cantidad: amount,
+        motivo: 'Compra',
+        referencia: 'Reposición desde alertas',
+        nota: `Mínimo: ${product.stockMinimo}`,
+        usuario: user?.username ?? 'admin',
+      })
+    } catch (error) {
+      toast.error(errorMessage(error))
+      return
+    }
+    toast.success(
+      `Repuesto: +${amount} ${pluralize(amount, 'unidad', 'unidades')} de ${product.nombre}`,
+    )
   }
 
   return (
@@ -43,7 +54,7 @@ export const AlertasPage = () => {
           <PageTitle lines={['LO QUE', 'FALTA']} />
           <p className="page-head__sub">
             {alerts.length === 0
-              ? 'Nada falta. Todo está por encima del umbral.'
+              ? 'Nada falta. Todo está por encima de su mínimo.'
               : `${formatNumber(alerts.length)} ${pluralize(alerts.length, 'referencia pide', 'referencias piden')} reposición. ${critical.length} ${pluralize(critical.length, 'está en crítico', 'están en crítico')}.`}
           </p>
         </div>
@@ -61,14 +72,20 @@ export const AlertasPage = () => {
 
       <div className="alert-legend">
         <div className="alert-legend__item">
-          <StatusBadge status="critical" />
-          <span className="alert-legend__note">menos de 5 unidades</span>
+          <StatusBadge status="agotado" />
+          <span className="alert-legend__note">0 unidades</span>
         </div>
         <div className="alert-legend__item">
-          <StatusBadge status="low" />
-          <span className="alert-legend__note">de 5 a 9 unidades</span>
+          <StatusBadge status="critico" />
+          <span className="alert-legend__note">hasta la mitad del mínimo</span>
         </div>
-        <p className="alert-legend__threshold">Umbral de reposición: {ALERT_THRESHOLD}</p>
+        <div className="alert-legend__item">
+          <StatusBadge status="bajo" />
+          <span className="alert-legend__note">hasta el mínimo</span>
+        </div>
+        <p className="alert-legend__threshold">
+          Umbral de reposición: el mínimo de cada referencia
+        </p>
       </div>
 
       {alerts.length === 0 ? (
@@ -76,7 +93,7 @@ export const AlertasPage = () => {
           illustration={<WarehouseShelf />}
           stamp="Todo en su sitio"
           title="No falta nada."
-          description="Todas las referencias están por encima del umbral. El estante respira tranquilo."
+          description="Todas las referencias están por encima de su mínimo. El estante respira tranquilo."
         />
       ) : (
         <motion.section
@@ -92,7 +109,7 @@ export const AlertasPage = () => {
                 Reponer
               </h2>
               <p className="alerts-board__sub">
-                {alerts.length} {pluralize(alerts.length, 'ficha', 'fichas')} por debajo del umbral
+                {alerts.length} {pluralize(alerts.length, 'ficha', 'fichas')} por debajo de su mínimo
               </p>
             </div>
             <Stamp tilt="left" className="alerts-board__stamp">
@@ -102,21 +119,27 @@ export const AlertasPage = () => {
 
           <div className="alerts-list">
             {alerts.map((product, index) => {
-              const status = getProductStatus(product.cantidad)
-              const isCritical = status.status === 'critical'
-              const percentage = Math.min(100, (product.cantidad / ALERT_THRESHOLD) * 100)
+              const status = getProductStatus(product)
+              const isCritical = status.status === 'critico' || status.status === 'agotado'
+              const suggested = getSuggestedQuantity(product) || FALLBACK_REPLENISH_AMOUNT
+              const percentage = Math.min(
+                100,
+                (product.stock / Math.max(1, product.stockMinimo)) * 100,
+              )
 
               return (
                 <motion.article
                   key={product.id}
                   className={[
                     'alerts-row',
-                    isCritical ? 'alerts-row--critical' : 'alerts-row--low',
+                    isCritical
+                      ? `alerts-row--critical alerts-row--${status.status}`
+                      : 'alerts-row--low',
                   ].join(' ')}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: index * 0.045, ease: EASE_OUT }}
-                  aria-label={`${product.producto}, estado ${status.label}, ${product.cantidad} unidades`}
+                  aria-label={`${product.nombre}, estado ${status.label}, ${product.stock} unidades, mínimo ${product.stockMinimo}`}
                 >
                   <span className="alerts-row__mark" aria-hidden="true">
                     {isCritical ? (
@@ -127,9 +150,10 @@ export const AlertasPage = () => {
                   </span>
 
                   <div className="alerts-row__identity">
-                    <h3 className="alerts-row__name">{product.producto}</h3>
+                    <h3 className="alerts-row__name">{product.nombre}</h3>
                     <p className="alerts-row__meta">
-                      <span className="mono">{product.codigo}</span> · {product.categoria}
+                      <span className="mono">{product.codigo}</span> · {product.categoria} · mín.{' '}
+                      {formatNumber(product.stockMinimo)}
                     </p>
                   </div>
 
@@ -137,15 +161,15 @@ export const AlertasPage = () => {
 
                   <div className="alerts-row__stock">
                     <p className="alerts-row__qty">
-                      <span className="alerts-row__value">{formatNumber(product.cantidad)}</span>
+                      <span className="alerts-row__value">{formatNumber(product.stock)}</span>
                       <span className="alerts-row__unit">
-                        {pluralize(product.cantidad, 'unidad', 'unidades')}
+                        {pluralize(product.stock, 'unidad', 'unidades')}
                       </span>
                     </p>
                     <div
                       className="alerts-row__track"
                       role="img"
-                      aria-label={`${product.cantidad} de ${ALERT_THRESHOLD} unidades del umbral`}
+                      aria-label={`${formatNumber(product.stock)} de ${formatNumber(product.stockMinimo)} unidades del mínimo`}
                     >
                       <span
                         className="alerts-row__fill"
@@ -155,9 +179,13 @@ export const AlertasPage = () => {
                   </div>
 
                   <div className="alerts-row__actions">
-                    <Button type="button" size="sm" onClick={() => handleReplenish(product)}>
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={() => handleReplenish(product, suggested)}
+                    >
                       <ArrowUpRight size={15} strokeWidth={1.8} aria-hidden="true" />
-                      Reponer {REPLENISH_AMOUNT}
+                      Reponer {suggested}
                     </Button>
                     <Link className="alerts-row__link" to="/inventario">
                       Ver ficha

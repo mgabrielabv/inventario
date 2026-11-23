@@ -1,27 +1,14 @@
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
+  createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
 } from 'react'
-import { safeStorage, storageKey } from '../../logic/services/storage'
+import { KEYS, safeStorage } from '../../logic/services/storage'
 
 export type Theme = 'light' | 'dark'
-
-const STORAGE_KEY = storageKey('theme')
-
-interface ThemeContextValue {
-  theme: Theme
-  toggleTheme: () => void
-}
-
+interface ThemeContextValue { theme: Theme; toggleTheme: () => void; setTheme: (theme: Theme) => void }
 const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 const readTheme = (): Theme => {
-  const stored = safeStorage.getItem(STORAGE_KEY)
+  const stored = safeStorage.getItem(KEYS.theme)
   if (stored === 'light' || stored === 'dark') return stored
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
@@ -39,14 +26,13 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const root = document.documentElement
     root.classList.remove('light', 'dark')
     root.classList.add(theme)
-    safeStorage.setItem(STORAGE_KEY, theme)
+    safeStorage.setItem(KEYS.theme, theme)
   }, [theme])
 
   const toggleTheme = useCallback(() => {
     setTheme((current) => (current === 'light' ? 'dark' : 'light'))
   }, [])
 
-  const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme])
-
+  const value = useMemo(() => ({ theme, toggleTheme, setTheme }), [theme, toggleTheme])
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }

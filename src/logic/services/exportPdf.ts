@@ -1,5 +1,5 @@
 import type { Product } from '../types'
-import { getProductStatus } from '../store/selectors'
+import { getProductStatus } from './stock'
 
 const PAGE_WIDTH = 595.28
 const PAGE_HEIGHT = 841.89
@@ -188,14 +188,18 @@ const buildPdf = (options: PdfReportOptions): string => {
       rect(MARGIN, y + 6, CONTENT_WIDTH, ROW_HEIGHT, SURFACE)
     }
 
-    const status = getProductStatus(product.cantidad)
+    const status = getProductStatus(product)
     const statusColor =
-      status.status === 'critical' ? BURGUNDY : status.status === 'low' ? GOLD : GREEN
+      status.status === 'agotado' || status.status === 'critico'
+        ? BURGUNDY
+        : status.status === 'bajo'
+          ? GOLD
+          : GREEN
 
     text(truncate(product.codigo, 9), 54, y, 8, 'F3', INK)
-    text(truncate(product.producto, 38), 112, y, 8, 'F1', INK)
+    text(truncate(product.nombre, 38), 112, y, 8, 'F1', INK)
     text(truncate(product.categoria, 19), 306, y, 8, 'F1', INK_SUBTLE)
-    text(String(product.cantidad), 452, y, 8, 'F3', INK, 'right')
+    text(String(product.stock), 452, y, 8, 'F3', INK, 'right')
     text(status.label.toUpperCase(), 548, y, 7.5, 'F2', statusColor, 'right')
 
     line(MARGIN, y - 5, PAGE_WIDTH - MARGIN, y - 5, 0.4)

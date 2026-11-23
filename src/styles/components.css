@@ -42,9 +42,16 @@
   --label-ink: var(--label-low-ink);
 }
 
-.ship-label--critical {
+.ship-label--critical,
+.ship-label--critico,
+.ship-label--agotado {
   --label-bg: var(--label-critical-bg);
   --label-ink: var(--label-critical-ink);
+}
+
+.ship-label--bajo {
+  --label-bg: var(--label-low-bg);
+  --label-ink: var(--label-low-ink);
 }
 
 .ship-label--ghost {
@@ -810,11 +817,14 @@ select.field-line__control {
   background: var(--status-normal);
 }
 
-.stock-meter__fill--low {
+.stock-meter__fill--low,
+.stock-meter__fill--bajo {
   background: var(--status-low);
 }
 
-.stock-meter__fill--critical {
+.stock-meter__fill--critical,
+.stock-meter__fill--critico,
+.stock-meter__fill--agotado {
   background: var(--burgundy);
 }
 

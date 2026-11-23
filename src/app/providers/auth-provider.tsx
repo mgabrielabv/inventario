@@ -1,45 +1,25 @@
 import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
+  createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode,
 } from 'react'
 import type { User } from '../../logic/types'
 import { authenticate, isUser } from '../../logic/services/auth'
-import { safeStorage, storageKey } from '../../logic/services/storage'
+import { KEYS, readJson, safeStorage, writeJson } from '../../logic/services/storage'
+import { can } from '../../logic/services/permissions'
 
-const STORAGE_KEY = storageKey('user')
-
-interface LoginResult {
-  success: boolean
-  error?: string
-}
-
+interface LoginResult { success: boolean; error?: string }
 interface AuthContextValue {
   user: User | null
   login: (username: string, password: string) => Promise<LoginResult>
   logout: () => void
   isAuthenticated: boolean
-  canAccessReports: boolean
+  can: (action: Parameters<typeof can>[1]) => boolean
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
-
 const readStoredUser = (): User | null => {
-  const raw = safeStorage.getItem(STORAGE_KEY)
-  if (!raw) return null
-  try {
-    const parsed: unknown = JSON.parse(raw)
-    return isUser(parsed) ? parsed : null
-  } catch {
-    return null
-  }
+  const stored = readJson<unknown>(KEYS.user, null)
+  return isUser(stored) ? stored : null
 }
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export const useAuth = (): AuthContextValue => {
   const context = useContext(AuthContext)
@@ -51,32 +31,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(readStoredUser)
 
   useEffect(() => {
-    if (user) safeStorage.setItem(STORAGE_KEY, JSON.stringify(user))
-    else safeStorage.removeItem(STORAGE_KEY)
+    if (user) writeJson(KEYS.user, user)
+    else safeStorage.removeItem(KEYS.user)
   }, [user])
 
   const login = useCallback(async (username: string, password: string): Promise<LoginResult> => {
-    await delay(450)
-    const authenticated = authenticate(username, password)
-    if (!authenticated) {
-      return { success: false, error: 'Usuario o contraseña incorrectos' }
-    }
+    const authenticated = await authenticate(username, password)
+    if (!authenticated) return { success: false, error: 'Usuario o contraseña incorrectos' }
     setUser(authenticated)
     return { success: true }
   }, [])
 
   const logout = useCallback(() => setUser(null), [])
-
-  const value = useMemo<AuthContextValue>(
-    () => ({
-      user,
-      login,
-      logout,
-      isAuthenticated: user !== null,
-      canAccessReports: user?.role === 'Administrador',
-    }),
-    [user, login, logout],
-  )
+  const value = useMemo<AuthContextValue>(() => ({
+    user, login, logout, isAuthenticated: user !== null, can: (action) => can(user, action),
+  }), [user, login, logout])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

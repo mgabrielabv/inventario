@@ -1,206 +1,185 @@
 /* ==========================================================================
-   INVENTARIO — rotulado de bodega
-   Paleta: burdeos de sello, arcilla, crema y papel kraft.
+   INVENTARIO — tokens de color y sistema visual
+   ÚNICO archivo del proyecto con colores literales. Los cuatro colores base
+   son ley; todo lo demás se deriva de ellos. Matiz permitido: 350°–40°.
    ========================================================================== */
 
 :root {
   color-scheme: light;
 
-  /* Paleta base */
+  /* --- Cuatro colores base (ley) ---------------------------------------- */
   --burgundy: #890000;
   --clay: #ba8376;
   --cream: #fff4ed;
   --tan: #d2b48c;
 
-  /* Superficies */
+  /* --- Superficies ------------------------------------------------------ */
   --bg: #fff4ed;
-  --bg-deep: #f6e5d8;
-  --surface: #fff9f4;
-  --surface-2: #f7e8dd;
-  --surface-3: #efd9ca;
+  --bg-alt: #f7e7db;
+  --surface: #fffcfa;
+  --surface-2: #f7e7db;
 
-  /* Papel kraft */
-  --kraft: #d2b48c;
-  --kraft-deep: #bd9c70;
-  --kraft-ink: #2a0a08;
-  --kraft-line: rgba(42, 10, 8, 0.24);
+  /* --- Texto ------------------------------------------------------------ */
+  --text: #2a0f0d;
+  --text-2: #6b4a44;
 
-  /* Tinta */
-  --ink: #2a0a08;
-  --ink-soft: #4d2a24;
-  --ink-subtle: #66443c;
-  --ink-faint: #7a574e;
+  /* --- Líneas y controles ----------------------------------------------- */
+  --hairline: rgba(42, 15, 13, 0.12);
+  --hairline-strong: rgba(42, 15, 13, 0.2);
+  --control-border: #a07f73;
 
-  /* Acento e interacción */
-  --accent: #890000;
-  --accent-hover: #6b0000;
-  --accent-contrast: #fff4ed;
-  --accent-soft: rgba(137, 0, 0, 0.07);
-  --accent-soft-strong: rgba(137, 0, 0, 0.14);
+  /* --- Acción ----------------------------------------------------------- */
+  --primary: #890000;
+  --on-primary: #fff4ed;
+  --primary-hover: #a31212;
+  --primary-text: #890000;
 
-  /* Líneas y reglas */
-  --line: rgba(137, 0, 0, 0.16);
-  --line-strong: rgba(137, 0, 0, 0.36);
-  --line-ink: rgba(42, 10, 8, 0.22);
-  --rule: #2a0a08;
-  --shadow-soft: 0 24px 60px rgba(84, 26, 18, 0.14);
+  /* --- Acentos ---------------------------------------------------------- */
+  --clay-text: #8f5a4d;
+  --tan-strong: #9a7440;
+  --on-clay: #2a0f0d;
+  --on-tan: #2a0f0d;
 
-  /* Estados: etiqueta de envío (siempre icono + texto) */
-  --label-normal-bg: #d2b48c;
-  --label-normal-ink: #2a0a08;
-  --label-low-bg: #ba8376;
-  --label-low-ink: #2a0a08;
-  --label-critical-bg: #890000;
-  --label-critical-ink: #fff4ed;
-  --status-normal: #4f5c36;
-  --status-normal-ink: #464f30;
-  --status-normal-soft: rgba(107, 122, 75, 0.14);
-  --status-low: #9a6a2c;
-  --status-low-ink: #6f4a17;
-  --status-low-soft: rgba(184, 137, 63, 0.16);
+  /* --- Estados (siempre punto + texto) ---------------------------------- */
+  --status-available: #9a7440;
+  --status-low: #8f5a4d;
   --status-critical: #890000;
-  --status-critical-ink: #890000;
-  --status-critical-soft: rgba(137, 0, 0, 0.1);
 
-  /* Sello de goma */
-  --stamp-ink: #890000;
-  --stamp-border: #890000;
-  --stamp-blend: multiply;
+  /* --- Velos y sombras (teñidas, nunca grises) -------------------------- */
+  --overlay: rgba(42, 15, 13, 0.42);
+  --shadow-sm: 0 1px 2px rgb(42 15 13 / 0.06);
+  --shadow-md: 0 8px 24px -8px rgb(42 15 13 / 0.14);
+  --shadow-lg: 0 1px 2px rgb(42 15 13 / 0.06), 0 16px 40px -12px rgb(42 15 13 / 0.18);
+  --shadow-inset: inset 0 1px 0 rgb(255 244 237 / 0.5);
+  --glass: color-mix(in oklab, var(--bg) 72%, transparent);
+  --glass-strong: color-mix(in oklab, var(--bg) 88%, transparent);
+  --focus-ring: color-mix(in oklab, var(--clay) 55%, transparent);
 
-  /* Panel de acceso (burdeos) */
-  --showcase-bg: #890000;
-  --showcase-bg-deep: #5e0000;
-  --showcase-ink: #fff4ed;
-  --showcase-muted: rgba(255, 244, 237, 0.72);
-  --showcase-line: rgba(255, 244, 237, 0.3);
-  --showcase-line-strong: rgba(255, 244, 237, 0.55);
-  --showcase-accent: #d2b48c;
+  /* --- Gradientes de malla (sin bloques sólidos) ------------------------ */
+  --mesh-1: rgba(186, 131, 118, 0.42);
+  --mesh-2: rgba(210, 180, 140, 0.36);
+  --mesh-3: rgba(137, 0, 0, 0.14);
+  --mesh-veil: color-mix(in oklab, var(--bg) 55%, transparent);
 
-  /* Ilustraciones (fondo oscuro por defecto) */
-  --illus-line: #e9c3b7;
-  --illus-box: #c98e7e;
-  --illus-box-alt: #e0b09e;
-  --illus-box-deep: #a86a5c;
-  --illus-accent: #d2b48c;
-  --illus-accent-soft: rgba(210, 180, 140, 0.16);
-  --illus-paper: #fff4ed;
-  --illus-ink: #2a0a08;
-  --illus-hole: #890000;
-  --illus-in: #b9c99a;
-  --illus-out: #e5bc77;
+  /* --- Caja ilustrada --------------------------------------------------- */
+  --box-top: color-mix(in oklab, var(--clay) 55%, var(--cream));
+  --box-left: color-mix(in oklab, var(--clay) 82%, var(--burgundy));
+  --box-right: color-mix(in oklab, var(--clay) 66%, var(--burgundy));
+  --box-edge: var(--hairline-strong);
+  --box-tape: var(--cream);
+  --box-label: var(--cream);
+  --box-shadow: rgb(42 15 13 / 0.16);
 
-  /* Tipografía */
-  --font-display: 'Archivo Variable', 'Arial Narrow', 'Helvetica Neue', sans-serif;
-  --font-ui: 'Archivo Variable', 'Arial Narrow', 'Helvetica Neue', sans-serif;
-  --font-data: 'IBM Plex Mono', 'SFMono-Regular', 'Cascadia Mono', Consolas, monospace;
-  /* Alias de compatibilidad */
-  --font-sans: var(--font-ui);
-  --font-mono: var(--font-data);
-
-  /* Métricas del rotulado */
-  --display-stretch: 68%;
-  --display-weight: 880;
-  --display-leading: 0.86;
-  --display-tracking: -0.005em;
-
-  /* Espaciado y forma */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
-  --space-7: 48px;
-  --space-8: 64px;
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 8px;
+  /* --- Radios ----------------------------------------------------------- */
+  --radius-input: 12px;
+  --radius-card: 24px;
+  --radius-media: 28px;
+  --radius-sheet: 28px;
+  --radius-active: 10px;
   --radius-pill: 999px;
 
-  /* Movimiento */
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur-fast: 160ms;
-  --dur-base: 280ms;
-  --dur-slow: 700ms;
+  /* --- Espaciado (rejilla de 8) ----------------------------------------- */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+  --s8: 64px;
+  --s9: 96px;
+  --s10: 120px;
+  --section-y: 120px;
+  --store-max: 1080px;
+  --detail-max: 1200px;
+  --admin-max: 1280px;
 
-  /* Capas */
-  --z-header: 30;
+  /* --- Tipografía ------------------------------------------------------- */
+  --font-ui: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+    'Inter Variable', Inter, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --fs-hero: clamp(56px, 7vw, 96px);
+  --fs-detail-title: clamp(40px, 5vw, 64px);
+  --fs-section: clamp(32px, 4vw, 56px);
+  --fs-catalog: clamp(40px, 4vw, 56px);
+  --fs-subtitle: clamp(21px, 2.2vw, 28px);
+  --fs-statement: clamp(28px, 3.4vw, 40px);
+  --fs-body: 17px;
+  --fs-ui: 15px;
+  --fs-caption: 13px;
+  --fs-min: 12px;
+
+  /* --- Estructura ------------------------------------------------------- */
+  --nav-h: 52px;
+  --sidebar-w: 232px;
+  --sidebar-collapsed: 72px;
+  --topbar-h: 60px;
+
+  /* --- Capas ------------------------------------------------------------ */
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-nav: 40;
   --z-overlay: 60;
-  --z-drawer: 70;
-
-  /* Medidas de layout */
-  --sidebar-width: 268px;
-  --header-height: 76px;
+  --z-sheet: 70;
+  --z-toast: 90;
 }
 
 .dark {
   color-scheme: dark;
 
-  --bg: #1a0807;
-  --bg-deep: #130504;
-  --surface: #24100e;
-  --surface-2: #2e1613;
-  --surface-3: #3a1d19;
+  /* Los cuatro colores base no cambian de tema. */
+  --burgundy: #890000;
+  --clay: #ba8376;
+  --cream: #fff4ed;
+  --tan: #d2b48c;
 
-  --kraft: #6b4a38;
-  --kraft-deep: #563a2c;
-  --kraft-ink: #fff4ed;
-  --kraft-line: rgba(255, 244, 237, 0.24);
+  --bg: #140606;
+  --bg-alt: #1b0909;
+  --surface: #240f0f;
+  --surface-2: #301717;
 
-  --ink: #fff4ed;
-  --ink-soft: #ead2c9;
-  --ink-subtle: #d6b8ad;
-  --ink-faint: #bd9b90;
+  --text: #fff4ed;
+  --text-2: #d8bdb1;
 
-  --accent: #e3a493;
-  --accent-hover: #f0bbae;
-  --accent-contrast: #2a0a08;
-  --accent-soft: rgba(227, 164, 147, 0.12);
-  --accent-soft-strong: rgba(227, 164, 147, 0.22);
+  --hairline: rgba(255, 244, 237, 0.12);
+  --hairline-strong: rgba(255, 244, 237, 0.22);
+  --control-border: #8a6a60;
 
-  --line: rgba(255, 244, 237, 0.16);
-  --line-strong: rgba(255, 244, 237, 0.36);
-  --line-ink: rgba(255, 244, 237, 0.2);
-  --rule: rgba(255, 244, 237, 0.72);
-  --shadow-soft: 0 28px 70px rgba(0, 0, 0, 0.5);
+  --primary: #890000;
+  --on-primary: #fff4ed;
+  --primary-hover: #a31212;
+  --primary-text: #e3a294;
 
-  --label-normal-bg: #d2b48c;
-  --label-normal-ink: #2a0a08;
-  --label-low-bg: #ba8376;
-  --label-low-ink: #2a0a08;
-  --label-critical-bg: #a51212;
-  --label-critical-ink: #fff4ed;
-  --status-normal: #b9c99a;
-  --status-normal-ink: #d5e0c0;
-  --status-normal-soft: rgba(156, 174, 121, 0.16);
-  --status-low: #e5bc77;
-  --status-low-ink: #f0d09d;
-  --status-low-soft: rgba(217, 165, 82, 0.16);
-  --status-critical: #f0b3a8;
-  --status-critical-ink: #f5c6bd;
-  --status-critical-soft: rgba(222, 143, 130, 0.16);
+  --clay-text: #ba8376;
+  --tan-strong: #d2b48c;
+  --on-clay: #2a0f0d;
+  --on-tan: #2a0f0d;
 
-  --stamp-ink: #e3a493;
-  --stamp-border: #e3a493;
-  --stamp-blend: screen;
+  --status-available: #d2b48c;
+  --status-low: #ba8376;
+  --status-critical: #e3a294;
 
-  --showcase-bg: #24100e;
-  --showcase-bg-deep: #1a0807;
-  --showcase-ink: #fff4ed;
-  --showcase-muted: rgba(255, 244, 237, 0.7);
-  --showcase-line: rgba(255, 244, 237, 0.2);
-  --showcase-line-strong: rgba(255, 244, 237, 0.44);
-  --showcase-accent: #e3a493;
+  --overlay: rgba(10, 2, 2, 0.66);
+  --shadow-sm: none;
+  --shadow-md: var(--shadow-inset);
+  --shadow-lg: var(--shadow-inset), 0 16px 40px -16px rgb(10 2 2 / 0.6);
+  --shadow-inset: inset 0 1px 0 rgb(255 244 237 / 0.06);
+  --glass: color-mix(in oklab, var(--bg) 76%, transparent);
+  --glass-strong: color-mix(in oklab, var(--bg) 92%, transparent);
+  --focus-ring: color-mix(in oklab, var(--clay) 65%, transparent);
 
-  --illus-line: #d6a596;
-  --illus-box: #a86a5c;
-  --illus-box-alt: #c98e7e;
-  --illus-box-deep: #7c4a3f;
-  --illus-accent: #e3a493;
-  --illus-accent-soft: rgba(227, 164, 147, 0.14);
-  --illus-paper: #fff4ed;
-  --illus-ink: #2a0a08;
-  --illus-hole: #1a0807;
-  --illus-in: #b9c99a;
-  --illus-out: #e5bc77;
+  --mesh-1: rgba(186, 131, 118, 0.22);
+  --mesh-2: rgba(210, 180, 140, 0.18);
+  --mesh-3: rgba(137, 0, 0, 0.34);
+  --mesh-veil: color-mix(in oklab, var(--bg) 62%, transparent);
+
+  --box-top: color-mix(in oklab, var(--clay) 46%, var(--tan));
+  --box-left: color-mix(in oklab, var(--clay) 72%, var(--burgundy));
+  --box-right: color-mix(in oklab, var(--clay) 58%, var(--burgundy));
+  --box-shadow: rgb(10 2 2 / 0.5);
+}
+
+/* Botón primario en oscuro: borde interior + halo para separarlo del fondo. */
+.dark .btn-primary {
+  box-shadow: inset 0 0 0 1px rgb(255 244 237 / 0.18), 0 0 24px -6px rgb(137 0 0 / 0.7);
 }

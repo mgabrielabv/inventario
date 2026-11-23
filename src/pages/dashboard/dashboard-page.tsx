@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useCategoryStock, useInventoryStats } from '../../logic/hooks/useInventoryStats'
 import { getMostMovedProduct, getRecentMovements } from '../../logic/store/selectors'
+import { getMovementSummary } from '../../logic/services/stock'
 import { formatNumber, formatRelativeTime, pluralize } from '../../logic/services/formatters'
 import { EASE_OUT } from '../../components/illustrations/motion'
 import { PageTitle } from '../../components/ui/page-title'
@@ -141,7 +142,7 @@ export const DashboardPage = () => {
                 return (
                   <div className="dash__recent-row" key={movement.id}>
                     <span className="dash__recent-product">
-                      {movement.producto}
+                      {movement.productoNombre}
                       <span className="dash__recent-time">
                         {movement.tipo} · {formatRelativeTime(movement.fecha)}
                       </span>
@@ -153,8 +154,9 @@ export const DashboardPage = () => {
                         isIn ? 'dash__recent-amount--in' : 'dash__recent-amount--out',
                       ].join(' ')}
                     >
-                      {isIn ? '+' : '−'}
-                      {movement.cantidad}
+                      {movement.tipo === 'Ajuste'
+                        ? getMovementSummary(movement)
+                        : `${isIn ? '+' : '−'}${movement.cantidad}`}
                     </span>
                   </div>
                 )

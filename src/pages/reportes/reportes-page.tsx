@@ -16,6 +16,7 @@ import {
   formatRelativeTime,
   pluralize,
 } from '../../logic/services/formatters'
+import { getMovementSummary } from '../../logic/services/stock'
 import { useExportCsv, useExportPdf } from '../../logic/hooks/useExportPdf'
 import { CATEGORIES, type CategoryFilter, type ProductStatus } from '../../logic/types'
 import { StatusBadge } from '../../components/ui/status-badge'
@@ -34,7 +35,7 @@ const REPORTS = [
   { id: 'top', label: 'Más movidos' },
 ] as const
 
-const STATUS_OPTIONS = ['Todos', 'Normal', 'Bajo', 'Crítico'] as const
+const STATUS_OPTIONS = ['Todos', 'Normal', 'Bajo', 'Crítico', 'Agotado'] as const
 type StatusFilter = (typeof STATUS_OPTIONS)[number]
 
 interface ReportColumn {
@@ -101,7 +102,7 @@ export const ReportesPage = () => {
       return {
         title: 'Stock actual',
         caption: `${filteredProducts.length} ${pluralize(filteredProducts.length, 'producto', 'productos')} · ${formatNumber(
-          filteredProducts.reduce((sum, product) => sum + product.cantidad, 0),
+          filteredProducts.reduce((sum, product) => sum + product.stock, 0),
         )} unidades`,
         columns: [
           { key: 'codigo', label: 'Código' },
@@ -110,20 +111,23 @@ export const ReportesPage = () => {
           { key: 'cantidad', label: 'Cantidad', align: 'right' },
           { key: 'estado', label: 'Estado' },
         ],
-        rows: filteredProducts.map((product) => ({
-          id: `stock-${product.id}`,
-          cells: [
-            { key: 'codigo', content: product.codigo, mono: true },
-            { key: 'producto', content: product.producto, strong: true },
-            { key: 'categoria', content: product.categoria },
-            { key: 'cantidad', content: formatNumber(product.cantidad), mono: true },
-            {
-              key: 'estado',
-              content: getProductStatus(product.cantidad).label,
-              status: getProductStatus(product.cantidad).status,
-            },
-          ],
-        })),
+        rows: filteredProducts.map((product) => {
+          const { status, label } = getProductStatus(product)
+          return {
+            id: `stock-${product.id}`,
+            cells: [
+              { key: 'codigo', content: product.codigo, mono: true },
+              { key: 'producto', content: product.nombre, strong: true },
+              { key: 'categoria', content: product.categoria },
+              { key: 'cantidad', content: formatNumber(product.stock), mono: true },
+              {
+                key: 'estado',
+                content: label,
+                status,
+              },
+            ],
+          }
+        }),
       }
     }
 
@@ -139,6 +143,7 @@ export const ReportesPage = () => {
           { key: 'fecha', label: 'Fecha' },
           { key: 'producto', label: 'Producto' },
           { key: 'tipo', label: 'Tipo' },
+          { key: 'motivo', label: 'Motivo' },
           { key: 'cantidad', label: 'Cantidad', align: 'right' },
           { key: 'usuario', label: 'Firmado por' },
         ],
@@ -148,8 +153,15 @@ export const ReportesPage = () => {
             id: `movement-${movement.id}`,
             cells: [
               { key: 'fecha', content: formatRelativeTime(movement.fecha), mono: true },
-              { key: 'producto', content: movement.producto, strong: true },
+              { key: 'producto', content: movement.productoNombre, strong: true },
               { key: 'tipo', content: movement.tipo },
+              {
+                key: 'motivo',
+                content:
+                  movement.tipo === 'Ajuste'
+                    ? getMovementSummary(movement)
+                    : movement.motivo,
+              },
               {
                 key: 'cantidad',
                 content: `${isIn ? '+' : '−'}${formatNumber(movement.cantidad)}`,
@@ -202,10 +214,10 @@ export const ReportesPage = () => {
       }
     }
 
-    const totals = new Map<number, { producto: string; units: number; count: number }>()
+    const totals = new Map<string, { productoNombre: string; units: number; count: number }>()
     for (const movement of filteredMovements) {
       const entry = totals.get(movement.productoId) ?? {
-        producto: movement.producto,
+        productoNombre: movement.productoNombre,
         units: 0,
         count: 0,
       }
@@ -226,10 +238,10 @@ export const ReportesPage = () => {
         { key: 'unidades', label: 'Unidades movidas', align: 'right' },
       ],
       rows: ranking.map((entry, index) => ({
-        id: `top-${entry.producto}`,
+        id: `top-${entry.productoNombre}`,
         cells: [
           { key: 'puesto', content: String(index + 1).padStart(2, '0'), mono: true },
-          { key: 'producto', content: entry.producto, strong: true },
+          { key: 'producto', content: entry.productoNombre, strong: true },
           { key: 'registros', content: formatNumber(entry.count), mono: true },
           { key: 'unidades', content: formatNumber(entry.units), mono: true },
         ],
