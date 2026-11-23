@@ -1,4 +1,13 @@
-import type { Especificacion, Movement, Order, Product, Unit } from '../logic/types'
+import type { Arquetipo, Especificacion, Movement, Order, Product, Unit } from '../logic/types'
+
+/** Un arquetipo por ficha semilla; `paquete` es el comodín para productos nuevos. */
+const ARQUETIPO_POR_CODIGO: Record<string, Arquetipo> = {
+  '001': 'laptop', '002': 'mouse', '003': 'teclado', '004': 'monitor', '005': 'audifonos',
+  '006': 'cuaderno', '007': 'lapices', '008': 'lampara', '009': 'cargador', '010': 'camara',
+  '011': 'pad', '012': 'grapadora', '013': 'taza', '014': 'ssd', '015': 'cable',
+  '016': 'agenda', '017': 'ventilador', '018': 'router', '019': 'funda', '020': 'notas',
+  '021': 'reloj', '022': 'microfono', '023': 'hub', '024': 'lapices', '025': 'portavelas',
+}
 
 const minutesAgo = (minutes: number): string => new Date(Date.now() - minutes * 60_000).toISOString()
 const daysAgo = (days: number): string => minutesAgo(days * 1440)
@@ -230,6 +239,7 @@ export const initialProducts: Product[] = seeds.map((seed, index) => ({
   ubicacion: seed.ubicacion,
   costo: seed.costo,
   publicado: seed.publicado ?? true,
+  arquetipo: ARQUETIPO_POR_CODIGO[seed.codigo] ?? 'paquete',
   precio: seed.precio,
   precioAnterior: seed.precioAnterior ?? null,
   descripcionCorta: seed.corta,
@@ -321,7 +331,7 @@ const sampleOrder = (
   return {
     id: `o-seed-${n}`, codigo: `INV-2026-${String(n).padStart(6, '0')}`, fecha,
     cliente: { nombre, telefono, email: 'cliente@example.com' }, entrega, lineas,
-    subtotal, envio, total: subtotal + envio, moneda: 'USD',
+    subtotal, descuento: 0, envio, total: subtotal + envio, moneda: 'USD',
     pago: { metodo, verificado: metodo !== 'efectivo' },
     estado, historial,
   }

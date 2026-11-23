@@ -6,7 +6,8 @@ import { applyMovement, buildVoidMovement } from '../services/stock'
 import { KEYS, safeStorage } from '../services/storage'
 import { slugify } from '../services/formatters'
 import {
-  MOTIVOS, type Movement, type MovementInput, type Product, type ProductDraft,
+  ARQUETIPOS, MOTIVOS, type Arquetipo, type Movement, type MovementInput, type Product,
+  type ProductDraft,
 } from '../types'
 
 export interface NewMovementInput extends MovementInput { usuario: string }
@@ -58,6 +59,8 @@ const normalizeProduct = (value: unknown): Product | null => {
     ubicacion: asString(raw.ubicacion),
     costo: typeof raw.costo === 'number' ? raw.costo : null,
     publicado: typeof raw.publicado === 'boolean' ? raw.publicado : true,
+    arquetipo: ARQUETIPOS.includes(raw.arquetipo as Arquetipo)
+      ? raw.arquetipo as Arquetipo : 'paquete',
     precio,
     precioAnterior: typeof raw.precioAnterior === 'number' ? raw.precioAnterior : null,
     descripcionCorta: asString(raw.descripcionCorta),
@@ -106,7 +109,14 @@ const normalizeMovement = (value: unknown, products: Product[]): Movement | null
 const migrate = (persisted: unknown, version: number): InventoryStore | undefined => {
   const state = persisted as Partial<InventoryStore> | undefined
   if (!state) return undefined
-  if (version >= 4) return state as InventoryStore
+  if (version >= 5) {
+    const products = (state.products ?? []).map((product) => ({
+      ...product,
+      arquetipo: ARQUETIPOS.includes(product.arquetipo)
+        ? product.arquetipo : 'paquete' as Arquetipo,
+    }))
+    return { ...state, products } as InventoryStore
+  }
   const products = (state.products ?? []).map(normalizeProduct).filter((p): p is Product => p !== null)
   const movements = (state.movements ?? [])
     .map((m) => normalizeMovement(m, products))
@@ -140,6 +150,7 @@ export const useInventoryStore = create<InventoryStore>()(
           ubicacion: draft.ubicacion,
           costo: draft.costo,
           publicado: false,
+          arquetipo: draft.arquetipo ?? 'paquete',
           precio: draft.precio,
           precioAnterior: null,
           descripcionCorta: '',
@@ -214,7 +225,7 @@ export const useInventoryStore = create<InventoryStore>()(
     {
       name: KEYS.inventory,
       storage: createJSONStorage(() => safeStorage),
-      version: 4,
+      version: 5,
       migrate: (persisted, version) => migrate(persisted, version) ?? ({} as InventoryStore),
       partialize: (state) => ({ products: state.products, movements: state.movements }) as InventoryStore,
     },

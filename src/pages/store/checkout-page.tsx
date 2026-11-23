@@ -44,7 +44,7 @@ interface CheckoutForm {
 const STEP_OF_FIELD: Record<string, number> = {
   nombre: 0, telefono: 0, email: 0,
   direccion: 1, zona: 1,
-  acepta: 2,
+  acepta: 3,
 }
 
 export const CheckoutPage = () => {
@@ -144,7 +144,7 @@ export const CheckoutPage = () => {
       : target === 1
         ? (delivery === 'delivery' ? ['direccion', 'zona'] : [])
         : target === 2
-          ? ['acepta']
+          ? []
           : Object.keys(all)
     const found: Record<string, string> = {}
     for (const key of keys) {
@@ -493,6 +493,9 @@ export const CheckoutPage = () => {
               {step === 3 && (
                 <section className="checkout-step__section" aria-labelledby="checkout-revisar-title">
                   <h2 id="checkout-revisar-title" className="t-ui t-strong">Revisa tu pedido</h2>
+                  {errors.acepta && (
+                    <p className="field__hint is-error" role="alert">{errors.acepta}</p>
+                  )}
 
                   <div className="checkout-review">
                     <div className="checkout-review__block">

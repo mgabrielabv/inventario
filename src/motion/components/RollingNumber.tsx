@@ -11,26 +11,26 @@ interface Props {
   ariaLabel?: string
 }
 
-/** Dígitos que deslizan en vertical al cambiar. */
+/** Solo los dígitos tienen ancho fijo; signos y separadores quedan estáticos. */
 export const RollingNumber = ({
   value, decimals = 0, className = '', prefix, suffix, ariaLabel,
 }: Props) => {
   const chars = useRollingNumber(value, decimals)
   const reduce = useReducedMotion()
-  const content = chars.map((item) => item.char).join('')
+  const content = `${prefix ?? ''}${chars.map((item) => item.char).join('')}${suffix ?? ''}`
 
   return (
     <span className={`rolling-number ${className}`} aria-label={ariaLabel ?? content}>
-      {prefix}
+      {prefix && <span className="rolling-number__static" aria-hidden="true">{prefix}</span>}
       <span aria-hidden="true" className="rolling-number__digits">
-        {chars.map((item, index) => (
-          <span className="rolling-number__slot" key={index}>
+        {chars.map((item) => item.digit ? (
+          <span className="rolling-number__slot" key={item.key}>
             {reduce ? (
               <span>{item.char}</span>
             ) : (
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
-                  key={item.key}
+                  key={item.char}
                   initial={{ y: '-100%', opacity: 0 }}
                   animate={{ y: '0%', opacity: 1 }}
                   exit={{ y: '100%', opacity: 0 }}
@@ -41,9 +41,11 @@ export const RollingNumber = ({
               </AnimatePresence>
             )}
           </span>
+        ) : (
+          <span className="rolling-number__static" key={item.key}>{item.char}</span>
         ))}
       </span>
-      {suffix}
+      {suffix && <span className="rolling-number__static" aria-hidden="true">{suffix}</span>}
     </span>
   )
 }

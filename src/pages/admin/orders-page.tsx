@@ -32,6 +32,7 @@ const FILTROS: Array<{ value: OrderFilter; label: string }> = [
 const PAGOS: Record<PaymentMethod, string> = {
   efectivo: 'Efectivo',
   transferencia: 'Transferencia',
+  movil: 'Pago móvil',
   'tarjeta-demo': 'Tarjeta (demo)',
 }
 

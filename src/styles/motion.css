@@ -29,6 +29,7 @@
 
 .rolling-number { display: inline-flex; align-items: baseline; }
 .rolling-number__digits { display: inline-flex; align-items: baseline; }
+.rolling-number__static { white-space: pre; }
 .rolling-number__slot {
   position: relative; display: inline-block; overflow: hidden;
   min-width: 0.62em; height: 1.16em; line-height: 1.16em; text-align: center;

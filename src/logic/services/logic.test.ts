@@ -27,7 +27,7 @@ const order = (estado: Order['estado'], cantidad: number): Order => ({
   cliente: { nombre: 'Cliente', telefono: '04241234567' },
   entrega: { tipo: 'retiro' },
   lineas: [{ productoId: 'p-test', nombre: 'Producto de prueba', codigo: 'T-001', precioUnit: 20, cantidad }],
-  subtotal: 20 * cantidad, envio: 0, total: 20 * cantidad, moneda: 'USD',
+  subtotal: 20 * cantidad, descuento: 0, envio: 0, total: 20 * cantidad, moneda: 'USD',
   pago: { metodo: 'efectivo', verificado: false }, estado,
   historial: [{ estado, fecha: new Date().toISOString() }],
 })
@@ -39,8 +39,15 @@ const settings = {
 function defaults() {
   return {
     tienda: { nombre: 'Inventario', direccion: 'Av. Principal', horario: 'Lun a Vie', telefono: '0424', whatsapp: '58424' },
-    entrega: { retiro: true, delivery: true, zonas: [{ nombre: 'Caracas', tarifa: 5 }], envioGratisDesde: 100 },
-    pagos: { efectivo: true, transferencia: true, datosTransferencia: 'Banco demo', tarjetaDemo: true },
+    entrega: {
+      retiro: true, delivery: true, zonas: [{ nombre: 'Caracas', tarifa: 5 }],
+      envioGratisDesde: 100, ventanas: ['09:00 – 12:00'],
+    },
+    pagos: {
+      efectivo: true, transferencia: true, datosTransferencia: 'Banco demo',
+      movil: true, datosMovil: '0424-0000000', tarjetaDemo: true,
+    },
+    promociones: { cupones: [] },
     moneda: { codigo: 'USD', tasaVES: null, fechaTasa: null, mostrarSecundario: false },
     catalogo: { categorias: ['Electrónica'], unidades: ['unidad' as const], ubicaciones: ['A-01'] },
     maxPorPedido: 20,
@@ -161,9 +168,10 @@ describe('catálogo, precios y permisos', () => {
     expect(calcShipping(entrega, settings, 10)).toBe(5)
     expect(calcShipping(entrega, settings, 100)).toBe(0)
     const lineas = [{ productoId: 'x', nombre: 'x', codigo: 'x', precioUnit: 20, cantidad: 2 }]
-    expect(calcTotals(lineas, entrega, settings)).toEqual({ subtotal: 40, envio: 5, total: 45 })
+    expect(calcTotals(lineas, entrega, settings)).toMatchObject({ subtotal: 40, envio: 5, total: 45 })
     expect(roundMoney(1.005)).toBe(1.01)
-    expect(formatMoney(10)).toContain('10')
+    expect(formatMoney(35)).toBe('USD 35,00')
+    expect(formatMoney(815)).toBe('USD 815,00')
   })
 
   it('aplica la matriz de permisos', () => {

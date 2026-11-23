@@ -34,6 +34,15 @@ export type ProductStatus = 'agotado' | 'critico' | 'bajo' | 'normal'
 export type StoreStatus = 'disponible' | 'pocas' | 'agotado'
 export interface StatusInfo { status: ProductStatus; label: string }
 
+/** Forma ilustrada del producto. Un mismo arquetipo sirve a varias fichas. */
+export const ARQUETIPOS = [
+  'laptop', 'monitor', 'mouse', 'teclado', 'audifonos', 'cargador', 'camara',
+  'pad', 'lampara', 'taza', 'ssd', 'cable', 'agenda', 'cuaderno', 'lapices',
+  'ventilador', 'router', 'funda', 'notas', 'reloj', 'microfono', 'hub',
+  'grapadora', 'portavelas', 'paquete',
+] as const
+export type Arquetipo = (typeof ARQUETIPOS)[number]
+
 export interface Especificacion { clave: string; valor: string }
 
 export interface Product {
@@ -51,6 +60,7 @@ export interface Product {
 
   /* tienda */
   publicado: boolean
+  arquetipo: Arquetipo
   precio: number | null
   precioAnterior: number | null
   descripcionCorta: string
@@ -71,6 +81,7 @@ export interface ProductDraft {
   codigo: string
   nombre: string
   categoria: string
+  arquetipo?: Arquetipo
   unidad: Unit
   stockInicial: number
   stockMinimo: number
@@ -138,7 +149,7 @@ export interface OrderDelivery {
   notas?: string
 }
 
-export type PaymentMethod = 'efectivo' | 'transferencia' | 'tarjeta-demo'
+export type PaymentMethod = 'efectivo' | 'transferencia' | 'movil' | 'tarjeta-demo'
 
 export interface Order {
   id: string
@@ -148,19 +159,43 @@ export interface Order {
   entrega: OrderDelivery
   lineas: OrderLine[]
   subtotal: number
+  descuento: number
+  cupon?: string
   envio: number
   total: number
   moneda: string
-  pago: { metodo: PaymentMethod; referencia?: string; verificado: boolean }
+  nota?: string
+  ventana?: string
+  pago: {
+    metodo: PaymentMethod
+    referencia?: string
+    comprobante?: string
+    vuelto?: number
+    verificado: boolean
+  }
   estado: OrderStatus
   historial: Array<{ estado: OrderStatus; fecha: string; usuario?: string; nota?: string }>
 }
 
 /* --- Carrito / favoritos ------------------------------------------------- */
-export interface CartLine { productoId: string; cantidad: number; agregadoEn: string }
+export interface CartLine {
+  productoId: string
+  cantidad: number
+  agregadoEn: string
+  precioAlAgregar?: number
+  guardado?: boolean
+}
 
 /* --- Configuración ------------------------------------------------------- */
 export interface DeliveryZone { nombre: string; tarifa: number }
+
+export interface Coupon {
+  codigo: string
+  tipo: 'porcentaje' | 'monto' | 'envio'
+  valor: number
+  minimo?: number
+  activo: boolean
+}
 
 export interface Settings {
   tienda: { nombre: string; direccion: string; horario: string; telefono: string; whatsapp: string }
@@ -169,13 +204,17 @@ export interface Settings {
     delivery: boolean
     zonas: DeliveryZone[]
     envioGratisDesde: number | null
+    ventanas: string[]
   }
   pagos: {
     efectivo: boolean
     transferencia: boolean
     datosTransferencia: string
+    movil: boolean
+    datosMovil: string
     tarjetaDemo: boolean
   }
+  promociones: { cupones: Coupon[] }
   moneda: { codigo: string; tasaVES: number | null; fechaTasa: string | null; mostrarSecundario: boolean }
   catalogo: { categorias: string[]; unidades: Unit[]; ubicaciones: string[] }
   maxPorPedido: number

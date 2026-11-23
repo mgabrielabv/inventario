@@ -18,6 +18,28 @@ interface OrdersStore {
 
 const last4 = (phone: string): string => phone.replace(/\D/g, '').slice(-4)
 
+/** Los pedidos guardados antes del rediseño no tenían descuento ni comprobante. */
+const normalizeOrder = (value: unknown): Order | null => {
+  if (!value || typeof value !== 'object') return null
+  const order = value as Order
+  if (!order.codigo || !Array.isArray(order.lineas)) return null
+  const subtotal = typeof order.subtotal === 'number' ? order.subtotal : 0
+  const envio = typeof order.envio === 'number' ? order.envio : 0
+  const total = typeof order.total === 'number' ? order.total : subtotal + envio
+  return {
+    ...order,
+    descuento: typeof order.descuento === 'number' ? order.descuento : 0,
+    envio,
+    subtotal,
+    total,
+    pago: {
+      ...order.pago,
+      verificado: typeof order.pago?.verificado === 'boolean' ? order.pago.verificado : false,
+    },
+    historial: Array.isArray(order.historial) ? order.historial : [],
+  }
+}
+
 export const useOrdersStore = create<OrdersStore>()(
   persist(
     (set, get) => ({
@@ -66,7 +88,15 @@ export const useOrdersStore = create<OrdersStore>()(
     {
       name: KEYS.orders,
       storage: createJSONStorage(() => safeStorage),
-      version: 1,
+      version: 2,
+      migrate: (persisted) => {
+        const state = persisted as Partial<OrdersStore> | undefined
+        return {
+          orders: (state?.orders ?? initialOrders)
+            .map(normalizeOrder)
+            .filter((order): order is Order => order !== null),
+        } as OrdersStore
+      },
       partialize: (state) => ({ orders: state.orders }) as OrdersStore,
     },
   ),

@@ -1,6 +1,6 @@
 import { AppError } from '../errors'
 import { getAvailable } from './stock'
-import { calcTotals, roundMoney } from './pricing'
+import { calcTotals, findCoupon, formatMoney, roundMoney } from './pricing'
 import {
   type CartLine, type MovementInput, type Order, type OrderCustomer,
   type OrderDelivery, type OrderLine, type OrderStatus, type PaymentMethod,
@@ -70,10 +70,35 @@ export interface CreateOrderInput {
   cart: CartLine[]
   cliente: OrderCustomer
   entrega: OrderDelivery
-  pago: { metodo: PaymentMethod; referencia?: string }
+  pago: { metodo: PaymentMethod; referencia?: string; comprobante?: string; vuelto?: number }
   settings: Settings
+  cupon?: string
+  nota?: string
+  ventana?: string
   now?: Date
 }
+
+export interface PriceChange {
+  productoId: string
+  nombre: string
+  precioAlAgregar: number
+  precioActual: number
+}
+
+/** Cambios de precio desde que se agregó la línea. No bloquean: se informan. */
+export const findPriceChanges = (cart: CartLine[], products: Product[]): PriceChange[] =>
+  cart.flatMap((line) => {
+    if (line.precioAlAgregar === undefined) return []
+    const product = products.find((item) => item.id === line.productoId)
+    if (!product || product.precio === null) return []
+    const actual = roundMoney(product.precio)
+    return actual === roundMoney(line.precioAlAgregar) ? [] : [{
+      productoId: product.id,
+      nombre: product.nombre,
+      precioAlAgregar: roundMoney(line.precioAlAgregar),
+      precioActual: actual,
+    }]
+  })
 
 export const createOrder = (input: CreateOrderInput): Order => {
   const now = input.now ?? new Date()
@@ -87,7 +112,10 @@ export const createOrder = (input: CreateOrderInput): Order => {
   if (max > 0 && lineas.reduce((sum, l) => sum + l.cantidad, 0) > max) {
     throw new AppError('VALIDATION', `El máximo por pedido es ${max} unidades`, 'carrito')
   }
-  const { subtotal, envio, total } = calcTotals(lineas, input.entrega, input.settings)
+  const coupon = findCoupon(input.cupon ?? '', input.settings)
+  const { subtotal, descuento, envio, total } = calcTotals(
+    lineas, input.entrega, input.settings, coupon,
+  )
   return {
     id: `o-${now.getTime().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
     codigo: generateOrderCode(input.orders, now),
@@ -96,10 +124,21 @@ export const createOrder = (input: CreateOrderInput): Order => {
     entrega: input.entrega,
     lineas,
     subtotal: roundMoney(subtotal),
+    descuento: roundMoney(descuento),
+    cupon: coupon?.codigo,
     envio: roundMoney(envio),
     total: roundMoney(total),
     moneda: input.settings.moneda.codigo || 'USD',
-    pago: { metodo: input.pago.metodo, referencia: input.pago.referencia, verificado: false },
+    nota: input.nota?.trim() || undefined,
+    ventana: input.ventana,
+    pago: {
+      metodo: input.pago.metodo,
+      referencia: input.pago.referencia,
+      comprobante: input.pago.comprobante,
+      vuelto: input.pago.metodo === 'efectivo' && input.pago.vuelto && input.pago.vuelto > 0
+        ? roundMoney(input.pago.vuelto) : undefined,
+      verificado: false,
+    },
     estado: 'Pendiente',
     historial: [{ estado: 'Pendiente', fecha: now.toISOString(), nota: 'Pedido recibido' }],
   }
@@ -139,6 +178,6 @@ export const whatsappLink = (order: Order, telefono: string, tienda: string): st
   const lineas = order.lineas
     .map((line) => `· ${line.cantidad} × ${line.nombre}`)
     .join('\n')
-  const texto = `${tienda}\nPedido ${order.codigo}\n${lineas}\nTotal: $${order.total.toFixed(2)}\nEstado: ${order.estado}`
+  const texto = `${tienda}\nPedido ${order.codigo}\n${lineas}\nTotal: ${formatMoney(order.total, order.moneda)}\nEstado: ${order.estado}`
   return `https://wa.me/${telefono.replace(/\D/g, '')}?text=${encodeURIComponent(texto)}`
 }

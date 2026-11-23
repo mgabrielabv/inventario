@@ -20,12 +20,21 @@ export const DEFAULT_SETTINGS: Settings = {
       { nombre: 'Otras zonas', tarifa: 12 },
     ],
     envioGratisDesde: 150,
+    ventanas: ['09:00 – 12:00', '12:00 – 15:00', '15:00 – 18:00'],
   },
   pagos: {
     efectivo: true,
     transferencia: true,
     datosTransferencia: 'Banco: Demostración\nCuenta: 0000-0000-00-0000000000\nTitular: Inventario',
+    movil: true,
+    datosMovil: 'Pago móvil · Demostración\nTeléfono: 0424-0000000\nTitular: Inventario',
     tarjetaDemo: true,
+  },
+  promociones: {
+    cupones: [
+      { codigo: 'BIENVENIDO10', tipo: 'porcentaje', valor: 10, activo: true },
+      { codigo: 'ENVIOGRATIS', tipo: 'envio', valor: 0, activo: true },
+    ],
   },
   moneda: {
     codigo: 'USD', tasaVES: null, fechaTasa: null, mostrarSecundario: false,
@@ -49,6 +58,7 @@ const merge = (saved: Partial<Settings> | undefined): Settings => ({
   tienda: { ...DEFAULT_SETTINGS.tienda, ...saved?.tienda },
   entrega: { ...DEFAULT_SETTINGS.entrega, ...saved?.entrega },
   pagos: { ...DEFAULT_SETTINGS.pagos, ...saved?.pagos },
+  promociones: { ...DEFAULT_SETTINGS.promociones, ...saved?.promociones },
   moneda: { ...DEFAULT_SETTINGS.moneda, ...saved?.moneda },
   catalogo: { ...DEFAULT_SETTINGS.catalogo, ...saved?.catalogo },
 })
