@@ -19,6 +19,7 @@ export const KEYS = {
   customer: 'inventario-customer-v2',
   recent: 'inventario-recent-v2',
   cartDraft: 'inventario-cart-draft-v1',
+  checkoutDraft: 'inventario-checkout-draft-v1',
   activity: 'inventario-activity',
 } as const
 
