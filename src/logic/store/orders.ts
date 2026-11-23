@@ -16,8 +16,6 @@ interface OrdersStore {
   findByCode: (codigo: string, telefonoOrEmail: string) => Order | null
 }
 
-const last4 = (phone: string): string => phone.replace(/\D/g, '').slice(-4)
-
 /** Los pedidos guardados antes del rediseño no tenían descuento ni comprobante. */
 const normalizeOrder = (value: unknown): Order | null => {
   if (!value || typeof value !== 'object') return null
@@ -79,10 +77,13 @@ export const useOrdersStore = create<OrdersStore>()(
 
       findByCode: (codigo, dato) => {
         const needle = dato.trim().toLowerCase()
-        return get().orders.find((order) =>
-          order.codigo.toLowerCase() === codigo.trim().toLowerCase()
-          && (last4(order.cliente.telefono) === needle.replace(/\D/g, '')
-            || (order.cliente.email ?? '').toLowerCase() === needle)) ?? null
+        const digits = needle.replace(/\D/g, '')
+        return get().orders.find((order) => {
+          if (order.codigo.toLowerCase() !== codigo.trim().toLowerCase()) return false
+          const phone = order.cliente.telefono.replace(/\D/g, '')
+          return (digits.length >= 4 && phone.endsWith(digits))
+            || (order.cliente.email ?? '').toLowerCase() === needle
+        }) ?? null
       },
     }),
     {

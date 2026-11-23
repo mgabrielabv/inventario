@@ -1,11 +1,14 @@
-import { Search } from 'lucide-react'
+import { ArrowRight, FileCheck2, Search, Truck } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { BoxMark } from '../../components/box/OpenBox'
 import { Button } from '../../components/ui/Button'
 import { Chip } from '../../components/ui/Chip'
 import { Field, Input } from '../../components/ui/Field'
+import { estimarEntrega } from '../../logic/services/delivery'
 import { formatShortDate, formatTime } from '../../logic/services/formatters'
 import { useOrdersStore } from '../../logic/store/orders'
+import { useSettingsStore } from '../../logic/store/settings'
 import type { Order } from '../../logic/types'
 
 const Timeline = ({ items }: { items: Order['historial'] }) => (
@@ -34,6 +37,7 @@ export const TrackingPage = () => {
   const [result, setResult] = useState<Result>(null)
   const [error, setError] = useState('')
   const findByCode = useOrdersStore((state) => state.findByCode)
+  const settings = useSettingsStore((state) => state.settings)
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -46,6 +50,11 @@ export const TrackingPage = () => {
     const found = findByCode(code, dato)
     setResult(found ?? 'missing')
   }
+
+  const estimate = result && result !== 'missing'
+    ? estimarEntrega(result.entrega, settings, new Date(result.fecha)) : null
+  const needsProof = result && result !== 'missing'
+    && ['movil', 'transferencia'].includes(result.pago.metodo)
 
   return (
     <div className="tracking-page container-store">
@@ -96,6 +105,7 @@ export const TrackingPage = () => {
         <div className="tracking-result">
           {result === 'missing' && (
             <div className="tracking-result__missing card" role="alert">
+              <BoxMark size={34} />
               <p className="t-ui t-strong">No encontramos ese pedido</p>
               <p className="t-caption">
                 Revisa el código y usa exactamente el teléfono o correo con el que se realizó.
@@ -116,15 +126,39 @@ export const TrackingPage = () => {
                 {formatShortDate(result.fecha)} · {result.lineas.length}{' '}
                 {result.lineas.length === 1 ? 'producto' : 'productos'}
               </p>
+
+              {estimate && (
+                <div className="tracking-estimate">
+                  <Truck size={18} strokeWidth={1.6} aria-hidden="true" />
+                  <div>
+                    <p className="t-mid t-strong">{estimate.titulo}</p>
+                    <p className="t-caption t-muted">
+                      Estimado para {formatShortDate(estimate.fecha)} · {estimate.detalle}
+                      {result.ventana ? ` · Ventana: ${result.ventana}` : ''}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {needsProof && (
+                <p className="tracking-proof t-caption">
+                  <FileCheck2 size={16} strokeWidth={1.6} aria-hidden="true" />
+                  {result.pago.comprobante
+                    ? 'Comprobante adjunto · pendiente de verificación.'
+                    : 'Sin comprobante adjunto · pendiente de verificación.'}
+                </p>
+              )}
+
               <Timeline items={result.historial ?? []} />
               <Link className="tracking-result__link t-mid" to={`/pedido/${result.codigo}`}>
-                Ver detalle del pedido
+                Ver detalle del pedido <ArrowRight size={15} strokeWidth={1.6} aria-hidden="true" />
               </Link>
             </article>
           )}
 
           {!result && (
             <div className="tracking-result__idle">
+              <BoxMark size={40} />
               <p className="t-caption">Aquí verás el estado del pedido después de consultarlo.</p>
             </div>
           )}
