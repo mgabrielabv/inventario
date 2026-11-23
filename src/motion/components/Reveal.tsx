@@ -8,6 +8,8 @@ interface RevealProps {
   className?: string
   delay?: number
   as?: 'div' | 'section' | 'li' | 'ul' | 'ol' | 'article'
+  'aria-label'?: string
+  id?: string
 }
 
 /* El estado base es visible: la animación solo acompaña, nunca oculta contenido. */
@@ -20,7 +22,9 @@ const revealItem: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: dur.base, ease: 'easeOut' } },
 }
 
-export const Reveal = ({ children, className = '', delay = 0, as = 'div' }: RevealProps) => {
+export const Reveal = ({
+  children, className = '', delay = 0, as = 'div', 'aria-label': ariaLabel, id,
+}: RevealProps) => {
   const reduce = useReducedMotion()
   const [safe, setSafe] = useState(false)
   const Tag = motion[as]
@@ -40,6 +44,8 @@ export const Reveal = ({ children, className = '', delay = 0, as = 'div' }: Reve
       viewport={{ once: true, amount: 0.08 }}
       transition={reduce ? { duration: dur.fast } : { delay }}
       style={{ opacity: 1 }}
+      aria-label={ariaLabel}
+      id={id}
     >
       {children}
     </Tag>

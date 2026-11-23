@@ -63,7 +63,13 @@ export const ProductCard = ({ product, available, compact = false }: Props) => {
       variants={riseItem}
     >
       <div className="product-card__media">
-        <ProductArt product={product} size="100%" view="hero" interactive />
+        <ProductArt
+          product={product}
+          size="100%"
+          view="hero"
+          interactive
+          layoutId={`product-art-${product.id}`}
+        />
         <Link className="product-card__cover" to={href} tabIndex={-1} aria-hidden="true" />
         {badge && !soldOut && (
           <span className={`product-card__badge product-card__badge--${badge.kind}`}>{badge.label}</span>

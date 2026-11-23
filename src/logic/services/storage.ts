@@ -17,6 +17,7 @@ export const KEYS = {
   favorites: 'inventario-favorites-v2',
   settings: 'inventario-settings-v2',
   customer: 'inventario-customer-v2',
+  recent: 'inventario-recent-v2',
   activity: 'inventario-activity',
 } as const
 
