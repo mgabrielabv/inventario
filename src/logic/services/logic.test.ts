@@ -7,13 +7,13 @@ import { hashPassword } from './auth'
 import { normalizeText, slugify } from './formatters'
 import { validateCheckout, validateMovementQuantity, validatePhone, validateProductDraft } from './validation'
 import {
-  applyMovement, buildVoidMovement, compareUrgency, getAvailable, getProductStatus,
-  getReserved, getStoreStatus, needsReplenishment,
+  applyMovement, buildVoidMovement, compareUrgency, getAvailable, getInventorySummary,
+  getProductStatus, getReserved, getStoreStatus, needsReplenishment,
 } from './stock'
 import {
   createOrder, deliveryMovements, findStockConflicts, generateOrderCode, nextStatus, transitionOrder,
 } from './orders'
-import type { Order, Product } from '../types'
+import type { Movement, Order, Product } from '../types'
 
 const product = (overrides: Partial<Product> = {}): Product => ({
   ...initialProducts[0]!,
@@ -33,10 +33,10 @@ const order = (estado: Order['estado'], cantidad: number): Order => ({
 })
 
 const settings = {
-  ...useDefaults(),
+  ...defaults(),
 }
 
-function useDefaults() {
+function defaults() {
   return {
     tienda: { nombre: 'Inventario', direccion: 'Av. Principal', horario: 'Lun a Vie', telefono: '0424', whatsapp: '58424' },
     entrega: { retiro: true, delivery: true, zonas: [{ nombre: 'Caracas', tarifa: 5 }], envioGratisDesde: 100 },
@@ -70,6 +70,34 @@ describe('stock y reservas', () => {
     expect(applyMovement(item, { productoId: item.id, tipo: 'Ajuste', cantidad: 7, motivo: 'Ajuste por conteo' }).product.stock).toBe(7)
     expect(() => applyMovement(item, { productoId: item.id, tipo: 'Salida', cantidad: 11, motivo: 'Venta' })).toThrow()
     expect(validateMovementQuantity('Salida', 11, 10)).toContain('insuficiente')
+  })
+
+  it('resume pedidos por atender y ventas del día', () => {
+    const ahora = new Date('2026-05-10T12:00:00.000Z')
+    const ayer = new Date('2026-05-09T12:00:00.000Z')
+    const movements: Movement[] = [
+      {
+        id: 'm-hoy', fecha: ahora.toISOString(), productoId: 'p-test',
+        productoNombre: 'Producto de prueba', tipo: 'Entrada', cantidad: 4,
+        stockAntes: 10, stockDespues: 14, motivo: 'Compra', referencia: '', nota: '', usuario: 'admin',
+      },
+      {
+        id: 'm-ayer', fecha: ayer.toISOString(), productoId: 'p-test',
+        productoNombre: 'Producto de prueba', tipo: 'Salida', cantidad: 2,
+        stockAntes: 14, stockDespues: 12, motivo: 'Venta', referencia: '', nota: '', usuario: 'admin',
+      },
+    ]
+    const orders: Order[] = [
+      order('Pendiente', 1), order('Pendiente', 2),
+      { ...order('Entregado', 3), fecha: ahora.toISOString(), total: 60 },
+      { ...order('Entregado', 4), fecha: ayer.toISOString(), total: 80 },
+    ]
+
+    const summary = getInventorySummary([product()], movements, orders, ahora)
+    expect(summary.pedidosPorAtender).toBe(2)
+    expect(summary.ventasHoy).toBe(60)
+    expect(summary.todayEntries).toBe(1)
+    expect(summary.todayExits).toBe(0)
   })
 
   it('anula un movimiento invirtiendo el efecto', () => {

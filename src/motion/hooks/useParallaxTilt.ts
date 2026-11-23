@@ -1,9 +1,9 @@
 import { useCallback, useRef } from 'react'
 import { useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion'
-import { spring } from '../tokens'
+import { spring, tilt } from '../tokens'
 
 /** A3/A6/A19 · inclinación suave con el puntero y brillo especular. */
-export const useParallaxTilt = (max = 8) => {
+export const useParallaxTilt = (max = tilt.maxDegrees) => {
   const reduce = useReducedMotion()
   const ref = useRef<HTMLDivElement | null>(null)
   const px = useMotionValue(0.5)
@@ -30,7 +30,7 @@ export const useParallaxTilt = (max = 8) => {
 
   return {
     ref,
-    style: reduce ? {} : { rotateX, rotateY, transformPerspective: 900 },
+    style: reduce ? {} : { rotateX, rotateY, transformPerspective: tilt.perspective },
     glare: reduce ? null : { x: glareX, y: glareY },
     onPointerMove,
     onPointerLeave,

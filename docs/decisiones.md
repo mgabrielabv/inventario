@@ -31,7 +31,30 @@ Inter Variable embebida como woff2 (subconjuntos latin y latin-ext) en `src/styl
 
 ## Movimiento
 
-`src/motion/tokens.ts` concentra muelles, duraciones y curvas (A1–A20). Los componentes importan esos tokens o las variantes de `src/motion/variants.ts`; no llevan números mágicos de animación. `MotionConfig reducedMotion="user"` y `@media (prefers-reduced-motion: reduce)` desactivan movimientos no esenciales.
+`src/motion/tokens.ts` concentra muelles, duraciones, curvas y parámetros de interacción; `src/motion/variants.ts` expone las variantes. Los componentes importan esos módulos y no llevan números mágicos de animación. `MotionConfig reducedMotion="user"` y `@media (prefers-reduced-motion: reduce)` desactivan movimientos no esenciales.
+
+|Token|Uso|
+|---|---|
+|A1|Transición de ruta en los dos layouts|
+|A2|Resaltado deslizante de la navegación del panel|
+|A3|Titular palabra por palabra con máscara y desenfoque|
+|A4|Relato fijado de 400 vh ligado al scroll, sin resorte|
+|A5|Aparición escalonada de tarjetas y secciones|
+|A6|Inclinación del puntero sobre la caja del héroe|
+|A7|Buscador y menú móvil como capas sobre la barra|
+|A8|Cambio de tema con View Transitions|
+|A9|Vuelo en arco al carrito y rebote del contador|
+|A10|Hojas laterales e inferior con resorte|
+|A11|Pasos direccionales del checkout|
+|A12|Cifras que ruedan al cambiar|
+|A13|Indicadores de existencias y reservas|
+|A14|Avisos como isla dinámica centrada|
+|A15|Resaltado de filas en buscador y paleta de comandos|
+|A16|Popovers y conmutadores con `layoutId`|
+|A17|Foco visible y anillos de control|
+|A18|Presión y confirmación de botones y cajas|
+|A19|Caja vacía que se asienta en estados sin datos|
+|A20|Caja abierta que se dibuja en estados vacíos|
 
 Los avisos son una “isla dinámica” centrada debajo de la barra: no tapan la navegación ni usan el toast de Sonner. El cambio de tema usa View Transitions cuando el navegador lo permite.
 
@@ -54,6 +77,10 @@ No hay pasarela de pago, notificaciones ni reseñas. El checkout declara explíc
 - `npm test` — pruebas unitarias de stock, reservas, pedidos, catálogo, precios, permisos, validación y hashing.
 - `npm run check:palette` y `npm run check:contrast` — ejecutados por `prebuild`.
 - `npm run build` — chequeo de tipos y HTML único.
-- `npm run verify:visual` — recorre rutas con Chrome del sistema, toma capturas en claro/oscuro y móvil, mide CLS, errores de consola y tamaño del HTML.
+- `npm run verify:visual` — recorre rutas con Chrome del sistema, toma capturas en claro/oscuro y móvil, ejecuta el acceso del personal y un checkout completo, y mide croma, CLS, errores de consola, peticiones externas y tamaño del HTML.
+
+La verificación detectó un fallo real en el checkout: React reutilizaba el nodo del botón “Continuar” al convertirlo en “Confirmar pedido” y el cambio de `type` a `submit` disparaba el envío antes de la revisión. Se corrigió dando claves distintas a ambos botones; el E2E cubre ahora los cuatro pasos hasta la confirmación.
+
+Resultado final: HTML de 1.015.839 bytes (0,97 MiB; 424.684 bytes gzip), croma visible 100%, CLS 0,0000, 0 errores de consola, 0 peticiones externas y ambos flujos E2E correctos.
 
 Las capturas anteriores quedan en `docs/capturas/` como referencia del estado inicial. Las nuevas se guardan en `docs/capturas/verificacion/` junto a `docs/verificacion-visual.json`.

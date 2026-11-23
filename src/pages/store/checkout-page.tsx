@@ -553,11 +553,11 @@ export const CheckoutPage = () => {
               </Button>
             )}
             {step < STEP_LABELS.length - 1 ? (
-              <Button onClick={goNext}>
+              <Button key="checkout-next" onClick={goNext}>
                 Continuar <ArrowRight size={17} strokeWidth={1.5} aria-hidden="true" />
               </Button>
             ) : (
-              <Button type="submit" disabled={submitting}>
+              <Button key="checkout-confirm" type="submit" disabled={submitting}>
                 {submitting ? 'Procesando…' : 'Confirmar pedido'}
               </Button>
             )}

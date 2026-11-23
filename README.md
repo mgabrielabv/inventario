@@ -74,6 +74,14 @@ docs/decisiones.md  # criterios de diseño y verificación
 
 ## Verificación
 
-`npm run verify:visual` abre Chrome del sistema (`/usr/bin/google-chrome`) sobre `vite preview`, recorre las rutas principales en claro, oscuro y móvil, inicia sesión con el perfil de administrador, guarda capturas en `docs/capturas/verificacion/` y escribe `docs/verificacion-visual.json` con tamaño del HTML, CLS y errores de consola.
+`npm run verify:visual` abre Chrome del sistema (`/usr/bin/google-chrome`) sobre el HTML generado (`file://`), inicia sesión con el perfil de administrador, completa un checkout hasta la confirmación del pedido, recorre las rutas en claro, oscuro y móvil, guarda capturas en `docs/capturas/verificacion/` y escribe `docs/verificacion-visual.json` con tamaño del HTML, CLS, errores de consola y peticiones externas.
 
-El presupuesto del HTML es **< 2.5 MB**. El informe incluye el tamaño real medido.
+El presupuesto del HTML es **< 2.5 MB**. Resultado medido en `npm test` (14 pruebas), `npm run build` y `npm run verify:visual`:
+
+- `dist/index.html`: **1.016.080 bytes** (0,97 MiB; 424.758 bytes gzip).
+- Croma visible dentro de 350°–40°: **100 %** en las 34 capturas.
+- Durante el scroll del héroe con CPU ×4: **CLS 0** y **0 tareas largas** (máx. 0 ms).
+- **0** errores de consola y **0** peticiones externas.
+- E2E correcto: acceso `admin/admin123` y checkout completo hasta `INV-2026-000007`.
+
+Índice de capturas: `home-*.png`, `narrative-{0,0.2,0.4,0.6,0.8,1}-*.png` (A4), `fly-to-cart-{0..5}-*.png` (A9) y `e2e-*.png`, todas en `docs/capturas/verificacion/`.

@@ -152,6 +152,8 @@ export interface InventorySummary {
   needsReplenishment: number
   todayEntries: number
   todayExits: number
+  pedidosPorAtender: number
+  ventasHoy: number
 }
 
 export const getInventorySummary = (
@@ -168,6 +170,10 @@ export const getInventorySummary = (
     needsReplenishment: active.filter((p) => needsReplenishment(p, orders)).length,
     todayEntries: today.filter((m) => m.tipo === 'Entrada').length,
     todayExits: today.filter((m) => m.tipo === 'Salida').length,
+    pedidosPorAtender: orders.filter((order) => order.estado === 'Pendiente').length,
+    ventasHoy: orders
+      .filter((order) => order.estado === 'Entregado' && isSameDay(order.fecha, now))
+      .reduce((total, order) => total + order.total, 0),
   }
 }
 

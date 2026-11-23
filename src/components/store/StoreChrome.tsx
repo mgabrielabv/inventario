@@ -23,7 +23,7 @@ import { RollingNumber } from '../../motion/components/RollingNumber'
 import { useCartBump, useFlyToCart } from '../../motion/hooks/useFlyToCart'
 import { ThemeToggle } from '../ui/ThemeToggle'
 import { riseItem } from '../../motion/variants'
-import { dur, ease, stagger } from '../../motion/tokens'
+import { dur, ease, overlayUI, stagger } from '../../motion/tokens'
 
 const links = [
   { to: '/', label: 'Inicio', end: true },
@@ -129,8 +129,8 @@ const MobileMenu = ({ open, onClose, onSearch }: {
     <AnimatePresence>
       {open && (
         <motion.div className="mobile-menu glass"
-          initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }} transition={{ duration: dur.base, ease: ease.out }}>
+          initial={{ opacity: 0, y: -overlayUI.offsetY }} animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -overlayUI.offsetY }} transition={{ duration: dur.base, ease: ease.out }}>
           <div className="mobile-menu__head">
             <span className="brand"><BoxMark size={22} /><span>Inventario</span></span>
             <button type="button" className="icon-btn" aria-label="Cerrar menú" onClick={onClose}><X size={20} /></button>
@@ -172,7 +172,7 @@ const SearchOverlay = ({ open, onClose }: { open: boolean; onClose: () => void }
   }, [query, products])
 
   useEffect(() => {
-    if (open) window.setTimeout(() => input.current?.focus(), 40)
+    if (open) window.setTimeout(() => input.current?.focus(), overlayUI.focusDelay)
     else setQuery('')
   }, [open])
 
@@ -185,7 +185,11 @@ const SearchOverlay = ({ open, onClose }: { open: boolean; onClose: () => void }
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
           transition={{ duration: dur.base, ease: ease.out }} onClick={onClose}>
           <motion.div className="search-overlay__panel glass" onClick={(event) => event.stopPropagation()}
-            initial={{ y: reduce ? 0 : -16, scale: reduce ? 1 : 0.98 }} animate={{ y: 0, scale: 1 }}
+            initial={{
+              y: reduce ? 0 : -overlayUI.panelOffsetY,
+              scale: reduce ? 1 : overlayUI.panelScale,
+            }}
+            animate={{ y: 0, scale: 1 }}
             transition={{ duration: dur.base, ease: ease.out }}>
             <div className="search-overlay__field">
               <Search size={22} strokeWidth={1.5} />

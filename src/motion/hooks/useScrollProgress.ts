@@ -1,21 +1,20 @@
 import { useRef } from 'react'
-import { useReducedMotion, useScroll, useSpring } from 'framer-motion'
-import { spring } from '../tokens'
+import { useScroll } from 'framer-motion'
 
-/** Progreso 0→1 de un contenedor, suavizado con resorte. */
-export const useScrollProgress = (offset: ['start' | 'end', 'start' | 'end'] = ['start start', 'end end']) => {
-  const ref = useRef<HTMLDivElement | null>(null)
-  const reduce = useReducedMotion()
+/**
+ * Progreso 0→1 de un contenedor ligado directamente al scroll.
+ * A4 usa el valor en crudo: un resorte añadiría fotogramas tras cada rueda
+ * y provocaría tareas largas con la CPU acelerada.
+ */
+export const useScrollProgress = (offset: string[] = ['start start', 'end end']) => {
+  const ref = useRef<HTMLElement | null>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: offset as never })
-  const smooth = useSpring(scrollYProgress, spring.soft)
-  return { ref, progress: reduce ? scrollYProgress : smooth, raw: scrollYProgress }
+  return { ref, progress: scrollYProgress, raw: scrollYProgress }
 }
 
 /** Factor 0→1→0 para secciones que se revelan al entrar y salir. */
 export const useInViewProgress = () => {
-  const ref = useRef<HTMLDivElement | null>(null)
-  const reduce = useReducedMotion()
+  const ref = useRef<HTMLElement | null>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const smooth = useSpring(scrollYProgress, spring.soft)
-  return { ref, progress: reduce ? scrollYProgress : smooth }
+  return { ref, progress: scrollYProgress }
 }

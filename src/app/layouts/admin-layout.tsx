@@ -12,7 +12,7 @@ import { useOrdersStore } from '../../logic/store/orders'
 import { needsReplenishment } from '../../logic/services/stock'
 import { ThemeToggle } from '../../components/ui/ThemeToggle'
 import { routeVariants, popover } from '../../motion/variants'
-import { spring } from '../../motion/tokens'
+import { overlayUI, spring } from '../../motion/tokens'
 
 interface NavItem { to: string; label: string; icon: ComponentType<{ size?: number; strokeWidth?: number }>; admin?: boolean }
 const NAV: NavItem[] = [
@@ -164,7 +164,12 @@ const CommandPalette = ({ open, onClose }: { open: boolean; onClose: () => void 
       !query || `${item.label} ${item.hint}`.toLowerCase().includes(query.toLowerCase())).slice(0, 9)
   }, [navigate, products, query])
 
-  useEffect(() => { if (open) { setQuery(''); setActive(0); window.setTimeout(() => input.current?.focus(), 30) } }, [open])
+  useEffect(() => {
+    if (open) {
+      setQuery(''); setActive(0)
+      window.setTimeout(() => input.current?.focus(), overlayUI.focusDelay)
+    }
+  }, [open])
 
   return (
     <AnimatePresence>
@@ -172,8 +177,11 @@ const CommandPalette = ({ open, onClose }: { open: boolean; onClose: () => void 
         <motion.div className="command-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
           onClick={onClose} role="dialog" aria-modal="true" aria-label="Paleta de comandos">
           <motion.div className="command-panel glass" onClick={(event) => event.stopPropagation()}
-            initial={{ opacity: 0, scale: 0.96, y: -8 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96 }} transition={spring.ui}>
+            initial={{
+              opacity: 0, scale: overlayUI.panelScale, y: -overlayUI.commandOffsetY,
+            }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: overlayUI.panelScale }} transition={spring.ui}>
             <div className="command-panel__field">
               <Search size={20} strokeWidth={1.5} />
               <input ref={input} value={query} placeholder="Buscar sección o producto…" aria-label="Comando"

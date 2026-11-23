@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useCallback, useEffect, useRef, type ReactNode } from 'react'
+import { sheetUI } from '../../motion/tokens'
 import { sheetDesktop, sheetMobile } from '../../motion/variants'
 
 interface Props {
@@ -37,7 +38,7 @@ export const Sheet = ({ open, onClose, title, children, side = 'right', classNam
     document.addEventListener('keydown', onKey)
     const id = window.setTimeout(() => {
       panel.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus()
-    }, 60)
+    }, sheetUI.focusDelay)
     return () => {
       document.removeEventListener('keydown', onKey)
       window.clearTimeout(id)
@@ -51,10 +52,10 @@ export const Sheet = ({ open, onClose, title, children, side = 'right', classNam
         <div className="sheet-root">
           <motion.div
             className="sheet-backdrop"
-            initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-            animate={{ opacity: 1, backdropFilter: 'blur(8px)' }}
-            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-            transition={{ duration: 0.24 }}
+            initial={{ opacity: 0, backdropFilter: `blur(0px)` }}
+            animate={{ opacity: 1, backdropFilter: `blur(${sheetUI.backdropBlur}px)` }}
+            exit={{ opacity: 0, backdropFilter: `blur(0px)` }}
+            transition={{ duration: sheetUI.backdropDuration }}
             onClick={onClose}
           />
           <motion.div
@@ -69,11 +70,11 @@ export const Sheet = ({ open, onClose, title, children, side = 'right', classNam
             exit="exit"
             drag={isMobile ? 'y' : 'x'}
             dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-            dragElastic={0.22}
+            dragElastic={sheetUI.dragElastic}
             onDragEnd={(_, info) => {
               const distance = isMobile ? info.offset.y : info.offset.x
               const velocity = isMobile ? info.velocity.y : info.velocity.x
-              if (distance > 120 || velocity > 700) onClose()
+              if (distance > sheetUI.dragDistance || velocity > sheetUI.dragVelocity) onClose()
             }}
           >
             <div className="sheet__grip" aria-hidden="true" />

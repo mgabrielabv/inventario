@@ -1,31 +1,40 @@
 import { useEffect, useRef, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
+import { meshMotion } from '../tokens'
 
-/** Malla difuminada. Se pausa fuera de pantalla y con la pestaña oculta. */
+/** Malla difuminada. Se pausa fuera de pantalla, al desplazarse y con la pestaña oculta. */
 export const MeshBackground = () => {
   const ref = useRef<HTMLDivElement | null>(null)
-  const [active, setActive] = useState(true)
+  const [inView, setInView] = useState(true)
+  const [visible, setVisible] = useState(() => typeof document === 'undefined' || !document.hidden)
+  const [scrolling, setScrolling] = useState(false)
   const reduce = useReducedMotion()
 
   useEffect(() => {
     const element = ref.current
     if (!element) return
-    let inView = true
-    let visible = !document.hidden
-    const sync = () => setActive(inView && visible && !reduce)
+    let timer = 0
     const observer = new IntersectionObserver(([entry]) => {
-      inView = entry?.isIntersecting ?? false
-      sync()
+      setInView(entry?.isIntersecting ?? false)
     }, { threshold: 0 })
     observer.observe(element)
-    const onVisibility = () => { visible = !document.hidden; sync() }
+    const onVisibility = () => setVisible(!document.hidden)
+    const onScroll = () => {
+      setScrolling(true)
+      window.clearTimeout(timer)
+      timer = window.setTimeout(() => setScrolling(false), meshMotion.resumeDelay)
+    }
     document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => {
       observer.disconnect()
       document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('scroll', onScroll)
+      window.clearTimeout(timer)
     }
-  }, [reduce])
+  }, [])
 
+  const active = inView && visible && !scrolling && !reduce
   return (
     <div ref={ref} className={`mesh${active ? '' : ' mesh--paused'}`} aria-hidden="true">
       <span className="mesh__blob mesh__blob--1" />

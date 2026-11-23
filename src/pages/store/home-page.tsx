@@ -9,6 +9,7 @@ import { Reveal } from '../../motion/components/Reveal'
 import { WordReveal } from '../../motion/components/WordReveal'
 import { useParallaxTilt } from '../../motion/hooks/useParallaxTilt'
 import { useScrollProgress } from '../../motion/hooks/useScrollProgress'
+import { narrative } from '../../motion/tokens'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
@@ -32,15 +33,43 @@ const steps = [
   },
 ]
 
+const narrativeSteps = [
+  {
+    title: 'Revisa qué hay.',
+    text: 'Existencias, ubicación y estado de cada producto en un solo sitio.',
+  },
+  {
+    title: 'Reserva al confirmar.',
+    text: 'El pedido aparta las unidades para que no se vendan dos veces.',
+  },
+  {
+    title: 'Registra la entrega.',
+    text: 'La salida queda asociada al pedido y el inventario se actualiza.',
+  },
+]
+
+const input = [...narrative.stops]
+const fadeIn = [...narrative.in]
+const fadeMiddle = [...narrative.middle]
+const fadeOut = [...narrative.out]
+const shift = [...narrative.shift]
+
 export const HomePage = () => {
   const products = useInventoryStore((state) => state.products)
   const orders = useOrdersStore((state) => state.orders)
   const categories = useSettingsStore((state) => state.settings.catalogo.categorias)
   const reduce = useReducedMotion()
   const tilt = useParallaxTilt()
-  const { ref: statementRef, progress } = useScrollProgress()
-  const statementOpacity = useTransform(progress, [0, 0.2, 0.8, 1], [0.4, 1, 1, 0.4])
-  const statementScale = useTransform(progress, [0, 0.5, 1], [0.97, 1, 1.02])
+  const { ref: narrativeRef, progress } = useScrollProgress()
+
+  const firstOpacity = useTransform(progress, input, fadeIn)
+  const secondOpacity = useTransform(progress, input, fadeMiddle)
+  const thirdOpacity = useTransform(progress, input, fadeOut)
+  const firstShift = useTransform(progress, input, shift)
+  const secondShift = useTransform(progress, input, shift)
+  const thirdShift = useTransform(progress, input, shift)
+  const opacities = [firstOpacity, secondOpacity, thirdOpacity]
+  const shifts = [firstShift, secondShift, thirdShift]
 
   const featured = useMemo(() =>
     products.filter((product) =>
@@ -63,7 +92,7 @@ export const HomePage = () => {
             <p className="home-hero__eyebrow t-min t-clay">Tienda de demostración</p>
             <div id="home-hero-title">
               <WordReveal
-                text="Todo en su lugar"
+                text="Disponible hoy."
                 className="t-hero home-hero__title"
                 as="h1"
               />
@@ -76,6 +105,14 @@ export const HomePage = () => {
                 Ver catálogo <ArrowRight size={18} strokeWidth={1.5} aria-hidden="true" />
               </Link>
               <Link className="btn btn--secondary" to="/seguimiento">Seguir un pedido</Link>
+              <button
+                className="home-hero__tertiary"
+                type="button"
+                onClick={() => document.getElementById('home-steps')
+                  ?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' })}
+              >
+                Cómo funciona <span aria-hidden="true">›</span>
+              </button>
             </div>
             <p className="home-hero__note t-min">Compra simulada. No se realiza ningún cobro.</p>
           </div>
@@ -96,17 +133,33 @@ export const HomePage = () => {
         </div>
       </section>
 
-      <section className="home-statement section-store" aria-label="Nuestra propuesta">
-        <div ref={statementRef}>
-          <motion.div
-            className="container-store home-statement__inner"
-            style={reduce ? undefined : { opacity: statementOpacity, scale: statementScale }}
-          >
-            <p className="t-min t-clay">Inventario sin ruido</p>
-            <p className="t-statement home-statement__text">
-              Cada caja cuenta. Saber qué hay, cuánto cuesta y cuándo llega debería ser simple.
-            </p>
-          </motion.div>
+      <section
+        className="home-narrative section-store"
+        ref={narrativeRef}
+        aria-label="Cómo se mueve el inventario"
+      >
+        <div className="home-narrative__sticky">
+          <div className="container-store home-narrative__inner">
+            <motion.span
+              className="home-narrative__progress"
+              style={reduce ? undefined : { scaleX: progress }}
+              aria-hidden="true"
+            />
+            <p className="t-min t-clay">Del catálogo al registro</p>
+            <div className="home-narrative__steps">
+              {narrativeSteps.map((step, index) => (
+                <motion.div
+                  className="home-narrative__step"
+                  key={step.title}
+                  style={reduce ? undefined : { opacity: opacities[index], y: shifts[index] }}
+                >
+                  <span className="t-min t-clay">{`0${index + 1}`}</span>
+                  <p className="t-statement">{step.title}</p>
+                  <p className="t-subtitle">{step.text}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -123,7 +176,7 @@ export const HomePage = () => {
           </header>
 
           {featured.length > 0 ? (
-            <Reveal className="home-grid" as="div">
+            <Reveal className="home-featured__rail" as="div">
               {featured.map((product) => (
                 <ProductCard
                   key={product.id}
@@ -160,9 +213,9 @@ export const HomePage = () => {
         </div>
       </section>
 
-      <section className="home-steps section-store" aria-labelledby="home-steps-title">
+      <section className="home-steps section-store" id="home-steps" aria-labelledby="home-steps-title">
         <div className="container-store">
-          <h2 id="home-steps-title" className="t-section home-steps__title">Cómo funciona</h2>
+          <h2 id="home-steps-title" className="t-section home-steps__title">Cómo comprar</h2>
           <Reveal className="home-steps__grid" as="ol">
             {steps.map(({ icon: Icon, title, text }, index) => (
               <li className="home-step" key={title}>

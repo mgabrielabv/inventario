@@ -55,11 +55,11 @@ export const createUser = async (
 }
 
 export const resetPassword = async (userId: string, password: string): Promise<void> => {
-  const users = getUsers().map((user) => {
+  const users = await Promise.all(getUsers().map(async (user) => {
     if (user.id !== userId) return user
     const salt = makeSalt()
     return { ...user, salt, passwordHash: await hashPassword(password, salt) }
-  })
+  }))
   saveUsers(users)
 }
 

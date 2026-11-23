@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { House, Laptop, Mouse, Package, PenLine } from 'lucide-react'
 import type { CSSProperties } from 'react'
-import { spring } from '../../motion/tokens'
+import { boxInteractive, spring } from '../../motion/tokens'
 
 const ICONS = { Electrónica: Laptop, Accesorios: Mouse, Papelería: PenLine, Hogar: House, Otras: Package }
 const BASES: Record<string, string> = {
@@ -57,8 +57,8 @@ export const ProductBox = ({
       className={`product-box ${interactive ? 'product-box--interactive' : ''} ${className}`}
       style={{ width: size, height: size, ...vars, ...style }}
       layoutId={layoutId}
-      whileHover={interactive && !reduce ? { y: -6 } : undefined}
-      whileTap={interactive && !reduce ? { scale: 0.98 } : undefined}
+      whileHover={interactive && !reduce ? { y: boxInteractive.hoverY } : undefined}
+      whileTap={interactive && !reduce ? { scale: boxInteractive.tapScale } : undefined}
       transition={spring.ui}
     >
       <svg viewBox="0 0 200 160" role="img" aria-label={`Caja de ${nombre ?? categoria}`} width="100%" height="100%">

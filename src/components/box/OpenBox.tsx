@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { spring } from '../../motion/tokens'
+import { openBox, spring } from '../../motion/tokens'
 
 /** Marca pequeña: la caja abierta original del login. */
 export const BoxMark = ({ className = '', size = 26 }: { className?: string; size?: number }) => (
@@ -16,13 +16,13 @@ export const OpenBox = ({ size = 180, className = '' }: { size?: number; classNa
   const stroke = {
     initial: reduce ? false : { pathLength: 0, opacity: 0 },
     animate: { pathLength: 1, opacity: 1 },
-    transition: { duration: reduce ? 0 : 0.8, ease: 'easeOut' as const },
+    transition: { duration: reduce ? 0 : openBox.drawDuration, ease: 'easeOut' as const },
   }
   return (
     <motion.div
       className={`open-box ${className}`}
       style={{ width: size, height: size }}
-      initial={reduce ? false : { y: 16, scale: 0.92 }}
+      initial={reduce ? false : { y: openBox.initialY, scale: openBox.initialScale }}
       animate={{ y: 0, scale: 1 }}
       transition={spring.soft}
     >

@@ -1,0 +1,177 @@
+{
+  "generatedAt": "2026-11-23T03:04:53.247Z",
+  "html": {
+    "bytes": 1016080,
+    "gzipBytes": 424758,
+    "limitBytes": 2621440
+  },
+  "routes": {
+    "home-light": {
+      "hueOk": 1,
+      "sampled": 52376
+    },
+    "catalogo-light": {
+      "hueOk": 1,
+      "sampled": 1037
+    },
+    "ficha-light": {
+      "hueOk": 1,
+      "sampled": 1037
+    },
+    "carrito-light": {
+      "hueOk": 1,
+      "sampled": 60077
+    },
+    "checkout-light": {
+      "hueOk": 1,
+      "sampled": 57197
+    },
+    "seguimiento-light": {
+      "hueOk": 1,
+      "sampled": 60989
+    },
+    "favoritos-light": {
+      "hueOk": 1,
+      "sampled": 49637
+    },
+    "login-light": {
+      "hueOk": 1,
+      "sampled": 182868
+    },
+    "admin-inicio-light": {
+      "hueOk": 1,
+      "sampled": 10757
+    },
+    "admin-inventario-light": {
+      "hueOk": 1,
+      "sampled": 17978
+    },
+    "admin-movimientos-light": {
+      "hueOk": 1,
+      "sampled": 7622
+    },
+    "admin-pedidos-light": {
+      "hueOk": 1,
+      "sampled": 12671
+    },
+    "admin-reposicion-light": {
+      "hueOk": 1,
+      "sampled": 3063
+    },
+    "admin-reportes-light": {
+      "hueOk": 1,
+      "sampled": 17455
+    },
+    "home-dark": {
+      "hueOk": 1,
+      "sampled": 7616
+    },
+    "catalogo-dark": {
+      "hueOk": 1,
+      "sampled": 841
+    },
+    "ficha-dark": {
+      "hueOk": 1,
+      "sampled": 841
+    },
+    "carrito-dark": {
+      "hueOk": 1,
+      "sampled": 772
+    },
+    "checkout-dark": {
+      "hueOk": 1,
+      "sampled": 772
+    },
+    "seguimiento-dark": {
+      "hueOk": 1,
+      "sampled": 1653
+    },
+    "favoritos-dark": {
+      "hueOk": 1,
+      "sampled": 772
+    },
+    "login-dark": {
+      "hueOk": 1,
+      "sampled": 10936
+    },
+    "admin-inicio-dark": {
+      "hueOk": 1,
+      "sampled": 15254
+    },
+    "admin-inventario-dark": {
+      "hueOk": 1,
+      "sampled": 24714
+    },
+    "admin-movimientos-dark": {
+      "hueOk": 1,
+      "sampled": 11865
+    },
+    "admin-pedidos-dark": {
+      "hueOk": 1,
+      "sampled": 18209
+    },
+    "admin-reposicion-dark": {
+      "hueOk": 1,
+      "sampled": 6609
+    },
+    "admin-reportes-dark": {
+      "hueOk": 1,
+      "sampled": 21479
+    },
+    "home-mobile-light": {
+      "hueOk": 1,
+      "sampled": 16952
+    },
+    "catalogo-mobile-light": {
+      "hueOk": 1,
+      "sampled": 69
+    },
+    "ficha-mobile-light": {
+      "hueOk": 1,
+      "sampled": 69
+    },
+    "home-mobile-dark": {
+      "hueOk": 1,
+      "sampled": 7212
+    },
+    "catalogo-mobile-dark": {
+      "hueOk": 1,
+      "sampled": 0
+    },
+    "ficha-mobile-dark": {
+      "hueOk": 1,
+      "sampled": 0
+    }
+  },
+  "palette": {
+    "worst": 1,
+    "threshold": 0.98
+  },
+  "performance": {
+    "light": {
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "dark": {
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    }
+  },
+  "e2e": {
+    "login": {
+      "ok": true,
+      "hash": "#/admin",
+      "user": "A"
+    },
+    "checkout": {
+      "ok": true,
+      "hash": "#/pedido/INV-2026-000007",
+      "code": "INV-2026-000007"
+    }
+  },
+  "externalRequests": [],
+  "errors": [],
+  "problems": []
+}

@@ -2,7 +2,7 @@ import {
   createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode,
 } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { dur, ease, spring } from '../tokens'
+import { dur, ease, flyCart, spring } from '../tokens'
 
 interface Flight { id: number; x: number; y: number; dx: number; dy: number }
 
@@ -37,7 +37,7 @@ export const FlyToCartProvider = ({ children }: { children: ReactNode }) => {
     window.setTimeout(() => {
       setFlights((current) => current.filter((item) => item.id !== id))
       setBump((value) => value + 1)
-    }, reduce ? 0 : dur.slow + 0.12)
+    }, reduce ? 0 : dur.slow + flyCart.settle)
   }, [reduce])
 
   const value = useMemo(() => ({ fly, setCartTarget, bump }), [fly, bump, setCartTarget])
@@ -53,11 +53,14 @@ export const FlyToCartProvider = ({ children }: { children: ReactNode }) => {
               className="fly-token"
               style={{ left: flight.x, top: flight.y }}
               initial={{ x: 0, y: 0, scale: 1, opacity: 1, rotate: 0 }}
-              animate={{ x: flight.dx, y: flight.dy, scale: 0.2, opacity: 0.5, rotate: 12 }}
+              animate={{
+                x: flight.dx, y: flight.dy,
+                scale: flyCart.endScale, opacity: flyCart.endOpacity, rotate: flyCart.endRotate,
+              }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, ease: ease.ios }}
+              transition={{ duration: flyCart.duration, ease: ease.ios }}
             >
-              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width={flyCart.iconSize} height={flyCart.iconSize} aria-hidden="true">
                 <path d="M3 8l9-4 9 4-9 4-9-4Z" fill="var(--box-top)" />
                 <path d="M3 8v9l9 4v-9L3 8Z" fill="var(--box-left)" />
                 <path d="M21 8v9l-9 4v-9l9-4Z" fill="var(--box-right)" />
@@ -81,7 +84,7 @@ export const useCartBump = (bump: number) => {
   const reduce = useReducedMotion()
   return {
     animate: bump > 0 && !reduce
-      ? { scale: [1, 1.28, 1], transition: spring.snappy }
+      ? { scale: [1, flyCart.bumpScale, 1], transition: spring.snappy }
       : { scale: 1 },
     key: bump,
   }
