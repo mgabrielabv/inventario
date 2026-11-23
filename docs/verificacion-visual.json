@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T03:04:53.247Z",
+  "generatedAt": "2026-11-23T03:07:01.533Z",
   "html": {
     "bytes": 1016080,
     "gzipBytes": 424758,
@@ -8,7 +8,7 @@
   "routes": {
     "home-light": {
       "hueOk": 1,
-      "sampled": 52376
+      "sampled": 52378
     },
     "catalogo-light": {
       "hueOk": 1,
@@ -36,7 +36,7 @@
     },
     "login-light": {
       "hueOk": 1,
-      "sampled": 182868
+      "sampled": 182800
     },
     "admin-inicio-light": {
       "hueOk": 1,
@@ -48,11 +48,11 @@
     },
     "admin-movimientos-light": {
       "hueOk": 1,
-      "sampled": 7622
+      "sampled": 7640
     },
     "admin-pedidos-light": {
       "hueOk": 1,
-      "sampled": 12671
+      "sampled": 12653
     },
     "admin-reposicion-light": {
       "hueOk": 1,
@@ -60,7 +60,7 @@
     },
     "admin-reportes-light": {
       "hueOk": 1,
-      "sampled": 17455
+      "sampled": 17456
     },
     "home-dark": {
       "hueOk": 1,
@@ -92,7 +92,7 @@
     },
     "login-dark": {
       "hueOk": 1,
-      "sampled": 10936
+      "sampled": 11048
     },
     "admin-inicio-dark": {
       "hueOk": 1,
@@ -104,11 +104,11 @@
     },
     "admin-movimientos-dark": {
       "hueOk": 1,
-      "sampled": 11865
+      "sampled": 11922
     },
     "admin-pedidos-dark": {
       "hueOk": 1,
-      "sampled": 18209
+      "sampled": 18204
     },
     "admin-reposicion-dark": {
       "hueOk": 1,

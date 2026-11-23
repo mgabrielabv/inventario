@@ -81,6 +81,8 @@ No hay pasarela de pago, notificaciones ni reseñas. El checkout declara explíc
 
 La verificación detectó un fallo real en el checkout: React reutilizaba el nodo del botón “Continuar” al convertirlo en “Confirmar pedido” y el cambio de `type` a `submit` disparaba el envío antes de la revisión. Se corrigió dando claves distintas a ambos botones; el E2E cubre ahora los cuatro pasos hasta la confirmación.
 
-Resultado final: HTML de 1.015.839 bytes (0,97 MiB; 424.684 bytes gzip), croma visible 100%, CLS 0,0000, 0 errores de consola, 0 peticiones externas y ambos flujos E2E correctos.
+Resultado final: HTML de 1.016.080 bytes (0,97 MiB; 424.758 bytes gzip), croma visible 100 %, CLS 0 y 0 tareas largas durante el scroll con CPU ×4, 0 errores de consola, 0 peticiones externas y ambos flujos E2E correctos. `npm test` reúne 14 pruebas.
+
+El relato fijado (A4) se dejó ligado al valor en crudo del scroll: un resorte añadía fotogramas y generaba tareas largas bajo CPU ×4. La malla de fondo se pausa mientras hay desplazamiento y se reanuda 160 ms después. Con esos dos ajustes el CLS y las tareas largas cayeron a cero sin quitar movimiento.
 
 Las capturas anteriores quedan en `docs/capturas/` como referencia del estado inicial. Las nuevas se guardan en `docs/capturas/verificacion/` junto a `docs/verificacion-visual.json`.
