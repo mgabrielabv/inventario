@@ -14,7 +14,9 @@ import { formatShortDate } from '../../logic/services/formatters'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
 import { DEFAULT_SETTINGS, useSettingsStore } from '../../logic/store/settings'
-import { type DeliveryZone, type Settings, type StoredUser, type UserRole } from '../../logic/types'
+import {
+  type Coupon, type DeliveryZone, type Settings, type StoredUser, type UserRole,
+} from '../../logic/types'
 
 const Seccion = ({ title, description, children }: {
   title: string; description?: string; children: ReactNode
@@ -61,6 +63,8 @@ export const AdminSettingsPage = () => {
     setDraft((prev) => ({ ...prev, entrega: { ...prev.entrega, ...patch } }))
   const patchPagos = (patch: Partial<Settings['pagos']>) =>
     setDraft((prev) => ({ ...prev, pagos: { ...prev.pagos, ...patch } }))
+  const patchPromociones = (patch: Partial<Settings['promociones']>) =>
+    setDraft((prev) => ({ ...prev, promociones: { ...prev.promociones, ...patch } }))
   const patchMoneda = (patch: Partial<Settings['moneda']>) =>
     setDraft((prev) => ({ ...prev, moneda: { ...prev.moneda, ...patch } }))
   const patchCatalogo = (patch: Partial<Settings['catalogo']>) =>
@@ -74,6 +78,11 @@ export const AdminSettingsPage = () => {
 
   const actualizarZona = (index: number, patch: Partial<DeliveryZone>) =>
     patchEntrega({ zonas: draft.entrega.zonas.map((zona, i) => (i === index ? { ...zona, ...patch } : zona)) })
+
+  const actualizarCupon = (index: number, patch: Partial<Coupon>) =>
+    patchPromociones({
+      cupones: draft.promociones.cupones.map((cupon, i) => (i === index ? { ...cupon, ...patch } : cupon)),
+    })
 
   const exportarRespaldo = () => {
     const state = useInventoryStore.getState()
@@ -231,6 +240,13 @@ export const AdminSettingsPage = () => {
                 onChange={(event) => patchEntrega({ envioGratisDesde: dinero(event.target.value) })} />
             )}
           </Field>
+          <Field label="Ventanas horarias" hint="Separadas por coma. Aparecen al elegir delivery.">
+            {(id, describedBy) => (
+              <Input id={id} aria-describedby={describedBy || undefined}
+                value={draft.entrega.ventanas.join(', ')}
+                onChange={(event) => patchEntrega({ ventanas: splitList(event.target.value) })} />
+            )}
+          </Field>
           <div className="admin-zones">
             {draft.entrega.zonas.map((zona, index) => (
               <div className="admin-zone-row" key={`${index}-${zona.nombre}`}>
@@ -267,6 +283,11 @@ export const AdminSettingsPage = () => {
               onChange={(value) => patchPagos({ transferencia: value })} />
           </div>
           <div className="admin-switch-row">
+            <div className="col"><span className="t-mid">Pago móvil</span><span className="t-min t-muted">Datos copiables en el checkout</span></div>
+            <Switch checked={draft.pagos.movil} label="Pago móvil"
+              onChange={(value) => patchPagos({ movil: value })} />
+          </div>
+          <div className="admin-switch-row">
             <div className="col"><span className="t-mid">Tarjeta de demostración</span><span className="t-min t-muted">Sin procesador real</span></div>
             <Switch checked={draft.pagos.tarjetaDemo} label="Tarjeta de demostración"
               onChange={(value) => patchPagos({ tarjetaDemo: value })} />
@@ -275,8 +296,51 @@ export const AdminSettingsPage = () => {
             {(id) => <Textarea id={id} rows={4} value={draft.pagos.datosTransferencia}
               onChange={(event) => patchPagos({ datosTransferencia: event.target.value })} />}
           </Field>
+          <Field label="Datos para pago móvil">
+            {(id) => <Textarea id={id} rows={4} value={draft.pagos.datosMovil}
+              onChange={(event) => patchPagos({ datosMovil: event.target.value })} />}
+          </Field>
           <div className="admin-sheet-actions">
             <Button size="sm" onClick={() => guardar({ pagos: draft.pagos }, 'Pagos')}>Guardar pagos</Button>
+          </div>
+        </Seccion>
+
+        <Seccion title="Promociones" description="Cupones de demostración: BIENVENIDO10 y ENVIOGRATIS vienen activos.">
+          <div className="admin-zones">
+            {draft.promociones.cupones.map((cupon, index) => (
+              <div className="admin-coupon-row" key={`${index}-${cupon.codigo}`}>
+                <Input aria-label={`Código del cupón ${index + 1}`} value={cupon.codigo}
+                  placeholder="CÓDIGO" onChange={(event) => actualizarCupon(index, { codigo: event.target.value.toUpperCase() })} />
+                <Select aria-label={`Tipo del cupón ${index + 1}`} value={cupon.tipo}
+                  onChange={(event) => actualizarCupon(index, { tipo: event.target.value as Coupon['tipo'] })}>
+                  <option value="porcentaje">Porcentaje</option>
+                  <option value="monto">Monto</option>
+                  <option value="envio">Envío</option>
+                </Select>
+                <Input aria-label={`Valor del cupón ${index + 1}`} type="number" min={0} step="0.01"
+                  value={cupon.valor}
+                  onChange={(event) => actualizarCupon(index, { valor: dinero(event.target.value) ?? 0 })} />
+                <Switch checked={cupon.activo} label={`Cupón ${cupon.codigo || index + 1} activo`}
+                  onChange={(activo) => actualizarCupon(index, { activo })} />
+                <Button size="sm" variant="tertiary"
+                  onClick={() => patchPromociones({
+                    cupones: draft.promociones.cupones.filter((_, i) => i !== index),
+                  })}>
+                  Quitar
+                </Button>
+              </div>
+            ))}
+            <Button size="sm" variant="secondary"
+              onClick={() => patchPromociones({
+                cupones: [...draft.promociones.cupones, { codigo: '', tipo: 'porcentaje', valor: 0, activo: true }],
+              })}>
+              Agregar cupón
+            </Button>
+          </div>
+          <div className="admin-sheet-actions">
+            <Button size="sm" onClick={() => guardar({ promociones: draft.promociones }, 'Promociones')}>
+              Guardar promociones
+            </Button>
           </div>
         </Seccion>
 

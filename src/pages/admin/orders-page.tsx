@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Segmented } from '../../components/ui/Segmented'
@@ -8,6 +8,7 @@ import { useAuth } from '../../app/providers/auth-provider'
 import { logActivity } from '../../logic/services/audit'
 import { errorMessage } from '../../logic/errors'
 import { formatPhoneDisplay, formatShortDate, formatTime } from '../../logic/services/formatters'
+import { getImage } from '../../logic/services/images'
 import { denyReason } from '../../logic/services/permissions'
 import { formatMoney, formatSecondary } from '../../logic/services/pricing'
 import { getAvailable } from '../../logic/services/stock'
@@ -53,6 +54,16 @@ export const AdminOrdersPage = () => {
   const [filter, setFilter] = useState<OrderFilter>('Todos')
   const [detailId, setDetailId] = useState<string | null>(null)
   const [cancelConfirm, setCancelConfirm] = useState(false)
+  const [comprobante, setComprobante] = useState<string | null>(null)
+
+  const comprobanteId = orders.find((order) => order.id === detailId)?.pago.comprobante
+  useEffect(() => {
+    let alive = true
+    if (comprobanteId) {
+      getImage(comprobanteId).then((url) => { if (alive) setComprobante(url) })
+    } else setComprobante(null)
+    return () => { alive = false }
+  }, [comprobanteId])
 
   const list = useMemo(() => {
     const sorted = [...orders].sort((a, b) => b.fecha.localeCompare(a.fecha))
@@ -167,6 +178,8 @@ export const AdminOrdersPage = () => {
                 {selected.entrega.direccion && <div><dt>Dirección</dt><dd>{selected.entrega.direccion}</dd></div>}
                 {selected.entrega.referencia && <div><dt>Referencia</dt><dd>{selected.entrega.referencia}</dd></div>}
                 {selected.entrega.notas && <div><dt>Notas</dt><dd>{selected.entrega.notas}</dd></div>}
+                {selected.ventana && <div><dt>Ventana</dt><dd>{selected.ventana}</dd></div>}
+                {selected.nota && <div><dt>Nota del cliente</dt><dd>{selected.nota}</dd></div>}
               </dl>
             </section>
 
@@ -198,6 +211,12 @@ export const AdminOrdersPage = () => {
               </div>
               <div className="admin-totals">
                 <div><span className="t-caption">Subtotal</span><span className="t-num">{formatMoney(selected.subtotal)}</span></div>
+                {selected.descuento > 0 && (
+                  <div className="is-discount">
+                    <span className="t-caption">Descuento{selected.cupon ? ` · ${selected.cupon}` : ''}</span>
+                    <span className="t-num">−{formatMoney(selected.descuento)}</span>
+                  </div>
+                )}
                 <div><span className="t-caption">Envío</span><span className="t-num">{formatMoney(selected.envio)}</span></div>
                 <div className="admin-totals__total"><span className="t-mid">Total</span><span className="t-num t-strong">{formatMoney(selected.total)}</span></div>
                 {secondary && <p className="t-min t-muted">{secondary}</p>}
@@ -211,6 +230,15 @@ export const AdminOrdersPage = () => {
                 {selected.pago.referencia ? ` · Ref. ${selected.pago.referencia}` : ''}
                 {' · '}{selected.pago.verificado ? 'Verificado' : 'Pendiente de verificación'}
               </p>
+              {selected.pago.vuelto !== undefined && (
+                <p className="t-caption">Vuelto solicitado: {formatMoney(selected.pago.vuelto, selected.moneda)}</p>
+              )}
+              {comprobante && (
+                <div className="admin-comprobante">
+                  <img src={comprobante} alt="Comprobante adjunto al pedido" />
+                  <span className="t-min t-muted">Comprobante adjunto · pendiente de verificación</span>
+                </div>
+              )}
               {!selected.pago.verificado && !can('verificar:pago') && (
                 <p className="t-min t-muted">{denyReason('verificar:pago')}</p>
               )}

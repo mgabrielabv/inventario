@@ -1,9 +1,10 @@
-import { useMemo, useState, type FormEvent } from 'react'
+import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Pencil, Plus } from 'lucide-react'
 import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Field, Input, Select, Textarea } from '../../components/ui/Field'
+import { ProductArt } from '../../components/art/ProductArt'
 import { ProductBox } from '../../components/box/ProductBox'
 import { Segmented } from '../../components/ui/Segmented'
 import { Sheet } from '../../components/ui/Sheet'
@@ -12,7 +13,9 @@ import { Switch } from '../../components/ui/Switch'
 import { useToast } from '../../components/ui/Toast'
 import { useAuth } from '../../app/providers/auth-provider'
 import { logActivity } from '../../logic/services/audit'
+import { errorMessage } from '../../logic/errors'
 import { formatNumber, normalizeText } from '../../logic/services/formatters'
+import { saveImage } from '../../logic/services/images'
 import { denyReason } from '../../logic/services/permissions'
 import { formatMoney } from '../../logic/services/pricing'
 import { getAvailable, getProductStatus, getReserved } from '../../logic/services/stock'
@@ -20,7 +23,10 @@ import { firstError, validateProductDraft, type ProductDraftErrors } from '../..
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
-import { UNITS, type Product, type ProductDraft, type ProductStatus, type Unit } from '../../logic/types'
+import {
+  ARQUETIPOS, UNITS, type Arquetipo, type Product, type ProductDraft,
+  type ProductStatus, type Unit,
+} from '../../logic/types'
 
 type StatusFilter = 'todos' | ProductStatus
 
@@ -103,6 +109,7 @@ export const AdminInventoryPage = () => {
       codigo: '', nombre: '', categoria: settings.catalogo.categorias[0] ?? 'Otras',
       unidad: 'unidad', stockInicial: 0, stockMinimo: 0, stockObjetivo: 0,
       ubicacion: ubicaciones[0] ?? '', costo: null, precio: null, proveedor: '', notas: '',
+      arquetipo: 'paquete', publicado: false, destacado: false, imagenes: [],
     })
     setErrors({})
     setSheetOpen(true)
@@ -115,6 +122,8 @@ export const AdminInventoryPage = () => {
       unidad: product.unidad, stockInicial: product.stock, stockMinimo: product.stockMinimo,
       stockObjetivo: product.stockObjetivo, ubicacion: product.ubicacion,
       costo: product.costo, precio: product.precio, proveedor: product.proveedor, notas: product.notas,
+      arquetipo: product.arquetipo, publicado: product.publicado,
+      destacado: product.destacado, imagenes: [...product.imagenes],
     })
     setErrors({})
     setSheetOpen(true)
@@ -140,6 +149,10 @@ export const AdminInventoryPage = () => {
         unidad: draft.unidad, stockMinimo: draft.stockMinimo, stockObjetivo: draft.stockObjetivo,
         ubicacion: draft.ubicacion.trim(), costo: draft.costo,
         proveedor: draft.proveedor.trim(), notas: draft.notas.trim(),
+        arquetipo: draft.arquetipo ?? 'paquete',
+        publicado: draft.publicado ?? false,
+        destacado: draft.destacado ?? false,
+        imagenes: draft.imagenes ?? [],
       }
       if (can('editar:precio')) patch.precio = draft.precio
       updateProduct(editingId, patch)
@@ -173,6 +186,19 @@ export const AdminInventoryPage = () => {
   const setField = <K extends keyof ProductDraft>(key: K, value: ProductDraft[K]) => {
     setDraft((current) => (current ? { ...current, [key]: value } : current))
     setErrors((current) => ({ ...current, [key]: undefined }))
+  }
+
+  const subirFoto = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    event.target.value = ''
+    if (!file || !draft) return
+    try {
+      const id = await saveImage(file)
+      setField('imagenes', [...(draft.imagenes ?? []), id])
+      toast('Foto guardada. Se muestra antes que el arte generado.')
+    } catch (cause) {
+      toast(errorMessage(cause), { tone: 'critical' })
+    }
   }
 
   return (
@@ -392,6 +418,66 @@ export const AdminInventoryPage = () => {
                     onChange={(event) => setField('notas', event.target.value)} />
                 )}
               </Field>
+
+              <section className="admin-store-section admin-form-grid__full" aria-label="Presentación en tienda">
+                <h3 className="t-ui t-strong">Tienda</h3>
+                <div className="admin-store-preview">
+                  <ProductArt
+                    categoria={draft.categoria}
+                    arquetipo={draft.arquetipo ?? 'paquete'}
+                    codigo={draft.codigo}
+                    nombre={draft.nombre || 'Vista previa'}
+                    imagenes={draft.imagenes ?? []}
+                    size={140}
+                    view="hero"
+                  />
+                  <p className="t-min t-muted">
+                    Las fotos tienen prioridad sobre el arte generado. Si no hay foto, se usa el arquetipo.
+                  </p>
+                </div>
+                <div className="admin-form-grid">
+                  <Field label="Arquetipo" hint="Define la forma ilustrada del producto.">
+                    {(id, describedBy) => (
+                      <Select id={id} value={draft.arquetipo ?? 'paquete'}
+                        aria-describedby={describedBy || undefined}
+                        onChange={(event) => setField('arquetipo', event.target.value as Arquetipo)}>
+                        {ARQUETIPOS.map((item) => <option key={item} value={item}>{item}</option>)}
+                      </Select>
+                    )}
+                  </Field>
+                  <Field label="Foto del producto" hint="JPG, PNG o WebP. Se guarda en este equipo.">
+                    {(id, describedBy) => (
+                      <input id={id} className="input" type="file" accept="image/*"
+                        aria-describedby={describedBy || undefined} onChange={(event) => void subirFoto(event)} />
+                    )}
+                  </Field>
+                </div>
+                {(draft.imagenes?.length ?? 0) > 0 && (
+                  <div className="admin-store-photos">
+                    {draft.imagenes!.map((imageId, index) => (
+                      <button key={imageId} type="button" className="admin-store-photo"
+                        onClick={() => setField('imagenes', draft.imagenes!.filter((_, i) => i !== index))}
+                        aria-label={`Quitar foto ${index + 1}`} title="Quitar foto">
+                        <ProductArt imagenes={[imageId]} size={64} view="solo" />
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <div className="admin-switch-row">
+                  <div className="col">
+                    <span className="t-mid">Publicado en la tienda</span>
+                    <span className="t-min t-muted">Aparece en el catálogo si tiene precio.</span>
+                  </div>
+                  <Switch checked={draft.publicado ?? false} label="Publicado en la tienda"
+                    onChange={(value) => setField('publicado', value)} />
+                </div>
+                <div className="admin-switch-row">
+                  <div className="col"><span className="t-mid">Destacado</span></div>
+                  <Switch checked={draft.destacado ?? false} label="Destacado"
+                    onChange={(value) => setField('destacado', value)} />
+                </div>
+              </section>
             </div>
             <div className="admin-sheet-actions">
               <Button type="submit" size="sm">{editingId ? 'Guardar cambios' : 'Crear producto'}</Button>

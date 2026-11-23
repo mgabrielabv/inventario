@@ -82,6 +82,9 @@ export interface ProductDraft {
   nombre: string
   categoria: string
   arquetipo?: Arquetipo
+  publicado?: boolean
+  destacado?: boolean
+  imagenes?: string[]
   unidad: Unit
   stockInicial: number
   stockMinimo: number
