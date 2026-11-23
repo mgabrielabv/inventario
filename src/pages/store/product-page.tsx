@@ -90,7 +90,7 @@ export const ProductPage = () => {
     for (const item of extra ?? []) {
       if (item.precio !== null) add(item.id, 1, item.precio)
     }
-    fly(event.currentTarget.getBoundingClientRect())
+    fly(event.currentTarget.getBoundingClientRect(), product.id)
     toast(extra?.length ? 'Conjunto agregado al carrito' : 'Agregado al carrito')
   }
 

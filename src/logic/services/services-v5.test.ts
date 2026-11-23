@@ -3,7 +3,7 @@ import { estimarEntrega } from './delivery'
 import {
   buildCheckoutOrder, couponStatus, emptyDraft, revalidateCheckout, validateStep,
 } from './checkout'
-import { boughtTogether, recentlyViewed, relatedProducts } from './recommendations'
+import { boughtTogether, cartRecommendations, recentlyViewed, relatedProducts } from './recommendations'
 import type { Order, Product, Settings } from '../types'
 
 const NOW = new Date('2026-11-22T12:00:00Z')
@@ -125,5 +125,8 @@ describe('recomendaciones', () => {
       .toEqual(['p3', 'p2'])
     expect(recentlyViewed(['p1', 'p3', 'p2'], products, 2).map((item) => item.id))
       .toEqual(['p1', 'p3'])
+    expect(cartRecommendations(
+      [{ productoId: 'p1', cantidad: 1, agregadoEn: NOW.toISOString() }], products, 2,
+    ).map((item) => item.id)).toEqual(['p2', 'p3'])
   })
 })

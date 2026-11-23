@@ -18,6 +18,7 @@ export const KEYS = {
   settings: 'inventario-settings-v2',
   customer: 'inventario-customer-v2',
   recent: 'inventario-recent-v2',
+  cartDraft: 'inventario-cart-draft-v1',
   activity: 'inventario-activity',
 } as const
 

@@ -7,7 +7,10 @@ import { dur, ease, flyCart, spring } from '../tokens'
 interface Flight { id: number; x: number; y: number; dx: number; dy: number }
 
 interface FlyContextValue {
-  fly: (origin: DOMRect) => void
+  fly: (origin: DOMRect, productoId?: string) => void
+  announce: (productoId: string) => void
+  lastAdded: string | null
+  clearAdded: () => void
   setCartTarget: (element: HTMLElement | null) => void
   bump: number
 }
@@ -18,6 +21,7 @@ const FlyContext = createContext<FlyContextValue | null>(null)
 export const FlyToCartProvider = ({ children }: { children: ReactNode }) => {
   const [flights, setFlights] = useState<Flight[]>([])
   const [bump, setBump] = useState(0)
+  const [lastAdded, setLastAdded] = useState<string | null>(null)
   const target = useRef<HTMLElement | null>(null)
   const reduce = useReducedMotion()
 
@@ -25,7 +29,11 @@ export const FlyToCartProvider = ({ children }: { children: ReactNode }) => {
     target.current = element
   }, [])
 
-  const fly = useCallback((origin: DOMRect) => {
+  const announce = useCallback((productoId: string) => setLastAdded(productoId), [])
+  const clearAdded = useCallback(() => setLastAdded(null), [])
+
+  const fly = useCallback((origin: DOMRect, productoId?: string) => {
+    if (productoId) setLastAdded(productoId)
     const destination = target.current?.getBoundingClientRect()
     if (!destination) return
     const x = origin.left + origin.width / 2
@@ -40,7 +48,10 @@ export const FlyToCartProvider = ({ children }: { children: ReactNode }) => {
     }, reduce ? 0 : dur.slow + flyCart.settle)
   }, [reduce])
 
-  const value = useMemo(() => ({ fly, setCartTarget, bump }), [fly, bump, setCartTarget])
+  const value = useMemo(
+    () => ({ fly, announce, lastAdded, clearAdded, setCartTarget, bump }),
+    [fly, announce, lastAdded, clearAdded, setCartTarget, bump],
+  )
 
   return (
     <FlyContext.Provider value={value}>

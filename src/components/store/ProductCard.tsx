@@ -44,7 +44,7 @@ export const ProductCard = ({ product, available, compact = false }: Props) => {
   const onAdd = (event: MouseEvent<HTMLButtonElement>) => {
     if (soldOut) return
     add(product.id, 1, product.precio ?? undefined)
-    fly(event.currentTarget.getBoundingClientRect())
+    fly(event.currentTarget.getBoundingClientRect(), product.id)
     toast('Agregado al carrito')
   }
 

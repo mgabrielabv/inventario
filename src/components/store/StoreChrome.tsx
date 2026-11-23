@@ -5,14 +5,17 @@ import {
 import {
   useEffect, useMemo, useRef, useState,
 } from 'react'
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { useToast } from '../ui/Toast'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { CartLineItem } from './CartLineItem'
+import { CartPopover } from './CartPopover'
+import { CartSummary } from './CartSummary'
 import { useCartStore } from '../../logic/store/cart'
 import { useFavoritesStore } from '../../logic/store/favorites'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
 import { storeName } from '../../logic/services/formatters'
+import { cartCount, validateCart } from '../../logic/services/cart'
 import { getAvailable } from '../../logic/services/stock'
 import { formatMoney } from '../../logic/services/pricing'
 import { ProductBox } from '../box/ProductBox'
@@ -47,10 +50,13 @@ export const StoreNav = () => {
   const [scrolled, setScrolled] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [cartOpen, setCartOpen] = useState(false)
   const { scrollY } = useScroll()
   const { setCartTarget, bump } = useFlyToCart()
-  const cartRef = useRef<HTMLAnchorElement | null>(null)
-  const cartCount = useCartStore((state) => state.lines.reduce((sum, line) => sum + line.cantidad, 0))
+  const cartRef = useRef<HTMLButtonElement | null>(null)
+  const units = useCartStore((state) => cartCount(state.lines))
+  const prune = useCartStore((state) => state.prune)
+  const products = useInventoryStore((state) => state.products)
   const favoriteCount = useFavoritesStore((state) => state.ids.length)
   const cartBump = useCartBump(bump)
   const settings = useSettingsStore((state) => state.settings)
@@ -60,12 +66,20 @@ export const StoreNav = () => {
   }, [scrollY])
 
   useEffect(() => { setCartTarget(cartRef.current) }, [setCartTarget])
+  useEffect(() => { prune(products) }, [products, prune])
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === '/' && !['INPUT', 'TEXTAREA'].includes((event.target as HTMLElement)?.tagName)) {
+      const target = event.target as HTMLElement | null
+      const typing = Boolean(target?.closest?.('input, textarea, select, [contenteditable="true"]'))
+      if (event.key === '/' && !typing) {
         event.preventDefault()
         setSearchOpen(true)
+      }
+      if ((event.key === 'c' || event.key === 'C') && !typing
+        && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        event.preventDefault()
+        setCartOpen(true)
       }
       if (event.key === 'Escape') setSearchOpen(false)
     }
@@ -97,13 +111,16 @@ export const StoreNav = () => {
               <Heart size={20} strokeWidth={1.5} />
               {favoriteCount > 0 && <span className="icon-dot" aria-hidden="true" />}
             </Link>
-            <motion.a
-              ref={cartRef} href="#/carrito" className="icon-btn cart-icon" aria-label={`Carrito, ${cartCount} unidades`}
+            <motion.button
+              ref={cartRef} type="button" className="icon-btn cart-icon"
+              aria-label={`Abrir carrito, ${units} unidades`}
+              title="Carrito (C)"
               animate={cartBump.animate} key={cartBump.key}
+              onClick={() => setCartOpen(true)}
             >
               <ShoppingBag size={20} strokeWidth={1.5} />
-              {cartCount > 0 && <span className="cart-count"><RollingNumber value={cartCount} /></span>}
-            </motion.a>
+              {units > 0 && <span className="cart-count"><RollingNumber value={units} /></span>}
+            </motion.button>
             <ThemeToggle />
             <button type="button" className="icon-btn store-nav__menu" aria-label="Abrir menú"
               onClick={() => setMenuOpen(true)}>
@@ -115,6 +132,8 @@ export const StoreNav = () => {
 
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} onSearch={() => setSearchOpen(true)} />
+      <CartPopover />
+      <CartSheet open={cartOpen} onClose={() => setCartOpen(false)} />
     </>
   )
 }
@@ -243,89 +262,76 @@ export const CartSheet = ({ open, onClose }: { open: boolean; onClose: () => voi
 }
 
 export const CartContent = ({ onClose }: { onClose?: () => void }) => {
-  const { lines, setQuantity, remove, restore } = useCartStore()
+  const lines = useCartStore((state) => state.lines)
   const products = useInventoryStore((state) => state.products)
   const orders = useOrdersStore((state) => state.orders)
-  const { toast } = useToast()
   const navigate = useNavigate()
-  const location = useLocation()
 
-  const rows = lines.flatMap((line) => {
-    const product = products.find((p) => p.id === line.productoId)
+  const active = lines.filter((line) => !line.guardado)
+  const saved = lines.filter((line) => line.guardado)
+  const issues = validateCart(active, products, orders)
+  const rows = (list: typeof lines) => list.flatMap((line) => {
+    const product = products.find((item) => item.id === line.productoId)
     if (!product) return []
     return [{ line, product, available: getAvailable(product, orders) }]
   })
-  const subtotal = rows.reduce((sum, row) => sum + (row.product.precio ?? 0) * row.line.cantidad, 0)
 
-  return (
-    <div className="cart-sheet">
-      {rows.length === 0 ? (
+  if (active.length === 0 && saved.length === 0) {
+    return (
+      <div className="cart-sheet">
         <div className="cart-sheet__empty">
           <p className="t-subtitle">Tu carrito está vacío</p>
           <p className="t-caption">Explora el catálogo y elige lo que necesitas.</p>
           <Button onClick={() => { onClose?.(); navigate('/tienda') }}>Ver catálogo</Button>
         </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="cart-sheet">
+      {active.length > 0 ? (
+        <ul className="cart-lines">
+          <AnimatePresence initial={false} mode="popLayout">
+            {rows(active).map(({ line, product, available }) => (
+              <CartLineItem
+                key={line.productoId}
+                line={line}
+                product={product}
+                available={available}
+                issue={issues.find((item) => item.productoId === line.productoId)}
+                onNavigate={onClose}
+              />
+            ))}
+          </AnimatePresence>
+        </ul>
       ) : (
-        <>
-          <ul className="cart-lines">
-            <AnimatePresence initial={false} mode="popLayout">
-              {rows.map(({ line, product, available }) => (
-                <motion.li key={line.productoId} layout className="cart-line"
-                  initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0, marginBottom: 0 }} transition={{ duration: dur.base }}>
-                  <ProductBox categoria={product.categoria} codigo={product.codigo} nombre={product.nombre} size={64} />
-                  <div className="grow">
-                    <Link to={`/tienda/${product.slug}`} onClick={onClose} className="t-mid">{product.nombre}</Link>
-                    <span className="t-caption">{formatMoney(product.precio ?? 0)} c/u</span>
-                    {line.cantidad > available && (
-                      <div className="cart-line__conflict">
-                        <span>Solo quedan {available}</span>
-                        <button type="button" className="link-button"
-                          onClick={() => setQuantity(line.productoId, Math.max(1, available))}>Ajustar</button>
-                      </div>
-                    )}
-                    <div className="cart-line__controls">
-                      <StepperMini value={line.cantidad} max={Math.max(available, line.cantidad)}
-                        onChange={(value) => setQuantity(line.productoId, value)} />
-                      <button type="button" className="link-button t-caption"
-                        onClick={() => {
-                          remove(line.productoId)
-                          toast(`Se quitó ${product.nombre}`, {
-                            action: { label: 'Deshacer', onClick: () => restore(line) },
-                          })
-                        }}>Quitar</button>
-                    </div>
-                  </div>
-                  <span className="t-mid num">{formatMoney((product.precio ?? 0) * line.cantidad)}</span>
-                </motion.li>
-              ))}
-            </AnimatePresence>
-          </ul>
-          <div className="cart-summary">
-            <div className="row between"><span className="t-caption">Subtotal</span>
-              <RollingNumber value={subtotal} decimals={2} prefix="$ " /></div>
-            <p className="t-min">El envío se calcula en el checkout.</p>
-            <Button full magnetic onClick={() => { onClose?.(); if (location.pathname !== '/pagar') navigate('/pagar') }}>
-              Continuar <ArrowRight size={18} strokeWidth={1.5} />
-            </Button>
-          </div>
-        </>
+        <p className="t-caption t-muted">No hay productos en el carrito. Revisa los guardados para después.</p>
       )}
+
+      {saved.length > 0 && (
+        <section className="cart-sheet__saved" aria-label="Guardados para después">
+          <h3 className="t-caption t-strong">Guardados para después</h3>
+          <ul className="cart-lines">
+            {rows(saved).map(({ line, product, available }) => (
+              <CartLineItem
+                key={line.productoId}
+                line={line}
+                product={product}
+                available={available}
+                saved
+                onNavigate={onClose}
+              />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <CartSummary compact onNavigate={onClose} />
     </div>
   )
 }
 
-const StepperMini = ({ value, max, onChange }: { value: number; max: number; onChange: (v: number) => void }) => (
-  <div className="stepper stepper--sm" role="group" aria-label="Cantidad">
-    <button type="button" className="stepper__btn" aria-label="Disminuir"
-      disabled={value <= 1} onClick={() => onChange(value - 1)}>−</button>
-    <RollingNumber value={value} ariaLabel={`Cantidad ${value}`} />
-    <button type="button" className="stepper__btn" aria-label="Aumentar"
-      disabled={value >= max} onClick={() => onChange(value + 1)}>+</button>
-  </div>
-)
-
-/* --------------------------------- Footer -------------------------------- */
 export const StoreFooter = () => {
   const settings = useSettingsStore((state) => state.settings)
   return (

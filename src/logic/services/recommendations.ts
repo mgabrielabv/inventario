@@ -1,6 +1,6 @@
 /* Recomendaciones deterministas a partir del propio catálogo y pedidos. */
 
-import type { Order, Product } from '../types'
+import type { CartLine, Order, Product } from '../types'
 
 const visible = (products: Product[]): Product[] =>
   products.filter((product) => !product.archivado && product.publicado && product.precio !== null)
@@ -42,6 +42,24 @@ export const boughtTogether = (
   const fallback = relatedProducts(product, products, limit - found.length)
     .filter((item) => !found.some((added) => added.id === item.id))
   return [...found, ...fallback].slice(0, limit)
+}
+
+/** Sugerencias del carrito: categorías ya elegidas, sin repetir lo que lleva. */
+export const cartRecommendations = (
+  lines: CartLine[], products: Product[], limit = 4,
+): Product[] => {
+  const inCart = new Set(lines.filter((line) => !line.guardado).map((line) => line.productoId))
+  const categories = new Set(
+    products.filter((product) => inCart.has(product.id)).map((product) => product.categoria),
+  )
+  return visible(products)
+    .filter((product) => !inCart.has(product.id))
+    .sort((a, b) => {
+      const match = Number(categories.has(b.categoria)) - Number(categories.has(a.categoria))
+      return match || Number(b.destacado) - Number(a.destacado)
+        || a.nombre.localeCompare(b.nombre, 'es')
+    })
+    .slice(0, limit)
 }
 
 /** Vistos recientemente, tal como los guardó la sesión (más reciente primero). */
