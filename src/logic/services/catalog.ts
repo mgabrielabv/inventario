@@ -10,6 +10,13 @@ export const SORT_LABELS: Record<SortKey, string> = {
   nombre: 'Nombre', recientes: 'Más recientes',
 }
 
+/** Densidad de la rejilla: afecta solo al tamaño de las tarjetas. */
+export type Density = 'comoda' | 'compacta'
+export const DENSITIES: Density[] = ['comoda', 'compacta']
+export const DENSITY_LABELS: Record<Density, string> = {
+  comoda: 'Cómoda', compacta: 'Compacta',
+}
+
 export interface CatalogFilters {
   q: string
   cat: string
@@ -17,10 +24,11 @@ export interface CatalogFilters {
   min: number | null
   max: number | null
   orden: SortKey
+  densidad: Density
 }
 
 export const defaultFilters = (): CatalogFilters => ({
-  q: '', cat: 'Todas', solo: false, min: null, max: null, orden: 'destacados',
+  q: '', cat: 'Todas', solo: false, min: null, max: null, orden: 'destacados', densidad: 'comoda',
 })
 
 const finite = (value: string | null): number | null => {
@@ -32,6 +40,7 @@ const finite = (value: string | null): number | null => {
 export const parseFilters = (search: string): CatalogFilters => {
   const params = new URLSearchParams(search.replace(/^\?/, ''))
   const orden = params.get('orden') as SortKey | null
+  const densidad = params.get('densidad') as Density | null
   return {
     q: params.get('q') ?? '',
     cat: params.get('cat') ?? 'Todas',
@@ -39,6 +48,7 @@ export const parseFilters = (search: string): CatalogFilters => {
     min: finite(params.get('min')),
     max: finite(params.get('max')),
     orden: orden && SORT_KEYS.includes(orden) ? orden : 'destacados',
+    densidad: densidad && DENSITIES.includes(densidad) ? densidad : 'comoda',
   }
 }
 
@@ -50,6 +60,7 @@ export const serializeFilters = (filters: CatalogFilters): string => {
   if (filters.min !== null) params.set('min', String(filters.min))
   if (filters.max !== null) params.set('max', String(filters.max))
   if (filters.orden !== 'destacados') params.set('orden', filters.orden)
+  if (filters.densidad !== 'comoda') params.set('densidad', filters.densidad)
   const query = params.toString()
   return query ? `?${query}` : ''
 }
@@ -100,3 +111,73 @@ export const filterCatalog = (
 }
 
 export const PAGE_SIZE = 24
+
+/* --- Ayudas puras del rediseño -------------------------------------------- */
+
+export type BadgeKind = 'oferta' | 'nuevo' | 'ultimas'
+export interface ProductBadge { kind: BadgeKind; label: string }
+
+/** Una sola insignia por tarjeta, en orden de prioridad. Sin urgencia inventada. */
+export const productBadge = (
+  product: Product, available: number, now: Date = new Date(),
+): ProductBadge | null => {
+  if (product.precioAnterior !== null && product.precioAnterior > (product.precio ?? 0)) {
+    return { kind: 'oferta', label: 'Oferta' }
+  }
+  const dias = (now.getTime() - new Date(product.creadoEn).getTime()) / 86_400_000
+  const esNuevo = product.etiquetas.some((tag) => normalizeText(tag) === 'nuevo')
+    || (Number.isFinite(dias) && dias >= 0 && dias <= 21)
+  if (esNuevo) return { kind: 'nuevo', label: 'Nuevo' }
+  if (available > 0 && available <= 5) return { kind: 'ultimas', label: `Últimas ${available}` }
+  return null
+}
+
+export interface PriceRange { min: number; max: number }
+
+/** Límites redondeados a decenas para el control deslizante doble. */
+export const priceBounds = (products: Product[]): PriceRange => {
+  const prices = products
+    .filter((product) => !product.archivado && product.publicado && product.precio !== null)
+    .map((product) => product.precio as number)
+  if (prices.length === 0) return { min: 0, max: 100 }
+  const min = Math.floor(Math.min(...prices) / 10) * 10
+  const max = Math.ceil(Math.max(...prices) / 10) * 10
+  return { min, max: Math.max(max, min + 10) }
+}
+
+/** Mantiene min <= max y ambos dentro de los límites disponibles. */
+export const clampPriceRange = (
+  min: number | null, max: number | null, bounds: PriceRange,
+): { min: number; max: number } => {
+  const low = min === null ? bounds.min : Math.max(bounds.min, Math.min(bounds.max, min))
+  const high = max === null ? bounds.max : Math.max(bounds.min, Math.min(bounds.max, max))
+  return low <= high ? { min: low, max: high } : { min: high, max: low }
+}
+
+export interface CategoryTile {
+  categoria: string
+  total: number
+  sample: Product | null
+}
+
+/** Mosaicos de categoría con una muestra real; solo productos visibles. */
+export const categoryTiles = (products: Product[]): CategoryTile[] => {
+  const visible = products.filter((product) => !product.archivado && product.publicado)
+  const map = new Map<string, CategoryTile>()
+  for (const product of visible) {
+    const current = map.get(product.categoria) ?? {
+      categoria: product.categoria, total: 0, sample: product,
+    }
+    current.total += 1
+    map.set(product.categoria, current)
+  }
+  return [...map.values()].sort((a, b) => b.total - a.total || a.categoria.localeCompare(b.categoria, 'es'))
+}
+
+/** Coincidencias rápidas para la búsqueda en vivo, reutilizando el filtro. */
+export const suggestProducts = (
+  products: Product[], query: string, orders: Order[], limit = 6,
+): Product[] => {
+  if (!query.trim()) return []
+  return filterCatalog(products, { ...defaultFilters(), q: query }, orders).slice(0, limit)
+}

@@ -231,6 +231,21 @@
 }
 .toast__close { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; color: var(--text-2); }
 
+/* --- Modal centrado ----------------------------------------------------- */
+.modal-root { position: fixed; inset: 0; z-index: var(--z-sheet); display: grid; place-items: center; padding: var(--s4); }
+.modal-backdrop { position: absolute; inset: 0; background: var(--overlay); }
+.modal {
+  position: relative; width: min(560px, 100%); max-height: min(86vh, 760px);
+  display: flex; flex-direction: column; overflow: hidden;
+  border: 1px solid var(--hairline); border-radius: var(--radius-card);
+  background: var(--surface); box-shadow: var(--shadow-lg);
+}
+.modal__header {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s3);
+  padding: var(--s4) var(--s5); border-bottom: 1px solid var(--hairline);
+}
+.modal__body { overflow-y: auto; padding: var(--s5); contain: paint; }
+
 /* --- Ilustraciones de caja ---------------------------------------------- */
 .product-box { display: block; flex: 0 0 auto; }
 .product-box--interactive { cursor: pointer; }

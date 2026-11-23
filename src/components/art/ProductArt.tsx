@@ -17,7 +17,7 @@ interface Props {
   codigo?: string
   nombre?: string
   imagenes?: string[]
-  size?: number
+  size?: number | string
   view?: ArtView
   layoutId?: string
   className?: string
