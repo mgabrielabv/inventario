@@ -70,6 +70,14 @@
   --box-label: var(--cream);
   --box-shadow: rgb(42 15 13 / 0.16);
 
+  /* --- Arte isométrico de producto --------------------------------------- */
+  --art-base: color-mix(in oklab, var(--clay) 72%, var(--cream));
+  --art-accent: color-mix(in oklab, var(--burgundy) 78%, var(--clay));
+  --art-screen: color-mix(in oklab, var(--burgundy) 26%, var(--surface));
+  --art-metal: color-mix(in oklab, var(--tan) 58%, var(--surface));
+  --art-paper: color-mix(in oklab, var(--cream) 82%, var(--tan));
+  --art-edge: color-mix(in oklab, var(--burgundy) 30%, var(--hairline));
+
   /* --- Radios ----------------------------------------------------------- */
   --radius-input: 12px;
   --radius-card: 24px;
@@ -177,6 +185,13 @@
   --box-left: color-mix(in oklab, var(--clay) 72%, var(--burgundy));
   --box-right: color-mix(in oklab, var(--clay) 58%, var(--burgundy));
   --box-shadow: rgb(10 2 2 / 0.5);
+
+  --art-base: color-mix(in oklab, var(--clay) 66%, var(--surface-2));
+  --art-accent: color-mix(in oklab, var(--burgundy) 62%, var(--clay));
+  --art-screen: color-mix(in oklab, var(--burgundy) 48%, var(--surface));
+  --art-metal: color-mix(in oklab, var(--tan) 52%, var(--surface-2));
+  --art-paper: color-mix(in oklab, var(--cream) 70%, var(--tan));
+  --art-edge: color-mix(in oklab, var(--cream) 22%, var(--hairline));
 }
 
 /* Botón primario en oscuro: borde interior + halo para separarlo del fondo. */

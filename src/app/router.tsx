@@ -18,6 +18,7 @@ import { AdminOrdersPage } from '../pages/admin/orders-page'
 import { AdminReplenishmentPage } from '../pages/admin/replenishment-page'
 import { AdminReportsPage } from '../pages/admin/reports-page'
 import { AdminSettingsPage } from '../pages/admin/settings-page'
+import { ArtSheetPage } from '../pages/store/art-sheet-page'
 
 export const router = createHashRouter([
   {
@@ -32,6 +33,7 @@ export const router = createHashRouter([
       { path: 'pedido/:codigo', element: <OrderPage /> },
       { path: 'seguimiento', element: <TrackingPage /> },
       { path: 'favoritos', element: <FavoritesPage /> },
+      { path: 'arte', element: <ArtSheetPage /> },
     ],
   },
   { path: 'ingresar', element: <LoginPage /> },
