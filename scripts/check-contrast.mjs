@@ -56,8 +56,10 @@ const TEXT_PAIRS = [
   ['clay-text', 'bg'], ['clay-text', 'surface'], ['clay-text', 'surface-2'],
   ['on-primary', 'primary'], ['on-primary', 'primary-hover'],
   ['on-clay', 'clay'], ['on-tan', 'tan'],
-  ['text', 'tan'], ['text', 'clay'],
 ]
+/* En claro las etiquetas sobre arcilla/tan usan tinta oscura; en oscuro,
+   esas mismas superficies llevan --on-clay / --on-tan (ya incluidos arriba). */
+const LIGHT_TEXT_PAIRS = [['text', 'tan'], ['text', 'clay']]
 const LARGE_PAIRS = [
   // En oscuro el protagonista es --primary-text; --primary solo aparece relleno.
   ['primary-text', 'bg-alt'], ['status-critical', 'surface'],
@@ -80,6 +82,7 @@ for (const theme of ['light', 'dark']) {
     if (ratio < min) failures.push(`${theme}: ${kind} ${fg}/${bg} = ${ratio.toFixed(2)}:1 (mínimo ${min})`)
   }
   for (const [fg, bg] of TEXT_PAIRS) check(fg, bg, 4.5, 'texto')
+  if (theme === 'light') for (const [fg, bg] of LIGHT_TEXT_PAIRS) check(fg, bg, 4.5, 'texto')
   for (const [fg, bg] of LARGE_PAIRS) check(fg, bg, 3, 'texto grande')
   for (const [fg, bg] of CONTROL_PAIRS) check(fg, bg, 3, 'control')
 }

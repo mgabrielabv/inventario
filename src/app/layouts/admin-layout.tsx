@@ -9,7 +9,7 @@ import { Link, NavLink, Outlet, useLocation, useNavigate, useNavigationType } fr
 import { useAuth } from '../providers/auth-provider'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
-import { getProductStatus, needsReplenishment } from '../../logic/services/stock'
+import { needsReplenishment } from '../../logic/services/stock'
 import { ThemeToggle } from '../../components/ui/ThemeToggle'
 import { routeVariants, popover } from '../../motion/variants'
 import { spring } from '../../motion/tokens'

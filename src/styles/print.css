@@ -1,0 +1,15 @@
+/* Impresión de pedidos e informes: PDF nativo del navegador, sin librerías. */
+@media print {
+  @page { size: A4; margin: 16mm; }
+  html, body { background: var(--surface); color: var(--text); }
+  .store-nav, .store-footer, .admin-sidebar, .admin-topbar,
+  .btn, .toast-island, .fly-layer, .mesh, .sheet-backdrop,
+  .catalog-filters, .admin-actions { display: none !important; }
+  .store-main, .admin-main { padding: 0; }
+  .card, .table-wrap { box-shadow: none; border-color: var(--hairline-strong); }
+  .print-only { display: block !important; }
+  a[href]::after { content: ''; }
+  h1, h2, h3 { break-after: avoid; }
+  tr, .card { break-inside: avoid; }
+}
+.print-only { display: none; }

@@ -75,7 +75,10 @@ for (const path of sourceFiles) {
     const matches = source.match(pattern)
     if (matches) failures.push(`${rel}: color literal ${[...new Set(matches)].join(', ')}`)
   }
-  const named = source.match(namedPattern)
+  // En TS/TSX las palabras "red" o "tan" son texto normal (red de invitados,
+  // color Tan). Los nombres de color se controlan solo en CSS, donde pueden
+  // aparecer como valor de una declaración.
+  const named = extname(path) === '.css' ? source.match(namedPattern) : null
   if (named) failures.push(`${rel}: nombre de color ${[...new Set(named)].join(', ')}`)
 }
 

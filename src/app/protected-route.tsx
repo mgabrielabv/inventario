@@ -1,13 +1,30 @@
-import { Navigate } from 'react-router-dom'
 import type { ReactNode } from 'react'
+import { Navigate, useLocation } from 'react-router-dom'
+import type { PermissionAction } from '../logic/types'
 import { useAuth } from './providers/auth-provider'
+
+const AccessDenied = () => (
+  <main className="admin-access-denied container-admin">
+    <div className="card admin-access-denied__card">
+      <h1 className="t-section t-strong">Acceso restringido</h1>
+      <p className="t-caption">Tu perfil no tiene permiso para abrir esta sección.</p>
+      <a className="btn btn--secondary" href="#/admin">Volver al panel</a>
+    </div>
+  </main>
+)
 
 export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const { isAuthenticated } = useAuth()
-
+  const location = useLocation()
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/ingresar" replace state={{ from: location.pathname }} />
   }
-
   return <>{children}</>
+}
+
+export const PermissionRoute = ({
+  permission, children,
+}: { permission: PermissionAction; children: ReactNode }) => {
+  const { can } = useAuth()
+  return can(permission) ? <>{children}</> : <AccessDenied />
 }

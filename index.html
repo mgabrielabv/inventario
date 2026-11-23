@@ -7,11 +7,7 @@
       name="description"
       content="INVENTARIO: tienda y control de existencias. Explora el catálogo, haz tu pedido y recibe o retira en tienda."
     />
-    <meta name="theme-color" content="#890000" />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23890000'/%3E%3Cpath d='M6 12L16 7l10 5v13l-10 5-10-5V12Z' fill='none' stroke='%23FFF4ED' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cpath d='M6 12l10 5 10-5M16 17v13' fill='none' stroke='%23FFF4ED' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E"
-    />
+    <meta name="theme-color" content="" />
     <title>INVENTARIO — Disponible hoy</title>
     <script>
       ;(() => {
@@ -37,8 +33,35 @@
                 : 'light'
           document.documentElement.classList.remove('light', 'dark')
           document.documentElement.classList.add(theme)
-          document.documentElement.style.background =
-            theme === 'dark' ? '#140606' : '#FFF4ED'
+
+          // Los colores viven solo en tokens.css; el icono se deriva de ellos.
+          const paintChrome = () => {
+            const styles = getComputedStyle(document.documentElement)
+            const token = (name) => styles.getPropertyValue(name).trim()
+            const primary = token('--primary').replace('#', '%23')
+            const cream = token('--cream').replace('#', '%23')
+            const svg =
+              "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'>" +
+              "<rect width='32' height='32' rx='8' fill='" + primary + "'/>" +
+              "<path d='M6 12L16 7l10 5v13l-10 5-10-5V12Z' fill='none' stroke='" + cream +
+              "' stroke-width='1.5' stroke-linejoin='round'/>" +
+              "<path d='M6 12l10 5 10-5M16 17v13' fill='none' stroke='" + cream +
+              "' stroke-width='1.5' stroke-linejoin='round'/></svg>"
+            let link = document.querySelector("link[rel='icon']")
+            if (!link) {
+              link = document.createElement('link')
+              link.rel = 'icon'
+              document.head.appendChild(link)
+            }
+            link.href = 'data:image/svg+xml,' + encodeURIComponent(svg)
+            const meta = document.querySelector("meta[name='theme-color']")
+            if (meta) meta.content = token('--primary')
+          }
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', paintChrome, { once: true })
+          } else {
+            paintChrome()
+          }
         } catch {
           document.documentElement.classList.add('light')
         }

@@ -1,205 +1,173 @@
-import { useState, type FormEvent } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Eye, EyeOff } from 'lucide-react'
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react'
+import { useState, type FormEvent } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { BoxMark } from '../../components/box/OpenBox'
+import { BoxStack } from '../../components/box/BoxStack'
+import { Button } from '../../components/ui/Button'
+import { Field, Input } from '../../components/ui/Field'
 import { useAuth } from '../../app/providers/auth-provider'
-import { slides } from '../../data/slides'
-import { EASE_OUT } from '../../components/illustrations/motion'
-import { OpenBox } from '../../components/illustrations/open-box'
-import { HeroSlideshow } from '../../components/slideshow/hero-slideshow'
-import { PageTitle } from '../../components/ui/page-title'
-import { Stamp } from '../../components/ui/stamp'
+import { storeName } from '../../logic/services/formatters'
+import { useSettingsStore } from '../../logic/store/settings'
+import { MeshBackground } from '../../motion/components/MeshBackground'
+import { useParallaxTilt } from '../../motion/hooks/useParallaxTilt'
+import { riseIn, riseItem } from '../../motion/variants'
+
+const credentials = [
+  { username: 'admin', password: 'admin123', label: 'admin / admin123' },
+  { username: 'operador', password: 'operador123', label: 'operador / operador123' },
+]
 
 export const LoginPage = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
-  const [shaking, setShaking] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-  const [granted, setGranted] = useState(false)
-  const { login, isAuthenticated } = useAuth()
+  const { login } = useAuth()
   const navigate = useNavigate()
+  const tilt = useParallaxTilt()
+  const settings = useSettingsStore((state) => state.settings)
 
-  const triggerShake = () => {
-    setShaking(true)
-    window.setTimeout(() => setShaking(false), 420)
-  }
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setError('')
-
     if (!username.trim() || !password) {
-      setError('Completa todos los campos')
-      triggerShake()
+      setError('Escribe tu usuario y contraseña.')
       return
     }
-
     setSubmitting(true)
     const result = await login(username, password)
     setSubmitting(false)
-
     if (result.success) {
-      setGranted(true)
-      window.setTimeout(() => {
-        navigate('/', { replace: true })
-      }, 950)
+      navigate('/admin', { replace: true })
       return
     }
-
-    setError(result.error ?? 'Credenciales incorrectas')
-    triggerShake()
+    setError(result.error ?? 'No se pudo iniciar sesión.')
   }
 
-  const fillCredentials = (user: string, pass: string) => {
+  const fill = (user: string, pass: string) => {
     setUsername(user)
     setPassword(pass)
     setError('')
   }
 
-  if (isAuthenticated && !granted) return <Navigate to="/" replace />
-
   return (
-    <div className="login">
-      <motion.div
-        className="login__form-panel"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, ease: EASE_OUT }}
+    <div className="login-page">
+      <motion.section
+        className="login-page__panel"
+        variants={riseIn}
+        initial="hidden"
+        animate="show"
+        aria-labelledby="login-page-title"
       >
-        <div className="login__inner">
-          <div className="login__brand">
-            <OpenBox className="login__mark" />
-            <span className="login__brand-name">INVENTARIO</span>
+        <motion.div className="login-page__inner" variants={riseItem}>
+          <div className="login-page__brand">
+            <BoxMark size={28} />
+            <span>{storeName(settings)}</span>
           </div>
 
-          <div className="login__heading">
-            <PageTitle lines={['ABRE LA', 'BODEGA']} className="login__title" />
-            <motion.p
-              className="login__subtitle"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.18, ease: EASE_OUT }}
-            >
-              Control de inventario
-            </motion.p>
-          </div>
+          <motion.div className="login-page__heading" variants={riseItem}>
+            <p className="login-page__eyebrow t-min t-clay">Acceso del personal</p>
+            <h1 id="login-page-title" className="t-section">Entrar al panel</h1>
+            <p className="t-caption">
+              Este ingreso es solo para el equipo de {storeName(settings)}.
+              Los clientes no necesitan cuenta para comprar.
+            </p>
+          </motion.div>
 
-          <div className="login__form-wrap">
-            <motion.form
-              className={['login__form', shaking ? 'login__form--shake' : '']
-                .filter(Boolean)
-                .join(' ')}
-              onSubmit={handleSubmit}
-              noValidate
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.24, ease: EASE_OUT }}
-            >
-              <label className="login__field">
-                <span className="login__field-label">Usuario</span>
-                <input
-                  className="login__input"
-                  type="text"
+          <form className="login-page__form" onSubmit={onSubmit} noValidate>
+            <Field label="Usuario" required>
+              {(id, describedBy) => (
+                <Input
+                  id={id}
                   value={username}
-                  onChange={(event) => {
-                    setUsername(event.target.value)
-                    setError('')
-                  }}
                   autoComplete="username"
+                  autoFocus
+                  aria-describedby={describedBy || undefined}
                   aria-invalid={Boolean(error)}
-                  disabled={granted}
+                  onChange={(event) => { setUsername(event.target.value); setError('') }}
                 />
-              </label>
+              )}
+            </Field>
 
-              <label className="login__field">
-                <span className="login__field-label">Contraseña</span>
-                <input
-                  className="login__input login__input--password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(event) => {
-                    setPassword(event.target.value)
-                    setError('')
-                  }}
-                  autoComplete="current-password"
-                  aria-invalid={Boolean(error)}
-                  disabled={granted}
-                />
+            <Field label="Contraseña" required>
+              {(id, describedBy) => (
+                <div className="login-page__password">
+                  <Input
+                    id={id}
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    autoComplete="current-password"
+                    aria-describedby={describedBy || undefined}
+                    aria-invalid={Boolean(error)}
+                    onChange={(event) => { setPassword(event.target.value); setError('') }}
+                  />
+                  <button
+                    type="button"
+                    className="login-page__toggle"
+                    aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                    onClick={() => setShowPassword((visible) => !visible)}
+                  >
+                    {showPassword
+                      ? <EyeOff size={18} strokeWidth={1.5} aria-hidden="true" />
+                      : <Eye size={18} strokeWidth={1.5} aria-hidden="true" />}
+                  </button>
+                </div>
+              )}
+            </Field>
+
+            {error && (
+              <p className="login-page__error" role="alert" aria-live="assertive">{error}</p>
+            )}
+
+            <Button type="submit" full disabled={submitting}>
+              {submitting ? 'Comprobando…' : 'Entrar'}
+            </Button>
+          </form>
+
+          <div className="login-page__demo">
+            <p className="t-min t-muted">Cuentas de demostración</p>
+            {credentials.map((item) => (
+              <div className="login-page__credential" key={item.username}>
+                <code className="t-caption">{item.label}</code>
                 <button
                   type="button"
-                  className="login__toggle"
-                  onClick={() => setShowPassword((visible) => !visible)}
-                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-                  tabIndex={-1}
+                  className="login-page__use t-caption"
+                  onClick={() => fill(item.username, item.password)}
                 >
-                  {showPassword ? (
-                    <EyeOff size={18} strokeWidth={1.5} aria-hidden="true" />
-                  ) : (
-                    <Eye size={18} strokeWidth={1.5} aria-hidden="true" />
-                  )}
+                  Usar
                 </button>
-              </label>
-
-              {error && (
-                <motion.p
-                  className="login__error"
-                  role="alert"
-                  initial={{ opacity: 0, y: -4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                >
-                  {error}
-                </motion.p>
-              )}
-
-              <button
-                type="submit"
-                className="btn btn--primary btn--lg login__submit"
-                disabled={submitting || granted}
-              >
-                {submitting ? 'Comprobando…' : granted ? 'Adelante' : 'Entrar'}
-              </button>
-            </motion.form>
-
-            {granted && (
-              <div className="login__granted" role="status">
-                <Stamp animate>Acceso concedido</Stamp>
               </div>
-            )}
+            ))}
           </div>
 
-          <div className="login__demo">
-            <p className="login__demo-label">Credenciales de prueba</p>
-            <div className="login__credential">
-              <span className="login__credential-value">admin / admin123</span>
-              <button
-                type="button"
-                className="login__use"
-                onClick={() => fillCredentials('admin', 'admin123')}
-              >
-                Usar
-              </button>
-            </div>
-            <div className="login__credential">
-              <span className="login__credential-value">operador / operador123</span>
-              <button
-                type="button"
-                className="login__use"
-                onClick={() => fillCredentials('operador', 'operador123')}
-              >
-                Usar
-              </button>
-            </div>
-            <p className="login__demo-note">El operador entra, pero no exporta reportes.</p>
+          <Link className="login-page__back t-mid" to="/">
+            <ArrowLeft size={16} strokeWidth={1.5} aria-hidden="true" />
+            Volver a la tienda
+          </Link>
+        </motion.div>
+      </motion.section>
+
+      <section className="login-page__visual" aria-label="Ilustración de la tienda">
+        <MeshBackground />
+        <div className="login-page__visual-inner">
+          <motion.div
+            ref={tilt.ref}
+            className="login-page__tilt"
+            style={tilt.style}
+            onPointerMove={tilt.onPointerMove}
+            onPointerLeave={tilt.onPointerLeave}
+          >
+            <BoxStack size={340} />
+          </motion.div>
+          <div className="login-page__visual-copy">
+            <p className="t-min t-clay">Control de inventario</p>
+            <p className="t-statement">Cada caja, en su lugar.</p>
+            <p className="t-caption">Productos, movimientos y pedidos en un mismo sitio.</p>
           </div>
         </div>
-      </motion.div>
-
-      <div className="login__panel">
-        <HeroSlideshow slides={slides} />
-      </div>
+      </section>
     </div>
   )
 }

@@ -1,9 +1,9 @@
-import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion, useScroll } from 'framer-motion'
 import {
   ArrowRight, Heart, Menu, Search, ShoppingBag, X,
 } from 'lucide-react'
 import {
-  useCallback, useEffect, useMemo, useRef, useState,
+  useEffect, useMemo, useRef, useState,
 } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useToast } from '../ui/Toast'
@@ -46,7 +46,6 @@ const useIsMobile = () => {
 export const StoreNav = () => {
   const [scrolled, setScrolled] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
-  const [cartOpen, setCartOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const { scrollY } = useScroll()
   const { setCartTarget, bump } = useFlyToCart()
@@ -115,7 +114,6 @@ export const StoreNav = () => {
       </header>
 
       <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
-      <CartSheet open={cartOpen} onClose={() => setCartOpen(false)} />
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} onSearch={() => setSearchOpen(true)} />
     </>
   )
@@ -147,7 +145,7 @@ const MobileMenu = ({ open, onClose, onSearch }: {
               </motion.div>
             ))}
           </motion.nav>
-          <button type="button" className="btn btn--secondary" onClick={() => { onClose(); onSearch() }} disabled={reduce}>
+          <button type="button" className="btn btn--secondary" onClick={() => { onClose(); onSearch() }} disabled={Boolean(reduce)}>
             Buscar en el catálogo
           </button>
         </motion.div>
@@ -244,7 +242,6 @@ export const CartContent = ({ onClose }: { onClose?: () => void }) => {
   const { lines, setQuantity, remove, restore } = useCartStore()
   const products = useInventoryStore((state) => state.products)
   const orders = useOrdersStore((state) => state.orders)
-  const settings = useSettingsStore((state) => state.settings)
   const { toast } = useToast()
   const navigate = useNavigate()
   const location = useLocation()
