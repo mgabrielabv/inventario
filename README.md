@@ -1,50 +1,72 @@
-# INVENTARIO — tienda y control de bodega
+# Ivoria — tienda departamental (demo local)
 
-Aplicación local de demostración con **tienda de cliente** y **panel de inventario** sobre una sola fuente de datos. La interfaz usa movimiento contenido, tipografía Inter y una paleta de cuatro colores derivada del burdeos, la arcilla, la crema y el arena.
+**Ivoria** — *Todo para tu casa y tu día, en un solo lugar.* Aplicación local de demostración con **tienda de cliente**, **cuentas de cliente** y **panel del personal** sobre una sola fuente de datos. El nombre definitivo vive en `src/config/brand.ts`; todo lo demás se deriva de ahí.
+
+La tienda cubre nueve departamentos: Tecnología, Accesorios, Hogar y cocina, Papelería y oficina, Juguetes y juegos, Deportes y aire libre, Cuidado personal, Mascotas y Ferretería básica. No es una farmacia y no hay medicamentos ni recetas.
 
 ## Rutas
 
 |Superficie|Rutas|
 |---|---|
-|Tienda|`#/`, `#/tienda`, `#/tienda/:slug`, `#/carrito`, `#/pagar`, `#/pedido/:codigo`, `#/seguimiento`, `#/favoritos`|
+|Tienda|`#/`, `#/tienda`, `#/tienda?categoria=…`, `#/tienda/:slug`, `#/carrito`, `#/pagar`, `#/pedido/:codigo`, `#/seguimiento`, `#/favoritos`, `#/arte`|
+|Cuenta de cliente|`#/cuenta/ingresar`, `#/cuenta/registro`, `#/cuenta/recuperar`, `#/cuenta`, `#/cuenta/pedidos`, `#/cuenta/direcciones`, `#/cuenta/datos`, `#/cuenta/favoritos`|
 |Personal|`#/ingresar`|
-|Panel|`#/admin`, `#/admin/inventario`, `#/admin/movimientos`, `#/admin/pedidos`, `#/admin/reposicion`, `#/admin/reportes`, `#/admin/configuracion`|
+|Panel|`#/admin`, `#/admin/inventario`, `#/admin/movimientos`, `#/admin/pedidos`, `#/admin/reposicion`, `#/admin/reportes`, `#/admin/clientes`, `#/admin/configuracion`|
 
-La configuración del panel requiere perfil de administrador.
+Las rutas `#/cuenta/*` usan la sesión de cliente; las de `#/admin` usan la del personal. Una sesión de cliente nunca abre el panel. La configuración y el panel de Clientes requieren permisos específicos.
 
 ## Stack
 
 - React 19 + TypeScript estricto + Vite 8
 - React Router 7 con `HashRouter` (funciona con `file://`)
-- Zustand con persistencia versionada
+- Zustand con persistencia versionada y migración de claves históricas
 - Framer Motion con `MotionConfig reducedMotion="user"`
 - Lucide React para iconos
-- CSS propio; `tokens.css` es el único archivo con colores literales
+- CSS propio; `src/styles/tokens.css` es el único archivo con colores literales
 - Inter Variable embebida como woff2; sin recursos remotos
 - `vite-plugin-singlefile`: un único HTML autocontenido
+
+No se añadieron dependencias nuevas.
 
 ## Uso
 
 ```bash
 npm install
-npm run dev          # http://localhost:5173
-npm test             # pruebas unitarias
-npm run build        # chequeo de tipos + paleta + contraste + dist/index.html
-npm run build:single # copia el HTML a "Sistema de Control e Inventario.html"
-npm run preview      # sirve dist/
-npm run verify:visual # capturas y comprobación visual (requiere build previo)
+npm run dev           # http://localhost:5173
+npm test              # pruebas unitarias
+npm run build         # chequeo de tipos + paleta + contraste + dist/index.html
+npm run build:single  # genera ivoria.html en la raíz desde BRAND.slug
+npm run preview       # sirve dist/
+npm run verify:visual # capturas, métricas y E2E (requiere build previo)
+npm run audit:mobile  # auditoría de 10 viewports × 2 temas × 13 rutas
 ```
 
-`prebuild` ejecuta `check:palette` y `check-contrast`; la build falla si aparece un color fuera de la familia permitida o un par de texto que no alcance WCAG AA.
+`prebuild` ejecuta `check:palette` y `check-contrast`; la build falla si aparece un color fuera de la familia permitida o un par de texto que no alcance WCAG AA. El artefacto descargable se llama `ivoria.html` y se abre con doble clic (`file://`). Los antiguos `Sistema de Control e Inventario.html`, `index-completo.html` y `tienda.html` se eliminaron.
 
 ## Credenciales de demostración
 
 |Rol|Usuario|Contraseña|Alcance|
 |---|---|---|---|
-|Administrador|`admin`|`admin123`|Todo|
-|Operador|`operador`|`operador123`|Operación diaria y reportes; sin configuración ni acciones destructivas|
+|Administrador|`admin`|`admin123`|Todo, incluida la configuración y la gestión de clientes|
+|Operador|`operador`|`operador123`|Operación diaria y reportes; ve clientes, pero no los gestiona|
+|Cliente|`cliente@ejemplo.com`|`cliente123`|Cuenta de compra con direcciones y pedidos|
 
-Las contraseñas se almacenan como SHA-256 con sal y se verifican con Web Crypto.
+Las contraseñas se almacenan como SHA-256 con sal y se verifican con Web Crypto. La cuenta de cliente se siembra sola la primera vez. El acceso de clientes admite invitados: no hace falta cuenta para comprar.
+
+## Marca y paleta
+
+`src/config/brand.ts` es la única fuente de marca. Cambia ahí `name`, `shortName`, `slug`, `orderPrefix`, `themeKey` y datos de contacto; de ahí salen el título y la meta del HTML (mediante el plugin `brandHtml` de `vite.config.ts`), el favicon, el monograma, las claves de almacenamiento, los códigos de pedido y los textos de la tienda. Los colores viven aparte, en `src/styles/tokens.css`, con los límites de matiz/saturación y los pares de contraste al principio de ese archivo; los scripts `check-palette` y `check-contrast` leen esa configuración.
+
+El slug anterior `tienda` está en `LEGACY_SLUGS` (`src/config/legacy.ts`) para migrar sin pérdida carrito, favoritos, pedidos, cuentas, tema, borradores e imágenes de IndexedDB. Si vuelve a cambiar `slug`, añade el valor anterior a esa lista y corre `npm run build:single`: el nombre del HTML descargable sigue al slug. La prueba `brand-lint` prohíbe repetir el nombre fuera de `BRAND` y prohíbe el nombre histórico en la tienda, el encabezado, el pie, el acceso de clientes, el título, la meta y las claves activas.
+
+## Cuentas y checkout
+
+- Personal y clientes guardan sesiones separadas (`KEYS.user` frente a `KEYS.customerSession`).
+- La cuenta de cliente permite registrarse, entrar por correo o teléfono venezolano, editar datos, administrar direcciones, ver pedidos y recuperar la contraseña de forma simulada.
+- El checkout conserva cuatro pasos (Datos, Entrega, Pago y Revisar) con resumen sticky. La tarjeta de cuenta aparece al inicio del paso de datos; se puede continuar como invitado y asociar la compra después.
+- Prioridad de hidratación: borrador del checkout > datos de la cuenta > carrito.
+- Los pedidos se numeran `IVO-AAAA-NNNNNN`; los históricos `PED-` e `INV-` siguen siendo válidos, se buscan igual en seguimiento y cuentan para la secuencia del año.
+- La moneda respeta `settings.moneda`: si hay `tasaVES` y `mostrarSecundario`, se muestra el equivalente en bolívares junto al precio principal.
 
 ## Modelo de inventario
 
@@ -53,35 +75,47 @@ Las contraseñas se almacenan como SHA-256 con sal y se verifican con Web Crypto
 - Al entregar un pedido se generan salidas por `Venta` con el código del pedido como referencia.
 - Al cancelar se libera la reserva; no se crea un movimiento.
 - La compra revalida el stock antes de confirmar y muestra conflictos si cambió.
+- El panel de Clientes busca por nombre, correo o teléfono; su auditoría no guarda contraseñas ni datos sensibles.
+- El respaldo es v3 e incluye las cuentas de cliente. “Restablecer datos de demostración” devuelve los 60 productos semilla sin borrar usuarios del personal ni auditoría.
 
-Los estados llevan siempre punto, icono y texto. Los pagos son simulados y están marcados como demostración; los PDF se obtienen con la impresión del navegador.
+Los estados llevan siempre punto, icono y texto; el lenguaje de pago deja claro que no hay cobro real. Los PDF se obtienen con la impresión del navegador.
+
+## Accesibilidad
+
+Contraste WCAG AA en claro y oscuro, foco visible, etiquetas y errores asociados con `aria-describedby`, navegación por teclado, `prefers-reduced-motion` y avisos que no se comunican solo por color.
+
+La ronda móvil añade cabecera tipo app, buscador a pantalla completa, selector de zona, barra inferior de cinco entradas y hojas con foco atrapado y cierre con «atrás». El panel usa un cajón con backdrop y foco atrapado, barra inferior de cinco entradas y tablas convertidas en tarjetas con `data-label` (`ResponsiveTable`). Todos los controles miden al menos 44 × 44 px, los campos mantienen 16 px para evitar el zoom de iOS y el contenido respeta las áreas seguras. Los atajos `/` y `C` solo se activan con puntero fino y fuera de campos. Los breakpoints están unificados en 360, 480, 768, 1024 y 1280 px, con `tokens.css` como lista de verdad.
 
 ## Estructura
 
 ```text
 src/
 ├── app/            # router, layouts, providers y rutas protegidas
-├── components/     # cajas ilustradas, chrome de tienda y biblioteca de UI
-├── data/           # productos, movimientos y pedidos semilla
+├── components/     # chrome de tienda, tarjetas, carrito unificado y biblioteca de UI
+├── config/         # brand.ts, legacy.ts y pruebas de marca/idioma
+├── data/           # 60 productos, facetas, movimientos y pedidos semilla
 ├── logic/          # tipos, stores de Zustand y servicios puros
-├── motion/         # tokens A1–A20, variantes, hooks y componentes
-├── pages/          # páginas de tienda, acceso y panel
-└── styles/         # tokens, tipografía, base, movimiento, componentes y páginas
-scripts/            # comprobaciones de paleta/contraste y verificación visual
-docs/capturas/      # capturas del estado anterior
-docs/decisiones.md  # criterios de diseño y verificación
+├── motion/         # tokens, variantes, hooks y componentes funcionales
+├── pages/          # tienda, cuenta, acceso y panel
+└── styles/         # tokens, tipografía, base, movimiento, móvil, componentes y páginas
+scripts/            # paleta, contraste, artefacto único, verificación visual y auditoría móvil
+docs/               # auditoría, decisiones, capturas e informes visual y móvil
 ```
 
 ## Verificación
 
-`npm run verify:visual` abre Chrome del sistema (`/usr/bin/google-chrome`) sobre el HTML generado (`file://`), inicia sesión con el perfil de administrador, completa un checkout hasta la confirmación del pedido, recorre las rutas en claro, oscuro y móvil, guarda capturas en `docs/capturas/verificacion/` y escribe `docs/verificacion-visual.json` con tamaño del HTML, CLS, errores de consola y peticiones externas.
+`npm run verify:visual` abre Chrome del sistema (`/usr/bin/google-chrome`) sobre el HTML generado (`file://`), recorre 86 combinaciones de ruta/tema/medio, inicia sesión con el personal y con un cliente, completa dos checkouts (cliente e invitado), comprueba los filtros en la URL, guarda capturas en `docs/capturas/verificacion/` y escribe `docs/verificacion-visual.json`. Las 50 mediciones móviles cubren 320, 390, 412, 768 y 1280 px en claro y oscuro, con CLS, desborde, objetivos táctiles y tipografía de campos.
 
-El presupuesto del HTML es **< 2.5 MB**. Resultado medido en `npm test` (14 pruebas), `npm run build` y `npm run verify:visual`:
+`npm run audit:mobile` mide 10 viewports (320×568, 360×740, 390×844, 412×915, 430×932, 844×390, 768×1024, 820×1180, 1280×800 y 1440×900) × 2 temas × 13 rutas = **260 mediciones**, con `hasTouch: true` en móvil/tablet. Detecta desbordes, texto recortado, solapes, objetivos <44 px, campos <16 px, CLS, tareas largas, errores y peticiones externas. Escribe `docs/verificacion-movil.{json,md}` y capturas en `docs/capturas/movil/`.
 
-- `dist/index.html`: **1.016.080 bytes** (0,97 MiB; 424.758 bytes gzip).
-- Croma visible dentro de 350°–40°: **100 %** en las 34 capturas.
-- Durante el scroll del héroe con CPU ×4: **CLS 0** y **0 tareas largas** (máx. 0 ms).
+Presupuesto: HTML **< 2.5 MB**. Resultado medido en la entrega:
+
+- `npm test`: **14 archivos, 65 pruebas** en verde, incluidas tres de migración real de `localStorage`.
+- `npm run build` y `npm run build:single`: correctos; `dist/index.html`/`ivoria.html` = **1.310.724 bytes** (1.280,00 KiB; 490.031 bytes gzip).
+- Croma visible dentro de 350°–40°: **100 %**; desborde horizontal máximo: **0 px**.
+- CLS **0,0052** en claro y oscuro (móvil máx. **0,0066**); **0 tareas largas**.
+- Auditoría móvil: **260 mediciones, 0 hallazgos, 0 problemas**.
 - **0** errores de consola y **0** peticiones externas.
-- E2E correcto: acceso `admin/admin123` y checkout completo hasta `INV-2026-000007`.
+- E2E correcto: personal (`admin`), cliente (cuenta, bloqueo de `/admin` y compra), invitado (`IVO-2026-000007`) y filtros por URL.
 
-Índice de capturas: `home-*.png`, `narrative-{0,0.2,0.4,0.6,0.8,1}-*.png` (A4), `fly-to-cart-{0..5}-*.png` (A9) y `e2e-*.png`, todas en `docs/capturas/verificacion/`.
+Las capturas anteriores quedan en `docs/capturas/` como referencia histórica; las nuevas están en `docs/capturas/verificacion/` y `docs/capturas/movil/`. El detalle de hallazgos y decisiones está en `docs/auditoria.md` y `docs/decisiones.md`.

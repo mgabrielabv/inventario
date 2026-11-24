@@ -1,12 +1,16 @@
-/* Fotos de producto: se redimensionan en el navegador y viven en IndexedDB. */
+/* Fotos de producto: se redimensionan en el navegador y viven en IndexedDB.
+   La base histórica se copia una sola vez a la clave derivada de BRAND.slug. */
 
-const DB_NAME = 'inventario-imagenes'
+import { storageKey } from '../../config/brand'
+import { LEGACY_IMAGE_DB, LEGACY_SLUGS } from '../../config/legacy'
+
+const DB_NAME = storageKey('imagenes')
 const STORE = 'fotos'
 const MAX_EDGE = 1200
 const MAX_BYTES = 250_000
 
-const openDb = (): Promise<IDBDatabase> => new Promise((resolve, reject) => {
-  const request = indexedDB.open(DB_NAME, 1)
+const openNamedDb = (name: string): Promise<IDBDatabase> => new Promise((resolve, reject) => {
+  const request = indexedDB.open(name, 1)
   request.onupgradeneeded = () => {
     if (!request.result.objectStoreNames.contains(STORE)) {
       request.result.createObjectStore(STORE)
@@ -16,7 +20,53 @@ const openDb = (): Promise<IDBDatabase> => new Promise((resolve, reject) => {
   request.onerror = () => reject(request.error)
 })
 
+const openDb = (): Promise<IDBDatabase> => openNamedDb(DB_NAME)
+
+let migration: Promise<void> | null = null
+
+/** Copia una base antigua a la actual y la retira solo si tenía datos. */
+const copyLegacyDb = async (name: string): Promise<void> => {
+  const oldDb = await openNamedDb(name)
+  const entries = await new Promise<Array<[IDBValidKey, Blob]>>((resolve, reject) => {
+    const request = oldDb.transaction(STORE, 'readonly').objectStore(STORE).openCursor()
+    const found: Array<[IDBValidKey, Blob]> = []
+    request.onsuccess = () => {
+      const cursor = request.result
+      if (cursor) { found.push([cursor.key, cursor.value as Blob]); cursor.continue() }
+      else resolve(found)
+    }
+    request.onerror = () => reject(request.error)
+  })
+  oldDb.close()
+  if (entries.length === 0) return
+  const db = await openDb()
+  await new Promise<void>((resolve, reject) => {
+    const transaction = db.transaction(STORE, 'readwrite')
+    const store = transaction.objectStore(STORE)
+    for (const [key, value] of entries) store.put(value, key)
+    transaction.oncomplete = () => resolve()
+    transaction.onerror = () => reject(transaction.error)
+  })
+  db.close()
+  indexedDB.deleteDatabase(name)
+}
+
+const migrateImages = (): Promise<void> => {
+  migration ??= (async () => {
+    const names = new Set([
+      LEGACY_IMAGE_DB,
+      ...LEGACY_SLUGS.map((slug) => `${slug}-imagenes`),
+    ])
+    for (const name of names) {
+      if (name === DB_NAME) continue
+      try { await copyLegacyDb(name) } catch { /* Sin base histórica: seguimos. */ }
+    }
+  })()
+  return migration
+}
+
 const tx = async <T>(mode: IDBTransactionMode, run: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> => {
+  await migrateImages()
   const db = await openDb()
   return new Promise<T>((resolve, reject) => {
     const transaction = db.transaction(STORE, mode)

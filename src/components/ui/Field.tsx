@@ -17,7 +17,7 @@ export const Field = ({ label, children, hint, error, required, className = '' }
       <label className="field__label" htmlFor={id}>
         {label}{required && <span className="field__req" aria-hidden="true"> *</span>}
       </label>
-      {children(id, hint ? hintId : '')}
+      {children(id, error || hint ? hintId : '')}
       {(error || hint) && (
         <p id={hintId} className={`field__hint${error ? ' is-error' : ''}`} role={error ? 'alert' : undefined}>
           {error ?? hint}

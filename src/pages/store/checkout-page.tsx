@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useCustomer } from '../../app/providers/customer-provider'
 import { ProductArt } from '../../components/art/ProductArt'
 import { DeliveryMap, DeliveryWindows } from '../../components/store/DeliveryArt'
 import { Button } from '../../components/ui/Button'
@@ -24,6 +25,7 @@ import { formatMoney, formatSecondary } from '../../logic/services/pricing'
 import { KEYS, readJson, writeJson } from '../../logic/services/storage'
 import { useCartDraftStore } from '../../logic/store/cartDraft'
 import { useCartStore } from '../../logic/store/cart'
+import { useCustomerStore } from '../../logic/store/customer'
 import { useCheckoutDraftStore } from '../../logic/store/checkoutDraft'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
@@ -53,26 +55,39 @@ export const CheckoutPage = () => {
   const [submitting, setSubmitting] = useState(false)
   const [receipt, setReceipt] = useState<string | null>(null)
   const [receiptError, setReceiptError] = useState('')
+  const [saveAddress, setSaveAddress] = useState(false)
   const formRef = useRef<HTMLDivElement | null>(null)
+  const { account, addAddress } = useCustomer()
+  const guestCheckout = useCustomerStore((state) => state.guestCheckout)
+  const setGuestCheckout = useCustomerStore((state) => state.setGuestCheckout)
 
   const active = useMemo(() => lines.filter((line) => !line.guardado), [lines])
 
-  /* El borrador guardado y el carrito se combinan una sola vez al entrar. */
+  /* Prioridad al entrar: lo ya escrito en el borrador > cuenta > carrito.
+     Si vuelves de iniciar sesión, se completan solo los campos que faltan. */
   useEffect(() => {
     const current = useCheckoutDraftStore.getState()
     const cart = useCartDraftStore.getState()
     const profile = readJson<CustomerProfile | null>(KEYS.customer, null)
+    const address = account?.direcciones.find((item) => item.esPrincipal)
+      ?? account?.direcciones[0]
+    const hasDraft = Boolean(
+      current.nombre || current.telefono || current.email || current.direccion
+      || current.zona || current.notas || current.step > 0 || current.reached > 0,
+    )
     current.patch({
-      nombre: current.nombre || profile?.nombre || '',
-      telefono: current.telefono || profile?.telefono || '',
-      email: current.email || profile?.email || '',
-      documento: current.documento || profile?.documento || '',
-      entrega: cart.entrega,
-      direccion: current.direccion || cart.direccion,
-      zona: current.zona || cart.zona,
-      notas: current.notas || cart.nota,
+      nombre: current.nombre || (account
+        ? `${account.nombre} ${account.apellido}`.trim()
+        : profile?.nombre ?? ''),
+      telefono: current.telefono || account?.telefono || profile?.telefono || '',
+      email: current.email || account?.email || profile?.email || '',
+      documento: current.documento || account?.documento || profile?.documento || '',
+      direccion: current.direccion || address?.direccion || (!hasDraft ? cart.direccion : ''),
+      zona: current.zona || address?.zona || (!hasDraft ? cart.zona : ''),
+      notas: current.notas || (!hasDraft ? cart.nota : ''),
+      ...(!hasDraft ? { entrega: cart.entrega } : {}),
     })
-  }, [])
+  }, [account?.id])
 
   useEffect(() => {
     let alive = true
@@ -95,7 +110,7 @@ export const CheckoutPage = () => {
     if (settings.pagos.efectivo) options.push({ value: 'efectivo', label: 'Efectivo' })
     if (settings.pagos.transferencia) options.push({ value: 'transferencia', label: 'Transferencia' })
     if (settings.pagos.movil) options.push({ value: 'movil', label: 'Pago móvil' })
-    if (settings.pagos.tarjetaDemo) options.push({ value: 'tarjeta-demo', label: 'Tarjeta · Demostración' })
+    if (settings.pagos.tarjetaDemo) options.push({ value: 'tarjeta-demo', label: 'Tarjeta (simulada)' })
     if (options.length === 0) options.push({ value: 'efectivo', label: 'Efectivo' })
     return options
   }, [settings.pagos])
@@ -171,8 +186,18 @@ export const CheckoutPage = () => {
     setSubmitting(true)
     setAlert('')
     try {
+      if (account && saveAddress && delivery === 'delivery'
+        && draft.direccion.trim() && draft.zona.trim()) {
+        addAddress({
+          alias: 'Dirección de entrega',
+          direccion: `${draft.direccion.trim()},${draft.zona.trim()}`,
+          zona: draft.zona,
+          referencia: draft.referencia.trim(),
+          esPrincipal: account.direcciones.length === 0,
+        })
+      }
       const order = buildCheckoutOrder({ ...draft, cupon }, {
-        cart: active, products, orders, settings, entrega,
+        cart: active, products, orders, settings, entrega, clienteId: account?.id,
       })
       const profile: CustomerProfile = {
         nombre: draft.nombre.trim(), telefono: draft.telefono.trim(),
@@ -182,8 +207,16 @@ export const CheckoutPage = () => {
       addOrder(order)
       clearCart()
       cartDraft.patch({ cupon: '' })
+      const [nombre, ...apellido] = draft.nombre.trim().split(/\s+/)
       draft.reset()
-      navigate(`/pedido/${order.codigo}`, { state: { justCreated: true } })
+      navigate(`/pedido/${order.codigo}`, {
+        state: {
+          justCreated: true,
+          prefill: account ? undefined : {
+            nombre, apellido: apellido.join(' '), email: draft.email, telefono: draft.telefono,
+          },
+        },
+      })
     } catch (error) {
       setAlert(errorMessage(error))
     } finally {
@@ -198,7 +231,7 @@ export const CheckoutPage = () => {
     try {
       const id = await saveImage(file)
       setField('comprobante', id)
-      toast('Comprobante guardado en esta demostración')
+      toast('Comprobante guardado')
     } catch {
       setReceiptError('No se pudo guardar la imagen. Intenta con otro archivo.')
     }
@@ -237,34 +270,87 @@ export const CheckoutPage = () => {
 
   const stepBody = (index: number) => {
     if (index === 0) return (
-      <div className="checkout-fields">
-        <Field label="Nombre y apellido" error={errors.nombre} required>
+      <div className="checkout-step-account">
+        <section className="checkout-account-card" aria-label="Tu cuenta">
+          {account ? (
+            <>
+              <p className="checkout-account-card__title t-mid t-strong">
+                Comprando como {account.nombre} {account.apellido}
+              </p>
+              <p className="t-caption t-muted">
+                Usaremos tus datos y tu dirección guardada. Puedes cambiarlos abajo.
+              </p>
+            </>
+          ) : guestCheckout ? (
+            <>
+              <p className="checkout-account-card__title t-mid t-strong">
+                Continuando como invitado
+              </p>
+              <p className="t-caption t-muted">
+                Tu carrito y lo que escribas aquí se conservan si decides entrar después.
+              </p>
+              <button type="button" className="checkout-account-card__link t-caption"
+                onClick={() => setGuestCheckout(false)}>
+                Quiero usar mi cuenta
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="checkout-account-card__title t-mid t-strong">
+                ¿Compras con tu cuenta o como invitado?
+              </p>
+              <p className="t-caption t-muted">
+                Con cuenta usamos tus datos y direcciones guardadas. Sin cuenta puedes seguir igual.
+              </p>
+              <div className="checkout-account-card__actions">
+                <Link className="btn btn--primary btn--sm"
+                  to="/cuenta/ingresar" state={{ from: '/pagar' }}>
+                  Ingresar
+                </Link>
+                <Link className="btn btn--secondary btn--sm"
+                  to="/cuenta/registro" state={{ from: '/pagar' }}>
+                  Crear cuenta
+                </Link>
+                <button type="button" className="checkout-account-card__link t-caption"
+                  onClick={() => setGuestCheckout(true)}>
+                  Continuar como invitado
+                </button>
+              </div>
+            </>
+          )}
+        </section>
+        <div className="checkout-fields">
+          <Field label="Nombre y apellido" error={errors.nombre} required>
           {(id, describedBy) => (
-            <Input id={id} data-field="nombre" autoComplete="name" value={draft.nombre}
+            <Input id={id} data-field="nombre" autoComplete="name" inputMode="text" enterKeyHint="next"
+              value={draft.nombre}
               aria-invalid={Boolean(errors.nombre)} aria-describedby={describedBy || undefined}
               onChange={(event) => setField('nombre', event.target.value)} />
           )}
         </Field>
         <Field label="Teléfono" error={errors.telefono} required hint="Formato 04xx-xxxxxxx">
           {(id, describedBy) => (
-            <Input id={id} data-field="telefono" type="tel" autoComplete="tel" value={draft.telefono}
+            <Input id={id} data-field="telefono" type="tel" autoComplete="tel" inputMode="tel"
+              enterKeyHint="next" value={draft.telefono}
               aria-invalid={Boolean(errors.telefono)} aria-describedby={describedBy || undefined}
               onChange={(event) => setField('telefono', event.target.value)} />
           )}
         </Field>
         <Field label="Correo (opcional)" error={errors.email}>
           {(id, describedBy) => (
-            <Input id={id} data-field="email" type="email" autoComplete="email" value={draft.email}
+            <Input id={id} data-field="email" type="email" autoComplete="email" inputMode="email"
+              enterKeyHint="next" value={draft.email}
               aria-invalid={Boolean(errors.email)} aria-describedby={describedBy || undefined}
               onChange={(event) => setField('email', event.target.value)} />
           )}
         </Field>
-        <Field label="Documento (opcional)">
-          {(id) => (
-            <Input id={id} value={draft.documento}
-              onChange={(event) => setField('documento', event.target.value)} />
-          )}
-        </Field>
+          <Field label="Documento (opcional)">
+            {(id) => (
+              <Input id={id} value={draft.documento}
+                onChange={(event) => setField('documento', event.target.value)} />
+            )}
+          </Field>
+        </div>
       </div>
     )
 
@@ -328,6 +414,13 @@ export const CheckoutPage = () => {
               value={draft.ventana}
               onChange={(ventana) => setField('ventana', ventana)}
             />
+            {account && (
+              <label className="checkout-save-address">
+                <input type="checkbox" checked={saveAddress}
+                  onChange={(event) => setSaveAddress(event.target.checked)} />
+                <span>Guardar esta dirección en mi cuenta para la próxima compra.</span>
+              </label>
+            )}
           </div>
         ) : (
           <p className="checkout-hint t-caption">
@@ -354,7 +447,7 @@ export const CheckoutPage = () => {
                   <span className="t-min t-muted">Copia los datos y escribe la referencia.</span>
                 )}
                 {option.value === 'tarjeta-demo' && (
-                  <span className="t-min t-muted">Demostración: no se procesa ninguna tarjeta.</span>
+                  <span className="t-min t-muted">Tarjeta simulada: no se procesa ningún cargo.</span>
                 )}
                 {option.value === 'transferencia' && (
                   <span className="checkout-payment__data">{settings.pagos.datosTransferencia}</span>
@@ -383,7 +476,7 @@ export const CheckoutPage = () => {
               )}
             </Field>
             <div className="checkout-receipt">
-              <Field label="Comprobante (opcional)" hint="Imagen JPG, PNG o WebP. Se guarda solo en esta demostración.">
+              <Field label="Comprobante (opcional)" hint="Imagen JPG, PNG o WebP. Se guarda solo en este navegador.">
                 {(id, describedBy) => (
                   <input id={id} type="file" accept="image/*" className="input"
                     aria-describedby={describedBy || undefined} onChange={onReceipt} />
@@ -426,10 +519,10 @@ export const CheckoutPage = () => {
         )}
 
         {payment === 'tarjeta-demo' && (
-          <div className="checkout-demo-card" aria-label="Tarjeta de demostración">
+          <div className="checkout-demo-card" aria-label="Tarjeta simulada">
             <CreditCard size={22} strokeWidth={1.5} aria-hidden="true" />
             <div>
-              <span className="t-mid">Tarjeta · Demostración</span>
+              <span className="t-mid">Tarjeta (simulada)</span>
               <span className="t-min t-muted">•••• 4242 · sin cargos reales</span>
             </div>
           </div>
@@ -485,7 +578,7 @@ export const CheckoutPage = () => {
             </div>
             <Chip active>{paymentOptions.find((option) => option.value === payment)?.label ?? 'Efectivo'}</Chip>
             {draft.comprobante && <p className="t-min t-muted"><FileCheck2 size={14} strokeWidth={1.6} aria-hidden="true" /> Comprobante adjunto</p>}
-            <p className="t-caption">Demostración: sin cobro real.</p>
+            <p className="t-caption">Pago simulado: sin cobro real.</p>
           </div>
         </div>
 
@@ -506,7 +599,7 @@ export const CheckoutPage = () => {
           <input type="checkbox" data-field="acepta" checked={draft.acepta}
             aria-invalid={Boolean(errors.acepta)}
             onChange={(event) => setField('acepta', event.target.checked)} />
-          <span>Acepto los términos de esta compra de demostración.</span>
+          <span>Acepto los términos de esta compra.</span>
         </label>
         {errors.acepta && <p className="field__hint is-error" role="alert">{errors.acepta}</p>}
       </div>
@@ -637,10 +730,11 @@ export const CheckoutPage = () => {
           </ul>
 
           <div className="checkout-summary__coupon">
-            <Field label="Cupón" hint="Demostración: BIENVENIDO10 o ENVIOGRATIS">
+            <Field label="Cupón" hint="Puedes probar BIENVENIDO10 o ENVIOGRATIS">
               {(id, describedBy) => (
                 <Input id={id} value={cartDraft.cupon} placeholder="Código"
                   aria-describedby={describedBy || undefined} autoComplete="off"
+                  inputMode="text" enterKeyHint="done"
                   onChange={(event) => cartDraft.patch({ cupon: event.target.value.toUpperCase() })} />
               )}
             </Field>
@@ -670,7 +764,7 @@ export const CheckoutPage = () => {
           {secondary && <p className="t-min t-muted checkout-summary__secondary">{secondary}</p>}
           <p className="checkout-summary__note t-min">
             <ShieldCheck size={15} strokeWidth={1.5} aria-hidden="true" />
-            Pago de demostración. No se realiza ningún cobro.
+            Pago simulado. No se realiza ningún cobro.
           </p>
         </aside>
       </form>

@@ -3,12 +3,13 @@ import type { PermissionAction, User, UserRole } from '../types'
 const MATRIX: Record<UserRole, PermissionAction[]> = {
   Administrador: [
     'ver:panel', 'ver:reportes', 'exportar:reportes', 'configurar',
+    'ver:clientes', 'gestionar:clientes',
     'crear:producto', 'editar:producto', 'editar:precio', 'archivar:producto',
     'eliminar:producto', 'registrar:movimiento', 'anular:movimiento',
     'avanzar:pedido', 'cancelar:pedido', 'verificar:pago', 'gestionar:usuarios',
   ],
   Operador: [
-    'ver:panel', 'ver:reportes', 'crear:producto', 'editar:producto',
+    'ver:panel', 'ver:reportes', 'ver:clientes', 'crear:producto', 'editar:producto',
     'registrar:movimiento', 'avanzar:pedido', 'verificar:pago',
   ],
 }

@@ -2,12 +2,15 @@ import { normalizeText } from './formatters'
 import { getAvailable } from './stock'
 import type { Order, Product } from '../types'
 
-export type SortKey = 'destacados' | 'precio-asc' | 'precio-desc' | 'nombre' | 'recientes'
-export const SORT_KEYS: SortKey[] = ['destacados', 'precio-asc', 'precio-desc', 'nombre', 'recientes']
+export type SortKey =
+  | 'destacados' | 'precio-asc' | 'precio-desc' | 'nombre' | 'descuento' | 'recientes'
+export const SORT_KEYS: SortKey[] = [
+  'destacados', 'precio-asc', 'precio-desc', 'nombre', 'descuento', 'recientes',
+]
 
 export const SORT_LABELS: Record<SortKey, string> = {
-  destacados: 'Destacados', 'precio-asc': 'Precio ↑', 'precio-desc': 'Precio ↓',
-  nombre: 'Nombre', recientes: 'Más recientes',
+  destacados: 'Relevancia', 'precio-asc': 'Menor precio', 'precio-desc': 'Mayor precio',
+  nombre: 'Nombre A-Z', descuento: 'Mayor descuento', recientes: 'Más recientes',
 }
 
 /** Densidad de la rejilla: afecta solo al tamaño de las tarjetas. */
@@ -25,10 +28,16 @@ export interface CatalogFilters {
   max: number | null
   orden: SortKey
   densidad: Density
+  /** Campos nuevos: opcionales para no romper llamadores existentes. */
+  pagina?: number
+  enOferta?: boolean
+  marca?: string
+  subcategoria?: string
 }
 
 export const defaultFilters = (): CatalogFilters => ({
   q: '', cat: 'Todas', solo: false, min: null, max: null, orden: 'destacados', densidad: 'comoda',
+  pagina: 1, enOferta: false, marca: 'Todas', subcategoria: 'Todas',
 })
 
 const finite = (value: string | null): number | null => {
@@ -37,30 +46,48 @@ const finite = (value: string | null): number | null => {
   return Number.isFinite(n) && n >= 0 ? n : null
 }
 
+const positivePage = (value: string | null): number => {
+  const n = Number(value)
+  return value !== null && Number.isInteger(n) && n > 0 ? n : 1
+}
+
+const selected = (value: string | null): string => (value && value !== 'Todas' ? value : 'Todas')
+
 export const parseFilters = (search: string): CatalogFilters => {
   const params = new URLSearchParams(search.replace(/^\?/, ''))
   const orden = params.get('orden') as SortKey | null
   const densidad = params.get('densidad') as Density | null
   return {
     q: params.get('q') ?? '',
-    cat: params.get('cat') ?? 'Todas',
+    // `categoria` es la forma canónica; `cat` se admite por enlaces antiguos.
+    cat: selected(params.get('categoria') ?? params.get('cat')),
     solo: params.get('solo') === '1',
+    enOferta: params.get('enOferta') === '1',
     min: finite(params.get('min')),
     max: finite(params.get('max')),
     orden: orden && SORT_KEYS.includes(orden) ? orden : 'destacados',
     densidad: densidad && DENSITIES.includes(densidad) ? densidad : 'comoda',
+    pagina: positivePage(params.get('pagina')),
+    marca: selected(params.get('marca')),
+    subcategoria: selected(params.get('subcategoria')),
   }
 }
 
 export const serializeFilters = (filters: CatalogFilters): string => {
   const params = new URLSearchParams()
   if (filters.q.trim()) params.set('q', filters.q.trim())
-  if (filters.cat !== 'Todas') params.set('cat', filters.cat)
+  if (filters.cat !== 'Todas') params.set('categoria', filters.cat)
   if (filters.solo) params.set('solo', '1')
+  if (filters.enOferta) params.set('enOferta', '1')
   if (filters.min !== null) params.set('min', String(filters.min))
   if (filters.max !== null) params.set('max', String(filters.max))
   if (filters.orden !== 'destacados') params.set('orden', filters.orden)
   if (filters.densidad !== 'comoda') params.set('densidad', filters.densidad)
+  if ((filters.pagina ?? 1) > 1) params.set('pagina', String(filters.pagina))
+  if (filters.marca && filters.marca !== 'Todas') params.set('marca', filters.marca)
+  if (filters.subcategoria && filters.subcategoria !== 'Todas') {
+    params.set('subcategoria', filters.subcategoria)
+  }
   const query = params.toString()
   return query ? `?${query}` : ''
 }
@@ -70,10 +97,27 @@ export const activeFilterChips = (f: CatalogFilters): Array<{ key: string; label
   if (f.q.trim()) chips.push({ key: 'q', label: `Búsqueda: ${f.q.trim()}` })
   if (f.cat !== 'Todas') chips.push({ key: 'cat', label: f.cat })
   if (f.solo) chips.push({ key: 'solo', label: 'Solo disponibles' })
+  if (f.enOferta) chips.push({ key: 'enOferta', label: 'En oferta' })
+  if (f.marca && f.marca !== 'Todas') chips.push({ key: 'marca', label: `Marca: ${f.marca}` })
+  if (f.subcategoria && f.subcategoria !== 'Todas') {
+    chips.push({ key: 'subcategoria', label: `Tipo: ${f.subcategoria}` })
+  }
   if (f.min !== null || f.max !== null) {
     chips.push({ key: 'precio', label: `Precio ${f.min ?? 0} – ${f.max ?? '∞'}` })
   }
   return chips
+}
+
+/** `marca`/`subcategoria` aún no están en el tipo Product: acceso defensivo. */
+const metaValue = (product: Product, key: 'marca' | 'subcategoria'): string => {
+  const value = (product as Product & { marca?: unknown; subcategoria?: unknown })[key]
+  return typeof value === 'string' ? value.trim() : ''
+}
+
+const discountRate = (product: Product): number => {
+  const before = product.precioAnterior
+  const price = product.precio ?? 0
+  return before !== null && before > price && before > 0 ? 1 - price / before : 0
 }
 
 export const filterCatalog = (
@@ -86,27 +130,33 @@ export const filterCatalog = (
     if (filters.cat !== 'Todas' && p.categoria !== filters.cat) return false
     const available = getAvailable(p, orders)
     if (filters.solo && available <= 0) return false
+    if (filters.enOferta && discountRate(p) <= 0) return false
+    if (filters.marca && filters.marca !== 'Todas' && metaValue(p, 'marca') !== filters.marca) {
+      return false
+    }
+    if (filters.subcategoria && filters.subcategoria !== 'Todas'
+      && metaValue(p, 'subcategoria') !== filters.subcategoria) return false
     if (filters.min !== null && (p.precio ?? 0) < filters.min) return false
     if (filters.max !== null && (p.precio ?? 0) > filters.max) return false
     if (!q) return true
     const haystack = normalizeText([
       p.nombre, p.descripcionCorta, p.descripcion, p.codigo,
-      p.categoria, p.etiquetas.join(' '),
+      p.categoria, p.etiquetas.join(' '), metaValue(p, 'marca'), metaValue(p, 'subcategoria'),
     ].join(' '))
     return haystack.includes(q)
   })
 
   const byPrice = (a: Product, b: Product): number => (a.precio ?? 0) - (b.precio ?? 0)
+  const byName = (a: Product, b: Product): number => a.nombre.localeCompare(b.nombre, 'es')
   switch (filters.orden) {
     case 'precio-asc': return result.sort(byPrice)
     case 'precio-desc': return result.sort((a, b) => -byPrice(a, b))
-    case 'nombre': return result.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
+    case 'nombre': return result.sort(byName)
+    case 'descuento': return result.sort((a, b) => discountRate(b) - discountRate(a) || byName(a, b))
     case 'recientes': return result.sort((a, b) => b.creadoEn.localeCompare(a.creadoEn))
     case 'destacados':
     default:
-      return result.sort((a, b) =>
-        Number(b.destacado) - Number(a.destacado) || a.nombre.localeCompare(b.nombre, 'es'),
-      )
+      return result.sort((a, b) => Number(b.destacado) - Number(a.destacado) || byName(a, b))
   }
 }
 

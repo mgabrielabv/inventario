@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/Button'
 import { Combobox } from '../../components/ui/Combobox'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Field, Input, Select } from '../../components/ui/Field'
+import { ResponsiveTable } from '../../components/ui/ResponsiveTable'
 import { Segmented } from '../../components/ui/Segmented'
 import { Sheet } from '../../components/ui/Sheet'
 import { useToast } from '../../components/ui/Toast'
@@ -293,7 +294,7 @@ export const AdminMovementsPage = () => {
             <EmptyState compact title="Sin kardex" description="Este producto aún no tiene movimientos." />
           ) : (
             <div className="table-wrap">
-              <table className="table">
+              <ResponsiveTable>
                 <thead>
                   <tr><th>Fecha</th><th>Movimiento</th><th>Cantidad</th><th>Saldo</th></tr>
                 </thead>
@@ -309,7 +310,7 @@ export const AdminMovementsPage = () => {
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </ResponsiveTable>
             </div>
           )}
         </div>

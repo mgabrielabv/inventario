@@ -10,26 +10,33 @@ import { fileURLToPath } from 'node:url'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const tokensPath = join(root, 'src', 'styles', 'tokens.css')
 
-const parseBlocks = (source) => {
-  const blocks = {}
-  let scope = null
+/** Extrae el primer bloque canónico de un selector, balanceando llaves.
+    Ignora los `:root` anidados en @media/@supports (solo ajustan layout). */
+const extractBlock = (source, selector) => {
+  const start = source.indexOf(`${selector} {`)
+  if (start < 0) return ''
+  const open = source.indexOf('{', start)
   let depth = 0
-  for (const line of source.split('\n')) {
-    const trimmed = line.trim()
-    if (!scope && /(:root|\.dark)\s*\{/.test(trimmed)) {
-      scope = trimmed.startsWith('.dark') ? 'dark' : 'light'
-      blocks[scope] = {}
-      depth = 1
-      continue
-    }
-    if (!scope) continue
-    depth += (trimmed.match(/\{/g) ?? []).length
-    depth -= (trimmed.match(/\}/g) ?? []).length
-    if (depth <= 0) { scope = null; continue }
-    const match = trimmed.match(/^(--[a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{3,8})\s*;/)
-    if (match) blocks[scope][match[1]] = match[2]
+  for (let i = open; i < source.length; i += 1) {
+    if (source[i] === '{') depth += 1
+    else if (source[i] === '}' && --depth === 0) return source.slice(open + 1, i)
   }
-  return blocks
+  return ''
+}
+
+const parseBlocks = (source) => {
+  const parseTokens = (body) => {
+    const tokens = {}
+    for (const line of body.split('\n')) {
+      const match = line.trim().match(/^(--[a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{3,8})\s*;/)
+      if (match) tokens[match[1]] = match[2]
+    }
+    return tokens
+  }
+  return {
+    light: parseTokens(extractBlock(source, ':root')),
+    dark: parseTokens(extractBlock(source, '.dark')),
+  }
 }
 
 const hexToRgb = (hex) => {
@@ -48,30 +55,22 @@ const contrast = (a, b) => {
   return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05)
 }
 
-/* Pares que realmente se usan en la interfaz. */
-const TEXT_PAIRS = [
-  ['text', 'bg'], ['text', 'bg-alt'], ['text', 'surface'], ['text', 'surface-2'],
-  ['text-2', 'bg'], ['text-2', 'bg-alt'], ['text-2', 'surface'], ['text-2', 'surface-2'],
-  ['primary-text', 'bg'], ['primary-text', 'surface'],
-  ['clay-text', 'bg'], ['clay-text', 'surface'], ['clay-text', 'surface-2'],
-  ['on-primary', 'primary'], ['on-primary', 'primary-hover'],
-  ['on-clay', 'clay'], ['on-tan', 'tan'],
-]
-/* En claro las etiquetas sobre arcilla/tan usan tinta oscura; en oscuro,
-   esas mismas superficies llevan --on-clay / --on-tan (ya incluidos arriba). */
-const LIGHT_TEXT_PAIRS = [['text', 'tan'], ['text', 'clay']]
-const LARGE_PAIRS = [
-  // En oscuro el protagonista es --primary-text; --primary solo aparece relleno.
-  ['primary-text', 'bg-alt'], ['status-critical', 'surface'],
-]
-const CONTROL_PAIRS = [
-  ['control-border', 'bg'], ['control-border', 'bg-alt'],
-  ['control-border', 'surface'], ['control-border', 'surface-2'],
-  ['status-available', 'bg'], ['status-low', 'bg'], ['status-critical', 'bg'],
-  ['tan-strong', 'bg'],
-]
+/* Pares que realmente se usan en la interfaz. Se configuran en tokens.css,
+   junto al resto de la paleta, para cambiar de identidad tocando un solo archivo. */
+const tokensRaw = readFileSync(tokensPath, 'utf8')
+const pairToken = (name, fallback) => {
+  const value = tokensRaw.match(new RegExp(`--contrast-${name}\\s*:\\s*([^;]+);`))?.[1]
+  return (value ?? fallback).trim().split(/\s+/).filter(Boolean).map((pair) => {
+    const [fg, bg] = pair.split('/')
+    return [fg, bg]
+  })
+}
+const TEXT_PAIRS = pairToken('pairs', 'text/bg')
+const LIGHT_TEXT_PAIRS = pairToken('light-pairs', '')
+const LARGE_PAIRS = pairToken('large-pairs', '')
+const CONTROL_PAIRS = pairToken('control-pairs', '')
 
-const blocks = parseBlocks(readFileSync(tokensPath, 'utf8'))
+const blocks = parseBlocks(tokensRaw)
 const failures = []
 for (const theme of ['light', 'dark']) {
   const t = blocks[theme]

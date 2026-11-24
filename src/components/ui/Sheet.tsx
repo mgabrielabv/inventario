@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
-import { useCallback, useEffect, useRef, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { sheetUI } from '../../motion/tokens'
 import { sheetDesktop, sheetMobile } from '../../motion/variants'
 
@@ -15,14 +15,30 @@ interface Props {
 
 const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])'
 
+/** En móvil toda hoja es inferior: evita paneles estrechos y gestos raros. */
+const useIsMobile = (): boolean => {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches)
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 768px)')
+    const update = () => setIsMobile(query.matches)
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+  return isMobile
+}
+
 /** A10/A16 · hoja con resorte, arrastre para cerrar, foco atrapado y devuelto. */
 export const Sheet = ({ open, onClose, title, children, side = 'right', className = '' }: Props) => {
   const panel = useRef<HTMLDivElement | null>(null)
   const previous = useRef<HTMLElement | null>(null)
-  const isMobile = side === 'bottom'
+  const closeRef = useRef(onClose)
+  closeRef.current = onClose
+  const smallScreen = useIsMobile()
+  const isMobile = side === 'bottom' || smallScreen
 
   const onKey = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'Escape') { event.stopPropagation(); onClose(); return }
+    if (event.key === 'Escape') { event.stopPropagation(); closeRef.current(); return }
     if (event.key !== 'Tab' || !panel.current) return
     const nodes = Array.from(panel.current.querySelectorAll<HTMLElement>(FOCUSABLE))
     if (nodes.length === 0) return
@@ -30,21 +46,44 @@ export const Sheet = ({ open, onClose, title, children, side = 'right', classNam
     const last = nodes[nodes.length - 1]!
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
-  }, [onClose])
+  }, [])
 
   useEffect(() => {
     if (!open) return
     previous.current = document.activeElement as HTMLElement | null
     document.addEventListener('keydown', onKey)
+
+    // El fondo deja de desplazarse sin saltar: se compensa el ancho de la barra.
+    const body = document.body
+    const prior = { overflow: body.style.overflow, paddingRight: body.style.paddingRight }
+    const gap = window.innerWidth - document.documentElement.clientWidth
+    body.style.overflow = 'hidden'
+    if (gap > 0) body.style.paddingRight = `${gap}px`
+
     const id = window.setTimeout(() => {
       panel.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus()
     }, sheetUI.focusDelay)
     return () => {
       document.removeEventListener('keydown', onKey)
       window.clearTimeout(id)
+      body.style.overflow = prior.overflow
+      body.style.paddingRight = prior.paddingRight
       previous.current?.focus()
     }
   }, [open, onKey])
+
+  // El botón «atrás» del navegador cierra la hoja en vez de salir de la página.
+  useEffect(() => {
+    if (!open) return
+    const state = { sheetTitle: title }
+    window.history.pushState(state, '')
+    const onPop = () => closeRef.current()
+    window.addEventListener('popstate', onPop)
+    return () => {
+      window.removeEventListener('popstate', onPop)
+      if (window.history.state?.sheetTitle === title) window.history.back()
+    }
+  }, [open, title])
 
   return (
     <AnimatePresence>

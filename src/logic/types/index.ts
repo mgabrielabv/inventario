@@ -21,7 +21,11 @@ export const MOTIVOS_BY_TYPE: Record<MovementType, Motivo[]> = {
   Ajuste: ['Ajuste por conteo', 'Anulación'],
 }
 
-export const DEFAULT_CATEGORIES = ['Electrónica', 'Accesorios', 'Papelería', 'Hogar', 'Otras']
+export const DEFAULT_CATEGORIES = [
+  'Tecnología', 'Accesorios', 'Hogar y cocina', 'Papelería y oficina',
+  'Juguetes y juegos', 'Deportes y aire libre', 'Cuidado personal',
+  'Mascotas', 'Ferretería básica',
+]
 export const DEFAULT_LOCATIONS = [
   'A-01', 'A-02', 'A-03', 'A-04', 'A-05', 'B-01', 'B-02', 'B-03', 'C-01', 'C-02',
 ]
@@ -51,6 +55,9 @@ export interface Product {
   slug: string
   nombre: string
   categoria: string
+  /** Facetas opcionales de la tienda departamental (migradas con valor vacío). */
+  subcategoria?: string
+  marca?: string
   unidad: Unit
   stock: number                 // solo cambia por movimientos
   stockMinimo: number
@@ -157,6 +164,8 @@ export type PaymentMethod = 'efectivo' | 'transferencia' | 'movil' | 'tarjeta-de
 export interface Order {
   id: string
   codigo: string
+  /** Cuenta de cliente asociada, si el pedido se hizo con cuenta. */
+  clienteId?: string
   fecha: string
   cliente: OrderCustomer
   entrega: OrderDelivery
@@ -227,6 +236,7 @@ export interface Settings {
 export type UserRole = 'Administrador' | 'Operador'
 export type PermissionAction =
   | 'ver:panel' | 'ver:reportes' | 'exportar:reportes' | 'configurar'
+  | 'ver:clientes' | 'gestionar:clientes'
   | 'crear:producto' | 'editar:producto' | 'editar:precio' | 'archivar:producto'
   | 'eliminar:producto' | 'registrar:movimiento' | 'anular:movimiento'
   | 'avanzar:pedido' | 'cancelar:pedido' | 'verificar:pago' | 'gestionar:usuarios'
@@ -254,6 +264,32 @@ export interface CustomerProfile {
   documento: string
 }
 
+/* --- Cuentas de cliente (separadas del personal) -------------------------- */
+export interface Address {
+  id: string
+  alias: string
+  direccion: string
+  zona: string
+  referencia: string
+  esPrincipal: boolean
+}
+
+export interface CustomerAccount {
+  id: string
+  nombre: string
+  apellido: string
+  email: string
+  telefono: string
+  documento?: string
+  salt: string
+  passwordHash: string
+  direcciones: Address[]
+  creadoEn: string
+  ultimoIngreso: string
+  aceptaOfertas: boolean
+  activo: boolean
+}
+
 /* --- Apoyo --------------------------------------------------------------- */
 export interface BackupPayload {
   version: number
@@ -264,6 +300,8 @@ export interface BackupPayload {
   settings: Settings
   users: StoredUser[]
   activity: ActivityEntry[]
+  /** v3: cuentas de cliente. Los respaldos antiguos no lo traen. */
+  customers?: CustomerAccount[]
 }
 
 export interface CsvRowError { row: number; message: string }

@@ -1,3 +1,5 @@
+import { BRAND } from '../../config/brand'
+import { LEGACY_ORDER_PREFIXES, LEGACY_PREFIX } from '../../config/legacy'
 import { AppError } from '../errors'
 import { getAvailable } from './stock'
 import { calcTotals, findCoupon, formatMoney, roundMoney } from './pricing'
@@ -24,11 +26,18 @@ export const nextStatusLabel = (status: OrderStatus): string => {
 
 export const generateOrderCode = (orders: Order[], now: Date = new Date()): string => {
   const year = now.getFullYear()
-  const prefix = `INV-${year}-`
+  const prefix = `${BRAND.orderPrefix}-${year}-`
+  // Los pedidos históricos con el prefijo anterior también cuentan para la
+  // secuencia del año, de modo que no aparezca un número repetido.
+  const prefixes = [
+    prefix,
+    ...LEGACY_ORDER_PREFIXES.map((item) => `${item}-${year}-`),
+    `${LEGACY_PREFIX.toUpperCase()}${year}-`,
+  ]
   const last = orders
     .map((order) => order.codigo)
-    .filter((code) => code.startsWith(prefix))
-    .map((code) => Number(code.slice(prefix.length)))
+    .filter((code) => prefixes.some((item) => code.startsWith(item)))
+    .map((code) => Number(code.slice(code.lastIndexOf('-') + 1)))
     .filter((n) => Number.isFinite(n))
     .reduce((max, n) => Math.max(max, n), 0)
   return `${prefix}${String(last + 1).padStart(6, '0')}`
@@ -69,6 +78,7 @@ export interface CreateOrderInput {
   orders: Order[]
   cart: CartLine[]
   cliente: OrderCustomer
+  clienteId?: string
   entrega: OrderDelivery
   pago: { metodo: PaymentMethod; referencia?: string; comprobante?: string; vuelto?: number }
   settings: Settings
@@ -121,6 +131,7 @@ export const createOrder = (input: CreateOrderInput): Order => {
     codigo: generateOrderCode(input.orders, now),
     fecha: now.toISOString(),
     cliente: input.cliente,
+    clienteId: input.clienteId,
     entrega: input.entrega,
     lineas,
     subtotal: roundMoney(subtotal),

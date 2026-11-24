@@ -5,6 +5,8 @@
 
 /* --- Chrome del panel ----------------------------------------------------- */
 .admin-app { min-height: 100vh; }
+.admin-backdrop,
+.admin-tabbar { display: none; }
 
 .admin-sidebar {
   position: fixed; inset: 0 auto 0 0; z-index: var(--z-nav);
@@ -31,7 +33,10 @@
   white-space: nowrap; overflow: hidden;
   transition: color 180ms ease, background 180ms ease;
 }
-.admin-nav__item:hover { color: var(--text); background: var(--surface-2); }
+@media (hover: hover) {
+  .admin-nav__item:hover { color: var(--text); background: var(--surface-2);
+  }
+}
 .admin-nav__item.is-active { color: var(--text); }
 .admin-nav__active {
   position: absolute; inset: 0; z-index: 0; border-radius: var(--radius-active);
@@ -75,7 +80,10 @@
   background: var(--surface); color: var(--text-2);
   font-size: var(--fs-caption); text-align: left;
 }
-.admin-search:hover { border-color: var(--hairline-strong); }
+@media (hover: hover) {
+  .admin-search:hover { border-color: var(--hairline-strong);
+  }
+}
 .admin-search kbd {
   display: inline-flex; align-items: center; gap: 2px; margin-left: auto;
   font-family: var(--font-mono); font-size: var(--fs-min); color: var(--text-2);
@@ -86,7 +94,10 @@
   display: flex; align-items: center; gap: var(--s2); padding: 2px;
   border-radius: var(--radius-pill); color: var(--text-2);
 }
-.admin-user__button:hover { color: var(--text); }
+@media (hover: hover) {
+  .admin-user__button:hover { color: var(--text);
+  }
+}
 .admin-user__menu {
   position: absolute; top: calc(100% + 8px); right: 0; z-index: var(--z-overlay);
   display: flex; flex-direction: column; gap: var(--s1);
@@ -151,7 +162,10 @@
   display: inline-flex; align-items: center; gap: var(--s1);
   color: var(--primary-text); font-size: var(--fs-min); font-weight: 600; white-space: nowrap;
 }
-.admin-link:hover { text-decoration: underline; text-underline-offset: 3px; }
+@media (hover: hover) {
+  .admin-link:hover { text-decoration: underline; text-underline-offset: 3px;
+  }
+}
 
 .admin-kpi-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -214,6 +228,7 @@
 .admin-flow-labels { display: flex; gap: var(--s1); }
 .admin-flow-labels span {
   flex: 1; min-width: 0; overflow: hidden; white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: var(--fs-min); color: var(--text-2); text-align: center;
 }
 
@@ -275,7 +290,10 @@
   color: var(--text); text-align: left;
   transition: border-color 180ms ease, background 180ms ease;
 }
-.admin-order-card:hover { border-color: var(--hairline-strong); background: var(--surface-2); }
+@media (hover: hover) {
+  .admin-order-card:hover { border-color: var(--hairline-strong); background: var(--surface-2);
+  }
+}
 .admin-order-card__status { align-items: flex-end; }
 .admin-order-card__arrow { font-size: 20px; color: var(--text-2); }
 .admin-order-status {
@@ -390,31 +408,78 @@
 }
 
 /* --- Adaptación ----------------------------------------------------------- */
-@media (max-width: 1100px) {
+@media (max-width: 1024px) {
   .admin-grid-form, .admin-settings-grid { grid-template-columns: minmax(0, 1fr); }
   .admin-export-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .admin-flow-bars { height: 140px; }
 }
 
-@media (max-width: 860px) {
-  .admin-sidebar {
+@media (max-width: 1024px) {
+  .admin-app .admin-sidebar,
+  .admin-app.is-collapsed .admin-sidebar {
     width: var(--sidebar-w); transform: translateX(-100%); box-shadow: var(--shadow-lg);
   }
-  .admin-app.is-collapsed .admin-sidebar {
-    width: var(--sidebar-w); transform: translateX(0);
-  }
+  .admin-app.is-drawer-open .admin-sidebar { transform: translateX(0); }
+  .admin-app .admin-sidebar__top,
   .admin-app.is-collapsed .admin-sidebar__top {
     flex-direction: row; justify-content: space-between;
   }
+  .admin-app .admin-sidebar__top .brand span:not(.brand__mark),
   .admin-app.is-collapsed .admin-sidebar__top .brand span:not(.brand__mark) { display: inline; }
+  .admin-app .admin-nav__item,
   .admin-app.is-collapsed .admin-nav__item { justify-content: flex-start; padding: 0 var(--s3); }
   .admin-content, .admin-app.is-collapsed .admin-content { margin-left: 0; }
   .admin-topbar__menu { display: inline-flex; }
   .admin-search { width: min(280px, 40vw); }
   .admin-grid-2 { grid-template-columns: minmax(0, 1fr); }
+
+  .admin-backdrop {
+    display: block;
+    position: fixed; inset: 0; z-index: calc(var(--z-nav) - 1);
+    border: 0; background: color-mix(in oklab, var(--text) 48%, transparent);
+  }
+  .admin-tabbar {
+    display: grid;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    z-index: var(--z-sticky);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    height: calc(var(--bottom-bar-h) + var(--safe-bottom));
+    padding-bottom: var(--safe-bottom);
+    border-top: 1px solid var(--hairline);
+    background: var(--surface);
+    padding-left: var(--safe-left); padding-right: var(--safe-right);
+  }
+  .admin-tabbar__item {
+    position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; min-width: 0; min-height: var(--bottom-bar-h);
+    color: var(--text-2); font-size: var(--fs-min); font-weight: 600;
+    text-decoration: none;
+  }
+  .admin-tabbar__item.is-active { color: var(--primary-text); }
+  .admin-tabbar__item.is-active::before {
+    content: ''; position: absolute; top: 0;
+    width: 28px; height: 3px; border-radius: 0 0 3px 3px;
+    background: var(--primary);
+  }
+  .admin-tabbar__badge {
+    position: absolute; top: 3px; left: 55%;
+    min-width: 16px; height: 16px; padding: 0 3px;
+    border-radius: var(--radius-pill); background: var(--primary); color: var(--on-primary);
+    font-size: 10px; line-height: 16px; text-align: center;
+  }
+  .admin-main { padding-bottom: calc(var(--bottom-bar-h) + var(--safe-bottom) + var(--s7)); }
+  .admin-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@media (max-width: 640px) {
+/* Con barra lateral abierta, el ancho útil de una hoja de ajustes no basta
+   para cinco columnas: el código del cupón quedaba en 42 px. */
+@media (min-width: 481px) and (max-width: 1280px) {
+  .admin-coupon-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-coupon-row .btn { grid-column: 1 / -1; }
+}
+
+@media (max-width: 480px) {
   .admin-main { padding: var(--s5) 0 var(--s7); }
   .admin-topbar { padding: 0 var(--s3); }
   .admin-search { width: auto; min-width: 40px; }

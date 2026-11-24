@@ -1,146 +1,842 @@
 {
-  "generatedAt": "2026-11-23T03:07:01.533Z",
+  "generatedAt": "2026-11-24T01:38:46.975Z",
   "html": {
-    "bytes": 1016080,
-    "gzipBytes": 424758,
+    "bytes": 1310724,
+    "gzipBytes": 489694,
     "limitBytes": 2621440
   },
   "routes": {
     "home-light": {
       "hueOk": 1,
-      "sampled": 52378
+      "sampled": 176476,
+      "overflow": 0
     },
     "catalogo-light": {
       "hueOk": 1,
-      "sampled": 1037
+      "sampled": 86331,
+      "overflow": 0
+    },
+    "catalogo-filtros-light": {
+      "hueOk": 1,
+      "sampled": 77581,
+      "overflow": 0
     },
     "ficha-light": {
       "hueOk": 1,
-      "sampled": 1037
+      "sampled": 136821,
+      "overflow": 0
     },
     "carrito-light": {
       "hueOk": 1,
-      "sampled": 60077
+      "sampled": 77224,
+      "overflow": 0
     },
     "checkout-light": {
       "hueOk": 1,
-      "sampled": 57197
+      "sampled": 58442,
+      "overflow": 0
     },
     "seguimiento-light": {
       "hueOk": 1,
-      "sampled": 60989
+      "sampled": 74951,
+      "overflow": 0
     },
     "favoritos-light": {
       "hueOk": 1,
-      "sampled": 49637
+      "sampled": 51503,
+      "overflow": 0
+    },
+    "cuenta-ingresar-light": {
+      "hueOk": 1,
+      "sampled": 134218,
+      "overflow": 0
+    },
+    "cuenta-registro-light": {
+      "hueOk": 1,
+      "sampled": 128716,
+      "overflow": 0
     },
     "login-light": {
       "hueOk": 1,
-      "sampled": 182800
+      "sampled": 188061,
+      "overflow": 0
     },
     "admin-inicio-light": {
       "hueOk": 1,
-      "sampled": 10757
+      "sampled": 11247,
+      "overflow": 0
+    },
+    "admin-clientes-light": {
+      "hueOk": 1,
+      "sampled": 2281,
+      "overflow": 0
     },
     "admin-inventario-light": {
       "hueOk": 1,
-      "sampled": 17978
+      "sampled": 22906,
+      "overflow": 0
     },
     "admin-movimientos-light": {
       "hueOk": 1,
-      "sampled": 7640
+      "sampled": 9437,
+      "overflow": 0
     },
     "admin-pedidos-light": {
       "hueOk": 1,
-      "sampled": 12653
+      "sampled": 16728,
+      "overflow": 0
     },
     "admin-reposicion-light": {
       "hueOk": 1,
-      "sampled": 3063
+      "sampled": 3332,
+      "overflow": 0
     },
     "admin-reportes-light": {
       "hueOk": 1,
-      "sampled": 17456
+      "sampled": 21171,
+      "overflow": 0
     },
     "home-dark": {
       "hueOk": 1,
-      "sampled": 7616
+      "sampled": 161826,
+      "overflow": 0
     },
     "catalogo-dark": {
       "hueOk": 1,
-      "sampled": 841
+      "sampled": 69139,
+      "overflow": 0
+    },
+    "catalogo-filtros-dark": {
+      "hueOk": 1,
+      "sampled": 60194,
+      "overflow": 0
     },
     "ficha-dark": {
       "hueOk": 1,
-      "sampled": 841
+      "sampled": 119524,
+      "overflow": 0
     },
     "carrito-dark": {
       "hueOk": 1,
-      "sampled": 772
+      "sampled": 59844,
+      "overflow": 0
     },
     "checkout-dark": {
       "hueOk": 1,
-      "sampled": 772
+      "sampled": 41941,
+      "overflow": 0
     },
     "seguimiento-dark": {
       "hueOk": 1,
-      "sampled": 1653
+      "sampled": 22665,
+      "overflow": 0
     },
     "favoritos-dark": {
       "hueOk": 1,
-      "sampled": 772
+      "sampled": 22771,
+      "overflow": 0
+    },
+    "cuenta-ingresar-dark": {
+      "hueOk": 1,
+      "sampled": 119153,
+      "overflow": 0
+    },
+    "cuenta-registro-dark": {
+      "hueOk": 1,
+      "sampled": 113611,
+      "overflow": 0
     },
     "login-dark": {
       "hueOk": 1,
-      "sampled": 11048
+      "sampled": 10946,
+      "overflow": 0
     },
     "admin-inicio-dark": {
       "hueOk": 1,
-      "sampled": 15254
+      "sampled": 15782,
+      "overflow": 0
+    },
+    "admin-clientes-dark": {
+      "hueOk": 1,
+      "sampled": 5441,
+      "overflow": 0
     },
     "admin-inventario-dark": {
       "hueOk": 1,
-      "sampled": 24714
+      "sampled": 29887,
+      "overflow": 0
     },
     "admin-movimientos-dark": {
       "hueOk": 1,
-      "sampled": 11922
+      "sampled": 13958,
+      "overflow": 0
     },
     "admin-pedidos-dark": {
       "hueOk": 1,
-      "sampled": 18204
+      "sampled": 22587,
+      "overflow": 0
     },
     "admin-reposicion-dark": {
       "hueOk": 1,
-      "sampled": 6609
+      "sampled": 6947,
+      "overflow": 0
     },
     "admin-reportes-dark": {
       "hueOk": 1,
-      "sampled": 21479
+      "sampled": 25469,
+      "overflow": 0
+    },
+    "home-320-light": {
+      "hueOk": 1,
+      "sampled": 30608,
+      "overflow": 0
+    },
+    "catalogo-320-light": {
+      "hueOk": 1,
+      "sampled": 12656,
+      "overflow": 0
+    },
+    "ficha-320-light": {
+      "hueOk": 1,
+      "sampled": 22534,
+      "overflow": 0
+    },
+    "carrito-320-light": {
+      "hueOk": 1,
+      "sampled": 7510,
+      "overflow": 0
+    },
+    "admin-inventario-320-light": {
+      "hueOk": 1,
+      "sampled": 4065,
+      "overflow": 0
+    },
+    "home-320-dark": {
+      "hueOk": 1,
+      "sampled": 27834,
+      "overflow": 0
+    },
+    "catalogo-320-dark": {
+      "hueOk": 1,
+      "sampled": 9078,
+      "overflow": 0
+    },
+    "ficha-320-dark": {
+      "hueOk": 1,
+      "sampled": 18277,
+      "overflow": 0
+    },
+    "carrito-320-dark": {
+      "hueOk": 1,
+      "sampled": 4345,
+      "overflow": 0
+    },
+    "admin-inventario-320-dark": {
+      "hueOk": 1,
+      "sampled": 4005,
+      "overflow": 0
     },
     "home-mobile-light": {
       "hueOk": 1,
-      "sampled": 16952
+      "sampled": 38936,
+      "overflow": 0
     },
     "catalogo-mobile-light": {
       "hueOk": 1,
-      "sampled": 69
+      "sampled": 25946,
+      "overflow": 0
     },
     "ficha-mobile-light": {
       "hueOk": 1,
-      "sampled": 69
+      "sampled": 30616,
+      "overflow": 0
+    },
+    "carrito-mobile-light": {
+      "hueOk": 1,
+      "sampled": 28106,
+      "overflow": 0
+    },
+    "admin-inventario-mobile-light": {
+      "hueOk": 1,
+      "sampled": 5132,
+      "overflow": 0
     },
     "home-mobile-dark": {
       "hueOk": 1,
-      "sampled": 7212
+      "sampled": 35674,
+      "overflow": 0
     },
     "catalogo-mobile-dark": {
       "hueOk": 1,
-      "sampled": 0
+      "sampled": 21610,
+      "overflow": 0
     },
     "ficha-mobile-dark": {
       "hueOk": 1,
-      "sampled": 0
+      "sampled": 25686,
+      "overflow": 0
+    },
+    "carrito-mobile-dark": {
+      "hueOk": 1,
+      "sampled": 22829,
+      "overflow": 0
+    },
+    "admin-inventario-mobile-dark": {
+      "hueOk": 1,
+      "sampled": 5364,
+      "overflow": 0
+    },
+    "home-412-light": {
+      "hueOk": 1,
+      "sampled": 41916,
+      "overflow": 0
+    },
+    "catalogo-412-light": {
+      "hueOk": 1,
+      "sampled": 33710,
+      "overflow": 0
+    },
+    "ficha-412-light": {
+      "hueOk": 1,
+      "sampled": 34086,
+      "overflow": 0
+    },
+    "carrito-412-light": {
+      "hueOk": 1,
+      "sampled": 38131,
+      "overflow": 0
+    },
+    "admin-inventario-412-light": {
+      "hueOk": 1,
+      "sampled": 5222,
+      "overflow": 0
+    },
+    "home-412-dark": {
+      "hueOk": 1,
+      "sampled": 38202,
+      "overflow": 0
+    },
+    "catalogo-412-dark": {
+      "hueOk": 1,
+      "sampled": 28676,
+      "overflow": 0
+    },
+    "ficha-412-dark": {
+      "hueOk": 1,
+      "sampled": 28602,
+      "overflow": 0
+    },
+    "carrito-412-dark": {
+      "hueOk": 1,
+      "sampled": 32550,
+      "overflow": 0
+    },
+    "admin-inventario-412-dark": {
+      "hueOk": 1,
+      "sampled": 5597,
+      "overflow": 0
+    },
+    "home-768-light": {
+      "hueOk": 1,
+      "sampled": 86724,
+      "overflow": 0
+    },
+    "catalogo-768-light": {
+      "hueOk": 1,
+      "sampled": 65354,
+      "overflow": 0
+    },
+    "ficha-768-light": {
+      "hueOk": 1,
+      "sampled": 60670,
+      "overflow": 0
+    },
+    "carrito-768-light": {
+      "hueOk": 1,
+      "sampled": 58795,
+      "overflow": 0
+    },
+    "admin-inventario-768-light": {
+      "hueOk": 1,
+      "sampled": 10712,
+      "overflow": 0
+    },
+    "home-768-dark": {
+      "hueOk": 1,
+      "sampled": 79335,
+      "overflow": 0
+    },
+    "catalogo-768-dark": {
+      "hueOk": 1,
+      "sampled": 55878,
+      "overflow": 0
+    },
+    "ficha-768-dark": {
+      "hueOk": 1,
+      "sampled": 49384,
+      "overflow": 0
+    },
+    "carrito-768-dark": {
+      "hueOk": 1,
+      "sampled": 48829,
+      "overflow": 0
+    },
+    "admin-inventario-768-dark": {
+      "hueOk": 1,
+      "sampled": 12330,
+      "overflow": 0
+    },
+    "home-1280-light": {
+      "hueOk": 1,
+      "sampled": 134366,
+      "overflow": 0
+    },
+    "catalogo-1280-light": {
+      "hueOk": 1,
+      "sampled": 91889,
+      "overflow": 0
+    },
+    "ficha-1280-light": {
+      "hueOk": 1,
+      "sampled": 107456,
+      "overflow": 0
+    },
+    "carrito-1280-light": {
+      "hueOk": 1,
+      "sampled": 68683,
+      "overflow": 0
+    },
+    "admin-inventario-1280-light": {
+      "hueOk": 1,
+      "sampled": 17427,
+      "overflow": 0
+    },
+    "home-1280-dark": {
+      "hueOk": 1,
+      "sampled": 121410,
+      "overflow": 0
+    },
+    "catalogo-1280-dark": {
+      "hueOk": 1,
+      "sampled": 76295,
+      "overflow": 0
+    },
+    "ficha-1280-dark": {
+      "hueOk": 1,
+      "sampled": 88566,
+      "overflow": 0
+    },
+    "carrito-1280-dark": {
+      "hueOk": 1,
+      "sampled": 54430,
+      "overflow": 0
+    },
+    "admin-inventario-1280-dark": {
+      "hueOk": 1,
+      "sampled": 23385,
+      "overflow": 0
+    }
+  },
+  "mobile": {
+    "320-light-home": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320-light-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320-light-ficha": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320-light-carrito": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320-light-admin-inventario": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320-dark-home": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320-dark-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320-dark-ficha": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320-dark-carrito": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320-dark-admin-inventario": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390-light-home": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390-light-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390-light-ficha": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390-light-carrito": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390-light-admin-inventario": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390-dark-home": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390-dark-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390-dark-ficha": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390-dark-carrito": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390-dark-admin-inventario": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412-light-home": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412-light-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412-light-ficha": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412-light-carrito": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412-light-admin-inventario": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412-dark-home": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412-dark-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412-dark-ficha": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412-dark-carrito": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412-dark-admin-inventario": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768-light-home": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768-light-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768-light-ficha": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768-light-carrito": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768-light-admin-inventario": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768-dark-home": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768-dark-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768-dark-ficha": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768-dark-carrito": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768-dark-admin-inventario": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280-light-home": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0.006574218750000001,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280-light-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280-light-ficha": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280-light-carrito": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280-light-admin-inventario": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280-dark-home": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0.006574218750000001,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280-dark-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280-dark-ficha": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280-dark-carrito": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280-dark-admin-inventario": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
     }
   },
   "palette": {
@@ -149,12 +845,12 @@
   },
   "performance": {
     "light": {
-      "cls": 0,
+      "cls": 0.005194444444444444,
       "longTasks": 0,
       "maxTask": 0
     },
     "dark": {
-      "cls": 0,
+      "cls": 0.005194444444444444,
       "longTasks": 0,
       "maxTask": 0
     }
@@ -165,13 +861,36 @@
       "hash": "#/admin",
       "user": "A"
     },
+    "cliente": {
+      "ok": true,
+      "cuentaHash": "#/cuenta",
+      "adminRedirect": "#/ingresar",
+      "checkout": "IVO-2026-000007"
+    },
     "checkout": {
       "ok": true,
-      "hash": "#/pedido/INV-2026-000007",
-      "code": "INV-2026-000007"
+      "hash": "#/pedido/IVO-2026-000007",
+      "code": "IVO-2026-000007"
+    },
+    "filtros": {
+      "ok": true,
+      "cards": 10,
+      "hash": "#/tienda?categoria=Accesorios&orden=precio-asc&densidad=compacta"
     }
   },
   "externalRequests": [],
   "errors": [],
-  "problems": []
+  "problems": [],
+  "overflow": {
+    "max": 0,
+    "threshold": 2
+  },
+  "mobileSummary": {
+    "measurements": 50,
+    "smallTargets": 0,
+    "smallFields": 0,
+    "maxOverflow": 0,
+    "maxCls": 0.006574218750000001,
+    "maxTask": 0
+  }
 }

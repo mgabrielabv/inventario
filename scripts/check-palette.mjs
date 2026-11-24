@@ -132,6 +132,12 @@ function hueSat([r, g, b]) {
 }
 
 const tokensSource = strip(readFileSync(tokensPath, 'utf8'))
+/* Límites configurables en un solo lugar: el bloque de configuración de tokens.css. */
+const paletteNumber = (name, fallback) =>
+  Number(tokensSource.match(new RegExp(`--palette-${name}\\s*:\\s*([-\\d.]+)`))?.[1] ?? fallback)
+const HUE_MIN = paletteNumber('hue-min', 350)
+const HUE_MAX = paletteNumber('hue-max', 40)
+const SAT_MIN = paletteNumber('saturation-min', 12)
 const tokenValues = [...tokensSource.matchAll(/--[a-z0-9-]+\s*:\s*([^;]+);/gi)].map((m) => m[1])
 const checked = new Set()
 for (const value of tokenValues) {
@@ -145,11 +151,14 @@ for (const value of tokenValues) {
         continue
       }
       const { h, s } = hueSat(rgb)
-      if (h > 40 && h < 350) {
-        failures.push(`tokens.css: ${literal} tiene matiz ${h.toFixed(1)}° (permitido 350°–40°)`)
+      const outside = HUE_MIN <= HUE_MAX
+        ? h < HUE_MIN || h > HUE_MAX
+        : h < HUE_MIN && h > HUE_MAX
+      if (outside) {
+        failures.push(`tokens.css: ${literal} tiene matiz ${h.toFixed(1)}° (permitido ${HUE_MIN}°–${HUE_MAX}°)`)
       }
-      if (s < 12) {
-        failures.push(`tokens.css: ${literal} tiene saturación ${s.toFixed(1)}% (mínimo 12%)`)
+      if (s < SAT_MIN) {
+        failures.push(`tokens.css: ${literal} tiene saturación ${s.toFixed(1)}% (mínimo ${SAT_MIN}%)`)
       }
     }
   }
@@ -160,4 +169,4 @@ if (failures.length > 0) {
   for (const failure of failures) console.error(`  · ${failure}`)
   process.exit(1)
 }
-console.log(`Paleta: OK (${sourceFiles.length - 1} archivos limpios, ${checked.size} colores en tokens.css dentro de 350°–40° y S>=12%).`)
+console.log(`Paleta: OK (${sourceFiles.length - 1} archivos limpios, ${checked.size} colores en tokens.css dentro de ${HUE_MIN}°–${HUE_MAX}° y S>=${SAT_MIN}%).`)

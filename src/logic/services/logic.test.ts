@@ -23,7 +23,7 @@ const product = (overrides: Partial<Product> = {}): Product => ({
 })
 
 const order = (estado: Order['estado'], cantidad: number): Order => ({
-  id: `o-${estado}`, codigo: `INV-2026-${estado}`, fecha: new Date().toISOString(),
+  id: `o-${estado}`, codigo: `PED-2026-${estado}`, fecha: new Date().toISOString(),
   cliente: { nombre: 'Cliente', telefono: '04241234567' },
   entrega: { tipo: 'retiro' },
   lineas: [{ productoId: 'p-test', nombre: 'Producto de prueba', codigo: 'T-001', precioUnit: 20, cantidad }],
@@ -38,7 +38,7 @@ const settings = {
 
 function defaults() {
   return {
-    tienda: { nombre: 'Inventario', direccion: 'Av. Principal', horario: 'Lun a Vie', telefono: '0424', whatsapp: '58424' },
+    tienda: { nombre: 'Tienda demo', direccion: 'Av. Principal', horario: 'Lun a Vie', telefono: '0424', whatsapp: '58424' },
     entrega: {
       retiro: true, delivery: true, zonas: [{ nombre: 'Caracas', tarifa: 5 }],
       envioGratisDesde: 100, ventanas: ['09:00 – 12:00'],
@@ -123,7 +123,7 @@ describe('stock y reservas', () => {
 describe('pedidos', () => {
   it('genera códigos consecutivos por año', () => {
     const ahora = new Date('2026-05-10T12:00:00.000Z')
-    expect(generateOrderCode(initialOrders, ahora)).toMatch(/^INV-2026-\d{6}$/)
+    expect(generateOrderCode(initialOrders, ahora)).toMatch(/^IVO-2026-\d{6}$/)
   })
 
   it('rechaza un pedido cuando el stock cambió', () => {

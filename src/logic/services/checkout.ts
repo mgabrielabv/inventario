@@ -98,6 +98,7 @@ export interface CheckoutContext {
   settings: Settings
   entrega: OrderDelivery
   cupon?: string
+  clienteId?: string
 }
 
 /** Revisión final de stock, precio y total justo antes de confirmar. */
@@ -133,6 +134,7 @@ export const buildCheckoutOrder = (
     email: draft.email.trim() || undefined,
     documento: draft.documento.trim() || undefined,
   },
+  clienteId: context.clienteId,
   entrega: context.entrega,
   pago: {
     metodo: draft.metodo,

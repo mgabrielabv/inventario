@@ -1,5 +1,9 @@
 /* Almacenamiento versionado. El HTML puede abrirse con file://; si localStorage
-   no está disponible, se usa un mapa en memoria sin romper la app. */
+   no está disponible, se usa un mapa en memoria sin romper la app.
+   Las claves derivan de BRAND.slug; los nombres históricos viven en config/legacy. */
+
+import { storageKey } from '../../config/brand'
+import { LEGACY_KEYS, LEGACY_PREFIX, LEGACY_SLUGS } from '../../config/legacy'
 
 export interface SafeStorage {
   getItem: (name: string) => string | null
@@ -8,36 +12,48 @@ export interface SafeStorage {
 }
 
 export const KEYS = {
-  inventory: 'inventario-storage',
-  theme: 'inventario-theme',
-  user: 'inventario-user',
-  users: 'inventario-users',
-  orders: 'inventario-orders',
-  cart: 'inventario-cart-v2',
-  favorites: 'inventario-favorites-v2',
-  settings: 'inventario-settings-v2',
-  customer: 'inventario-customer-v2',
-  recent: 'inventario-recent-v2',
-  cartDraft: 'inventario-cart-draft-v1',
-  checkoutDraft: 'inventario-checkout-draft-v1',
-  activity: 'inventario-activity',
+  inventory: storageKey('storage'),
+  theme: storageKey('theme'),
+  user: storageKey('user'),
+  users: storageKey('users'),
+  orders: storageKey('orders'),
+  cart: storageKey('cart-v2'),
+  favorites: storageKey('favorites-v2'),
+  settings: storageKey('settings-v2'),
+  customer: storageKey('customer-v2'),
+  recent: storageKey('recent-v2'),
+  cartDraft: storageKey('cart-draft-v1'),
+  checkoutDraft: storageKey('checkout-draft-v1'),
+  activity: storageKey('activity'),
+  customers: storageKey('customers-v1'),
+  customerSession: storageKey('customer-session-v1'),
 } as const
 
 export type StorageKey = (typeof KEYS)[keyof typeof KEYS]
 
-/** Claves de la versión anterior (prefijo atelier / inventario-inventory-storage). */
-const LEGACY: Array<[StorageKey, string[]]> = [
-  [KEYS.inventory, ['atelier-inventory-storage', 'inventario-inventory-storage']],
-  [KEYS.theme, ['atelier-theme']],
-  [KEYS.user, ['atelier-user']],
-  [KEYS.orders, ['atelier-orders']],
-]
+const SUFFIXES: Record<keyof typeof KEYS, string> = {
+  inventory: 'storage',
+  theme: 'theme',
+  user: 'user',
+  users: 'users',
+  orders: 'orders',
+  cart: 'cart-v2',
+  favorites: 'favorites-v2',
+  settings: 'settings-v2',
+  customer: 'customer-v2',
+  recent: 'recent-v2',
+  cartDraft: 'cart-draft-v1',
+  checkoutDraft: 'checkout-draft-v1',
+  activity: 'activity',
+  customers: 'customers-v1',
+  customerSession: 'customer-session-v1',
+}
 
 const memory = new Map<string, string>()
 
 const canUseLocalStorage = (): boolean => {
   try {
-    const probe = '__inventario_probe__'
+    const probe = '__brand_probe__'
     window.localStorage.setItem(probe, probe)
     window.localStorage.removeItem(probe)
     return true
@@ -50,10 +66,16 @@ const persistent = typeof window !== 'undefined' && canUseLocalStorage()
 
 export const migrateLegacyStorage = (): void => {
   if (!persistent) return
-  for (const [target, legacyKeys] of LEGACY) {
+  for (const key of Object.keys(KEYS) as Array<keyof typeof KEYS>) {
+    const target = KEYS[key]
     try {
       if (window.localStorage.getItem(target) !== null) continue
-      const source = legacyKeys.find((key) => window.localStorage.getItem(key) !== null)
+      const candidates = [
+        ...(LEGACY_KEYS[key] ?? []),
+        ...LEGACY_SLUGS.map((slug) => `${slug}-${SUFFIXES[key]}`),
+        `${LEGACY_PREFIX}${SUFFIXES[key]}`,
+      ]
+      const source = candidates.find((name) => window.localStorage.getItem(name) !== null)
       if (!source) continue
       const value = window.localStorage.getItem(source)
       if (value === null) continue

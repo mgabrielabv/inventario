@@ -1,11 +1,13 @@
 import type { BackupPayload } from '../types'
+import { getCustomers } from './customer-auth'
 
-const VERSION = 2
+const VERSION = 3
 
 export const buildBackup = (payload: Omit<BackupPayload, 'version' | 'exportedAt'>): BackupPayload => ({
+  ...payload,
   version: VERSION,
   exportedAt: new Date().toISOString(),
-  ...payload,
+  customers: payload.customers ?? getCustomers(),
 })
 
 /** Validación mínima de esquema antes de sobrescribir datos. */
@@ -16,9 +18,15 @@ export const validateBackup = (value: unknown): { ok: true; data: BackupPayload 
   for (const key of ['products', 'movements', 'orders', 'users', 'activity'] as const) {
     if (!Array.isArray(data[key])) return { ok: false, error: `Falta la lista ${key}` }
   }
+  // v2 no incluye customers; v3 sí. Si aparece, debe ser una lista.
+  if (data.customers !== undefined && !Array.isArray(data.customers)) {
+    return { ok: false, error: 'La lista de clientes no es válida' }
+  }
   if (!data.settings || typeof data.settings !== 'object') return { ok: false, error: 'Falta la configuración' }
   return { ok: true, data: data as BackupPayload }
 }
 
-export const backupSummary = (data: BackupPayload): string =>
-  `${data.products.length} productos · ${data.movements.length} movimientos · ${data.orders.length} pedidos`
+export const backupSummary = (data: BackupPayload): string => {
+  const base = `${data.products.length} productos · ${data.movements.length} movimientos · ${data.orders.length} pedidos`
+  return data.customers ? `${base} · ${data.customers.length} clientes` : base
+}

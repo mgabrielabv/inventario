@@ -17,9 +17,11 @@ const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select,t
 export const Modal = ({ open, onClose, title, children, className = '' }: Props) => {
   const panel = useRef<HTMLDivElement | null>(null)
   const previous = useRef<HTMLElement | null>(null)
+  const closeRef = useRef(onClose)
+  closeRef.current = onClose
 
   const onKey = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'Escape') { event.stopPropagation(); onClose(); return }
+    if (event.key === 'Escape') { event.stopPropagation(); closeRef.current(); return }
     if (event.key !== 'Tab' || !panel.current) return
     const nodes = Array.from(panel.current.querySelectorAll<HTMLElement>(FOCUSABLE))
     if (nodes.length === 0) return
@@ -27,21 +29,39 @@ export const Modal = ({ open, onClose, title, children, className = '' }: Props)
     const last = nodes[nodes.length - 1]!
     if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
-  }, [onClose])
+  }, [])
 
   useEffect(() => {
     if (!open) return
     previous.current = document.activeElement as HTMLElement | null
     document.addEventListener('keydown', onKey)
+    const body = document.body
+    const prior = { overflow: body.style.overflow, paddingRight: body.style.paddingRight }
+    const gap = window.innerWidth - document.documentElement.clientWidth
+    body.style.overflow = 'hidden'
+    if (gap > 0) body.style.paddingRight = `${gap}px`
     const id = window.setTimeout(() => {
       panel.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus()
     }, 80)
     return () => {
       document.removeEventListener('keydown', onKey)
       window.clearTimeout(id)
+      body.style.overflow = prior.overflow
+      body.style.paddingRight = prior.paddingRight
       previous.current?.focus()
     }
   }, [open, onKey])
+
+  useEffect(() => {
+    if (!open) return
+    window.history.pushState({ modalTitle: title }, '')
+    const onPop = () => closeRef.current()
+    window.addEventListener('popstate', onPop)
+    return () => {
+      window.removeEventListener('popstate', onPop)
+      if (window.history.state?.modalTitle === title) window.history.back()
+    }
+  }, [open, title])
 
   return (
     <AnimatePresence>

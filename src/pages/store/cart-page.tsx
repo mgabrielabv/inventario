@@ -15,8 +15,8 @@ import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
 
 const HIGHLIGHTS = [
-  { icon: Wallet, title: 'Sin cobros reales', text: 'La compra es una demostración: no se procesa ningún pago.' },
-  { icon: PackageCheck, title: 'Disponibilidad al momento', text: 'Mostramos el stock calculado con los pedidos activos.' },
+  { icon: Wallet, title: 'Sin cobros reales', text: 'La compra es simulada: no se procesa ningún pago.' },
+  { icon: PackageCheck, title: 'Disponibilidad al momento', text: 'Te mostramos lo que podemos ofrecerte ahora.' },
   { icon: ShieldCheck, title: 'Puedes volver atrás', text: 'Quita un producto y deshaz la acción, o guárdalo para después.' },
 ]
 
@@ -153,12 +153,13 @@ export const CartPage = () => {
             )}
 
             <p className="cart-page__note t-caption">
-              Las unidades se apartan al confirmar el pedido. Hasta entonces la disponibilidad puede cambiar.
+              La disponibilidad puede cambiar hasta que confirmes tu pedido.
               Entrega: {settings.tienda.direccion}.
             </p>
           </div>
 
           <CartSummary />
+          <CartSummary mobileBar />
         </div>
       )}
     </div>

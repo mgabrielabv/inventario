@@ -4,6 +4,7 @@ import { Pencil, Plus } from 'lucide-react'
 import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Field, Input, Select, Textarea } from '../../components/ui/Field'
+import { ResponsiveTable } from '../../components/ui/ResponsiveTable'
 import { ProductArt } from '../../components/art/ProductArt'
 import { ProductBox } from '../../components/box/ProductBox'
 import { Segmented } from '../../components/ui/Segmented'
@@ -242,7 +243,7 @@ export const AdminInventoryPage = () => {
           action={can('crear:producto') ? <Button size="sm" onClick={abrirNuevo}>Nuevo producto</Button> : undefined} />
       ) : (
         <div className="table-wrap">
-          <table className="table admin-table">
+          <ResponsiveTable className="admin-table">
             <thead>
               <tr>
                 <th>Producto</th>
@@ -324,7 +325,7 @@ export const AdminInventoryPage = () => {
                 )
               })}
             </tbody>
-          </table>
+          </ResponsiveTable>
         </div>
       )}
 

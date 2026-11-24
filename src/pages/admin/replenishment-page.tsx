@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Field, Input } from '../../components/ui/Field'
+import { ResponsiveTable } from '../../components/ui/ResponsiveTable'
 import { ProductBox } from '../../components/box/ProductBox'
 import { Sheet } from '../../components/ui/Sheet'
 import { StatusDot } from '../../components/ui/StatusDot'
@@ -112,7 +113,7 @@ export const AdminReplenishmentPage = () => {
           action={<Link to="/admin/inventario" className="btn btn--secondary btn--sm">Ver inventario</Link>} />
       ) : (
         <div className="table-wrap">
-          <table className="table admin-table">
+          <ResponsiveTable className="admin-table">
             <thead>
               <tr>
                 <th>Producto</th>
@@ -156,7 +157,7 @@ export const AdminReplenishmentPage = () => {
                 )
               })}
             </tbody>
-          </table>
+          </ResponsiveTable>
         </div>
       )}
 

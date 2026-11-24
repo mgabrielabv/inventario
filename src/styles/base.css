@@ -8,15 +8,25 @@ html { scroll-behavior: smooth; background: var(--bg); }
 
 body {
   min-width: 320px;
-  min-height: 100vh;
+  min-height: var(--app-h);
   margin: 0;
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
   background: var(--bg);
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
 }
 
 button, input, select, textarea { font: inherit; color: inherit; }
-button { cursor: pointer; border: 0; background: none; padding: 0; }
+button { cursor: pointer; border: 0; background: none; padding: 0; touch-action: manipulation; }
+
+/* Safari iOS amplía la página al enfocar cualquier campo con menos de 16 px.
+   Se aplica en todos los anchos (también tablet) y a todos los formularios. */
+:is(input:not([type='hidden']):not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']):not([type='file']), select, textarea) {
+  font-size: 16px;
+  min-height: var(--tap-min);
+}
+input[type='checkbox'], input[type='radio'] { width: var(--tap-min); height: var(--tap-min); }
 a { color: var(--primary-text); text-decoration: none; }
 svg { display: block; }
 img { display: block; max-width: 100%; }
@@ -67,23 +77,28 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 /* Rejilla y contenedores -------------------------------------------------- */
 .container-store {
-  width: min(100% - 48px, var(--store-max));
+  width: min(100% - var(--space-page-x) * 2, var(--store-max));
   margin-inline: auto;
 }
 .container-detail {
-  width: min(100% - 48px, var(--detail-max));
+  width: min(100% - var(--space-page-x) * 2, var(--detail-max));
   margin-inline: auto;
 }
 .container-admin {
-  width: min(100% - 48px, var(--admin-max));
+  width: min(100% - var(--space-page-x) * 2, var(--admin-max));
   margin-inline: auto;
-}
-@media (max-width: 640px) {
-  .container-store, .container-detail, .container-admin { width: min(100% - 32px, 100%); }
 }
 
 .section-store { padding-block: var(--section-y); }
-@media (max-width: 768px) { .section-store { padding-block: 72px; } }
+@media (max-width: 768px) { .section-store { padding-block: 64px; } }
+
+/* Utilidades móviles ------------------------------------------------------ */
+.wrap-text { overflow-wrap: anywhere; }
+.scroll-x { overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: none; }
+.scroll-x::-webkit-scrollbar { display: none; }
+.snap-x { scroll-snap-type: x mandatory; }
+.snap-x > * { scroll-snap-align: start; }
+.contain-scroll { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
 
 .row { display: flex; align-items: center; gap: var(--s3); }
 .col { display: flex; flex-direction: column; gap: var(--s3); }

@@ -24,9 +24,6 @@
 .mesh__blob--3 { animation: mesh-drift-three 32s ease-in-out infinite; }
 .mesh--paused .mesh__blob { animation-play-state: paused; }
 
-.word-mask { display: inline-block; overflow: hidden; vertical-align: bottom; }
-.word-mask > span { display: inline-block; will-change: transform, filter, opacity; }
-
 .rolling-number { display: inline-flex; align-items: baseline; }
 .rolling-number__digits { display: inline-flex; align-items: baseline; }
 .rolling-number__static { white-space: pre; }

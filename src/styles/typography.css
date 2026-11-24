@@ -102,7 +102,7 @@ h1, h2, h3, h4 {
 .t-balance { text-wrap: balance; }
 .t-pretty { text-wrap: pretty; }
 
-@media (max-width: 640px) {
+@media (max-width: 480px) {
   .t-lead { font-size: 17px; }
   .t-body { font-size: 16px; }
 }

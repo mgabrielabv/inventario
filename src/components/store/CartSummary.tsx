@@ -16,10 +16,12 @@ import { useSettingsStore } from '../../logic/store/settings'
 interface Props {
   compact?: boolean
   onNavigate?: () => void
+  /** Variante móvil: solo total y acción, anclada al pie de la pantalla. */
+  mobileBar?: boolean
 }
 
 /** Resumen sticky del carrito: cupón, envío, entrega, nota y totales. */
-export const CartSummary = ({ compact = false, onNavigate }: Props) => {
+export const CartSummary = ({ compact = false, onNavigate, mobileBar = false }: Props) => {
   const navigate = useNavigate()
   const lines = useCartStore((state) => state.lines)
   const products = useInventoryStore((state) => state.products)
@@ -45,12 +47,26 @@ export const CartSummary = ({ compact = false, onNavigate }: Props) => {
 
   const go = () => { onNavigate?.(); navigate('/pagar') }
 
+  if (mobileBar) {
+    return (
+      <div className="cart-mobile-bar" aria-label="Total del carrito">
+        <div>
+          <span className="t-min t-muted">Total</span>
+          <p className="price t-strong">{formatMoney(totals.total)}</p>
+        </div>
+        <Button full disabled={active.length === 0 || blocking} onClick={go}>
+          Continuar al pago <ArrowRight size={18} strokeWidth={1.5} aria-hidden="true" />
+        </Button>
+      </div>
+    )
+  }
+
   return (
     <aside className={`cart-summary${compact ? ' cart-summary--compact' : ''}`} aria-label="Resumen del carrito">
       <h2 className="t-ui t-strong">Resumen</h2>
 
       <div className="cart-summary__coupon">
-        <Field label="Cupón" hint="Demostración: BIENVENIDO10 o ENVIOGRATIS">
+        <Field label="Cupón" hint="Puedes probar BIENVENIDO10 o ENVIOGRATIS">
           {(id, describedBy) => (
             <div className="cart-summary__coupon-row">
               <Input
@@ -59,6 +75,8 @@ export const CartSummary = ({ compact = false, onNavigate }: Props) => {
                 placeholder="Código"
                 aria-describedby={describedBy || undefined}
                 autoComplete="off"
+                inputMode="text"
+                enterKeyHint="done"
                 onChange={(event) => draft.patch({ cupon: event.target.value.toUpperCase() })}
               />
               {draft.cupon && (
@@ -154,6 +172,9 @@ export const CartSummary = ({ compact = false, onNavigate }: Props) => {
                   id={id}
                   value={draft.direccion}
                   placeholder="Calle, número, referencia"
+                  autoComplete="street-address"
+                  inputMode="text"
+                  enterKeyHint="done"
                   onChange={(event) => draft.patch({ direccion: event.target.value })}
                 />
               )}
@@ -210,12 +231,12 @@ export const CartSummary = ({ compact = false, onNavigate }: Props) => {
         </ul>
       )}
 
-      <Button full disabled={active.length === 0 || blocking} onClick={go}>
+      <Button full className="cart-summary__cta" disabled={active.length === 0 || blocking} onClick={go}>
         Continuar al pago <ArrowRight size={18} strokeWidth={1.5} aria-hidden="true" />
       </Button>
       {active.length === 0 && <p className="t-min t-muted">Agrega productos para continuar.</p>}
       <p className="cart-summary__note t-min t-muted">
-        Demostración · no se realiza ningún cobro real.
+        Pago simulado · no se realiza ningún cobro real.
       </p>
     </aside>
   )

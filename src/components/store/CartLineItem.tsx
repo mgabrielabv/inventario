@@ -62,7 +62,7 @@ export const CartLineItem = ({ line, product, available, issue, saved = false, o
           {product.nombre}
         </Link>
         <span className="cart-line-item__meta t-min t-muted">
-          {product.codigo} · {formatMoney(product.precio ?? 0)} c/u · {label}
+          {product.marca || product.categoria} · {formatMoney(product.precio ?? 0)} c/u · {label}
         </span>
         <StatusDot status={status} label={label} compact />
 

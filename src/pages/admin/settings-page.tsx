@@ -1,12 +1,17 @@
 import { useState, type ChangeEvent, type FormEvent, type ReactNode } from 'react'
 import { Button } from '../../components/ui/Button'
 import { Field, Input, Select, Textarea } from '../../components/ui/Field'
+import { Modal } from '../../components/ui/Modal'
+import { ResponsiveTable } from '../../components/ui/ResponsiveTable'
 import { Sheet } from '../../components/ui/Sheet'
 import { Switch } from '../../components/ui/Switch'
 import { useToast } from '../../components/ui/Toast'
 import { useAuth } from '../../app/providers/auth-provider'
+import { useCustomer } from '../../app/providers/customer-provider'
 import { backupSummary, buildBackup, validateBackup } from '../../logic/services/backup'
 import { getActivity, logActivity } from '../../logic/services/audit'
+import { saveCustomers } from '../../logic/services/customer-auth'
+import { resetDemoData } from '../../logic/services/demo-reset'
 import { createUser, getUsers, resetPassword, saveUsers } from '../../logic/services/auth'
 import { errorMessage } from '../../logic/errors'
 import { downloadFile } from '../../logic/services/exportCsv'
@@ -43,6 +48,7 @@ const dinero = (value: string): number | null => {
 
 export const AdminSettingsPage = () => {
   const { can, user } = useAuth()
+  const { refresh: refreshCustomer } = useCustomer()
   const { toast } = useToast()
   const settings = useSettingsStore((state) => state.settings)
   const update = useSettingsStore((state) => state.update)
@@ -51,6 +57,7 @@ export const AdminSettingsPage = () => {
   const [users, setUsers] = useState<StoredUser[]>(() => can('gestionar:usuarios') ? getUsers() : [])
   const [nuevo, setNuevo] = useState({ username: '', name: '', role: 'Operador' as UserRole, password: '' })
   const [resetFor, setResetFor] = useState<string | null>(null)
+  const [confirmaDemo, setConfirmaDemo] = useState(false)
   const [clave, setClave] = useState('')
   const [error, setError] = useState('')
   const [importError, setImportError] = useState('')
@@ -120,6 +127,10 @@ export const AdminSettingsPage = () => {
       setDraft(data.settings)
       saveUsers(data.users)
       setUsers(getUsers())
+      if (Array.isArray(data.customers)) {
+        saveCustomers(data.customers)
+        refreshCustomer()
+      }
       logActivity(user?.name ?? 'sistema', 'Respaldo restaurado', backupSummary(data))
       toast(`Respaldo restaurado: ${backupSummary(data)}`)
     } catch (cause) {
@@ -133,6 +144,15 @@ export const AdminSettingsPage = () => {
     setDraft(DEFAULT_SETTINGS)
     logActivity(user?.name ?? 'sistema', 'Configuración restablecida', 'Valores predeterminados')
     toast('Configuración restablecida')
+  }
+
+  const restaurarDemo = () => {
+    resetDemoData()
+    setDraft(DEFAULT_SETTINGS)
+    refreshCustomer()
+    setConfirmaDemo(false)
+    toast('Datos de demostración restablecidos. La vista se recargará…')
+    window.setTimeout(() => window.location.reload(), 900)
   }
 
   const crearCuenta = async (event: FormEvent<HTMLFormElement>) => {
@@ -418,13 +438,30 @@ export const AdminSettingsPage = () => {
               onChange={importarRespaldo} />
           </div>
           {importError && <p className="inline-alert" role="alert">{importError}</p>}
-          <p className="t-min t-muted">Al importar se reemplazan productos, movimientos, pedidos, ajustes y usuarios.</p>
+          <p className="t-min t-muted">
+            Al importar se reemplazan productos, movimientos, pedidos, ajustes, cuentas de cliente y usuarios.
+            También puedes restaurar respaldos anteriores sin cuentas de cliente.
+          </p>
         </Seccion>
+
+        {can('configurar') && (
+          <Seccion title="Datos de demostración" description="Vuelve al estado inicial cuando termines de probar la tienda.">
+            <p className="t-min t-muted">
+              Se restauran productos, movimientos, pedidos, ajustes y la cuenta de cliente de ejemplo.
+              No se borran los usuarios del personal ni el historial de auditoría.
+            </p>
+            <div className="admin-backup-actions">
+              <Button size="sm" variant="danger" onClick={() => setConfirmaDemo(true)}>
+                Restablecer datos de demostración
+              </Button>
+            </div>
+          </Seccion>
+        )}
 
         {gestionaUsuarios && (
           <Seccion title="Usuarios" description="Crea accesos, restablece claves y desactiva cuentas.">
             <div className="table-wrap">
-              <table className="table">
+              <ResponsiveTable>
                 <thead><tr><th>Usuario</th><th>Nombre</th><th>Perfil</th><th>Estado</th><th>Acciones</th></tr></thead>
                 <tbody>
                   {users.map((cuenta) => (
@@ -450,7 +487,7 @@ export const AdminSettingsPage = () => {
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </ResponsiveTable>
             </div>
             <form className="admin-form-grid admin-user-form" onSubmit={crearCuenta} noValidate>
               <Field label="Usuario" required>
@@ -485,6 +522,19 @@ export const AdminSettingsPage = () => {
           </Seccion>
         )}
       </div>
+
+      <Modal open={confirmaDemo} onClose={() => setConfirmaDemo(false)}
+        title="Restablecer datos de demostración">
+        <p className="t-caption">
+          ¿Seguro que quieres volver a los datos iniciales? Se reemplazan productos, movimientos,
+          pedidos, ajustes y cuentas de cliente. Tu sesión de cliente se cerrará; el personal y la
+          auditoría se conservan.
+        </p>
+        <div className="admin-sheet-actions">
+          <Button size="sm" variant="danger" onClick={restaurarDemo}>Restablecer ahora</Button>
+          <Button size="sm" variant="secondary" onClick={() => setConfirmaDemo(false)}>Cancelar</Button>
+        </div>
+      </Modal>
 
       <Sheet open={Boolean(resetFor)} onClose={() => setResetFor(null)}
         title={`Restablecer clave · ${cuentaReset?.username ?? ''}`}>

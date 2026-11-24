@@ -222,12 +222,12 @@ export const ProductPage = () => {
             <div className="pdp-delivery">
               <p className="t-mid t-strong">{estimate.titulo}</p>
               <p className="t-caption t-muted">{estimate.detalle}</p>
-              <p className="t-min t-muted">Estimación de demostración, no un plazo garantizado.</p>
+              <p className="t-min t-muted">Estimación orientativa, no un plazo garantizado.</p>
             </div>
 
             <p className="pdp-note t-min">
               <ShieldCheck size={16} strokeWidth={1.5} aria-hidden="true" />
-              Compra segura de demostración. No se realiza ningún cobro real.
+              Compra segura: no se realiza ningún cobro real.
             </p>
           </div>
 

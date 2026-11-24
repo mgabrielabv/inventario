@@ -2,17 +2,22 @@
 <html lang="es" class="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta
       name="description"
-      content="INVENTARIO: tienda y control de existencias. Explora el catálogo, haz tu pedido y recibe o retira en tienda."
+      content="__BRAND_DESCRIPTION__"
     />
-    <meta name="theme-color" content="" />
-    <title>INVENTARIO — Disponible hoy</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="__BRAND_NAME__ — __BRAND_TAGLINE__" />
+    <meta property="og:description" content="__BRAND_DESCRIPTION__" />
+    <meta property="og:site_name" content="__BRAND_NAME__" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="__BRAND_THEME_LIGHT__" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="__BRAND_THEME_DARK__" />
+    <title>__BRAND_NAME__ — __BRAND_TAGLINE__</title>
     <script>
       ;(() => {
         try {
-          const key = 'inventario-theme'
+          const key = '__BRAND_THEME_KEY__'
           let stored = localStorage.getItem(key)
           if (stored !== 'light' && stored !== 'dark') {
             const legacy = Object.keys(localStorage).find(
@@ -34,7 +39,7 @@
           document.documentElement.classList.remove('light', 'dark')
           document.documentElement.classList.add(theme)
 
-          // Los colores viven solo en tokens.css; el icono se deriva de ellos.
+          // Los colores viven solo en tokens.css; el monograma se deriva de BRAND.
           const paintChrome = () => {
             const styles = getComputedStyle(document.documentElement)
             const token = (name) => styles.getPropertyValue(name).trim()
@@ -42,11 +47,8 @@
             const cream = token('--cream').replace('#', '%23')
             const svg =
               "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'>" +
-              "<rect width='32' height='32' rx='8' fill='" + primary + "'/>" +
-              "<path d='M6 12L16 7l10 5v13l-10 5-10-5V12Z' fill='none' stroke='" + cream +
-              "' stroke-width='1.5' stroke-linejoin='round'/>" +
-              "<path d='M6 12l10 5 10-5M16 17v13' fill='none' stroke='" + cream +
-              "' stroke-width='1.5' stroke-linejoin='round'/></svg>"
+              "<rect width='32' height='32' rx='8' fill='" + cream + "'/>" +
+              "<path fill='" + primary + "' d='M10.5 7.5h11v3.4h-3.7v10.2h3.7v3.4h-11v-3.4h3.7V10.9h-3.7z'/></svg>"
             let link = document.querySelector("link[rel='icon']")
             if (!link) {
               link = document.createElement('link')

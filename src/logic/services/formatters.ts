@@ -1,3 +1,4 @@
+import { BRAND } from '../../config/brand'
 import type { Settings } from '../types'
 
 export const normalizeText = (value: string): string =>
@@ -43,7 +44,7 @@ export const formatPhoneDisplay = (phone: string): string => {
   return phone
 }
 
-export const storeName = (settings: Settings): string => settings.tienda.nombre.trim() || 'Inventario'
+export const storeName = (settings: Settings): string => settings.tienda.nombre.trim() || BRAND.name
 
 export const pluralize = (count: number, singular: string, plural: string): string =>
   count === 1 ? singular : plural

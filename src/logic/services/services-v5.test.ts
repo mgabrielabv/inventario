@@ -47,7 +47,7 @@ const products = [
 ]
 
 const order = (lineas: string[]): Order => ({
-  id: 'o1', codigo: 'INV-2026-1', fecha: NOW.toISOString(),
+  id: 'o1', codigo: 'PED-2026-1', fecha: NOW.toISOString(),
   cliente: { nombre: 'Cliente', telefono: '04241234567' },
   entrega: { tipo: 'retiro' },
   lineas: lineas.map((id, index) => ({

@@ -1,0 +1,6342 @@
+{
+  "generatedAt": "2026-11-24T01:40:17.458Z",
+  "viewports": [
+    {
+      "name": "320x568",
+      "width": 320,
+      "height": 568,
+      "touch": true,
+      "device": "Teléfono pequeño"
+    },
+    {
+      "name": "360x740",
+      "width": 360,
+      "height": 740,
+      "touch": true,
+      "device": "Android"
+    },
+    {
+      "name": "390x844",
+      "width": 390,
+      "height": 844,
+      "touch": true,
+      "device": "iPhone"
+    },
+    {
+      "name": "412x915",
+      "width": 412,
+      "height": 915,
+      "touch": true,
+      "device": "Android grande"
+    },
+    {
+      "name": "430x932",
+      "width": 430,
+      "height": 932,
+      "touch": true,
+      "device": "iPhone grande"
+    },
+    {
+      "name": "844x390",
+      "width": 844,
+      "height": 390,
+      "touch": true,
+      "device": "Apaisado"
+    },
+    {
+      "name": "768x1024",
+      "width": 768,
+      "height": 1024,
+      "touch": true,
+      "device": "Tablet"
+    },
+    {
+      "name": "820x1180",
+      "width": 820,
+      "height": 1180,
+      "touch": true,
+      "device": "Tablet grande"
+    },
+    {
+      "name": "1280x800",
+      "width": 1280,
+      "height": 800,
+      "touch": false,
+      "device": "Escritorio"
+    },
+    {
+      "name": "1440x900",
+      "width": 1440,
+      "height": 900,
+      "touch": false,
+      "device": "Escritorio grande"
+    }
+  ],
+  "routes": {
+    "320x568|light|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.eshop-hero__controls-right «Pausar»",
+          "left": 233,
+          "right": 430
+        },
+        {
+          "el": "button.eshop-hero__pause «Pausar rotación de promociones»",
+          "left": 233,
+          "right": 326
+        },
+        {
+          "el": "div.eshop-hero__arrows",
+          "left": 334,
+          "right": 430
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción anterior»",
+          "left": 334,
+          "right": 378
+        },
+        {
+          "el": "svg",
+          "left": 347,
+          "right": 365
+        },
+        {
+          "el": "path",
+          "left": 354,
+          "right": 358
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|ficha": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "g",
+          "left": 283,
+          "right": 345
+        },
+        {
+          "el": "g",
+          "left": 292,
+          "right": 345
+        },
+        {
+          "el": "polygon",
+          "left": 324,
+          "right": 345
+        },
+        {
+          "el": "polygon",
+          "left": 292,
+          "right": 345
+        },
+        {
+          "el": "g",
+          "left": 312,
+          "right": 345
+        },
+        {
+          "el": "polygon",
+          "left": 312,
+          "right": 344
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh.mesh--paused",
+          "left": -38,
+          "right": 358
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -70,
+          "right": 191
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 137,
+          "right": 419
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -38,
+          "right": 358
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.eshop-hero__controls-right «Pausar»",
+          "left": 233,
+          "right": 430
+        },
+        {
+          "el": "button.eshop-hero__pause «Pausar rotación de promociones»",
+          "left": 233,
+          "right": 326
+        },
+        {
+          "el": "div.eshop-hero__arrows",
+          "left": 334,
+          "right": 430
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción anterior»",
+          "left": 334,
+          "right": 378
+        },
+        {
+          "el": "svg",
+          "left": 347,
+          "right": 365
+        },
+        {
+          "el": "path",
+          "left": 354,
+          "right": 358
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|ficha": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "g",
+          "left": 283,
+          "right": 345
+        },
+        {
+          "el": "g",
+          "left": 292,
+          "right": 345
+        },
+        {
+          "el": "polygon",
+          "left": 324,
+          "right": 345
+        },
+        {
+          "el": "polygon",
+          "left": 292,
+          "right": 345
+        },
+        {
+          "el": "g",
+          "left": 312,
+          "right": 345
+        },
+        {
+          "el": "polygon",
+          "left": 312,
+          "right": 344
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh.mesh--paused",
+          "left": -38,
+          "right": 358
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -70,
+          "right": 191
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 137,
+          "right": 419
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -38,
+          "right": 358
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.eshop-hero__controls-right «Pausar»",
+          "left": 233,
+          "right": 430
+        },
+        {
+          "el": "div.eshop-hero__arrows",
+          "left": 334,
+          "right": 430
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción anterior»",
+          "left": 334,
+          "right": 378
+        },
+        {
+          "el": "svg",
+          "left": 347,
+          "right": 365
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción siguiente»",
+          "left": 386,
+          "right": 430
+        },
+        {
+          "el": "svg",
+          "left": 399,
+          "right": 417
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|ficha": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "g",
+          "left": 318,
+          "right": 380
+        },
+        {
+          "el": "g",
+          "left": 327,
+          "right": 380
+        },
+        {
+          "el": "polygon",
+          "left": 359,
+          "right": 380
+        },
+        {
+          "el": "polygon",
+          "left": 327,
+          "right": 380
+        },
+        {
+          "el": "g",
+          "left": 347,
+          "right": 380
+        },
+        {
+          "el": "polygon",
+          "left": 347,
+          "right": 379
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh.mesh--paused",
+          "left": -43,
+          "right": 403
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -79,
+          "right": 262
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 107,
+          "right": 475
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 64,
+          "right": 404
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -43,
+          "right": 403
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.eshop-hero__controls-right «Pausar»",
+          "left": 233,
+          "right": 430
+        },
+        {
+          "el": "div.eshop-hero__arrows",
+          "left": 334,
+          "right": 430
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción anterior»",
+          "left": 334,
+          "right": 378
+        },
+        {
+          "el": "svg",
+          "left": 347,
+          "right": 365
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción siguiente»",
+          "left": 386,
+          "right": 430
+        },
+        {
+          "el": "svg",
+          "left": 399,
+          "right": 417
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|ficha": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "g",
+          "left": 318,
+          "right": 380
+        },
+        {
+          "el": "g",
+          "left": 327,
+          "right": 380
+        },
+        {
+          "el": "polygon",
+          "left": 359,
+          "right": 380
+        },
+        {
+          "el": "polygon",
+          "left": 327,
+          "right": 380
+        },
+        {
+          "el": "g",
+          "left": 347,
+          "right": 380
+        },
+        {
+          "el": "polygon",
+          "left": 347,
+          "right": 379
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh.mesh--paused",
+          "left": -43,
+          "right": 403
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -79,
+          "right": 262
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 107,
+          "right": 475
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 64,
+          "right": 404
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -43,
+          "right": 403
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.eshop-hero__controls-right «Pausar»",
+          "left": 237,
+          "right": 434
+        },
+        {
+          "el": "div.eshop-hero__arrows",
+          "left": 338,
+          "right": 434
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción siguiente»",
+          "left": 390,
+          "right": 434
+        },
+        {
+          "el": "svg",
+          "left": 403,
+          "right": 421
+        },
+        {
+          "el": "path",
+          "left": 410,
+          "right": 414
+        },
+        {
+          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
+          "left": 372,
+          "right": 540
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|ficha": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "g",
+          "left": 345,
+          "right": 407
+        },
+        {
+          "el": "g",
+          "left": 354,
+          "right": 407
+        },
+        {
+          "el": "polygon",
+          "left": 385,
+          "right": 407
+        },
+        {
+          "el": "polygon",
+          "left": 354,
+          "right": 407
+        },
+        {
+          "el": "g",
+          "left": 373,
+          "right": 406
+        },
+        {
+          "el": "polygon",
+          "left": 373,
+          "right": 405
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": -47,
+          "right": 437
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -85,
+          "right": 303
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 97,
+          "right": 516
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 69,
+          "right": 458
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -47,
+          "right": 437
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.eshop-hero__controls-right «Pausar»",
+          "left": 237,
+          "right": 434
+        },
+        {
+          "el": "div.eshop-hero__arrows",
+          "left": 338,
+          "right": 434
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción siguiente»",
+          "left": 390,
+          "right": 434
+        },
+        {
+          "el": "svg",
+          "left": 403,
+          "right": 421
+        },
+        {
+          "el": "path",
+          "left": 410,
+          "right": 414
+        },
+        {
+          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
+          "left": 372,
+          "right": 540
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|ficha": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "g",
+          "left": 345,
+          "right": 407
+        },
+        {
+          "el": "g",
+          "left": 354,
+          "right": 407
+        },
+        {
+          "el": "polygon",
+          "left": 385,
+          "right": 407
+        },
+        {
+          "el": "polygon",
+          "left": 354,
+          "right": 407
+        },
+        {
+          "el": "g",
+          "left": 373,
+          "right": 406
+        },
+        {
+          "el": "polygon",
+          "left": 373,
+          "right": 405
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": -47,
+          "right": 437
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -85,
+          "right": 303
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 97,
+          "right": 516
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 69,
+          "right": 458
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -47,
+          "right": 437
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.eshop-hero__controls-right «Pausar»",
+          "left": 237,
+          "right": 434
+        },
+        {
+          "el": "div.eshop-hero__arrows",
+          "left": 338,
+          "right": 434
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción siguiente»",
+          "left": 390,
+          "right": 434
+        },
+        {
+          "el": "svg",
+          "left": 403,
+          "right": 421
+        },
+        {
+          "el": "path",
+          "left": 410,
+          "right": 414
+        },
+        {
+          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
+          "left": 372,
+          "right": 540
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|ficha": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "g",
+          "left": 364,
+          "right": 426
+        },
+        {
+          "el": "g",
+          "left": 373,
+          "right": 426
+        },
+        {
+          "el": "polygon",
+          "left": 405,
+          "right": 426
+        },
+        {
+          "el": "polygon",
+          "left": 373,
+          "right": 426
+        },
+        {
+          "el": "g",
+          "left": 392,
+          "right": 425
+        },
+        {
+          "el": "polygon",
+          "left": 392,
+          "right": 424
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": -49,
+          "right": 461
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -90,
+          "right": 331
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 92,
+          "right": 546
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 73,
+          "right": 494
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -49,
+          "right": 461
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.eshop-hero__controls-right «Pausar»",
+          "left": 237,
+          "right": 434
+        },
+        {
+          "el": "div.eshop-hero__arrows",
+          "left": 338,
+          "right": 434
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción siguiente»",
+          "left": 390,
+          "right": 434
+        },
+        {
+          "el": "svg",
+          "left": 403,
+          "right": 421
+        },
+        {
+          "el": "path",
+          "left": 410,
+          "right": 414
+        },
+        {
+          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
+          "left": 372,
+          "right": 540
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|ficha": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "g",
+          "left": 364,
+          "right": 426
+        },
+        {
+          "el": "g",
+          "left": 373,
+          "right": 426
+        },
+        {
+          "el": "polygon",
+          "left": 405,
+          "right": 426
+        },
+        {
+          "el": "polygon",
+          "left": 373,
+          "right": 426
+        },
+        {
+          "el": "g",
+          "left": 392,
+          "right": 425
+        },
+        {
+          "el": "polygon",
+          "left": 392,
+          "right": 424
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": -49,
+          "right": 461
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -90,
+          "right": 331
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 92,
+          "right": 546
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 73,
+          "right": 494
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -49,
+          "right": 461
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.eshop-hero__controls-right «Pausar»",
+          "left": 237,
+          "right": 434
+        },
+        {
+          "el": "div.eshop-hero__arrows",
+          "left": 338,
+          "right": 434
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción siguiente»",
+          "left": 390,
+          "right": 434
+        },
+        {
+          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
+          "left": 372,
+          "right": 540
+        },
+        {
+          "el": "article.product-card.eshop-card «-17 %NordisaProtecciónFunda para laptopPre»",
+          "left": 372,
+          "right": 540
+        },
+        {
+          "el": "div.eshop-card__media «-17 %»",
+          "left": 381,
+          "right": 531
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|ficha": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "g",
+          "left": 380,
+          "right": 442
+        },
+        {
+          "el": "g",
+          "left": 389,
+          "right": 442
+        },
+        {
+          "el": "polygon",
+          "left": 420,
+          "right": 442
+        },
+        {
+          "el": "polygon",
+          "left": 389,
+          "right": 442
+        },
+        {
+          "el": "g",
+          "left": 408,
+          "right": 441
+        },
+        {
+          "el": "polygon",
+          "left": 408,
+          "right": 440
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": -52,
+          "right": 482
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -94,
+          "right": 335
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 106,
+          "right": 569
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 76,
+          "right": 505
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -52,
+          "right": 482
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.eshop-hero__controls-right «Pausar»",
+          "left": 237,
+          "right": 434
+        },
+        {
+          "el": "div.eshop-hero__arrows",
+          "left": 338,
+          "right": 434
+        },
+        {
+          "el": "button.eshop-hero__arrow «Promoción siguiente»",
+          "left": 390,
+          "right": 434
+        },
+        {
+          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
+          "left": 372,
+          "right": 540
+        },
+        {
+          "el": "article.product-card.eshop-card «-17 %NordisaProtecciónFunda para laptopPre»",
+          "left": 372,
+          "right": 540
+        },
+        {
+          "el": "div.eshop-card__media «-17 %»",
+          "left": 381,
+          "right": 531
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|ficha": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "g",
+          "left": 380,
+          "right": 442
+        },
+        {
+          "el": "g",
+          "left": 389,
+          "right": 442
+        },
+        {
+          "el": "polygon",
+          "left": 420,
+          "right": 442
+        },
+        {
+          "el": "polygon",
+          "left": 389,
+          "right": 442
+        },
+        {
+          "el": "g",
+          "left": 408,
+          "right": 441
+        },
+        {
+          "el": "polygon",
+          "left": 408,
+          "right": 440
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": -52,
+          "right": 482
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -94,
+          "right": 335
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 106,
+          "right": 569
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 76,
+          "right": 505
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -52,
+          "right": 482
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 739,
+          "right": 908
+        },
+        {
+          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 739,
+          "right": 908
+        },
+        {
+          "el": "div.eshop-card__media «-17 %»",
+          "left": 748,
+          "right": 899
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 748,
+          "right": 899
+        },
+        {
+          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
+          "left": 748,
+          "right": 899
+        },
+        {
+          "el": "div.product-art__glow",
+          "left": 760,
+          "right": 887
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|ficha": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": 349,
+          "right": 897
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 564,
+          "right": 983
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 480,
+          "right": 869
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": 349,
+          "right": 897
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|light|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 739,
+          "right": 908
+        },
+        {
+          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 739,
+          "right": 908
+        },
+        {
+          "el": "div.eshop-card__media «-17 %»",
+          "left": 748,
+          "right": 899
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 748,
+          "right": 899
+        },
+        {
+          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
+          "left": 748,
+          "right": 899
+        },
+        {
+          "el": "div.product-art__glow",
+          "left": 760,
+          "right": 887
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|ficha": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": 349,
+          "right": 897
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 564,
+          "right": 983
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 480,
+          "right": 869
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": 349,
+          "right": 897
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "844x390|dark|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "div.eshop-card__media «-17 %»",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.product-art__glow",
+          "left": 757,
+          "right": 883
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|ficha": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": -92,
+          "right": 860
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -168,
+          "right": 303
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 484,
+          "right": 993
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -92,
+          "right": 860
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|light|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "div.eshop-card__media «-17 %»",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.product-art__glow",
+          "left": 757,
+          "right": 883
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|ficha": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": -92,
+          "right": 860
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": -168,
+          "right": 303
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 484,
+          "right": 993
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": -92,
+          "right": 860
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "768x1024|dark|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "div.eshop-card__media «-17 %»",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.product-art__glow",
+          "left": 757,
+          "right": 883
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|ficha": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": 339,
+          "right": 872
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": 296,
+          "right": 839
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 382,
+          "right": 968
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 467,
+          "right": 1010
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": 339,
+          "right": 872
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "div.eshop-card__media «-17 %»",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.product-art__glow",
+          "left": 757,
+          "right": 883
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|ficha": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": 339,
+          "right": 872
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--1",
+          "left": 296,
+          "right": 839
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 382,
+          "right": 968
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 467,
+          "right": 1010
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": 339,
+          "right": 872
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|dark|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.admin-sidebar__top «IIvoria»",
+          "left": -220,
+          "right": -13
+        },
+        {
+          "el": "a.brand «Ver tienda»",
+          "left": -216,
+          "right": -141
+        },
+        {
+          "el": "span.brand__mark «I»",
+          "left": -216,
+          "right": -190
+        },
+        {
+          "el": "span.brand__name «Ivoria»",
+          "left": -182,
+          "right": -141
+        },
+        {
+          "el": "button.icon-btn «Colapsar barra»",
+          "left": -61,
+          "right": -17
+        },
+        {
+          "el": "svg",
+          "left": -48,
+          "right": -30
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "li.eshop-rail__item «-13 %PataliaDescansoCama para mascotaPrese»",
+          "left": 1196,
+          "right": 1420
+        },
+        {
+          "el": "article.product-card.eshop-card «-13 %PataliaDescansoCama para mascotaPrese»",
+          "left": 1196,
+          "right": 1420
+        },
+        {
+          "el": "div.eshop-card__media «-13 %»",
+          "left": 1205,
+          "right": 1411
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 1205,
+          "right": 1411
+        },
+        {
+          "el": "div.product-art.product-art--hero «Cama para mascota · ilustración paquete»",
+          "left": 1205,
+          "right": 1411
+        },
+        {
+          "el": "div.product-art__glow",
+          "left": 1221,
+          "right": 1395
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|ficha": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": 528,
+          "right": 1361
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 855,
+          "right": 1491
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 728,
+          "right": 1317
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": 528,
+          "right": 1361
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "li.eshop-rail__item «-13 %PataliaDescansoCama para mascotaPrese»",
+          "left": 1196,
+          "right": 1420
+        },
+        {
+          "el": "article.product-card.eshop-card «-13 %PataliaDescansoCama para mascotaPrese»",
+          "left": 1196,
+          "right": 1420
+        },
+        {
+          "el": "div.eshop-card__media «-13 %»",
+          "left": 1205,
+          "right": 1411
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 1205,
+          "right": 1411
+        },
+        {
+          "el": "div.product-art.product-art--hero «Cama para mascota · ilustración paquete»",
+          "left": 1205,
+          "right": 1411
+        },
+        {
+          "el": "div.product-art__glow",
+          "left": 1221,
+          "right": 1395
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|ficha": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": 528,
+          "right": 1361
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 855,
+          "right": 1491
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 728,
+          "right": 1317
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": 528,
+          "right": 1361
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|dark|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "li.eshop-rail__item «-12 %VelmarTabletsTablet 10\"Presentación ·»",
+          "left": 1432,
+          "right": 1656
+        },
+        {
+          "el": "article.product-card.eshop-card «-12 %VelmarTabletsTablet 10\"Presentación ·»",
+          "left": 1432,
+          "right": 1656
+        },
+        {
+          "el": "div.eshop-card__media «-12 %»",
+          "left": 1441,
+          "right": 1647
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 1441,
+          "right": 1647
+        },
+        {
+          "el": "div.product-art.product-art--hero «Tablet 10\" · ilustración almohadilla»",
+          "left": 1441,
+          "right": 1647
+        },
+        {
+          "el": "div.product-art__glow",
+          "left": 1457,
+          "right": 1631
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|ficha": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": 594,
+          "right": 1531
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 962,
+          "right": 1677
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 819,
+          "right": 1482
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": 594,
+          "right": 1531
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|light|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|home": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "li.eshop-rail__item «-12 %VelmarTabletsTablet 10\"Presentación ·»",
+          "left": 1432,
+          "right": 1656
+        },
+        {
+          "el": "article.product-card.eshop-card «-12 %VelmarTabletsTablet 10\"Presentación ·»",
+          "left": 1432,
+          "right": 1656
+        },
+        {
+          "el": "div.eshop-card__media «-12 %»",
+          "left": 1441,
+          "right": 1647
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 1441,
+          "right": 1647
+        },
+        {
+          "el": "div.product-art.product-art--hero «Tablet 10\" · ilustración almohadilla»",
+          "left": 1441,
+          "right": 1647
+        },
+        {
+          "el": "div.product-art__glow",
+          "left": 1457,
+          "right": 1631
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|catalogo": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|ficha": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|carrito": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|checkout": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|pedido": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|seguimiento": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|cuenta": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|login": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "div.mesh",
+          "left": 594,
+          "right": 1531
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--2",
+          "left": 962,
+          "right": 1677
+        },
+        {
+          "el": "span.mesh__blob.mesh__blob--3",
+          "left": 819,
+          "right": 1482
+        },
+        {
+          "el": "span.mesh__veil",
+          "left": 594,
+          "right": 1531
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|admin-inicio": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|admin-inventario": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|admin-pedidos": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1440x900|dark|admin-config": {
+      "overflowPx": 0,
+      "overflowing": [],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    }
+  },
+  "findings": [],
+  "staticAudit": {
+    "breakpoints": [
+      360,
+      480,
+      481,
+      768,
+      1024,
+      1280,
+      1281
+    ],
+    "vh100": 4,
+    "safeAreaUses": 4,
+    "hoverRules": 52,
+    "hoverRulesGuarded": 52,
+    "fsUi": "16",
+    "colorLiteralsOutsideTokens": "ver check:palette"
+  },
+  "errors": [],
+  "externalRequests": [],
+  "problems": []
+}

@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight, Check, Copy, FileCheck2, MessageCircle, Printer } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
+import { useCustomer } from '../../app/providers/customer-provider'
 import { ProductArt } from '../../components/art/ProductArt'
 import { OrderBox } from '../../components/box/OrderBox'
 import { Button } from '../../components/ui/Button'
@@ -11,6 +12,7 @@ import { estimarEntrega } from '../../logic/services/delivery'
 import { formatShortDate, formatTime, storeName } from '../../logic/services/formatters'
 import { getImage } from '../../logic/services/images'
 import { whatsappLink } from '../../logic/services/orders'
+import { friendlyStatus, friendlyStatusDetail } from '../../logic/services/order-labels'
 import { formatMoney, formatSecondary } from '../../logic/services/pricing'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
@@ -23,8 +25,9 @@ const Timeline = ({ items }: { items: Order['historial'] }) => (
       <li className="order-timeline__item" key={`${item.fecha}-${index}`}>
         <span className="order-timeline__dot" aria-hidden="true" />
         <div>
-          <p className="t-mid">{item.estado}</p>
+          <p className="t-mid">{friendlyStatus(item.estado)}</p>
           <p className="t-min">{formatShortDate(item.fecha)} · {formatTime(item.fecha)}</p>
+          <p className="t-caption t-muted">{friendlyStatusDetail(item.estado)}</p>
           {item.nota && <p className="t-caption">{item.nota}</p>}
         </div>
       </li>
@@ -34,7 +37,7 @@ const Timeline = ({ items }: { items: Order['historial'] }) => (
 
 const paymentLabels: Record<Order['pago']['metodo'], string> = {
   efectivo: 'Efectivo', transferencia: 'Transferencia',
-  movil: 'Pago móvil', 'tarjeta-demo': 'Tarjeta · Demostración',
+  movil: 'Pago móvil', 'tarjeta-demo': 'Tarjeta (simulada)',
 }
 
 export const OrderPage = () => {
@@ -45,6 +48,7 @@ export const OrderPage = () => {
   const products = useInventoryStore((state) => state.products)
   const settings = useSettingsStore((state) => state.settings)
   const { toast } = useToast()
+  const { account } = useCustomer()
   const [receipt, setReceipt] = useState<string | null>(null)
 
   useEffect(() => {
@@ -72,6 +76,11 @@ export const OrderPage = () => {
   }
 
   const secondary = formatSecondary(order.total, settings)
+  const [nombre, ...apellido] = order.cliente.nombre.trim().split(/\s+/)
+  const prefill = {
+    nombre, apellido: apellido.join(' '),
+    email: order.cliente.email ?? '', telefono: order.cliente.telefono,
+  }
   const deliveryLabel = order.entrega.tipo === 'delivery' ? 'Delivery' : 'Retiro en tienda'
   const followTo = `/seguimiento?codigo=${encodeURIComponent(order.codigo)}`
     + `&telefono=${encodeURIComponent(order.cliente.telefono)}`
@@ -110,14 +119,14 @@ export const OrderPage = () => {
         <OrderBox code={order.codigo} size={240} />
         <div className="order-hero__side">
           <div className="order-hero__status">
-            <Chip active>{order.estado}</Chip>
+            <Chip active>{friendlyStatus(order.estado)}</Chip>
             <span className="t-caption t-muted">{storeName(settings)} · {formatShortDate(order.fecha)}</span>
           </div>
           <p className="t-mid t-strong">
             {justCreated ? 'Tu pedido quedó registrado' : `Pedido ${order.codigo}`}
           </p>
           <p className="t-caption t-muted">
-            Esta compra es una demostración: no se realizó ningún cobro real.
+            Pago simulado: no se realizó ningún cobro real.
           </p>
           <div className="order-actions">
             <Button variant="secondary" onClick={() => void copyCode()}>
@@ -141,6 +150,32 @@ export const OrderPage = () => {
           </Link>
         </div>
       </section>
+
+      {justCreated && !order.clienteId && !account && (
+        <section className="order-account-invite card" aria-labelledby="order-invite-title">
+          <h2 id="order-invite-title" className="t-ui t-strong">
+            ¿Quieres guardar este pedido en tu cuenta?
+          </h2>
+          <p className="t-caption t-muted">
+            Crea tu cuenta con los datos de esta compra y podrás repetir pedidos y seguirlos desde un solo lugar.
+          </p>
+          <div className="order-account-invite__actions">
+            <Link className="btn btn--primary btn--sm"
+              to="/cuenta/registro" state={{ from: '/cuenta/pedidos', prefill }}>
+              Crear cuenta con mis datos
+            </Link>
+            <Link className="btn btn--secondary btn--sm"
+              to="/cuenta/ingresar" state={{ from: '/cuenta/pedidos', prefill }}>
+              Ya tengo cuenta
+            </Link>
+          </div>
+        </section>
+      )}
+      {account && (
+        <p className="order-account-link t-caption">
+          <Link to="/cuenta/pedidos">Ver este y todos tus pedidos en mi cuenta</Link>
+        </p>
+      )}
 
       <section className="order-next card" aria-labelledby="order-next-title">
         <h2 id="order-next-title" className="t-ui t-strong">Qué sigue</h2>
@@ -180,7 +215,7 @@ export const OrderPage = () => {
                     {product && <ProductArt product={product} size={52} view="solo" />}
                     <div className="order-receipt__name">
                       <span className="t-mid">{line.nombre}</span>
-                      <span className="t-min t-muted">{line.codigo} · {line.cantidad} × {formatMoney(line.precioUnit)}</span>
+                      <span className="t-min t-muted">{line.cantidad} × {formatMoney(line.precioUnit)}</span>
                     </div>
                     <span className="num t-mid">{formatMoney(line.precioUnit * line.cantidad)}</span>
                   </li>
@@ -258,7 +293,7 @@ export const OrderPage = () => {
             </p>
           )}
           <p className="order-aside__note t-min">
-            Consulta local de demostración. Los cambios de estado los hace el personal.
+            Los cambios de estado los hace el equipo de la tienda.
           </p>
           <Link className="order-aside__back t-mid" to="/tienda">
             <ArrowLeft size={16} strokeWidth={1.5} aria-hidden="true" />

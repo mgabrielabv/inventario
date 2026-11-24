@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { BoxMark } from '../../components/box/OpenBox'
+import { BrandMark } from '../../components/brand/BrandMark'
 import { BoxStack } from '../../components/box/BoxStack'
 import { Button } from '../../components/ui/Button'
 import { Field, Input } from '../../components/ui/Field'
@@ -63,7 +63,7 @@ export const LoginPage = () => {
       >
         <motion.div className="login-page__inner" variants={riseItem}>
           <div className="login-page__brand">
-            <BoxMark size={28} />
+            <BrandMark size={28} />
             <span>{storeName(settings)}</span>
           </div>
 
@@ -72,7 +72,9 @@ export const LoginPage = () => {
             <h1 id="login-page-title" className="t-section">Entrar al panel</h1>
             <p className="t-caption">
               Este ingreso es solo para el equipo de {storeName(settings)}.
-              Los clientes no necesitan cuenta para comprar.
+            </p>
+            <p className="t-caption">
+              ¿Eres cliente? <Link to="/cuenta/ingresar">Ingresa aquí</Link>.
             </p>
           </motion.div>
 
@@ -84,6 +86,7 @@ export const LoginPage = () => {
                   value={username}
                   autoComplete="username"
                   autoFocus
+                  enterKeyHint="next"
                   aria-describedby={describedBy || undefined}
                   aria-invalid={Boolean(error)}
                   onChange={(event) => { setUsername(event.target.value); setError('') }}
@@ -99,6 +102,7 @@ export const LoginPage = () => {
                     type={showPassword ? 'text' : 'password'}
                     value={password}
                     autoComplete="current-password"
+                    enterKeyHint="go"
                     aria-describedby={describedBy || undefined}
                     aria-invalid={Boolean(error)}
                     onChange={(event) => { setPassword(event.target.value); setError('') }}
@@ -162,7 +166,7 @@ export const LoginPage = () => {
             <BoxStack size={340} />
           </motion.div>
           <div className="login-page__visual-copy">
-            <p className="t-min t-clay">Control de inventario</p>
+            <p className="t-min t-clay">Panel del personal</p>
             <p className="t-statement">Cada caja, en su lugar.</p>
             <p className="t-caption">Productos, movimientos y pedidos en un mismo sitio.</p>
           </div>

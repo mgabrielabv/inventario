@@ -1,4 +1,4 @@
-/* INVENTARIO — hoja de estilos principal (un solo HTML, sin recursos remotos) */
+/* Hoja de estilos principal (un solo HTML, sin recursos remotos) */
 @import './fonts.css';
 @import './tokens.css';
 @import './typography.css';
@@ -9,4 +9,10 @@
 @import './art.css';
 @import './store.css';
 @import './admin.css';
+@import './eshop-chrome.css';
+@import './eshop-home.css';
+@import './eshop-catalog.css';
+@import './eshop-account.css';
+@import './eshop-checkout.css';
+@import './mobile.css';
 @import './print.css';

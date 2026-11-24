@@ -21,16 +21,6 @@ export const reduced = {
   ease: ease.out,
 } as const
 
-/** A4· sección fijada: recorrido y puntos de relevo del relato. */
-export const narrative = {
-  heightVh: 400,
-  stops: [0, 0.25, 0.5, 0.75, 1],
-  in: [0, 1, 1, 0, 0],
-  middle: [0, 0, 1, 0, 0],
-  out: [0, 0, 0, 1, 1],
-  shift: [18, 0, 0, 0, -18],
-} as const
-
 /** A9· vuelo al carrito y rebote del contador. */
 export const flyCart = {
   duration: 0.7,

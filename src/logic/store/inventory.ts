@@ -3,6 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { initialMovements, initialProducts } from '../../data/products'
 import { AppError } from '../errors'
 import { applyMovement, buildVoidMovement } from '../services/stock'
+import { migrateProductFacets } from '../services/product-migrate'
 import { KEYS, safeStorage } from '../services/storage'
 import { slugify } from '../services/formatters'
 import {
@@ -115,7 +116,8 @@ const migrate = (persisted: unknown, version: number): InventoryStore | undefine
       arquetipo: ARQUETIPOS.includes(product.arquetipo)
         ? product.arquetipo : 'paquete' as Arquetipo,
     }))
-    return { ...state, products } as InventoryStore
+    // v6: las fichas antiguas pasan a las 9 categorías y estrenan facetas.
+    return { ...state, products: migrateProductFacets(products) } as InventoryStore
   }
   const products = (state.products ?? []).map(normalizeProduct).filter((p): p is Product => p !== null)
   const movements = (state.movements ?? [])
@@ -226,7 +228,7 @@ export const useInventoryStore = create<InventoryStore>()(
     {
       name: KEYS.inventory,
       storage: createJSONStorage(() => safeStorage),
-      version: 5,
+      version: 6,
       migrate: (persisted, version) => migrate(persisted, version) ?? ({} as InventoryStore),
       partialize: (state) => ({ products: state.products, movements: state.movements }) as InventoryStore,
     },

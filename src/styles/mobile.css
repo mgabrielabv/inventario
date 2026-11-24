@@ -1,0 +1,520 @@
+/* ==========================================================================
+   Capa móvil — se carga después de los estilos base.
+   Sustituye el chrome denso de escritorio por una cabecera tipo app, una
+   barra inferior fija, buscador a pantalla completa, hojas y pie plegable.
+   Todo lo que no esté aquí conserva el comportamiento de escritorio.
+   ========================================================================== */
+
+/* --- Objetivos táctiles ≥ 44 px (todos los anchos) -----------------------
+   Se concentran aquí, al final de la cascada, para que ninguna regla de
+   página pueda dejar un control por debajo del mínimo. */
+.brand,
+.eshop-card__fav,
+.eshop-card__quick,
+.eshop-card__step,
+.eshop-card__drop,
+.eshop-card__title,
+.eshop-hero__arrow,
+.eshop-hero__pause,
+.eshop-rail__all,
+.eshop-rail__arrow,
+.eshop-tag,
+.eshop-section__link,
+.eshop-footer__logo,
+.eshop-filters__option,
+.eshop-filters__clear,
+.eshop-account-toggle,
+.eshop-account-auth__links a,
+.checkout-account-card__link,
+.pdp-related__all,
+.pdp-bundle__toggle,
+.cart-line-item__action,
+.cart-main__all,
+.cart-summary__delivery-options button,
+.order-hero__follow,
+.order-aside__back,
+.login-page__use,
+.login-page__toggle,
+.login-page__back,
+.admin-link,
+.admin-search,
+.admin-user__button,
+.switch {
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+}
+.eshop-section__link,
+.eshop-footer__logo,
+.eshop-filters__option,
+.eshop-filters__clear,
+.eshop-account-toggle,
+.eshop-account-auth__links a,
+.checkout-account-card__link,
+.pdp-related__all,
+.cart-line-item__action,
+.cart-main__all,
+.order-hero__follow,
+.order-aside__back,
+.login-page__use,
+.login-page__toggle,
+.login-page__back,
+.admin-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* El punto indicador sigue viéndose pequeño, pero su área táctil es de 44 px. */
+.eshop-hero__dot {
+  position: relative;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  background: transparent;
+}
+.eshop-hero__dot[aria-current='true'] {
+  width: var(--tap-min);
+  background: transparent;
+}
+
+/* El deslizador de precios conserva el recorrido visual pero gana altura
+   táctil; el pulgar crece para poder arrastrarlo con el dedo. */
+.eshop-range,
+.eshop-range input[type='range'] { height: var(--tap-min); }
+.eshop-range input[type='range']::-webkit-slider-thumb { width: 22px; height: 22px; }
+.eshop-range input[type='range']::-moz-range-thumb { width: 22px; height: 22px; }
+
+/* Se conserva el comportamiento original: en teléfono el enlace «Ver todo»
+   del carrusel se oculta para dejar espacio a las flechas. */
+@media (max-width: 480px) {
+  .eshop-rail__all { display: none; }
+}
+
+.eshop-hero__dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  transform: translate(-50%, -50%);
+  border-radius: var(--radius-pill);
+  background: color-mix(in oklab, currentColor 48%, transparent);
+  transition: width 180ms ease, background 180ms ease;
+}
+.eshop-hero__dot[aria-current='true']::before { width: 28px; background: var(--surface); }
+
+/* Estos elementos solo existen en móvil. Ocultos por defecto para evitar un
+   destello antes de que se aplique la media query. */
+.mobile-nav,
+.mobile-zone,
+.mobile-tabbar,
+.cart-mobile-bar { display: none; }
+
+@media (max-width: 768px) {
+  :root {
+    --nav-h: calc(var(--header-h-mobile) + var(--safe-top));
+  }
+
+  .eshop-nav { display: none !important; }
+
+  .store-main {
+    padding-top: 0;
+    padding-bottom: calc(var(--bottom-bar-h) + var(--safe-bottom) + var(--s6));
+  }
+
+  /* --- Cabecera tipo app ------------------------------------------------ */
+  .mobile-nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    min-height: calc(var(--header-h-mobile) + var(--safe-top));
+    padding: var(--safe-top) var(--space-page-x) 0;
+    border-bottom: 1px solid var(--hairline);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+  }
+  .mobile-nav__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    min-width: 0;
+    min-height: var(--tap-min);
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+  .mobile-nav__brand span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mobile-nav__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s1);
+    margin-left: auto;
+    flex: 0 0 auto;
+  }
+  .mobile-nav__cart { position: relative; }
+  .cart-count {
+    position: absolute;
+    top: 1px;
+    right: 0;
+    display: grid;
+    place-items: center;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 3px;
+    border-radius: var(--radius-pill);
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* --- Fila de entrega -------------------------------------------------- */
+  .mobile-zone {
+    position: sticky;
+    top: var(--nav-h);
+    z-index: calc(var(--z-nav) - 1);
+    display: block;
+    border-bottom: 1px solid var(--hairline);
+    background: var(--bg-alt);
+  }
+  .mobile-zone > button {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    width: 100%;
+    min-height: var(--tap-min);
+    padding: var(--s1) var(--space-page-x);
+    color: var(--text-2);
+    font-size: var(--fs-caption);
+    text-align: left;
+  }
+  .mobile-zone > button > span {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mobile-zone > button strong { color: var(--text); }
+  .mobile-zone__options { display: flex; flex-direction: column; gap: var(--s2); }
+  .mobile-zone__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s3);
+    width: 100%;
+    min-height: var(--tap-comfort);
+    padding: var(--s3);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-input);
+    background: var(--surface);
+    color: var(--text);
+    font-size: var(--fs-ui);
+    text-align: left;
+  }
+  .mobile-zone__option.is-active {
+    border-color: var(--primary);
+    background: color-mix(in oklab, var(--clay) 14%, var(--surface));
+    font-weight: 700;
+  }
+  .mobile-zone__option small { color: var(--text-2); font-size: var(--fs-caption); }
+
+  /* --- Barra inferior --------------------------------------------------- */
+  .mobile-tabbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-nav);
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    height: calc(var(--bottom-bar-h) + var(--safe-bottom));
+    padding-bottom: var(--safe-bottom);
+    border-top: 1px solid var(--hairline);
+    background: var(--surface);
+    box-shadow: 0 -6px 20px -12px var(--box-shadow);
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+  }
+  .mobile-tabbar--hidden { display: none; }
+  .mobile-tabbar > a,
+  .mobile-tabbar > button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-width: 0;
+    min-height: var(--bottom-bar-h);
+    color: var(--text-2);
+    font-size: var(--fs-min);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .mobile-tabbar > a.is-active,
+  .mobile-tabbar > button.is-active { color: var(--primary-text); }
+  .mobile-tabbar > a.is-active::before,
+  .mobile-tabbar > button.is-active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 28px;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--primary);
+  }
+  .mobile-tabbar__badge {
+    position: absolute;
+    top: 4px;
+    left: 55%;
+    display: grid;
+    place-items: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 3px;
+    border-radius: var(--radius-pill);
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* --- Buscador a pantalla completa ------------------------------------- */
+  .eshop-search-dialog {
+    align-items: stretch;
+    padding: 0;
+    background: var(--bg);
+  }
+  .eshop-search-dialog__panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: var(--app-h);
+    max-height: none;
+    padding: calc(var(--safe-top) + var(--s3)) var(--space-page-x)
+      calc(var(--safe-bottom) + var(--s3));
+    border: 0;
+    border-radius: 0;
+    background: var(--bg);
+    box-shadow: none;
+  }
+  .eshop-search-dialog__head { flex: 0 0 auto; margin-bottom: var(--s4); }
+  .eshop-search-dialog__title { font-size: var(--fs-subtitle); }
+  .eshop-search-dialog__close {
+    width: var(--tap-min);
+    height: var(--tap-min);
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+  }
+  .eshop-search--overlay { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  .eshop-search__form { height: var(--tap-comfort); }
+  .eshop-search__clear { width: var(--tap-min); height: var(--tap-min); }
+  .eshop-search__submit { min-height: var(--tap-min); }
+  .eshop-search--overlay .eshop-search__panel {
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+    margin-top: var(--s4);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .eshop-search__recent-list { display: flex; flex-wrap: wrap; gap: var(--s2); padding: 0 var(--s2); }
+  .eshop-search__item { min-height: var(--tap-comfort); padding: var(--s3); }
+  .eshop-search__title { font-size: var(--fs-ui); }
+  .eshop-search__meta { font-size: var(--fs-caption); }
+  .eshop-search__all { min-height: var(--tap-min); }
+  .eshop-search__label { font-size: var(--fs-caption); }
+
+  /* --- Hojas y cajón de categorías -------------------------------------- */
+  /* Los formularios se abren a pantalla completa: ni el teclado ni una
+     tarjeta estrecha deben recortar los campos del panel. */
+  .sheet--right,
+  .sheet--bottom,
+  .modal {
+    width: 100%; max-width: none; height: 100dvh; max-height: none;
+    padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+    border: 0; border-radius: 0;
+  }
+  .modal-root { padding: 0; place-items: stretch; }
+  .sheet__header,
+  .modal__header { padding-inline: var(--space-page-x); }
+  .sheet__body,
+  .modal__body { padding: var(--s4) var(--space-page-x) var(--s6); }
+  .sheet--right { width: 100%; }
+  .eshop-drawer__quick a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-min);
+    font-size: var(--fs-ui);
+  }
+  .eshop-drawer__trigger { min-height: var(--tap-comfort); font-size: var(--fs-ui); }
+  .eshop-drawer__panel a,
+  .eshop-drawer__actions a,
+  .eshop-drawer__actions button {
+    min-height: var(--tap-comfort);
+    font-size: var(--fs-ui);
+  }
+  .eshop-drawer__theme {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--tap-comfort);
+    color: var(--text-2);
+    font-size: var(--fs-ui);
+  }
+  .eshop-cart__cta { display: inline-flex; align-items: center; min-height: var(--tap-min); }
+  .eshop-cart__follow { min-height: var(--tap-min); }
+
+  /* --- Pie plegable ----------------------------------------------------- */
+  .eshop-footer {
+    padding-bottom: calc(var(--bottom-bar-h) + var(--safe-bottom));
+  }
+  .eshop-footer__inner {
+    width: min(100% - var(--space-page-x) * 2, 1440px);
+    padding-block: var(--s6) var(--s5);
+  }
+  .eshop-footer__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s2);
+  }
+  .eshop-footer__brand { padding-bottom: var(--s4); }
+  .eshop-footer__accordion { border-top: 1px solid var(--hairline); }
+  .eshop-footer__accordion > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--tap-comfort);
+    margin: 0;
+    cursor: pointer;
+    list-style: none;
+    font-size: var(--fs-ui);
+  }
+  .eshop-footer__accordion > summary::-webkit-details-marker { display: none; }
+  .eshop-footer__accordion > summary::after {
+    content: '+';
+    color: var(--primary-text);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+  }
+  .eshop-footer__accordion[open] > summary::after { content: '\2212'; }
+  .eshop-footer__links {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: var(--s2);
+  }
+  .eshop-footer__link {
+    display: flex;
+    align-items: center;
+    min-height: var(--tap-min);
+    font-size: var(--fs-ui);
+    white-space: normal;
+  }
+  .eshop-footer__staff { display: inline-flex; align-items: center; min-height: var(--tap-min); }
+  .eshop-footer__whatsapp { min-height: var(--tap-min); }
+  .eshop-footer__pay { margin-top: var(--s4); }
+  .eshop-footer__bottom { align-items: flex-start; flex-direction: column; }
+
+  /* --- Deslizamiento y barras de acción ---------------------------------- */
+  .eshop-rail__track,
+  .pdp-recent__rail {
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .eshop-rail__track::-webkit-scrollbar,
+  .pdp-recent__rail::-webkit-scrollbar { display: none; }
+  .pdp-recent__rail > * { flex: 0 0 auto; scroll-snap-align: start; }
+
+  .pdp-mobile-bar,
+  .cart-mobile-bar {
+    padding-bottom: calc(var(--s3) + var(--safe-bottom));
+    border-top: 1px solid var(--hairline);
+    background: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .cart-mobile-bar {
+    position: fixed;
+    bottom: calc(var(--bottom-bar-h) + var(--safe-bottom));
+    left: 0;
+    right: 0;
+    z-index: var(--z-sticky);
+    display: flex;
+    align-items: center;
+    gap: var(--s4);
+    padding: var(--s3) var(--space-page-x) calc(var(--s3) + var(--safe-bottom));
+    padding-left: calc(var(--space-page-x) + var(--safe-left));
+    padding-right: calc(var(--space-page-x) + var(--safe-right));
+    box-shadow: 0 -6px 20px -12px var(--box-shadow);
+  }
+  .cart-mobile-bar > div { flex: 0 0 auto; }
+  .cart-mobile-bar > .btn { flex: 1; }
+  .cart-summary__cta,
+  .cart-summary__note { display: none; }
+  .cart-summary { padding-bottom: var(--s4); }
+  .cart-page__layout { padding-bottom: calc(var(--bottom-bar-h) + var(--s9)); }
+
+  .checkout-nav {
+    position: sticky;
+    bottom: 0;
+    z-index: var(--z-sticky);
+    margin: var(--s5) calc(-1 * var(--space-page-x)) 0;
+    padding: var(--s3) var(--space-page-x) calc(var(--s3) + var(--safe-bottom));
+    border-top: 1px solid var(--hairline);
+    background: var(--surface);
+  }
+  .checkout-nav .btn { flex: 1; }
+}
+
+/* El catálogo se muestra siempre en dos columnas en teléfono: las tarjetas
+   compactas conservan la información esencial sin obligar a hacer zoom. */
+@media (max-width: 480px) {
+  .eshop-grid,
+  .eshop-grid--compacta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s2);
+  }
+  .eshop-card { padding: var(--s1); }
+  .eshop-card__price { font-size: 17px; }
+}
+
+/* Breakpoint extra: 320–360 px. Solo ajusta el espacio disponible; mantiene
+   los objetivos táctiles y la tipografía de campos igual que en el resto. */
+@media (max-width: 360px) {
+  .eshop-wrap,
+  .eshop-catalog__wrap { width: min(100% - 16px, 100%); }
+  .eshop-hero__slide { padding: var(--s3); padding-bottom: 84px; }
+  .eshop-benefit__detail { white-space: normal; }
+  .admin-topbar { gap: var(--s1); }
+  .admin-tabbar__item { font-size: 11px; }
+}
+
+/* Objetivos táctiles de la cabecera de escritorio en tablets/apaisado:
+   el puntero es táctil aunque el ancho supere el breakpoint móvil. */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .eshop-nav__icon-btn { min-width: var(--tap-min); height: var(--tap-min); }
+  .eshop-nav__utility-link,
+  .eshop-nav__cat-link,
+  .eshop-nav__account-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-min);
+  }
+  .eshop-nav__theme { width: var(--tap-min); height: var(--tap-min); }
+  .eshop-nav__select { min-height: var(--tap-min); font-size: var(--fs-ui); }
+  .eshop-nav__all-btn,
+  .eshop-brand { min-height: var(--tap-min); }
+}

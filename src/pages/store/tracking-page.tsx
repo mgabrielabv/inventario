@@ -1,12 +1,14 @@
 import { ArrowRight, FileCheck2, Search, Truck } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { BRAND } from '../../config/brand'
 import { BoxMark } from '../../components/box/OpenBox'
 import { Button } from '../../components/ui/Button'
 import { Chip } from '../../components/ui/Chip'
 import { Field, Input } from '../../components/ui/Field'
 import { estimarEntrega } from '../../logic/services/delivery'
 import { formatShortDate, formatTime } from '../../logic/services/formatters'
+import { friendlyStatus, friendlyStatusDetail } from '../../logic/services/order-labels'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
 import type { Order } from '../../logic/types'
@@ -17,8 +19,9 @@ const Timeline = ({ items }: { items: Order['historial'] }) => (
       <li className="tracking-timeline__item" key={`${item.fecha}-${index}`}>
         <span className="tracking-timeline__dot" aria-hidden="true" />
         <div>
-          <p className="t-mid">{item.estado}</p>
+          <p className="t-mid">{friendlyStatus(item.estado)}</p>
           <p className="t-min">{formatShortDate(item.fecha)} · {formatTime(item.fecha)}</p>
+          <p className="t-caption t-muted">{friendlyStatusDetail(item.estado)}</p>
           {item.nota && <p className="t-caption">{item.nota}</p>}
         </div>
       </li>
@@ -73,8 +76,11 @@ export const TrackingPage = () => {
                 id={id}
                 className="code"
                 value={code}
-                placeholder="INV-2026-000001"
+                placeholder={`${BRAND.orderPrefix}-${new Date().getFullYear()}-000001`}
                 aria-describedby={describedBy || undefined}
+                autoComplete="off"
+                inputMode="text"
+                enterKeyHint="next"
                 onChange={(event) => setCode(event.target.value)}
               />
             )}
@@ -86,6 +92,9 @@ export const TrackingPage = () => {
                 value={dato}
                 placeholder="04xx-xxxxxxx o tu correo"
                 aria-describedby={describedBy || undefined}
+                autoComplete="off"
+                inputMode="text"
+                enterKeyHint="go"
                 onChange={(event) => setDato(event.target.value)}
               />
             )}
@@ -98,7 +107,7 @@ export const TrackingPage = () => {
             Consultar
           </Button>
           <p className="tracking-form__note t-min">
-            Consulta local de demostración. Solo aparecen pedidos registrados en este equipo.
+            Solo aparecen pedidos registrados en este navegador.
           </p>
         </form>
 
@@ -120,7 +129,7 @@ export const TrackingPage = () => {
                   <p className="t-min t-clay">Pedido</p>
                   <h2 id="tracking-result-title" className="t-ui t-strong order-code">{result.codigo}</h2>
                 </div>
-                <Chip active>{result.estado}</Chip>
+                <Chip active>{friendlyStatus(result.estado)}</Chip>
               </header>
               <p className="t-caption">
                 {formatShortDate(result.fecha)} · {result.lineas.length}{' '}

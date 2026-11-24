@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
+import { ResponsiveTable } from '../../components/ui/ResponsiveTable'
 import { Segmented } from '../../components/ui/Segmented'
 import { Sheet } from '../../components/ui/Sheet'
 import { useToast } from '../../components/ui/Toast'
@@ -186,7 +187,7 @@ export const AdminOrdersPage = () => {
             <section className="admin-detail-section">
               <h3 className="t-ui t-strong">Productos</h3>
               <div className="table-wrap">
-                <table className="table">
+                <ResponsiveTable>
                   <thead><tr><th>Producto</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th></tr></thead>
                   <tbody>
                     {selected.lineas.map((line) => {
@@ -207,7 +208,7 @@ export const AdminOrdersPage = () => {
                       )
                     })}
                   </tbody>
-                </table>
+                </ResponsiveTable>
               </div>
               <div className="admin-totals">
                 <div><span className="t-caption">Subtotal</span><span className="t-num">{formatMoney(selected.subtotal)}</span></div>

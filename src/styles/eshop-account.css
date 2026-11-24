@@ -1,0 +1,536 @@
+/* Cuenta de cliente: ingreso, registro, recuperación y área privada. */
+
+.eshop-account-page {
+  min-height: calc(100svh - var(--nav-h));
+  padding-block: var(--s6) var(--s9);
+  overflow-x: clip;
+}
+
+.eshop-account-demo {
+  margin-top: var(--s5);
+  text-align: center;
+}
+
+.eshop-account-eyebrow {
+  margin-bottom: var(--s2);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eshop-account-back,
+.eshop-account-inline-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  color: var(--primary-text);
+}
+.eshop-account-back { margin-bottom: var(--s5); }
+@media (hover: hover) {
+  .eshop-account-back:hover,
+.eshop-account-inline-link:hover { text-decoration: underline; text-underline-offset: 4px;
+  }
+}
+
+.eshop-account-page :is(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* --- Cargando y avisos --------------------------------------------------- */
+
+.eshop-account-loading {
+  display: flex;
+  min-height: 50svh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s3);
+  text-align: center;
+}
+.eshop-account-spinner {
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--hairline-strong);
+  border-top-color: var(--primary-text);
+  border-radius: 50%;
+  animation: eshop-account-spin 900ms linear infinite;
+}
+@keyframes eshop-account-spin { to { transform: rotate(360deg); } }
+
+.eshop-account-notice {
+  margin-top: var(--s4);
+  padding: var(--s3);
+  border-radius: var(--radius-input);
+  background: color-mix(in oklab, var(--tan) 22%, var(--surface));
+  color: var(--text);
+  font-size: var(--fs-caption);
+}
+.eshop-account-alert {
+  padding: var(--s3);
+  border: 1px solid var(--primary-text);
+  border-radius: var(--radius-input);
+  background: color-mix(in oklab, var(--primary) 8%, var(--surface));
+  font-size: var(--fs-caption);
+}
+
+/* --- Ingreso y registro -------------------------------------------------- */
+
+.eshop-account-auth {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  width: min(100% - 48px, 1120px);
+  margin-inline: auto;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-lg);
+}
+.eshop-account-auth__form {
+  min-width: 0;
+  padding: clamp(24px, 4vw, 52px);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.eshop-account-auth__head { max-width: 46ch; }
+
+.eshop-account-auth__benefits {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(28px, 4vw, 56px);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.eshop-account-auth__benefits::before,
+.eshop-account-auth__benefits::after {
+  position: absolute;
+  border-radius: 50%;
+  background: color-mix(in oklab, currentColor 12%, transparent);
+  content: '';
+  pointer-events: none;
+}
+.eshop-account-auth__benefits::before { top: -140px; right: -120px; width: 360px; height: 360px; }
+.eshop-account-auth__benefits::after { bottom: -180px; left: -90px; width: 300px; height: 300px; }
+.eshop-account-auth__benefits-inner { position: relative; z-index: 1; display: flex; flex-direction: column; gap: var(--s4); }
+.eshop-account-auth__benefits-inner h2 { color: inherit; }
+.eshop-account-auth__benefits-inner > p { opacity: 0.9; }
+.eshop-account-auth__benefit-list { display: flex; flex-direction: column; gap: var(--s3); margin-top: var(--s3); }
+.eshop-account-benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s3);
+  padding: var(--s3);
+  border: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+  border-radius: var(--radius-input);
+  background: color-mix(in oklab, currentColor 8%, transparent);
+}
+.eshop-account-benefit__icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--radius-active);
+  background: color-mix(in oklab, currentColor 14%, transparent);
+}
+.eshop-account-benefit strong,
+.eshop-account-benefit small { display: block; overflow-wrap: anywhere; }
+.eshop-account-benefit small { margin-top: var(--s1); opacity: 0.88; font-size: var(--fs-caption); }
+.eshop-account-auth__benefits-foot { margin-top: var(--s3); opacity: 0.86; color: inherit; }
+
+.eshop-account-auth__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--s3);
+  font-size: var(--fs-caption);
+}
+.eshop-account-auth__switch { margin-top: var(--s3); }
+
+/* --- Formularios --------------------------------------------------------- */
+
+.eshop-account-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  margin-top: var(--s5);
+}
+.eshop-account-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s4);
+}
+.eshop-account-password { position: relative; }
+.eshop-account-password .input { padding-right: var(--s8); }
+.eshop-account-toggle {
+  position: absolute;
+  top: 50%;
+  right: var(--s2);
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: var(--radius-active);
+  color: var(--text-2);
+  transform: translateY(-50%);
+}
+@media (hover: hover) {
+  .eshop-account-toggle:hover { background: var(--surface-2); color: var(--text);
+  }
+}
+
+.eshop-account-strength { display: flex; align-items: center; gap: var(--s2); }
+.eshop-account-strength__bars { display: flex; flex: 1; gap: var(--s1); }
+.eshop-account-strength__bars span {
+  height: 4px;
+  flex: 1;
+  border-radius: var(--radius-pill);
+  background: var(--hairline-strong);
+}
+.eshop-account-strength__bars span.is-on { background: var(--primary-text); }
+
+.eshop-account-check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s2);
+  font-size: var(--fs-caption);
+  cursor: pointer;
+}
+.eshop-account-check input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin: 2px 0 0;
+  accent-color: var(--primary);
+}
+.eshop-account-terms { display: flex; flex-direction: column; gap: var(--s3); }
+.eshop-account-show {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  align-self: flex-start;
+  color: var(--primary-text);
+}
+
+/* --- Recuperación -------------------------------------------------------- */
+
+.eshop-account-recover {
+  display: flex;
+  width: min(100% - 32px, 620px);
+  flex-direction: column;
+  margin-inline: auto;
+}
+.eshop-account-recover__card { padding: clamp(24px, 4vw, 44px); }
+.eshop-account-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s4);
+  margin-block: var(--s5);
+  font-size: var(--fs-caption);
+}
+.eshop-account-steps li { display: flex; align-items: center; gap: var(--s2); color: var(--text-2); }
+.eshop-account-steps li span {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: 1px solid var(--control-border);
+  border-radius: 50%;
+}
+.eshop-account-steps li.is-current,
+.eshop-account-steps li.is-done { color: var(--primary-text); font-weight: 600; }
+.eshop-account-steps li.is-current span,
+.eshop-account-steps li.is-done span {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.eshop-account-recover__done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s4);
+  margin-block: var(--s6);
+  text-align: center;
+}
+.eshop-account-recover__icon {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--tan) 30%, var(--surface));
+  color: var(--primary-text);
+}
+.eshop-account-recover__foot {
+  display: flex;
+  gap: var(--s2);
+  margin-top: var(--s5);
+  padding-top: var(--s4);
+  border-top: 1px solid var(--hairline);
+}
+.eshop-account-recover__foot p { overflow-wrap: anywhere; }
+
+/* --- Panel --------------------------------------------------------------- */
+
+.eshop-account-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s5);
+  margin-bottom: var(--s6);
+}
+.eshop-account-head h1 { overflow-wrap: anywhere; }
+.eshop-account-section { margin-top: var(--s7); }
+.eshop-account-section__title { margin-bottom: var(--s4); }
+
+.eshop-account-overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  padding: clamp(20px, 3vw, 32px);
+}
+.eshop-account-overview__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+}
+.eshop-account-overview .code { overflow-wrap: anywhere; }
+
+.eshop-account-progress { display: flex; flex-direction: column; gap: var(--s2); }
+.eshop-account-progress__track {
+  height: 8px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+}
+.eshop-account-progress__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+}
+.eshop-account-progress__steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--s1);
+  color: var(--text-2);
+  font-size: var(--fs-min);
+  line-height: 1.2;
+  text-align: center;
+}
+.eshop-account-progress__steps .is-done { color: var(--primary-text); font-weight: 600; }
+
+.eshop-account-tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s4);
+}
+.eshop-account-tile {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s5);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+@media (hover: hover) {
+  .eshop-account-tile:hover {
+  border-color: var(--primary-text);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  }
+}
+.eshop-account-tile__icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--radius-active);
+  background: color-mix(in oklab, var(--clay) 22%, var(--surface));
+  color: var(--primary-text);
+}
+.eshop-account-tile__body { display: flex; min-width: 0; flex-direction: column; gap: var(--s1); }
+.eshop-account-tile__body small { overflow-wrap: anywhere; }
+.eshop-account-tile__extra { margin-left: auto; color: var(--clay-text); }
+
+/* --- Pedidos ------------------------------------------------------------- */
+
+.eshop-account-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+  margin-bottom: var(--s5);
+}
+.eshop-account-filter { width: auto; min-width: 180px; }
+.eshop-account-orders {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s4);
+}
+.eshop-account-order {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--s4);
+  padding: var(--s5);
+}
+.eshop-account-order__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s3); }
+.eshop-account-order__head .code { overflow-wrap: anywhere; }
+.eshop-account-order__meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s2);
+  padding-block: var(--s3);
+  border-block: 1px solid var(--hairline);
+}
+.eshop-account-order__meta div { min-width: 0; }
+.eshop-account-order__meta dd { margin: var(--s1) 0 0; overflow-wrap: anywhere; }
+.eshop-account-order__actions { display: flex; flex-wrap: wrap; gap: var(--s3); }
+
+.eshop-account-panel {
+  min-width: 0;
+  padding: clamp(20px, 3vw, 32px);
+}
+.eshop-account-panel h2 { display: flex; align-items: center; gap: var(--s2); margin-bottom: var(--s4); }
+.eshop-account-lines { display: flex; flex-direction: column; gap: var(--s3); margin-block: var(--s4); }
+.eshop-account-lines li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s1) var(--s3);
+  padding-bottom: var(--s3);
+  border-bottom: 1px solid var(--hairline);
+}
+.eshop-account-lines li > :nth-child(2) { overflow-wrap: anywhere; }
+.eshop-account-lines li > :last-child { grid-row: 1 / 3; grid-column: 2; align-self: center; }
+.eshop-account-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  margin-bottom: var(--s4);
+}
+
+/* --- Direcciones --------------------------------------------------------- */
+
+.eshop-account-address-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  gap: var(--s5);
+  align-items: start;
+}
+.eshop-account-addresses { display: flex; flex-direction: column; gap: var(--s3); }
+.eshop-account-address { min-width: 0; padding: var(--s5); }
+.eshop-account-address__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); }
+.eshop-account-address__icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: var(--radius-active);
+  background: color-mix(in oklab, var(--clay) 22%, var(--surface));
+  color: var(--primary-text);
+}
+.eshop-account-address__body { margin-block: var(--s3); }
+.eshop-account-address__body p { overflow-wrap: anywhere; }
+.eshop-account-address__actions { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.eshop-account-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--s3);
+  margin-top: var(--s5);
+}
+
+/* --- Perfil -------------------------------------------------------------- */
+
+.eshop-account-profile {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+  gap: var(--s5);
+  align-items: start;
+}
+.eshop-account-profile__main,
+.eshop-account-profile__side { display: flex; min-width: 0; flex-direction: column; gap: var(--s5); }
+.eshop-account-panel--danger {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s3);
+  border-color: var(--primary-text);
+}
+.eshop-account-panel--danger h2 { margin-bottom: 0; }
+.eshop-account-preference {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+  padding: var(--s4);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-input);
+  background: var(--surface-2);
+}
+.eshop-account-preference p { overflow-wrap: anywhere; }
+
+/* --- Adaptaciones -------------------------------------------------------- */
+
+@media (max-width: 1280px) {
+  .eshop-account-auth { width: min(100% - 48px, 1120px); }
+}
+
+@media (max-width: 1024px) {
+  .eshop-account-auth {
+    grid-template-columns: minmax(0, 1fr);
+    width: min(100% - 32px, 640px);
+  }
+  .eshop-account-auth__benefits { display: none; }
+  .eshop-account-auth__form {
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-md);
+  }
+  .eshop-account-address-layout,
+  .eshop-account-profile,
+  .eshop-account-orders,
+  .eshop-account-tiles { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .eshop-account-page { padding-block: var(--s5) var(--s7); }
+  .eshop-account-auth { width: min(100% - 24px, 640px); }
+  .eshop-account-auth__form,
+  .eshop-account-panel,
+  .eshop-account-recover__card { padding: var(--s4); }
+  .eshop-account-form__grid { grid-template-columns: minmax(0, 1fr); }
+  .eshop-account-head { align-items: flex-start; }
+  .eshop-account-head > .btn,
+  .eshop-account-order__actions { width: 100%; }
+  .eshop-account-order__actions .btn { flex: 1; }
+  .eshop-account-progress__steps { font-size: var(--fs-min); }
+  .eshop-account-order__meta { grid-template-columns: minmax(0, 1fr); }
+  .eshop-account-modal-actions { flex-direction: column-reverse; }
+  .eshop-account-modal-actions .btn { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eshop-account-page *,
+  .eshop-account-page *::before,
+  .eshop-account-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .eshop-account-spinner { animation: none; }
+@media (hover: hover) {
+  .eshop-account-tile:hover { transform: none;
+  }
+}
+}

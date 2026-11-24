@@ -19,15 +19,6 @@ export const riseItem: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: dur.base, ease: ease.out } },
 }
 
-/** A3 · palabra con máscara y desenfoque */
-export const wordMask: Variants = {
-  hidden: { y: '100%', filter: 'blur(12px)', opacity: 0 },
-  show: (i: number) => ({
-    y: '0%', filter: 'blur(0px)', opacity: 1,
-    transition: { duration: dur.hero, ease: ease.out, delay: i * stagger.base },
-  }),
-}
-
 /** A10 / A16 · hojas y popovers */
 export const sheetDesktop: Variants = {
   initial: { x: '100%', opacity: 0.6 },

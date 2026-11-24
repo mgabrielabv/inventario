@@ -1,11 +1,22 @@
 /* ==========================================================================
-   INVENTARIO — tokens de color y sistema visual
+   Tokens de color y sistema visual
    ÚNICO archivo del proyecto con colores literales. Los cuatro colores base
-   son ley; todo lo demás se deriva de ellos. Matiz permitido: 350°–40°.
+   son ley; todo lo demás se deriva de ellos.
    ========================================================================== */
 
 :root {
   color-scheme: light;
+
+  /* --- Configuración de la paleta (la leen los scripts de build) ----------
+     Para cambiar de identidad: edita los colores de abajo y, si hace falta,
+     estos límites. check-palette y check-contrast leen SOLO este bloque. */
+  --palette-hue-min: 350;
+  --palette-hue-max: 40;
+  --palette-saturation-min: 12;
+  --contrast-pairs: text/bg text/bg-alt text/surface text/surface-2 text-2/bg text-2/bg-alt text-2/surface text-2/surface-2 primary-text/bg primary-text/surface clay-text/bg clay-text/surface clay-text/surface-2 on-primary/primary on-primary/primary-hover on-clay/clay on-tan/tan;
+  --contrast-light-pairs: text/tan text/clay;
+  --contrast-large-pairs: primary-text/bg-alt status-critical/surface;
+  --contrast-control-pairs: control-border/bg control-border/bg-alt control-border/surface control-border/surface-2 status-available/bg status-low/bg status-critical/bg tan-strong/bg;
 
   /* --- Cuatro colores base (ley) ---------------------------------------- */
   --burgundy: #890000;
@@ -106,16 +117,37 @@
   --font-ui: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
     'Inter Variable', Inter, system-ui, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-  --fs-hero: clamp(56px, 7vw, 96px);
-  --fs-detail-title: clamp(40px, 5vw, 64px);
-  --fs-section: clamp(32px, 4vw, 56px);
-  --fs-catalog: clamp(40px, 4vw, 56px);
-  --fs-subtitle: clamp(21px, 2.2vw, 28px);
-  --fs-statement: clamp(28px, 3.4vw, 40px);
-  --fs-body: 17px;
-  --fs-ui: 15px;
+  --fs-hero: clamp(28px, 8vw, 96px);
+  --fs-detail-title: clamp(26px, 7vw, 64px);
+  --fs-section: clamp(24px, 6vw, 56px);
+  --fs-catalog: clamp(26px, 7vw, 56px);
+  --fs-subtitle: clamp(19px, 2.2vw, 28px);
+  --fs-statement: clamp(24px, 3.4vw, 40px);
+  --fs-body: 16px;
+  --fs-ui: 16px;
   --fs-caption: 13px;
   --fs-min: 12px;
+
+  /* --- Layout y breakpoints ---------------------------------------------
+     CSS no admite var() dentro de @media: los valores se repiten como
+     literales en las media queries, pero esta es la lista de verdad.
+     360 · 480 (sm) · 768 (md) · 1024 (lg) · 1280 (xl). */
+  --bp-xs: 360px;
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+  --tap-min: 44px;
+  --tap-comfort: 48px;
+  --bottom-bar-h: 64px;
+  --header-h-mobile: 56px;
+  --space-page-x: 16px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --app-h: 100vh;
+  --app-h: 100svh;
 
   /* --- Estructura ------------------------------------------------------- */
   --nav-h: 52px;
@@ -130,6 +162,25 @@
   --z-overlay: 60;
   --z-sheet: 70;
   --z-toast: 90;
+}
+
+/* Altura dinámica real en navegadores modernos; svh y vh quedan como fallback. */
+@supports (height: 100dvh) {
+  :root { --app-h: 100dvh; }
+}
+
+/* Por encima de 480 px se recupera el cuerpo de escritorio. --fs-ui se
+   mantiene en 16 px en todos los anchos: cualquier campo por debajo de 16 px
+   provoca zoom automático en Safari iOS, también en tablet. */
+@media (min-width: 480px) {
+  :root {
+    --fs-body: 17px;
+    --space-page-x: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root { --space-page-x: 32px; }
 }
 
 .dark {

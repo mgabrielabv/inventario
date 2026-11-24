@@ -1,0 +1,77 @@
+/* Cuenta, direcciones y confirmación dentro del flujo de compra.
+   Solo tokens de color: ver src/styles/tokens.css. */
+
+.checkout-step-account { display: grid; gap: var(--s4); }
+
+.checkout-account-card {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-card);
+  background: var(--surface-2);
+  padding: var(--s4);
+  display: grid;
+  gap: var(--s1);
+}
+
+.checkout-account-card__title { color: var(--primary-text); }
+
+.checkout-account-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2);
+  margin-top: var(--s1);
+}
+
+.checkout-account-card__link {
+  color: var(--primary-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: var(--s1) 0;
+}
+
+.checkout-save-address {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s2);
+  color: var(--text-2);
+  font-size: var(--fs-caption);
+  cursor: pointer;
+}
+
+.checkout-save-address input { margin-top: 0.15rem; accent-color: var(--primary); }
+
+.order-account-invite {
+  margin-top: var(--s4);
+  padding: var(--s5);
+  display: grid;
+  gap: var(--s2);
+  border: 1px solid var(--hairline-strong);
+  background: var(--surface-2);
+}
+
+.order-account-invite__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.order-account-link { margin-top: var(--s3); }
+
+.order-account-link a {
+  color: var(--primary-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+  .checkout-account-card { padding: var(--s3); }
+  .order-account-invite { padding: var(--s4); }
+  .checkout-account-card__actions .btn { flex: 1 1 auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkout-step-account *, .order-account-invite * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

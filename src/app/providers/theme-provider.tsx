@@ -26,6 +26,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const root = document.documentElement
     root.classList.remove('light', 'dark')
     root.classList.add(theme)
+    const color = getComputedStyle(root).getPropertyValue('--primary').trim()
+    document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((meta) => {
+      meta.content = color
+    })
     safeStorage.setItem(KEYS.theme, theme)
   }, [theme])
 
