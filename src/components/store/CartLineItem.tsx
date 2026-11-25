@@ -8,7 +8,7 @@ import { useToast } from '../ui/Toast'
 import { formatMoney } from '../../logic/services/pricing'
 import { getStoreStatus } from '../../logic/services/stock'
 import { useCartStore } from '../../logic/store/cart'
-import { dur } from '../../motion/tokens'
+import { distance, dur, ease, spring } from '../../motion/tokens'
 import type { CartIssue } from '../../logic/services/cart'
 import type { CartLine, Product } from '../../logic/types'
 
@@ -42,10 +42,10 @@ export const CartLineItem = ({ line, product, available, issue, saved = false, o
     <motion.li
       layout
       className={`cart-line-item${saved ? ' is-saved' : ''}${issue ? ' has-issue' : ''}`}
-      initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: 1, height: 'auto' }}
-      exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-      transition={{ duration: dur.base }}
+      initial={{ opacity: 0, y: distance.rise }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -distance.rise }}
+      transition={{ layout: spring.ui, duration: dur.fast, ease: ease.easeOutQuint }}
     >
       <Link
         className="cart-line-item__art"

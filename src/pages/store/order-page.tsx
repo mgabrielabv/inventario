@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowLeft, ArrowRight, Check, Copy, FileCheck2, MessageCircle, Printer } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
@@ -18,6 +19,48 @@ import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
 import type { Order } from '../../logic/types'
+import { celebration, dur, ease } from '../../motion/tokens'
+import { isLightDevice, staggerDelay } from '../../motion/helpers'
+
+/** Check que se dibuja y destellos discretos; sin confeti con reduced-motion. */
+const OrderCelebration = ({ animate }: { animate: boolean }) => {
+  const reduce = useReducedMotion()
+  const light = isLightDevice()
+  const decorative = animate && !reduce && !light
+
+  return (
+    <span className="order-celebration" aria-hidden="true">
+      <svg viewBox="0 0 48 48" width="48" height="48">
+        <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <motion.path
+          d="M14 24.5 21 31 34 17"
+          fill="none" stroke="currentColor" strokeWidth="2.4"
+          strokeLinecap="round" strokeLinejoin="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: reduce ? dur.micro : dur.hero, ease: ease.easeOutQuint }}
+        />
+      </svg>
+      {decorative && Array.from({ length: celebration.particles }, (_, index) => (
+        <motion.i
+          key={index}
+          style={{ rotate: index * (celebration.fullTurn / celebration.particles) }}
+          initial={{ opacity: 0, y: 0, scale: 0 }}
+          animate={{
+            opacity: [0, 1, 0],
+            y: [0, -celebration.radius, -celebration.radius * 1.2],
+            scale: [0, 1, 0.6],
+          }}
+          transition={{
+            duration: celebration.duration,
+            delay: staggerDelay(index % celebration.wave),
+            ease: ease.easeOutExpo,
+          }}
+        />
+      ))}
+    </span>
+  )
+}
 
 const Timeline = ({ items }: { items: Order['historial'] }) => (
   <ol className="order-timeline">
@@ -106,6 +149,7 @@ export const OrderPage = () => {
   return (
     <div className="order-page container-detail">
       <header className="order-head">
+        {justCreated && <OrderCelebration animate />}
         <p className="order-head__eyebrow t-min t-clay">{justCreated ? 'Listo' : 'Detalle'}</p>
         <h1 className="t-section">{justCreated ? 'Pedido confirmado' : 'Tu pedido'}</h1>
         <p className="t-subtitle">

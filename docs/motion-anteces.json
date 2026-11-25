@@ -1,0 +1,102 @@
+{
+  "generatedAt": "2026-11-24T03:20:22.459Z",
+  "findings": {
+    "add-no-preference": {
+      "token": {
+        "html": "<svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" aria-hidden=\"true\"><path d=\"M3 8l9-4 9 4-9 4-9-4Z\" fill=\"var(--box-top)\"></path><path d=\"M3 8v9l9 4v-9L3 8Z\" fill=\"var(--box-left)\">",
+        "w": 11,
+        "h": 11
+      },
+      "after": {
+        "toasts": [
+          "Agregado al carritoAgregado al carrito"
+        ],
+        "live": [
+          "sr-only:Agregado al carrito"
+        ],
+        "tokens": 0
+      }
+    },
+    "add-reduce": {
+      "token": null,
+      "after": {
+        "toasts": [
+          ""
+        ],
+        "live": [],
+        "tokens": 0
+      }
+    },
+    "reveal": {
+      "initial": {
+        "exists": true,
+        "opacity": "1",
+        "transform": "none"
+      },
+      "afterScroll": {
+        "opacity": "1",
+        "transform": "none"
+      }
+    },
+    "route": [
+      {
+        "t": 645,
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "t": 654,
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "t": 671,
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "t": 687,
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "t": 704,
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "t": 721,
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "t": 738,
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "t": 754,
+        "opacity": "1",
+        "transform": "none"
+      }
+    ],
+    "static": {
+      "deadFiles": [
+        {
+          "path": "src/motion/components/WordReveal.tsx",
+          "exists": false
+        },
+        {
+          "path": "src/motion/hooks/useScrollProgress.ts",
+          "exists": false
+        }
+      ],
+      "meshUsed": true,
+      "boxStackFloat": false,
+      "tiltMediaQuery": false,
+      "revealTimer": true,
+      "flyTimer": true,
+      "flyTargetRefs": 3
+    }
+  }
+}

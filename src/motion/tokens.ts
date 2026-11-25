@@ -1,35 +1,59 @@
-/* Tokens de movimiento. Ningún componente debe llevar números mágicos. */
+/* Tokens de movimiento. Ningún componente debe llevar números mágicos.
+   Lenguaje de marca: marfil pulido — suave, con peso y sin rebotes caricaturescos. */
 export const spring = {
   snappy: { type: 'spring', stiffness: 520, damping: 38, mass: 0.8 },
   ui: { type: 'spring', stiffness: 380, damping: 34 },
   sheet: { type: 'spring', stiffness: 300, damping: 32, mass: 1 },
   soft: { type: 'spring', stiffness: 140, damping: 22, mass: 1.1 },
+  /** Respuesta inmediata al toque, sin rebote. */
+  press: { type: 'spring', stiffness: 620, damping: 42, mass: 0.7 },
+  /** Asiento final: un rebote mínimo, nunca "boing". */
+  settle: { type: 'spring', stiffness: 420, damping: 30, mass: 0.9 },
 } as const
 
 export const ease = {
   out: [0.22, 1, 0.36, 1],
   ios: [0.32, 0.72, 0, 1],
   inOut: [0.65, 0, 0.35, 1],
+  easeOutExpo: [0.16, 1, 0.3, 1],
+  easeOutQuint: [0.23, 1, 0.32, 1],
+  easeInOutSoft: [0.45, 0, 0.2, 1],
 } as const
 
-export const dur = { fast: 0.18, base: 0.32, slow: 0.6, hero: 1.1 } as const
+export const dur = {
+  micro: 0.12,
+  fast: 0.18,
+  step: 0.24,
+  base: 0.32,
+  slow: 0.48,
+  check: 0.6,
+  hero: 0.8,
+  celebration: 1.2,
+  shimmer: 1.4,
+  emptyFloat: 4,
+} as const
 
-export const stagger = { tight: 0.04, base: 0.07, wide: 0.12 } as const
+export const stagger = { tight: 0.03, base: 0.055, wide: 0.09, maxTotal: 0.4 } as const
+
+export const distance = { rise: 12, riseLg: 24, card: 14, cardMobile: 12, sheet: '100%' } as const
 
 export const reduced = {
   duration: 0.14,
   ease: ease.out,
 } as const
 
-/** A9· vuelo al carrito y rebote del contador. */
+/** Vuelo del producto al carrito visible, con arco y cola acotada. */
 export const flyCart = {
-  duration: 0.7,
+  duration: 0.66,
   settle: 0.12,
-  endScale: 0.2,
-  endOpacity: 0.5,
-  endRotate: 12,
-  iconSize: 22,
-  bumpScale: 1.28,
+  endScale: 0.35,
+  endOpacity: 0,
+  endRotate: 8,
+  tokenSize: 56,
+  arcLift: 56,
+  maxTokens: 3,
+  ripple: 0.4,
+  bumpScale: 1.18,
 } as const
 
 /** A3/A19· inclinación con el puntero. */
@@ -69,6 +93,98 @@ export const openBox = {
   drawDuration: 0.8,
   initialY: 16,
   initialScale: 0.92,
+} as const
+
+/** B1 · tarjeta, imagen, etiquetas y favorito. */
+export const cardMotion = {
+  hoverScale: 1.04,
+  hoverDuration: 0.5,
+  tapScale: 0.985,
+  tapDuration: 0.08,
+  quickOffset: 6,
+  badgeFrom: 0.9,
+  shimmerFrom: -120,
+  shimmerTo: 120,
+  blurFrom: 8,
+  favoritePop: 1.18,
+  sparkCount: 6,
+  sparkAngle: 60,
+  sparkDistance: 16,
+  sparkDuration: 0.35,
+  priceDuration: dur.base,
+} as const
+
+/** B2 · respuesta táctil: desactivada por decisión pendiente de confirmación. */
+export const haptics = {
+  enabled: false,
+  duration: 10,
+} as const
+
+/** B4 · banners con capas en paralaje suave y progreso del autoavance. */
+export const bannerMotion = {
+  autoplay: 6.5,
+  swipeDistance: 48,
+  backgroundShift: 8,
+  textShift: 14,
+  artShift: 20,
+} as const
+
+/** Errores de formulario: sacudida corta, nunca con reduced-motion. */
+export const feedback = { shake: 6 } as const
+
+/** B6 · cabecera, megamenú y barra inferior. */
+export const chromeMotion = {
+  hideAfter: 120,
+  scrollDelta: 8,
+  megaOffset: 8,
+  tabIconScale: 1.08,
+} as const
+
+/** B9 · panel sobrio: KPIs escalonados, barras y cambio de estado. */
+export const panelMotion = {
+  kpiRise: 10,
+  barRise: 0.6,
+  statusScale: 1.06,
+  highlightDuration: 0.9,
+} as const
+
+/** B7 · celebración contenida, nunca lluvia de confeti. */
+export const celebration = {
+  particles: 16,
+  duration: dur.celebration,
+  radius: 96,
+  fullTurn: 360,
+  wave: 4,
+} as const
+
+/** Parámetros CSS derivados de estos tokens (inyectados en :root por css-vars.ts). */
+export const cssMotion = {
+  '--m-dur-micro': `${dur.micro}s`,
+  '--m-dur-fast': `${dur.fast}s`,
+  '--m-dur-step': `${dur.step}s`,
+  '--m-dur-base': `${dur.base}s`,
+  '--m-dur-slow': `${dur.slow}s`,
+  '--m-dur-check': `${dur.check}s`,
+  '--m-dur-hero': `${dur.hero}s`,
+  '--m-dur-shimmer': `${dur.shimmer}s`,
+  '--m-dur-empty-float': `${dur.emptyFloat}s`,
+  '--m-dur-banner': `${bannerMotion.autoplay}s`,
+  '--m-dur-ripple': `${flyCart.ripple}s`,
+  '--m-dur-highlight': `${panelMotion.highlightDuration}s`,
+  '--m-ease-out-expo': `cubic-bezier(${ease.easeOutExpo.join(', ')})`,
+  '--m-ease-out-quint': `cubic-bezier(${ease.easeOutQuint.join(', ')})`,
+  '--m-ease-in-out-soft': `cubic-bezier(${ease.easeInOutSoft.join(', ')})`,
+  '--m-hover-scale': String(cardMotion.hoverScale),
+  '--m-tap-scale': String(cardMotion.tapScale),
+  '--m-dur-hover': `${cardMotion.hoverDuration}s`,
+  '--m-dur-tap': `${cardMotion.tapDuration}s`,
+  '--m-rise': `${distance.rise}px`,
+  '--m-rise-lg': `${distance.riseLg}px`,
+  '--m-spark-distance': `${cardMotion.sparkDistance}px`,
+  '--m-dur-spark': `${cardMotion.sparkDuration}s`,
+  '--m-quick-offset': `${cardMotion.quickOffset}px`,
+  '--m-badge-from': String(cardMotion.badgeFrom),
+  '--m-confetti-duration': `${celebration.duration}s`,
 } as const
 
 /** Fondo de malla: se detiene mientras se desplaza la página. */

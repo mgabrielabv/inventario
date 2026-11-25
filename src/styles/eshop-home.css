@@ -193,6 +193,21 @@
   transition: width 180ms ease, background 180ms ease;
 }
 .eshop-hero__dot[aria-current='true'] { width: 28px; background: var(--surface); }
+.eshop-hero__progress {
+  position: absolute; right: var(--s4); bottom: 0; left: var(--s4);
+  height: 2px; overflow: hidden;
+  background: color-mix(in oklab, currentColor 24%, transparent);
+}
+.eshop-hero__progress > span {
+  display: block; width: 100%; height: 100%;
+  background: currentColor; transform-origin: left;
+  animation: hero-progress var(--m-dur-banner) linear both;
+}
+.eshop-hero__progress > span.is-paused { animation-play-state: paused; }
+@keyframes hero-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
 .eshop-hero__controls-right { display: flex; align-items: center; gap: var(--s2); }
 .eshop-hero__arrows { display: flex; gap: var(--s2); }
 .eshop-hero__arrow,
@@ -434,10 +449,23 @@
 }
 .eshop-rail__skeleton-media,
 .eshop-rail__skeleton-line {
+  position: relative;
   display: block;
+  overflow: hidden;
   border-radius: var(--radius-input);
   background: var(--surface-2);
-  animation: eshop-pulse 1400ms ease-in-out infinite;
+}
+.eshop-rail__skeleton-media::after,
+.eshop-rail__skeleton-line::after {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in oklab, var(--surface) 70%, transparent) 50%,
+    transparent 80%
+  );
+  content: '';
+  animation: eshop-shimmer var(--m-dur-shimmer) var(--m-ease-in-out-soft) infinite;
 }
 .eshop-rail__skeleton-media { aspect-ratio: 5 / 3; border-radius: var(--radius-media); }
 .eshop-rail__skeleton-line { height: 12px; margin-top: var(--s3); }
@@ -599,11 +627,6 @@
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@keyframes eshop-pulse {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 1; }
-}
-
 /* --- Adaptación ---------------------------------------------------------- */
 
 @media (max-width: 1024px) {

@@ -126,9 +126,10 @@
   background: color-mix(in oklab, var(--surface-2) 60%, var(--surface));
   border: 1px solid var(--hairline);
   border-radius: var(--radius-media);
+  view-transition-name: ivoria-producto;
 }
 
-.pdp-tilt { display: grid; place-items: center; will-change: transform; }
+.pdp-tilt { display: grid; place-items: center; }
 .pdp-gallery__note { margin-top: var(--s2); text-align: center; }
 
 .pdp-info { display: flex; flex-direction: column; gap: var(--s3); min-width: 0; }
@@ -334,8 +335,19 @@
   overflow: hidden;
 }
 .shipping-bar > span {
+  position: relative;
   display: block; height: 100%; border-radius: var(--radius-pill);
-  background: var(--primary); transition: width 0.35s ease;
+  background: var(--primary);
+}
+.shipping-bar > span.is-complete::after {
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent, color-mix(in oklab, var(--cream) 70%, transparent), transparent);
+  content: '';
+  animation: shipping-glow var(--m-dur-slow) var(--m-ease-out-quint) both;
+}
+@keyframes shipping-glow {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
 }
 .cart-summary__delivery { display: flex; flex-direction: column; gap: var(--s2); padding: 0; margin: 0; border: 0; }
 .cart-summary__delivery legend { padding: 0; margin-bottom: var(--s2); }
@@ -661,6 +673,21 @@
 /* Pedido ------------------------------------------------------------------- */
 .order-head { display: flex; flex-direction: column; gap: var(--s2); margin-bottom: var(--s4); }
 .order-head__eyebrow { letter-spacing: 0.08em; }
+.order-celebration {
+  position: relative;
+  display: grid; place-items: center;
+  width: 56px; height: 56px;
+  color: var(--primary-text);
+}
+.order-celebration svg { width: 48px; height: 48px; }
+.order-celebration i {
+  position: absolute; top: 50%; left: 50%;
+  width: 4px; height: 8px;
+  margin: -4px 0 0 -2px;
+  border-radius: var(--radius-pill);
+  background: var(--clay);
+}
+.order-celebration i:nth-child(3n) { background: var(--tan-strong); }
 
 .order-actions { display: flex; flex-wrap: wrap; gap: var(--s3); margin-bottom: var(--s5); }
 

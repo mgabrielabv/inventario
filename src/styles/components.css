@@ -206,6 +206,14 @@
   gap: var(--s3); min-height: 320px; padding: var(--s7) var(--s5); text-align: center;
 }
 .empty-state--compact { min-height: 200px; }
+.empty-state__art {
+  display: grid; place-items: center;
+  animation: empty-float var(--m-dur-empty-float) var(--m-ease-in-out-soft) infinite;
+}
+@keyframes empty-float {
+  0%, 100% { transform: translateY(-3px); }
+  50% { transform: translateY(3px); }
+}
 .empty-state__action { margin-top: var(--s2); }
 
 .toast-island {

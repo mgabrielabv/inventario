@@ -231,6 +231,14 @@ export const AdminLayout = () => {
             return (
               <NavLink key={item.to} to={item.to} end={item.to === '/admin'}
                 className={`admin-tabbar__item${active ? ' is-active' : ''}`}>
+                {active && (
+                  <motion.span
+                    layoutId="admin-tabbar-pill"
+                    className="admin-tabbar__pill"
+                    aria-hidden="true"
+                    transition={spring.ui}
+                  />
+                )}
                 <Icon size={21} strokeWidth={1.6} aria-hidden="true" />
                 <span>{item.label}</span>
                 {badge > 0 && <span className="admin-tabbar__badge">{badge}</span>}

@@ -1,6 +1,7 @@
 /* ==========================================================================
-   Movimiento — A1, A3, A4, A9, A13. Todas las animaciones respetan
-   prefers-reduced-motion y MotionConfig reducedMotion="user".
+   Movimiento — ronda 4. Todas las duraciones/curvas/distancias proceden de
+   src/motion/tokens.ts (inyectadas como variables por motion/css-vars.ts).
+   Anima solo transform y opacity; clip-path/filter en efectos puntuales.
    ========================================================================== */
 
 @keyframes mesh-drift-one {
@@ -24,30 +25,78 @@
 .mesh__blob--3 { animation: mesh-drift-three 32s ease-in-out infinite; }
 .mesh--paused .mesh__blob { animation-play-state: paused; }
 
-.rolling-number { display: inline-flex; align-items: baseline; }
-.rolling-number__digits { display: inline-flex; align-items: baseline; }
-.rolling-number__static { white-space: pre; }
-.rolling-number__slot {
-  position: relative; display: inline-block; overflow: hidden;
-  min-width: 0.62em; height: 1.16em; line-height: 1.16em; text-align: center;
-}
-.rolling-number__slot > span { display: block; }
-
+/* --- Vuelo al carrito ------------------------------------------------------ */
 .fly-layer { position: fixed; inset: 0; z-index: var(--z-toast); pointer-events: none; }
-.fly-token { position: absolute; filter: drop-shadow(0 6px 12px var(--box-shadow)); }
+.fly-token {
+  position: absolute;
+  width: 56px; height: 56px;
+  margin-left: -28px; margin-top: -28px;
+  border-radius: var(--radius-pill);
+  will-change: transform, opacity;
+}
+.fly-token__thumb {
+  display: grid; place-items: center;
+  width: 100%; height: 100%;
+  padding: 3px;
+  overflow: hidden;
+  border: 2px solid var(--cream);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+.fly-token__thumb .product-art { width: 100%; height: 100%; }
 
-/* A13 · el tema se revela desde el botón, sin destello blanco. */
+/* Anillo expansivo: solo transform y opacity. */
+.cart-ripple {
+  position: absolute; inset: -4px;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-pill);
+  pointer-events: none;
+  animation: cart-ripple var(--m-dur-ripple) var(--m-ease-out-quint) both;
+}
+@keyframes cart-ripple {
+  from { transform: scale(0.6); opacity: 0.8; }
+  to   { transform: scale(1.5); opacity: 0; }
+}
+
+/* Resaltado de fila en el panel: CSS puro para que onAnimationEnd lo retire. */
+@keyframes admin-row-flash {
+  0%   { opacity: 0; }
+  45%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* --- Transiciones de vista ------------------------------------------------- */
+/* El tema se revela desde el botón, sin destello blanco. */
 ::view-transition-old(root),
 ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 ::view-transition-old(root) { z-index: 1; }
 ::view-transition-new(root) { z-index: 2; }
 
+/* Elemento compartido tarjeta → ficha (solo cuando startViewTransition existe). */
+::view-transition-group(ivoria-producto) {
+  animation-duration: var(--m-dur-slow);
+  animation-timing-function: var(--m-ease-out-quint);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  /* Se conserva el fundido funcional (<= 120 ms) y se eliminan los adornos. */
   *, *::before, *::after {
-    animation-duration: 0.001ms !important;
+    animation-duration: var(--m-dur-micro) !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+    transition-duration: var(--m-dur-micro) !important;
+    scroll-behavior: auto !important;
+  }
+  .mesh__blob,
+  .eshop-card__shine,
+  .eshop-card__sparks,
+  .cart-ripple,
+  .admin-order-flash,
+  .fly-token,
+  .eshop-hero__progress,
+  .empty-state__art,
+  .confetti {
+    display: none !important;
   }
   html { scroll-behavior: auto; }
-  .mesh__blob { animation: none !important; }
 }

@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-11-24T01:38:46.975Z",
+  "generatedAt": "2026-11-24T04:53:38.327Z",
   "html": {
-    "bytes": 1310724,
-    "gzipBytes": 489694,
+    "bytes": 1326844,
+    "gzipBytes": 495568,
     "limitBytes": 2621440
   },
   "routes": {
     "home-light": {
       "hueOk": 1,
-      "sampled": 176476,
+      "sampled": 176463,
       "overflow": 0
     },
     "catalogo-light": {
       "hueOk": 1,
-      "sampled": 86331,
+      "sampled": 86304,
       "overflow": 0
     },
     "catalogo-filtros-light": {
@@ -23,12 +23,12 @@
     },
     "ficha-light": {
       "hueOk": 1,
-      "sampled": 136821,
+      "sampled": 135804,
       "overflow": 0
     },
     "carrito-light": {
       "hueOk": 1,
-      "sampled": 77224,
+      "sampled": 77231,
       "overflow": 0
     },
     "checkout-light": {
@@ -43,7 +43,7 @@
     },
     "favoritos-light": {
       "hueOk": 1,
-      "sampled": 51503,
+      "sampled": 51513,
       "overflow": 0
     },
     "cuenta-ingresar-light": {
@@ -58,17 +58,17 @@
     },
     "login-light": {
       "hueOk": 1,
-      "sampled": 188061,
+      "sampled": 188128,
       "overflow": 0
     },
     "admin-inicio-light": {
       "hueOk": 1,
-      "sampled": 11247,
+      "sampled": 11225,
       "overflow": 0
     },
     "admin-clientes-light": {
       "hueOk": 1,
-      "sampled": 2281,
+      "sampled": 2283,
       "overflow": 0
     },
     "admin-inventario-light": {
@@ -78,12 +78,12 @@
     },
     "admin-movimientos-light": {
       "hueOk": 1,
-      "sampled": 9437,
+      "sampled": 9432,
       "overflow": 0
     },
     "admin-pedidos-light": {
       "hueOk": 1,
-      "sampled": 16728,
+      "sampled": 16742,
       "overflow": 0
     },
     "admin-reposicion-light": {
@@ -93,7 +93,7 @@
     },
     "admin-reportes-light": {
       "hueOk": 1,
-      "sampled": 21171,
+      "sampled": 18559,
       "overflow": 0
     },
     "home-dark": {
@@ -103,22 +103,22 @@
     },
     "catalogo-dark": {
       "hueOk": 1,
-      "sampled": 69139,
+      "sampled": 69123,
       "overflow": 0
     },
     "catalogo-filtros-dark": {
       "hueOk": 1,
-      "sampled": 60194,
+      "sampled": 60193,
       "overflow": 0
     },
     "ficha-dark": {
       "hueOk": 1,
-      "sampled": 119524,
+      "sampled": 118882,
       "overflow": 0
     },
     "carrito-dark": {
       "hueOk": 1,
-      "sampled": 59844,
+      "sampled": 59811,
       "overflow": 0
     },
     "checkout-dark": {
@@ -133,7 +133,7 @@
     },
     "favoritos-dark": {
       "hueOk": 1,
-      "sampled": 22771,
+      "sampled": 22778,
       "overflow": 0
     },
     "cuenta-ingresar-dark": {
@@ -148,17 +148,17 @@
     },
     "login-dark": {
       "hueOk": 1,
-      "sampled": 10946,
+      "sampled": 10979,
       "overflow": 0
     },
     "admin-inicio-dark": {
       "hueOk": 1,
-      "sampled": 15782,
+      "sampled": 15750,
       "overflow": 0
     },
     "admin-clientes-dark": {
       "hueOk": 1,
-      "sampled": 5441,
+      "sampled": 5438,
       "overflow": 0
     },
     "admin-inventario-dark": {
@@ -168,12 +168,12 @@
     },
     "admin-movimientos-dark": {
       "hueOk": 1,
-      "sampled": 13958,
+      "sampled": 13906,
       "overflow": 0
     },
     "admin-pedidos-dark": {
       "hueOk": 1,
-      "sampled": 22587,
+      "sampled": 22539,
       "overflow": 0
     },
     "admin-reposicion-dark": {
@@ -183,27 +183,27 @@
     },
     "admin-reportes-dark": {
       "hueOk": 1,
-      "sampled": 25469,
+      "sampled": 24869,
       "overflow": 0
     },
     "home-320-light": {
       "hueOk": 1,
-      "sampled": 30608,
+      "sampled": 34327,
       "overflow": 0
     },
     "catalogo-320-light": {
       "hueOk": 1,
-      "sampled": 12656,
+      "sampled": 12855,
       "overflow": 0
     },
     "ficha-320-light": {
       "hueOk": 1,
-      "sampled": 22534,
+      "sampled": 26386,
       "overflow": 0
     },
     "carrito-320-light": {
       "hueOk": 1,
-      "sampled": 7510,
+      "sampled": 7785,
       "overflow": 0
     },
     "admin-inventario-320-light": {
@@ -213,22 +213,22 @@
     },
     "home-320-dark": {
       "hueOk": 1,
-      "sampled": 27834,
+      "sampled": 31692,
       "overflow": 0
     },
     "catalogo-320-dark": {
       "hueOk": 1,
-      "sampled": 9078,
+      "sampled": 9100,
       "overflow": 0
     },
     "ficha-320-dark": {
       "hueOk": 1,
-      "sampled": 18277,
+      "sampled": 22234,
       "overflow": 0
     },
     "carrito-320-dark": {
       "hueOk": 1,
-      "sampled": 4345,
+      "sampled": 4500,
       "overflow": 0
     },
     "admin-inventario-320-dark": {
@@ -238,22 +238,22 @@
     },
     "home-mobile-light": {
       "hueOk": 1,
-      "sampled": 38936,
+      "sampled": 43554,
       "overflow": 0
     },
     "catalogo-mobile-light": {
       "hueOk": 1,
-      "sampled": 25946,
+      "sampled": 26145,
       "overflow": 0
     },
     "ficha-mobile-light": {
       "hueOk": 1,
-      "sampled": 30616,
+      "sampled": 35437,
       "overflow": 0
     },
     "carrito-mobile-light": {
       "hueOk": 1,
-      "sampled": 28106,
+      "sampled": 28238,
       "overflow": 0
     },
     "admin-inventario-mobile-light": {
@@ -263,22 +263,22 @@
     },
     "home-mobile-dark": {
       "hueOk": 1,
-      "sampled": 35674,
+      "sampled": 40422,
       "overflow": 0
     },
     "catalogo-mobile-dark": {
       "hueOk": 1,
-      "sampled": 21610,
+      "sampled": 21622,
       "overflow": 0
     },
     "ficha-mobile-dark": {
       "hueOk": 1,
-      "sampled": 25686,
+      "sampled": 30633,
       "overflow": 0
     },
     "carrito-mobile-dark": {
       "hueOk": 1,
-      "sampled": 22829,
+      "sampled": 22883,
       "overflow": 0
     },
     "admin-inventario-mobile-dark": {
@@ -288,22 +288,22 @@
     },
     "home-412-light": {
       "hueOk": 1,
-      "sampled": 41916,
+      "sampled": 46816,
       "overflow": 0
     },
     "catalogo-412-light": {
       "hueOk": 1,
-      "sampled": 33710,
+      "sampled": 33759,
       "overflow": 0
     },
     "ficha-412-light": {
       "hueOk": 1,
-      "sampled": 34086,
+      "sampled": 39203,
       "overflow": 0
     },
     "carrito-412-light": {
       "hueOk": 1,
-      "sampled": 38131,
+      "sampled": 38380,
       "overflow": 0
     },
     "admin-inventario-412-light": {
@@ -313,22 +313,22 @@
     },
     "home-412-dark": {
       "hueOk": 1,
-      "sampled": 38202,
+      "sampled": 43269,
       "overflow": 0
     },
     "catalogo-412-dark": {
       "hueOk": 1,
-      "sampled": 28676,
+      "sampled": 28678,
       "overflow": 0
     },
     "ficha-412-dark": {
       "hueOk": 1,
-      "sampled": 28602,
+      "sampled": 33876,
       "overflow": 0
     },
     "carrito-412-dark": {
       "hueOk": 1,
-      "sampled": 32550,
+      "sampled": 32670,
       "overflow": 0
     },
     "admin-inventario-412-dark": {
@@ -338,22 +338,22 @@
     },
     "home-768-light": {
       "hueOk": 1,
-      "sampled": 86724,
+      "sampled": 96670,
       "overflow": 0
     },
     "catalogo-768-light": {
       "hueOk": 1,
-      "sampled": 65354,
+      "sampled": 65191,
       "overflow": 0
     },
     "ficha-768-light": {
       "hueOk": 1,
-      "sampled": 60670,
+      "sampled": 67102,
       "overflow": 0
     },
     "carrito-768-light": {
       "hueOk": 1,
-      "sampled": 58795,
+      "sampled": 59171,
       "overflow": 0
     },
     "admin-inventario-768-light": {
@@ -363,22 +363,22 @@
     },
     "home-768-dark": {
       "hueOk": 1,
-      "sampled": 79335,
+      "sampled": 89533,
       "overflow": 0
     },
     "catalogo-768-dark": {
       "hueOk": 1,
-      "sampled": 55878,
+      "sampled": 55744,
       "overflow": 0
     },
     "ficha-768-dark": {
       "hueOk": 1,
-      "sampled": 49384,
+      "sampled": 56147,
       "overflow": 0
     },
     "carrito-768-dark": {
       "hueOk": 1,
-      "sampled": 48829,
+      "sampled": 49130,
       "overflow": 0
     },
     "admin-inventario-768-dark": {
@@ -388,22 +388,22 @@
     },
     "home-1280-light": {
       "hueOk": 1,
-      "sampled": 134366,
+      "sampled": 134747,
       "overflow": 0
     },
     "catalogo-1280-light": {
       "hueOk": 1,
-      "sampled": 91889,
+      "sampled": 96467,
       "overflow": 0
     },
     "ficha-1280-light": {
       "hueOk": 1,
-      "sampled": 107456,
+      "sampled": 114787,
       "overflow": 0
     },
     "carrito-1280-light": {
       "hueOk": 1,
-      "sampled": 68683,
+      "sampled": 74347,
       "overflow": 0
     },
     "admin-inventario-1280-light": {
@@ -413,22 +413,22 @@
     },
     "home-1280-dark": {
       "hueOk": 1,
-      "sampled": 121410,
+      "sampled": 121760,
       "overflow": 0
     },
     "catalogo-1280-dark": {
       "hueOk": 1,
-      "sampled": 76295,
+      "sampled": 81574,
       "overflow": 0
     },
     "ficha-1280-dark": {
       "hueOk": 1,
-      "sampled": 88566,
+      "sampled": 96231,
       "overflow": 0
     },
     "carrito-1280-dark": {
       "hueOk": 1,
-      "sampled": 54430,
+      "sampled": 60051,
       "overflow": 0
     },
     "admin-inventario-1280-dark": {
@@ -762,9 +762,9 @@
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
-      "cls": 0.006574218750000001,
-      "longTasks": 0,
-      "maxTask": 0
+      "cls": 0.00039444780349731445,
+      "longTasks": 1,
+      "maxTask": 56
     },
     "1280-light-catalogo": {
       "smallTargets": [],
@@ -802,7 +802,7 @@
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
-      "cls": 0.006574218750000001,
+      "cls": 0.00039444780349731445,
       "longTasks": 0,
       "maxTask": 0
     },
@@ -845,12 +845,12 @@
   },
   "performance": {
     "light": {
-      "cls": 0.005194444444444444,
+      "cls": 0,
       "longTasks": 0,
       "maxTask": 0
     },
     "dark": {
-      "cls": 0.005194444444444444,
+      "cls": 0,
       "longTasks": 0,
       "maxTask": 0
     }
@@ -890,7 +890,7 @@
     "smallTargets": 0,
     "smallFields": 0,
     "maxOverflow": 0,
-    "maxCls": 0.006574218750000001,
-    "maxTask": 0
+    "maxCls": 0.00039444780349731445,
+    "maxTask": 56
   }
 }

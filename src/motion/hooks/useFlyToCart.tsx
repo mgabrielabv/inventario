@@ -1,86 +1,124 @@
 import {
-  createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode,
+  createContext, useCallback, useContext, useMemo, useRef, useState, startTransition, type ReactNode,
 } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { dur, ease, flyCart, spring } from '../tokens'
+import { ProductArt } from '../../components/art/ProductArt'
+import type { Product } from '../../logic/types'
+import { ease, flyCart, reduced, spring } from '../tokens'
+import { enqueueFlight } from '../helpers'
 
-interface Flight { id: number; x: number; y: number; dx: number; dy: number }
+export type CartTarget = 'header' | 'mobile' | 'tabbar'
+
+interface Flight {
+  id: number
+  product: Product
+  x: number
+  y: number
+  dx: number
+  dy: number
+}
 
 interface FlyContextValue {
-  fly: (origin: DOMRect, productoId?: string) => void
-  announce: (productoId: string) => void
-  lastAdded: string | null
-  clearAdded: () => void
-  setCartTarget: (element: HTMLElement | null) => void
-  bump: number
+  fly: (origin: DOMRect, product: Product) => void
+  /** Registra hasta tres iconos de carrito; se elige el visible en ese momento. */
+  setCartTarget: (slot: CartTarget, element: HTMLElement | null) => void
 }
 
 const FlyContext = createContext<FlyContextValue | null>(null)
+/** El pulso se separa: si viviera en FlyContext, repintaría las 59 tarjetas. */
+const BumpContext = createContext(0)
 
-/** A9 · vuelo en arco hasta el ícono del carrito + rebote del contador. */
+const visibleRect = (element: HTMLElement | null | undefined): DOMRect | null => {
+  if (!element) return null
+  const style = getComputedStyle(element)
+  if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return null
+  const rect = element.getBoundingClientRect()
+  if (rect.width < 8 || rect.height < 8) return null
+  if (rect.bottom < 0 || rect.top > window.innerHeight) return null
+  return rect
+}
+
+/** Vuelo del producto al carrito visible: arco, cola acotada y sin timeouts. */
 export const FlyToCartProvider = ({ children }: { children: ReactNode }) => {
   const [flights, setFlights] = useState<Flight[]>([])
   const [bump, setBump] = useState(0)
-  const [lastAdded, setLastAdded] = useState<string | null>(null)
-  const target = useRef<HTMLElement | null>(null)
+  const targets = useRef<Partial<Record<CartTarget, HTMLElement | null>>>({})
   const reduce = useReducedMotion()
 
-  const setCartTarget = useCallback((element: HTMLElement | null) => {
-    target.current = element
+  const setCartTarget = useCallback((slot: CartTarget, element: HTMLElement | null) => {
+    targets.current[slot] = element
   }, [])
 
-  const announce = useCallback((productoId: string) => setLastAdded(productoId), [])
-  const clearAdded = useCallback(() => setLastAdded(null), [])
-
-  const fly = useCallback((origin: DOMRect, productoId?: string) => {
-    if (productoId) setLastAdded(productoId)
-    const destination = target.current?.getBoundingClientRect()
-    if (!destination) return
+  const fly = useCallback((origin: DOMRect, product: Product) => {
+    const destination = (['mobile', 'tabbar', 'header'] as CartTarget[])
+      .map((slot) => visibleRect(targets.current[slot]))
+      .find((rect): rect is DOMRect => rect !== null)
+    // Sin destino visible: el contador avisa igual, no hay vuelo huérfano.
+    if (!destination || reduce) {
+      startTransition(() => setBump((value) => value + 1))
+      return
+    }
     const x = origin.left + origin.width / 2
     const y = origin.top + origin.height / 2
-    const dx = destination.left + destination.width / 2 - x
-    const dy = destination.top + destination.height / 2 - y
-    const id = Date.now() + Math.random()
-    setFlights((current) => [...current, { id, x, y, dx, dy }])
-    window.setTimeout(() => {
-      setFlights((current) => current.filter((item) => item.id !== id))
-      setBump((value) => value + 1)
-    }, reduce ? 0 : dur.slow + flyCart.settle)
+    const flight: Flight = {
+      id: performance.now() + Math.random(),
+      product,
+      x, y,
+      dx: destination.left + destination.width / 2 - x,
+      dy: destination.top + destination.height / 2 - y,
+    }
+    setFlights((current) => enqueueFlight(current, flight, flyCart.maxTokens))
   }, [reduce])
 
-  const value = useMemo(
-    () => ({ fly, announce, lastAdded, clearAdded, setCartTarget, bump }),
-    [fly, announce, lastAdded, clearAdded, setCartTarget, bump],
-  )
+  const settle = useCallback((id: number) => {
+    setFlights((current) => current.filter((item) => item.id !== id))
+    // El pulso de la chrome no es urgente: va en una transición separada.
+    startTransition(() => setBump((value) => value + 1))
+  }, [])
+
+  const value = useMemo(() => ({ fly, setCartTarget }), [fly, setCartTarget])
 
   return (
-    <FlyContext.Provider value={value}>
-      {children}
-      <div className="fly-layer" aria-hidden="true">
-        <AnimatePresence>
-          {!reduce && flights.map((flight) => (
-            <motion.div
-              key={flight.id}
-              className="fly-token"
-              style={{ left: flight.x, top: flight.y }}
-              initial={{ x: 0, y: 0, scale: 1, opacity: 1, rotate: 0 }}
-              animate={{
-                x: flight.dx, y: flight.dy,
-                scale: flyCart.endScale, opacity: flyCart.endOpacity, rotate: flyCart.endRotate,
-              }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: flyCart.duration, ease: ease.ios }}
-            >
-              <svg viewBox="0 0 24 24" width={flyCart.iconSize} height={flyCart.iconSize} aria-hidden="true">
-                <path d="M3 8l9-4 9 4-9 4-9-4Z" fill="var(--box-top)" />
-                <path d="M3 8v9l9 4v-9L3 8Z" fill="var(--box-left)" />
-                <path d="M21 8v9l-9 4v-9l9-4Z" fill="var(--box-right)" />
-              </svg>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
-    </FlyContext.Provider>
+    <BumpContext.Provider value={bump}>
+      <FlyContext.Provider value={value}>
+        {children}
+        <div className="fly-layer" aria-hidden="true">
+          <AnimatePresence>
+            {flights.map((flight) => (
+              <motion.div
+                key={flight.id}
+                className="fly-token"
+                style={{ left: flight.x, top: flight.y }}
+                initial={{ x: 0, y: 0, scale: 1, opacity: 1, rotate: 0 }}
+                animate={{
+                  x: [0, flight.dx * 0.55, flight.dx],
+                  y: [0, flight.dy * 0.5 - flyCart.arcLift, flight.dy],
+                  scale: [1, 0.8, flyCart.endScale],
+                  opacity: [1, 1, flyCart.endOpacity],
+                  rotate: [0, flight.dx > 0 ? -flyCart.endRotate / 2 : flyCart.endRotate / 2, flyCart.endRotate],
+                }}
+                transition={{
+                  duration: flyCart.duration,
+                  times: [0, 0.5, 1],
+                  ease: ease.easeOutQuint,
+                }}
+                onAnimationComplete={() => settle(flight.id)}
+              >
+                <span className="fly-token__thumb">
+                  <ProductArt
+                    arquetipo={flight.product.arquetipo}
+                    categoria={flight.product.categoria}
+                    nombre={flight.product.nombre}
+                    size="100%"
+                    view="hero"
+                  />
+                </span>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      </FlyContext.Provider>
+    </BumpContext.Provider>
   )
 }
 
@@ -90,13 +128,18 @@ export const useFlyToCart = (): FlyContextValue => {
   return context
 }
 
-/** Rebote del ícono al recibir el vuelo. */
+/** Solo la chrome del carrito necesita el pulso; las tarjetas no se enteran. */
+export const useCartBumpValue = (): number => useContext(BumpContext)
+
+/** Pulso del icono y anillo expansivo al recibir el vuelo. */
 export const useCartBump = (bump: number) => {
   const reduce = useReducedMotion()
   return {
     animate: bump > 0 && !reduce
-      ? { scale: [1, flyCart.bumpScale, 1], transition: spring.snappy }
-      : { scale: 1 },
+      ? { scale: [1, flyCart.bumpScale, 1], transition: spring.settle }
+      : bump > 0
+        ? { opacity: [1, 0.65, 1], transition: { duration: reduced.duration, ease: reduced.ease } }
+        : { scale: 1 },
     key: bump,
   }
 }

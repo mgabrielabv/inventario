@@ -1,4 +1,4 @@
-import { useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import {
   ArrowRight, Check, ChevronLeft, ChevronRight, Clock3, Headphones, Home as HomeIcon,
   LayoutGrid, Laptop, NotebookPen, PackageCheck, Pause, Play, RotateCcw, Search,
@@ -15,6 +15,7 @@ import { useOrdersStore } from '../../logic/store/orders'
 import { useRecentStore } from '../../logic/store/recent'
 import { useSettingsStore } from '../../logic/store/settings'
 import type { Product } from '../../logic/types'
+import { bannerMotion, dur, ease } from '../../motion/tokens'
 
 const BANNER_ICONS: Record<Banner['variante'], LucideIcon> = {
   primario: ShoppingBag,
@@ -82,6 +83,7 @@ const HeroArt = ({ variante }: { variante: Banner['variante'] }) => {
 
 const PromoCarousel = () => {
   const [index, setIndex] = useState(0)
+  const [direction, setDirection] = useState(1)
   const [paused, setPaused] = useState(false)
   const reduce = useReducedMotion() === true
   const touchX = useRef<number | null>(null)
@@ -89,16 +91,18 @@ const PromoCarousel = () => {
   const active = banners[index] ?? banners[0]!
 
   const goTo = useCallback((position: number) => {
+    setDirection(position >= index ? 1 : -1)
     setIndex(((position % total) + total) % total)
-  }, [total])
+  }, [total, index])
 
   const move = useCallback((step: number) => {
+    setDirection(step)
     setIndex((current) => ((current + step) % total + total) % total)
   }, [total])
 
   useEffect(() => {
     if (reduce || paused) return
-    const timer = window.setInterval(() => move(1), 6500)
+    const timer = window.setInterval(() => move(1), bannerMotion.autoplay * 1000)
     return () => window.clearInterval(timer)
   }, [reduce, paused, move, index])
 
@@ -111,7 +115,7 @@ const PromoCarousel = () => {
     touchX.current = null
     if (start === null || end === undefined) return
     const delta = end - start
-    if (Math.abs(delta) < 48) return
+    if (Math.abs(delta) < bannerMotion.swipeDistance) return
     move(delta < 0 ? 1 : -1)
   }
 
@@ -131,7 +135,12 @@ const PromoCarousel = () => {
           aria-roledescription="diapositiva"
           aria-label={`${index + 1} de ${total}: ${active.titulo}`}
         >
-          <div className="eshop-hero__copy">
+          <motion.div
+            className="eshop-hero__copy"
+            initial={reduce ? undefined : { x: direction * bannerMotion.textShift, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: dur.slow, ease: ease.easeOutQuint }}
+          >
             <p className="eshop-hero__eyebrow">Selección para ti</p>
             <h1 className="eshop-hero__title">{active.titulo}</h1>
             <p className="eshop-hero__subtitle">{active.subtitulo}</p>
@@ -139,8 +148,15 @@ const PromoCarousel = () => {
               {active.cta}
               <ArrowRight size={18} strokeWidth={1.8} aria-hidden="true" />
             </Link>
-          </div>
-          <HeroArt variante={active.variante} />
+          </motion.div>
+          <motion.div
+            className="eshop-hero__art-layer"
+            initial={reduce ? undefined : { x: direction * bannerMotion.artShift, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: dur.slow, ease: ease.easeOutQuint }}
+          >
+            <HeroArt variante={active.variante} />
+          </motion.div>
         </div>
 
         <div className="eshop-hero__controls">
@@ -157,6 +173,11 @@ const PromoCarousel = () => {
               />
             ))}
           </div>
+          {!reduce && (
+            <div className="eshop-hero__progress" aria-hidden="true">
+              <span key={`${active.id}-${paused}`} className={paused ? 'is-paused' : ''} />
+            </div>
+          )}
           <div className="eshop-hero__controls-right">
             {!reduce && (
               <button

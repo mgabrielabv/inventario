@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowRight, Tag, Truck } from 'lucide-react'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -12,6 +13,7 @@ import { useCartStore } from '../../logic/store/cart'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
+import { reduced, spring } from '../../motion/tokens'
 
 interface Props {
   compact?: boolean
@@ -23,6 +25,7 @@ interface Props {
 /** Resumen sticky del carrito: cupón, envío, entrega, nota y totales. */
 export const CartSummary = ({ compact = false, onNavigate, mobileBar = false }: Props) => {
   const navigate = useNavigate()
+  const reduce = useReducedMotion()
   const lines = useCartStore((state) => state.lines)
   const products = useInventoryStore((state) => state.products)
   const orders = useOrdersStore((state) => state.orders)
@@ -116,7 +119,13 @@ export const CartSummary = ({ compact = false, onNavigate, mobileBar = false }: 
               aria-valuenow={progress}
               aria-label="Progreso hacia envío sin costo"
             >
-              <span style={{ width: `${progress}%` }} />
+              <motion.span
+                className={freeShipping ? 'is-complete' : ''}
+                style={{ width: '100%', transformOrigin: 'left' }}
+                initial={false}
+                animate={{ scaleX: progress / 100 }}
+                transition={reduce ? { duration: reduced.duration } : spring.settle}
+              />
             </div>
             <p className="t-min t-muted">
               {freeShipping

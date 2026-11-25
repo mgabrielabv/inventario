@@ -282,6 +282,14 @@
 
 /* --- Pedidos -------------------------------------------------------------- */
 .admin-order-list { display: flex; flex-direction: column; gap: var(--s2); }
+.admin-order-list__item { position: relative; display: flex; }
+.admin-order-flash {
+  position: absolute; inset: 0; z-index: 1;
+  border-radius: var(--radius-card);
+  background: color-mix(in oklab, var(--tan) 30%, transparent);
+  pointer-events: none;
+  animation: admin-row-flash var(--m-dur-highlight) var(--m-ease-in-out-soft) both;
+}
 .admin-order-card {
   display: grid; grid-template-columns: 1.1fr 1.1fr 0.9fr 0.9fr 20px;
   align-items: center; gap: var(--s3); width: 100%;
@@ -457,9 +465,10 @@
     text-decoration: none;
   }
   .admin-tabbar__item.is-active { color: var(--primary-text); }
-  .admin-tabbar__item.is-active::before {
-    content: ''; position: absolute; top: 0;
-    width: 28px; height: 3px; border-radius: 0 0 3px 3px;
+  .admin-tabbar__pill {
+    position: absolute; top: 0; left: 50%;
+    width: 28px; height: 3px; margin-left: -14px;
+    border-radius: 0 0 3px 3px;
     background: var(--primary);
   }
   .admin-tabbar__badge {

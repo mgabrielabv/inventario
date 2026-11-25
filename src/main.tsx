@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { MotionConfig } from 'framer-motion'
+import './motion/css-vars'
 import './styles/index.css'
 import App from './App'
 import { AuthProvider } from './app/providers/auth-provider'

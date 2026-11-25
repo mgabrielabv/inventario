@@ -1,7 +1,10 @@
+import { motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { ProductArt } from '../art/ProductArt'
 import { getImage } from '../../logic/services/images'
 import type { Product } from '../../logic/types'
+import { cardMotion, distance, dur, ease } from '../../motion/tokens'
+import { isLightDevice } from '../../motion/helpers'
 
 interface Props {
   product: Product
@@ -19,6 +22,8 @@ export const ProductImage = ({ product, className = '' }: Props) => {
   const imageId = product.imagenes?.[0]
   const [photo, setPhoto] = useState<string | null>(null)
   const [state, setState] = useState<PhotoState>(imageId ? 'loading' : 'fallback')
+  const reduce = useReducedMotion()
+  const light = isLightDevice()
 
   useEffect(() => {
     let alive = true
@@ -42,23 +47,35 @@ export const ProductImage = ({ product, className = '' }: Props) => {
     <div className={`eshop-photo ${className}`.trim()}>
       {state === 'loading' && <span className="eshop-photo__skeleton" aria-hidden="true" />}
       {state === 'photo' && photo && (
-        <img
+        <motion.img
           className="eshop-photo__img"
           src={photo}
           alt={product.nombre}
           loading="lazy"
           decoding="async"
+          initial={reduce || light
+            ? { opacity: 0 }
+            : { opacity: 0, filter: `blur(${cardMotion.blurFrom}px)` }}
+          animate={{ opacity: 1, filter: 'blur(0px)' }}
+          transition={{ duration: reduce ? dur.micro : dur.base, ease: ease.easeOutQuint }}
         />
       )}
       {state === 'fallback' && (
-        <ProductArt
-          arquetipo={product.arquetipo}
-          categoria={product.categoria}
-          nombre={product.nombre}
-          size="100%"
-          view="hero"
-          className="eshop-photo__art"
-        />
+        <motion.div
+          className="eshop-photo__art-wrap"
+          initial={reduce ? undefined : { opacity: 0, y: distance.rise }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduce ? dur.micro : dur.base, ease: ease.easeOutQuint }}
+        >
+          <ProductArt
+            arquetipo={product.arquetipo}
+            categoria={product.categoria}
+            nombre={product.nombre}
+            size="100%"
+            view="hero"
+            className="eshop-photo__art"
+          />
+        </motion.div>
       )}
     </div>
   )

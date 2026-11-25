@@ -1,3 +1,4 @@
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { useMemo, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Boxes, ClipboardList, PackageSearch, TrendingUp } from 'lucide-react'
@@ -13,8 +14,21 @@ import {
 } from '../../logic/services/stock'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
+import { dur, ease, panelMotion, spring } from '../../motion/tokens'
+import { motionSafe, staggerDelay } from '../../motion/helpers'
+
+/** Los KPI heredan el stagger de Reveal; la barra crece desde la base. */
+const kpiVariants: Variants = {
+  hidden: { opacity: 0, y: panelMotion.kpiRise },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { y: spring.soft, opacity: { duration: dur.base, ease: ease.easeOutQuint } },
+  },
+}
 
 export const AdminDashboardPage = () => {
+  const reduce = useReducedMotion()
   const products = useInventoryStore((state) => state.products)
   const movements = useInventoryStore((state) => state.movements)
   const orders = useOrdersStore((state) => state.orders)
@@ -90,14 +104,18 @@ export const AdminDashboardPage = () => {
 
       <Reveal className="admin-kpi-grid">
         {kpis.map((kpi) => (
-          <article className="kpi-card" key={kpi.label}>
+          <motion.article
+            className="kpi-card"
+            key={kpi.label}
+            variants={reduce ? motionSafe(kpiVariants) : kpiVariants}
+          >
             <div className="kpi-card__top">
               <span className="kpi-label">{kpi.label}</span>
               <span className="kpi-icon" aria-hidden="true">{kpi.icon}</span>
             </div>
             <div className="kpi-value">{kpi.value}</div>
             <p className="kpi-detail">{kpi.detail}</p>
-          </article>
+          </motion.article>
         ))}
       </Reveal>
 
@@ -115,11 +133,25 @@ export const AdminDashboardPage = () => {
           </div>
           <div className="admin-flow" role="img" aria-label="Barras de entradas y salidas de los últimos catorce días">
             <div className="admin-flow-bars">
-              {flow.map((day) => (
+              {flow.map((day, index) => (
                 <div className="admin-flow-col" key={day.date.toISOString()}
                   title={`${day.label}: ${day.entradas} entradas · ${day.salidas} salidas`}>
-                  <div className="admin-flow-bar admin-flow-bar--in" style={{ height: height(day.entradas) }} />
-                  <div className="admin-flow-bar admin-flow-bar--out" style={{ height: height(day.salidas) }} />
+                  <motion.div
+                    className="admin-flow-bar admin-flow-bar--in"
+                    style={{ height: height(day.entradas), transformOrigin: 'bottom' }}
+                    initial={reduce ? undefined : { scaleY: panelMotion.barRise, opacity: 0 }}
+                    whileInView={reduce ? undefined : { scaleY: 1, opacity: 1 }}
+                    viewport={{ once: true, amount: 0.15 }}
+                    transition={{ duration: dur.slow, ease: ease.easeOutQuint, delay: staggerDelay(index) }}
+                  />
+                  <motion.div
+                    className="admin-flow-bar admin-flow-bar--out"
+                    style={{ height: height(day.salidas), transformOrigin: 'bottom' }}
+                    initial={reduce ? undefined : { scaleY: panelMotion.barRise, opacity: 0 }}
+                    whileInView={reduce ? undefined : { scaleY: 1, opacity: 1 }}
+                    viewport={{ once: true, amount: 0.15 }}
+                    transition={{ duration: dur.slow, ease: ease.easeOutQuint, delay: staggerDelay(index) }}
+                  />
                 </div>
               ))}
             </div>

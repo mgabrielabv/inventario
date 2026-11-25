@@ -1,4 +1,7 @@
-import { motion, useMotionValue, useReducedMotion, useSpring } from 'framer-motion'
+import {
+  motion, useMotionValue, useReducedMotion, useSpring,
+  type TargetAndTransition, type Transition,
+} from 'framer-motion'
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import { pressable } from '../../motion/variants'
 import { spring } from '../../motion/tokens'
@@ -12,6 +15,8 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   magnetic?: boolean
   children: ReactNode
   full?: boolean
+  whileTap?: TargetAndTransition
+  transition?: Transition
 }
 
 export const Button = ({

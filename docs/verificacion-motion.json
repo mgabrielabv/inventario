@@ -1,0 +1,473 @@
+{
+  "generatedAt": "2026-11-24T04:52:14.895Z",
+  "budget": {
+    "targetFps": 55,
+    "minFps": 32,
+    "targetLongTasks": 0,
+    "maxLongTasks": 6,
+    "maxTaskMs": 250,
+    "maxCls": 0.05,
+    "maxOrphans": 0
+  },
+  "warnings": [
+    "390-abrir-ficha: FPS 51.6 por debajo del objetivo 55",
+    "390-abrir-ficha: 2 tareas largas (objetivo 0)",
+    "390-hoja-filtros: FPS 54.4 por debajo del objetivo 55",
+    "390-hoja-filtros: 3 tareas largas (objetivo 0)",
+    "390-confirmar-pedido: FPS 54.9 por debajo del objetivo 55",
+    "390-confirmar-pedido: 1 tareas largas (objetivo 0)",
+    "390-estado-pedido: 1 tareas largas (objetivo 0)",
+    "1280-anadir-carrito: 1 tareas largas (objetivo 0)",
+    "1280-abrir-ficha: FPS 52.5 por debajo del objetivo 55",
+    "1280-abrir-ficha: 1 tareas largas (objetivo 0)",
+    "1280-hoja-filtros: 3 tareas largas (objetivo 0)",
+    "1280-confirmar-pedido: FPS 54.8 por debajo del objetivo 55",
+    "1280-confirmar-pedido: 1 tareas largas (objetivo 0)",
+    "1280-estado-pedido: FPS 38.8 por debajo del objetivo 55",
+    "1280-estado-pedido: 1 tareas largas (objetivo 0)"
+  ],
+  "conditions": {
+    "cpuThrottling": 4,
+    "network": {
+      "latencyMs": 180,
+      "downloadKbps": 120,
+      "uploadKbps": 60
+    },
+    "source": "dist/index.html sobre file://"
+  },
+  "flows": {
+    "390-anadir-carrito": {
+      "viewport": "390",
+      "flow": "anadir-carrito",
+      "flight": {
+        "tokens": 1,
+        "thumb": true,
+        "ripple": 0
+      },
+      "fps": 58.8,
+      "frames": 114,
+      "jank": 1,
+      "maxFrameGapMs": 66.6,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": 0,
+      "maxTaskMs": 0,
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 0,
+          "maxTask": 0,
+          "shifts": []
+        },
+        "live": [
+          "59 productos",
+          "Agregado al carrito: Audífonos inalámbricos",
+          "1",
+          "Agregado al carrito: Cargador USB-C 65 W",
+          "1",
+          "1"
+        ]
+      }
+    },
+    "390-abrir-ficha": {
+      "viewport": "390",
+      "flow": "abrir-ficha",
+      "hash": "#/tienda/028-audifonos-inalambricos",
+      "title": "Audífonos inalámbricos",
+      "fps": 51.6,
+      "frames": 92,
+      "jank": 4,
+      "maxFrameGapMs": 183.4,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": 2,
+      "maxTaskMs": 153,
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 0,
+          "maxTask": 0,
+          "shifts": []
+        },
+        "live": []
+      }
+    },
+    "390-hoja-filtros": {
+      "viewport": "390",
+      "flow": "hoja-filtros",
+      "sheetOpen": 1,
+      "fps": 54.4,
+      "frames": 147,
+      "jank": 3,
+      "maxFrameGapMs": 233.4,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": 1,
+      "maxTaskMs": 224,
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 2,
+          "maxTask": 111,
+          "shifts": []
+        },
+        "live": [
+          "59 productos",
+          "1"
+        ]
+      }
+    },
+    "390-confirmar-pedido": {
+      "viewport": "390",
+      "flow": "confirmar-pedido",
+      "hash": "#/pedido/IVO-2026-000007",
+      "celebration": 1,
+      "live": 1,
+      "fps": 54.9,
+      "frames": 117,
+      "jank": 7,
+      "maxFrameGapMs": 66.6,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": 1,
+      "maxTaskMs": 65,
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 0,
+          "maxTask": 0,
+          "shifts": []
+        },
+        "live": []
+      }
+    },
+    "390-estado-pedido": {
+      "viewport": "390",
+      "flow": "estado-pedido",
+      "before": "Confirmado",
+      "fps": 58.1,
+      "frames": 127,
+      "jank": 4,
+      "maxFrameGapMs": 50,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": 1,
+      "maxTaskMs": 60,
+      "statusChip": "Preparando",
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 0,
+          "maxTask": 0,
+          "shifts": []
+        },
+        "live": [
+          "Pedido IVO-2026-000002 pasó a Preparando"
+        ]
+      }
+    },
+    "1280-anadir-carrito": {
+      "viewport": "1280",
+      "flow": "anadir-carrito",
+      "flight": {
+        "tokens": 1,
+        "thumb": true,
+        "ripple": 0
+      },
+      "fps": 57.9,
+      "frames": 106,
+      "jank": 4,
+      "maxFrameGapMs": 50,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": 1,
+      "maxTaskMs": 50,
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 0,
+          "maxTask": 0,
+          "shifts": []
+        },
+        "live": [
+          "59 productos",
+          "Agregado al carrito: Audífonos inalámbricos",
+          "1",
+          "Agregado al carrito: Cargador USB-C 65 W",
+          "1",
+          "1"
+        ]
+      }
+    },
+    "1280-abrir-ficha": {
+      "viewport": "1280",
+      "flow": "abrir-ficha",
+      "hash": "#/tienda/028-audifonos-inalambricos",
+      "title": "Audífonos inalámbricos",
+      "fps": 52.5,
+      "frames": 92,
+      "jank": 3,
+      "maxFrameGapMs": 133.3,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": 1,
+      "maxTaskMs": 105,
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 0,
+          "maxTask": 0,
+          "shifts": []
+        },
+        "live": []
+      }
+    },
+    "1280-hoja-filtros": {
+      "viewport": "1280",
+      "flow": "hoja-filtros",
+      "sheetOpen": 1,
+      "fps": 56.7,
+      "frames": 91,
+      "jank": 2,
+      "maxFrameGapMs": 116.6,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": 1,
+      "maxTaskMs": 111,
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 2,
+          "maxTask": 108,
+          "shifts": []
+        },
+        "live": [
+          "59 productos",
+          "1"
+        ]
+      }
+    },
+    "1280-confirmar-pedido": {
+      "viewport": "1280",
+      "flow": "confirmar-pedido",
+      "hash": "#/pedido/IVO-2026-000007",
+      "celebration": 1,
+      "live": 1,
+      "fps": 54.8,
+      "frames": 115,
+      "jank": 5,
+      "maxFrameGapMs": 66.7,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": 1,
+      "maxTaskMs": 66,
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 0,
+          "maxTask": 0,
+          "shifts": []
+        },
+        "live": []
+      }
+    },
+    "1280-estado-pedido": {
+      "viewport": "1280",
+      "flow": "estado-pedido",
+      "before": "Pendiente",
+      "fps": 38.8,
+      "frames": 88,
+      "jank": 43,
+      "maxFrameGapMs": 50.1,
+      "cls": 0,
+      "shifts": [],
+      "longTasks": 1,
+      "maxTaskMs": 52,
+      "statusChip": "Confirmado",
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 0,
+          "maxTask": 0,
+          "shifts": []
+        },
+        "live": [
+          "Pedido IVO-2026-000001 pasó a Confirmado"
+        ]
+      }
+    }
+  },
+  "reducedMotion": {
+    "390": {
+      "reveal": {
+        "present": true,
+        "opacity": "1",
+        "transform": "none"
+      },
+      "feedback": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 7,
+          "maxTask": 360,
+          "shifts": []
+        },
+        "live": [
+          "59 productos",
+          "Agregado al carrito: Audífonos inalámbricos",
+          "1",
+          "1"
+        ]
+      },
+      "decoration": {
+        "flyToken": null,
+        "ripple": null,
+        "shimmer": null,
+        "sparks": null,
+        "float": null,
+        "progress": null
+      },
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0,
+          "longTasks": 7,
+          "maxTask": 360,
+          "shifts": []
+        },
+        "live": [
+          "59 productos",
+          "Agregado al carrito: Audífonos inalámbricos",
+          "1",
+          "1"
+        ]
+      }
+    },
+    "1280": {
+      "reveal": {
+        "present": true,
+        "opacity": "1",
+        "transform": "none"
+      },
+      "feedback": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0.00039444780349731445,
+          "longTasks": 7,
+          "maxTask": 263,
+          "shifts": [
+            {
+              "at": 1111,
+              "value": 0.0004,
+              "sources": [
+                {
+                  "node": "div.eshop-search",
+                  "from": "54,44",
+                  "to": "54,44"
+                },
+                {
+                  "node": "div.eshop-nav__actions",
+                  "from": "54,44",
+                  "to": "54,44"
+                },
+                {
+                  "node": "div.eshop-nav__utility-links",
+                  "from": "0,44",
+                  "to": "0,44"
+                },
+                {
+                  "node": "span.eshop-nav__delivery-msg",
+                  "from": "13,18",
+                  "to": "13,18"
+                }
+              ]
+            }
+          ]
+        },
+        "live": [
+          "59 productos",
+          "Agregado al carrito: Audífonos inalámbricos",
+          "1",
+          "1"
+        ]
+      },
+      "decoration": {
+        "flyToken": null,
+        "ripple": null,
+        "shimmer": null,
+        "sparks": null,
+        "float": null,
+        "progress": null
+      },
+      "after": {
+        "orphans": 0,
+        "orphanNodes": [],
+        "perf": {
+          "cls": 0.00039444780349731445,
+          "longTasks": 7,
+          "maxTask": 263,
+          "shifts": [
+            {
+              "at": 1111,
+              "value": 0.0004,
+              "sources": [
+                {
+                  "node": "div.eshop-search",
+                  "from": "54,44",
+                  "to": "54,44"
+                },
+                {
+                  "node": "div.eshop-nav__actions",
+                  "from": "54,44",
+                  "to": "54,44"
+                },
+                {
+                  "node": "div.eshop-nav__utility-links",
+                  "from": "0,44",
+                  "to": "0,44"
+                },
+                {
+                  "node": "span.eshop-nav__delivery-msg",
+                  "from": "13,18",
+                  "to": "13,18"
+                }
+              ]
+            }
+          ]
+        },
+        "live": [
+          "59 productos",
+          "Agregado al carrito: Audífonos inalámbricos",
+          "1",
+          "1"
+        ]
+      }
+    }
+  },
+  "errors": [],
+  "externalRequests": [],
+  "problems": []
+}

@@ -1,3 +1,4 @@
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
 import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
@@ -18,8 +19,46 @@ import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
 import { ACTIVE_ORDER_STATUSES, type Order, type OrderStatus, type PaymentMethod } from '../../logic/types'
+import { dur, ease, panelMotion } from '../../motion/tokens'
+import { motionSafe } from '../../motion/helpers'
 
 type OrderFilter = 'Todos' | OrderStatus
+
+/** Chip sobrio: el estado nuevo entra con un fundido corto y escala mínima. */
+const chipVariants: Variants = {
+  hidden: { opacity: 0, scale: panelMotion.barRise },
+  show: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      opacity: { duration: dur.fast, ease: ease.easeOutQuint },
+      scale: { duration: dur.base, ease: ease.easeOutQuint },
+    },
+  },
+  exit: { opacity: 0, transition: { duration: dur.micro } },
+}
+
+/** Resaltado único de la fila: animación CSS que se retira con onAnimationEnd. */
+const RowFlash = ({ onDone }: { onDone: () => void }) => {
+  const reduce = useReducedMotion()
+  return reduce ? null : <span className="admin-order-flash" aria-hidden="true" onAnimationEnd={onDone} />
+}
+
+const StatusChip = ({ status }: { status: OrderStatus }) => {
+  const reduce = useReducedMotion()
+  // Un solo nodo: el cambio se comunica también por aria-live en el toast.
+  return (
+    <motion.span
+      key={status}
+      className={`admin-order-status${ACTIVE_ORDER_STATUSES.includes(status) ? ' is-active' : ''}`}
+      variants={reduce ? motionSafe(chipVariants) : chipVariants}
+      initial="hidden"
+      animate="show"
+    >
+      {status}
+    </motion.span>
+  )
+}
 
 const FILTROS: Array<{ value: OrderFilter; label: string }> = [
   { value: 'Todos', label: 'Todos' },
@@ -56,6 +95,7 @@ export const AdminOrdersPage = () => {
   const [detailId, setDetailId] = useState<string | null>(null)
   const [cancelConfirm, setCancelConfirm] = useState(false)
   const [comprobante, setComprobante] = useState<string | null>(null)
+  const [changedId, setChangedId] = useState<string | null>(null)
 
   const comprobanteId = orders.find((order) => order.id === detailId)?.pago.comprobante
   useEffect(() => {
@@ -78,6 +118,7 @@ export const AdminOrdersPage = () => {
     if (!selected || !next || !can('avanzar:pedido')) return
     try {
       setStatus(selected.id, next, user?.name ?? 'sistema')
+      setChangedId(selected.id)
       logActivity(user?.name ?? 'sistema', 'Pedido avanzado', `${selected.codigo} → ${next}`)
       toast(next === 'Entregado'
         ? 'Pedido entregado: se generaron salidas por Venta y bajó el stock real'
@@ -90,6 +131,7 @@ export const AdminOrdersPage = () => {
   const verificar = () => {
     if (!selected || !can('verificar:pago')) return
     verifyPayment(selected.id, user?.name ?? 'sistema')
+    setChangedId(selected.id)
     logActivity(user?.name ?? 'sistema', 'Pago verificado', selected.codigo)
     toast('Pago verificado')
   }
@@ -98,6 +140,7 @@ export const AdminOrdersPage = () => {
     if (!selected || !can('cancelar:pedido')) return
     try {
       setStatus(selected.id, 'Cancelado', user?.name ?? 'sistema', 'Cancelado desde el panel')
+      setChangedId(selected.id)
       logActivity(user?.name ?? 'sistema', 'Pedido cancelado', selected.codigo)
       toast('Pedido cancelado; las unidades reservadas quedaron libres')
       setCancelConfirm(false)
@@ -129,7 +172,10 @@ export const AdminOrdersPage = () => {
           {list.map((order) => {
             const reserved = reservedUnits(order)
             return (
-              <li key={order.id}>
+              <li key={order.id} className="admin-order-list__item">
+                {changedId === order.id && (
+                  <RowFlash onDone={() => setChangedId(null)} />
+                )}
                 <button type="button" className="admin-order-card" onClick={() => openDetail(order.id)}>
                   <span className="col">
                     <span className="order-code t-mid">{order.codigo}</span>
@@ -144,9 +190,7 @@ export const AdminOrdersPage = () => {
                     <span className="t-min t-muted">{order.lineas.length} líneas</span>
                   </span>
                   <span className="col admin-order-card__status">
-                    <span className={`admin-order-status${ACTIVE_ORDER_STATUSES.includes(order.estado) ? ' is-active' : ''}`}>
-                      {order.estado}
-                    </span>
+                    <StatusChip status={order.estado} />
                     {reserved > 0 && <span className="t-min t-muted">{reserved} reservadas</span>}
                   </span>
                   <span className="admin-order-card__arrow" aria-hidden="true">›</span>
@@ -162,9 +206,7 @@ export const AdminOrdersPage = () => {
         {selected && (
           <div className="admin-sheet-form">
             <div className="admin-detail-head">
-              <span className={`admin-order-status${ACTIVE_ORDER_STATUSES.includes(selected.estado) ? ' is-active' : ''}`}>
-                {selected.estado}
-              </span>
+              <StatusChip status={selected.estado} />
               <span className="t-caption">{formatShortDate(selected.fecha)} · {formatTime(selected.fecha)}</span>
             </div>
 

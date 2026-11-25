@@ -26,7 +26,9 @@ import { getAvailable } from '../../logic/services/stock'
 import { BrandMark } from '../brand/BrandMark'
 import { Sheet } from '../ui/Sheet'
 import { ThemeToggle } from '../ui/ThemeToggle'
-import { useCartBump, useFlyToCart } from '../../motion/hooks/useFlyToCart'
+import { useCartBump, useCartBumpValue, useFlyToCart } from '../../motion/hooks/useFlyToCart'
+import { RollingNumber } from '../../motion/components/RollingNumber'
+import { chromeMotion, dur, ease, reduced, spring } from '../../motion/tokens'
 import type { Product } from '../../logic/types'
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
@@ -367,7 +369,9 @@ const SearchDialog = ({ open, onClose }: { open: boolean; onClose: () => void })
 
 /* ------------------------------- Navegación ------------------------------ */
 export const StoreNav = () => {
-  const [scrolled, setScrolled] = useState(() => window.scrollY > 8)
+  const [scrolled, setScrolled] = useState(() => window.scrollY > chromeMotion.scrollDelta)
+  const [headerHidden, setHeaderHidden] = useState(false)
+  const [mobileViewport, setMobileViewport] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [megaOpen, setMegaOpen] = useState(false)
@@ -375,9 +379,14 @@ export const StoreNav = () => {
   const [zoneOpen, setZoneOpen] = useState(false)
   const [accountMenuOpen, setAccountMenuOpen] = useState(false)
   const [openCategory, setOpenCategory] = useState<string | null>(null)
+  const [ripple, setRipple] = useState(0)
   const { scrollY } = useScroll()
-  const { setCartTarget, bump } = useFlyToCart()
+  const { setCartTarget } = useFlyToCart()
+  const bump = useCartBumpValue()
   const cartRef = useRef<HTMLButtonElement | null>(null)
+  const mobileCartRef = useRef<HTMLButtonElement | null>(null)
+  const tabbarCartRef = useRef<HTMLButtonElement | null>(null)
+  const lastScrollY = useRef(0)
   const megaRef = useRef<HTMLDivElement | null>(null)
   const reduce = useReducedMotion()
   const location = useLocation()
@@ -393,6 +402,8 @@ export const StoreNav = () => {
   const patchDraft = useCartDraftStore((state) => state.patch)
   const { account, signOut } = useCustomer()
   const cartBump = useCartBump(bump)
+
+  useEffect(() => { if (bump > 0) setRipple(bump) }, [bump])
 
   const units = cartCount(lines)
   const active = useMemo(() => lines.filter((line) => !line.guardado), [lines])
@@ -418,12 +429,36 @@ export const StoreNav = () => {
   const whatsapp = settings.tienda.whatsapp.replace(/\D/g, '')
   const name = storeName(settings)
 
-  useEffect(() => scrollY.on('change', (value) => setScrolled(value > 8)), [scrollY])
-  useEffect(() => setCartTarget(cartRef.current), [setCartTarget])
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 768px)')
+    const update = () => setMobileViewport(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
+  }, [])
+  useEffect(() => scrollY.on('change', (value) => {
+    setScrolled(value > chromeMotion.scrollDelta)
+    const delta = value - lastScrollY.current
+    if (Math.abs(delta) >= chromeMotion.scrollDelta) {
+      setHeaderHidden(mobileViewport && value > chromeMotion.hideAfter && delta > 0)
+      lastScrollY.current = value
+    }
+  }), [scrollY, mobileViewport])
+  useEffect(() => {
+    setCartTarget('header', cartRef.current)
+    setCartTarget('mobile', mobileCartRef.current)
+    setCartTarget('tabbar', tabbarCartRef.current)
+    return () => {
+      setCartTarget('header', null)
+      setCartTarget('mobile', null)
+      setCartTarget('tabbar', null)
+    }
+  }, [setCartTarget])
   useEffect(() => { prune(products) }, [products, prune])
   useEffect(() => {
     setMegaOpen(false)
     setAccountMenuOpen(false)
+    setHeaderHidden(false)
   }, [location.pathname, location.search])
   useEffect(() => {
     if (!megaOpen) return
@@ -460,10 +495,22 @@ export const StoreNav = () => {
       : location.pathname.startsWith('/carrito') ? 'carrito'
         : location.pathname.startsWith('/cuenta') ? 'cuenta' : ''
   const hideTabBar = /^\/pagar(?:\/|$)|^\/tienda\/[^/]+/.test(location.pathname)
+  const pill = (active: boolean) => active ? (
+    <motion.span
+      layoutId="store-tabbar-pill"
+      className="mobile-tabbar__pill"
+      aria-hidden="true"
+      transition={reduce ? { duration: reduced.duration } : spring.ui}
+    />
+  ) : null
 
   return (
     <>
-      <header className="mobile-nav">
+      <motion.header
+        className="mobile-nav"
+        animate={{ y: headerHidden ? '-100%' : 0 }}
+        transition={reduce ? { duration: reduced.duration } : spring.ui}
+      >
         <button
           type="button"
           className="icon-btn mobile-nav__menu"
@@ -487,18 +534,19 @@ export const StoreNav = () => {
             <Search size={20} strokeWidth={1.7} aria-hidden="true" />
           </button>
           <motion.button
+            ref={mobileCartRef}
             type="button"
             className="icon-btn mobile-nav__cart"
             aria-label={`Abrir carrito: ${units} unidades, ${formatMoney(total)}`}
             animate={cartBump.animate}
-            key={`m-${cartBump.key}`}
             onClick={() => setCartOpen(true)}
           >
             <ShoppingBag size={20} strokeWidth={1.7} aria-hidden="true" />
-            <span className="cart-count">{units}</span>
+            <span className="cart-count"><RollingNumber value={units} ariaLabel={`${units} unidades`} /></span>
+            {!reduce && ripple > 0 && <span key={`ripple-m-${ripple}`} className="cart-ripple" aria-hidden="true" onAnimationEnd={() => setRipple(0)} />}
           </motion.button>
         </div>
-      </header>
+      </motion.header>
       <div className="mobile-zone">
         <button type="button" onClick={() => setZoneOpen(true)}>
           <MapPin size={15} strokeWidth={1.8} aria-hidden="true" />
@@ -508,7 +556,10 @@ export const StoreNav = () => {
       </div>
 
       <header className={`eshop-nav${scrolled ? ' eshop-nav--scrolled' : ''}`}>
-        <div className="eshop-nav__utility" hidden={scrolled}>
+        {/* Siempre en flujo: ocultarla al bajar desplazaba toda la página 44 px
+            y contaba como CLS al volver arriba. La cabecera móvil sí se oculta
+            con transform, que no altera el layout. */}
+        <div className="eshop-nav__utility">
           <div className="eshop-nav__utility-inner">
             <div className="eshop-nav__delivery">
               <label htmlFor="eshop-zona">Entregar en:</label>
@@ -599,12 +650,12 @@ export const StoreNav = () => {
                 className="eshop-nav__icon-btn eshop-nav__cart"
                 aria-label={`Abrir carrito: ${units} unidades, ${formatMoney(total)}`}
                 animate={cartBump.animate}
-                key={cartBump.key}
                 onClick={() => setCartOpen(true)}
               >
                 <ShoppingBag size={20} strokeWidth={1.7} />
-                <span className="eshop-nav__badge">{units}</span>
+                <span className="eshop-nav__badge"><RollingNumber value={units} ariaLabel={`${units} unidades`} /></span>
                 <span className="eshop-nav__cart-total">{formatMoney(total)}</span>
+                {!reduce && ripple > 0 && <span key={`ripple-h-${ripple}`} className="cart-ripple" aria-hidden="true" onAnimationEnd={() => setRipple(0)} />}
               </motion.button>
               <button
                 type="button"
@@ -648,10 +699,18 @@ export const StoreNav = () => {
                 <motion.div
                   id="eshop-mega"
                   className="eshop-mega"
-                  initial={{ opacity: 0, y: reduce ? 0 : -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: reduce ? 0 : -6 }}
-                  transition={{ duration: reduce ? 0 : 0.15 }}
+                  initial={reduce ? { opacity: 0 } : {
+                    opacity: 0, y: -chromeMotion.megaOffset,
+                    clipPath: 'inset(0 0 100% 0)',
+                  }}
+                  animate={{ opacity: 1, y: 0, clipPath: 'inset(0 0 0% 0)' }}
+                  exit={reduce ? { opacity: 0 } : {
+                    opacity: 0, y: -chromeMotion.megaOffset,
+                    clipPath: 'inset(0 0 100% 0)',
+                  }}
+                  transition={reduce
+                    ? { duration: reduced.duration }
+                    : { duration: dur.fast, ease: ease.easeOutQuint }}
                 >
                   <div className="eshop-mega__grid">
                     {settings.catalogo.categorias.map((category) => {
@@ -701,20 +760,39 @@ export const StoreNav = () => {
 
       <nav className={`mobile-tabbar${hideTabBar ? ' mobile-tabbar--hidden' : ''}`} aria-label="Navegación principal">
         <Link to="/" className={tab === 'inicio' ? 'is-active' : ''} aria-current={tab === 'inicio' ? 'page' : undefined}>
-          <House size={21} strokeWidth={1.7} aria-hidden="true" /><span>Inicio</span>
+          {pill(tab === 'inicio')}
+          <motion.span animate={{ scale: tab === 'inicio' && !reduce ? chromeMotion.tabIconScale : 1 }} transition={spring.settle}>
+            <House size={21} strokeWidth={1.7} aria-hidden="true" />
+          </motion.span><span>Inicio</span>
         </Link>
         <button type="button" className={tab === 'categorias' ? 'is-active' : ''} onClick={() => setMenuOpen(true)}>
-          <LayoutGrid size={21} strokeWidth={1.7} aria-hidden="true" /><span>Categorías</span>
+          {pill(tab === 'categorias')}
+          <motion.span animate={{ scale: tab === 'categorias' && !reduce ? chromeMotion.tabIconScale : 1 }} transition={spring.settle}>
+            <LayoutGrid size={21} strokeWidth={1.7} aria-hidden="true" />
+          </motion.span><span>Categorías</span>
         </button>
         <button type="button" onClick={() => setSearchOpen(true)}>
           <Search size={21} strokeWidth={1.7} aria-hidden="true" /><span>Buscar</span>
         </button>
-        <button type="button" className={tab === 'carrito' ? 'is-active' : ''} onClick={() => setCartOpen(true)}>
-          <ShoppingBag size={21} strokeWidth={1.7} aria-hidden="true" /><span>Carrito</span>
-          {units > 0 && <span className="mobile-tabbar__badge">{units}</span>}
-        </button>
+        <motion.button
+          ref={tabbarCartRef}
+          type="button"
+          className={`mobile-tabbar__cart${tab === 'carrito' ? ' is-active' : ''}`}
+          animate={cartBump.animate}
+          onClick={() => setCartOpen(true)}
+        >
+          {pill(tab === 'carrito')}
+          <motion.span animate={{ scale: tab === 'carrito' && !reduce ? chromeMotion.tabIconScale : 1 }} transition={spring.settle}>
+            <ShoppingBag size={21} strokeWidth={1.7} aria-hidden="true" />
+          </motion.span><span>Carrito</span>
+          {units > 0 && <span className="mobile-tabbar__badge"><RollingNumber value={units} ariaLabel={`${units} unidades`} /></span>}
+          {!reduce && ripple > 0 && <span key={`ripple-t-${ripple}`} className="cart-ripple" aria-hidden="true" onAnimationEnd={() => setRipple(0)} />}
+        </motion.button>
         <Link to={account ? '/cuenta' : '/cuenta/ingresar'} className={tab === 'cuenta' ? 'is-active' : ''} aria-current={tab === 'cuenta' ? 'page' : undefined}>
-          <UserRound size={21} strokeWidth={1.7} aria-hidden="true" /><span>Cuenta</span>
+          {pill(tab === 'cuenta')}
+          <motion.span animate={{ scale: tab === 'cuenta' && !reduce ? chromeMotion.tabIconScale : 1 }} transition={spring.settle}>
+            <UserRound size={21} strokeWidth={1.7} aria-hidden="true" />
+          </motion.span><span>Cuenta</span>
         </Link>
       </nav>
 

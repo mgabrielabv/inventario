@@ -1,3 +1,4 @@
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { SlidersHorizontal } from 'lucide-react'
 import { useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
@@ -23,6 +24,7 @@ import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
 import type { Product } from '../../logic/types'
+import { distance, dur, ease, reduced } from '../../motion/tokens'
 
 const SORT_OPTIONS = SORT_KEYS.filter((key) => key !== 'recientes')
 const META_KEYS = ['marca', 'subcategoria'] as const
@@ -222,6 +224,7 @@ const FilterPanel = ({
 }
 
 export const CatalogPage = () => {
+  const reduce = useReducedMotion()
   const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
   const search = params.toString()
@@ -376,15 +379,24 @@ export const CatalogPage = () => {
             )}
 
             {shown.length > 0 ? (
-              <div className={`eshop-grid eshop-grid--${filters.densidad}`}>
-                {shown.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    available={getAvailable(product, orders)}
-                  />
-                ))}
-              </div>
+              <motion.div className={`eshop-grid eshop-grid--${filters.densidad}`}>
+                <AnimatePresence initial={false}>
+                  {shown.map((product) => (
+                    <motion.div
+                      key={product.id}
+                      className="eshop-grid__cell"
+                      initial={reduce ? { opacity: 0 } : { opacity: 0, y: distance.rise }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={reduce
+                        ? { duration: reduced.duration }
+                        : { duration: dur.fast, ease: ease.easeOutQuint }}
+                    >
+                      <ProductCard product={product} available={getAvailable(product, orders)} />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
             ) : (
               <div className="eshop-empty" role="status">
                 <h2>No encontramos productos con estos filtros</h2>

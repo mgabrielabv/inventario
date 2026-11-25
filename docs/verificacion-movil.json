@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T01:40:17.458Z",
+  "generatedAt": "2026-11-24T04:55:16.016Z",
   "viewports": [
     {
       "name": "320x568",
@@ -170,7 +170,13 @@
     },
     "320x568|light|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -520,7 +526,13 @@
     },
     "320x568|dark|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -812,8 +824,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 75
     },
     "360x740|light|catalogo": {
       "overflowPx": 0,
@@ -870,7 +882,13 @@
     },
     "360x740|light|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -52,
+          "right": 16
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -1225,7 +1243,13 @@
     },
     "360x740|dark|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -52,
+          "right": 16
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -1512,9 +1536,9 @@
           "right": 414
         },
         {
-          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
-          "left": 372,
-          "right": 540
+          "el": "span.eshop-card__shine",
+          "left": -45,
+          "right": 17
         }
       ],
       "clipped": [],
@@ -1580,7 +1604,13 @@
     },
     "390x844|light|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -52,
+          "right": 16
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -1867,9 +1897,9 @@
           "right": 414
         },
         {
-          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
-          "left": 372,
-          "right": 540
+          "el": "span.eshop-card__shine",
+          "left": -45,
+          "right": 17
         }
       ],
       "clipped": [],
@@ -1935,7 +1965,13 @@
     },
     "390x844|dark|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -52,
+          "right": 16
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -2222,9 +2258,9 @@
           "right": 414
         },
         {
-          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
-          "left": 372,
-          "right": 540
+          "el": "span.eshop-card__shine",
+          "left": -45,
+          "right": 17
         }
       ],
       "clipped": [],
@@ -2290,7 +2326,13 @@
     },
     "412x915|light|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -52,
+          "right": 16
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -2577,9 +2619,9 @@
           "right": 414
         },
         {
-          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
-          "left": 372,
-          "right": 540
+          "el": "span.eshop-card__shine",
+          "left": -45,
+          "right": 17
         }
       ],
       "clipped": [],
@@ -2645,7 +2687,13 @@
     },
     "412x915|dark|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -52,
+          "right": 16
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -2922,6 +2970,11 @@
           "right": 434
         },
         {
+          "el": "span.eshop-card__shine",
+          "left": -45,
+          "right": 17
+        },
+        {
           "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
           "left": 372,
           "right": 540
@@ -2930,11 +2983,6 @@
           "el": "article.product-card.eshop-card «-17 %NordisaProtecciónFunda para laptopPre»",
           "left": 372,
           "right": 540
-        },
-        {
-          "el": "div.eshop-card__media «-17 %»",
-          "left": 381,
-          "right": 531
         }
       ],
       "clipped": [],
@@ -2942,8 +2990,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 51
     },
     "430x932|light|catalogo": {
       "overflowPx": 0,
@@ -3000,7 +3048,13 @@
     },
     "430x932|light|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -52,
+          "right": 16
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -3277,6 +3331,11 @@
           "right": 434
         },
         {
+          "el": "span.eshop-card__shine",
+          "left": -45,
+          "right": 17
+        },
+        {
           "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
           "left": 372,
           "right": 540
@@ -3285,11 +3344,6 @@
           "el": "article.product-card.eshop-card «-17 %NordisaProtecciónFunda para laptopPre»",
           "left": 372,
           "right": 540
-        },
-        {
-          "el": "div.eshop-card__media «-17 %»",
-          "left": 381,
-          "right": 531
         }
       ],
       "clipped": [],
@@ -3297,8 +3351,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 81
     },
     "430x932|dark|catalogo": {
       "overflowPx": 0,
@@ -3355,7 +3409,13 @@
     },
     "430x932|dark|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -52,
+          "right": 16
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -3617,6 +3677,11 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
           "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
           "left": 739,
           "right": 908
@@ -3637,14 +3702,9 @@
           "right": 899
         },
         {
-          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
+          "el": "div.eshop-photo__art-wrap",
           "left": 748,
           "right": 899
-        },
-        {
-          "el": "div.product-art__glow",
-          "left": 760,
-          "right": 887
         }
       ],
       "clipped": [],
@@ -3679,7 +3739,13 @@
     },
     "844x390|light|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -33,
+          "right": 29
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -3936,6 +4002,11 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
           "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
           "left": 739,
           "right": 908
@@ -3956,14 +4027,9 @@
           "right": 899
         },
         {
-          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
+          "el": "div.eshop-photo__art-wrap",
           "left": 748,
           "right": 899
-        },
-        {
-          "el": "div.product-art__glow",
-          "left": 760,
-          "right": 887
         }
       ],
       "clipped": [],
@@ -3998,7 +4064,13 @@
     },
     "844x390|dark|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -33,
+          "right": 29
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -4255,6 +4327,11 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
           "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
           "left": 736,
           "right": 904
@@ -4275,14 +4352,9 @@
           "right": 895
         },
         {
-          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
+          "el": "div.eshop-photo__art-wrap",
           "left": 745,
           "right": 895
-        },
-        {
-          "el": "div.product-art__glow",
-          "left": 757,
-          "right": 883
         }
       ],
       "clipped": [],
@@ -4317,7 +4389,13 @@
     },
     "768x1024|light|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -44,
+          "right": 24
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -4574,6 +4652,11 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
           "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
           "left": 736,
           "right": 904
@@ -4594,14 +4677,9 @@
           "right": 895
         },
         {
-          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
+          "el": "div.eshop-photo__art-wrap",
           "left": 745,
           "right": 895
-        },
-        {
-          "el": "div.product-art__glow",
-          "left": 757,
-          "right": 883
         }
       ],
       "clipped": [],
@@ -4636,7 +4714,13 @@
     },
     "768x1024|dark|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -44,
+          "right": 24
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -4893,6 +4977,11 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
           "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
           "left": 736,
           "right": 904
@@ -4916,11 +5005,6 @@
           "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
           "left": 745,
           "right": 895
-        },
-        {
-          "el": "div.product-art__glow",
-          "left": 757,
-          "right": 883
         }
       ],
       "clipped": [],
@@ -4928,8 +5012,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 59
     },
     "820x1180|light|catalogo": {
       "overflowPx": 0,
@@ -4955,7 +5039,13 @@
     },
     "820x1180|light|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -44,
+          "right": 24
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -5217,6 +5307,11 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
           "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
           "left": 736,
           "right": 904
@@ -5240,11 +5335,6 @@
           "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
           "left": 745,
           "right": 895
-        },
-        {
-          "el": "div.product-art__glow",
-          "left": 757,
-          "right": 883
         }
       ],
       "clipped": [],
@@ -5279,7 +5369,13 @@
     },
     "820x1180|dark|carrito": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -44,
+          "right": 24
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -5541,6 +5637,11 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
           "el": "li.eshop-rail__item «-13 %PataliaDescansoCama para mascotaPrese»",
           "left": 1196,
           "right": 1420
@@ -5564,11 +5665,6 @@
           "el": "div.product-art.product-art--hero «Cama para mascota · ilustración paquete»",
           "left": 1205,
           "right": 1411
-        },
-        {
-          "el": "div.product-art__glow",
-          "left": 1221,
-          "right": 1395
         }
       ],
       "clipped": [],
@@ -5576,8 +5672,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 60
     },
     "1280x800|light|catalogo": {
       "overflowPx": 0,
@@ -5736,6 +5832,11 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
           "el": "li.eshop-rail__item «-13 %PataliaDescansoCama para mascotaPrese»",
           "left": 1196,
           "right": 1420
@@ -5756,14 +5857,9 @@
           "right": 1411
         },
         {
-          "el": "div.product-art.product-art--hero «Cama para mascota · ilustración paquete»",
+          "el": "div.eshop-photo__art-wrap",
           "left": 1205,
           "right": 1411
-        },
-        {
-          "el": "div.product-art__glow",
-          "left": 1221,
-          "right": 1395
         }
       ],
       "clipped": [],
@@ -5931,6 +6027,11 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
           "el": "li.eshop-rail__item «-12 %VelmarTabletsTablet 10\"Presentación ·»",
           "left": 1432,
           "right": 1656
@@ -5954,11 +6055,6 @@
           "el": "div.product-art.product-art--hero «Tablet 10\" · ilustración almohadilla»",
           "left": 1441,
           "right": 1647
-        },
-        {
-          "el": "div.product-art__glow",
-          "left": 1457,
-          "right": 1631
         }
       ],
       "clipped": [],
@@ -6126,6 +6222,11 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
           "el": "li.eshop-rail__item «-12 %VelmarTabletsTablet 10\"Presentación ·»",
           "left": 1432,
           "right": 1656
@@ -6149,11 +6250,6 @@
           "el": "div.product-art.product-art--hero «Tablet 10\" · ilustración almohadilla»",
           "left": 1441,
           "right": 1647
-        },
-        {
-          "el": "div.product-art__glow",
-          "left": 1457,
-          "right": 1631
         }
       ],
       "clipped": [],
@@ -6331,8 +6427,8 @@
     ],
     "vh100": 4,
     "safeAreaUses": 4,
-    "hoverRules": 52,
-    "hoverRulesGuarded": 52,
+    "hoverRules": 54,
+    "hoverRulesGuarded": 54,
     "fsUi": "16",
     "colorLiteralsOutsideTokens": "ver check:palette"
   },

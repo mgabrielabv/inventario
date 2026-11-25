@@ -1,7 +1,7 @@
-import { motion, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { useEffect, useState, type ReactNode } from 'react'
-import type { Variants } from 'framer-motion'
-import { dur, spring } from '../tokens'
+import { distance, dur, ease, spring, stagger } from '../tokens'
+import { motionSafe, riseFor } from '../helpers'
 
 interface RevealProps {
   children: ReactNode
@@ -12,38 +12,48 @@ interface RevealProps {
   id?: string
 }
 
-/* El estado base es visible: la animación solo acompaña, nunca oculta contenido. */
-const revealIn: Variants = {
-  hidden: { opacity: 1, y: 14 },
-  show: { opacity: 1, y: 0, transition: { ...spring.ui, staggerChildren: 0.04 } },
-}
-const revealItem: Variants = {
-  hidden: { opacity: 1, y: 10 },
-  show: { opacity: 1, y: 0, transition: { duration: dur.base, ease: 'easeOut' } },
-}
-
+/**
+ * Entrada real: opacidad 0 → 1 y subida de 12 px (móvil) o 14 px.
+ * Se dispara una sola vez al entrar en pantalla (15 % visible). El estado
+ * oculto solo afecta a transform/opacity: el contenido sigue en el árbol de
+ * accesibilidad y no desplaza el layout (CLS 0). Sin temporizadores.
+ */
 export const Reveal = ({
   children, className = '', delay = 0, as = 'div', 'aria-label': ariaLabel, id,
 }: RevealProps) => {
   const reduce = useReducedMotion()
-  const [safe, setSafe] = useState(false)
+  const [mobile, setMobile] = useState(false)
   const Tag = motion[as]
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setSafe(true), 1200)
-    return () => window.clearTimeout(timer)
+    const query = window.matchMedia('(max-width: 480px)')
+    const update = () => setMobile(query.matches)
+    update()
+    query.addEventListener('change', update)
+    return () => query.removeEventListener('change', update)
   }, [])
+
+  const item: Variants = {
+    hidden: { opacity: 0, y: riseFor(mobile) },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        opacity: { duration: dur.base, ease: ease.easeOutQuint },
+        y: spring.soft,
+        staggerChildren: stagger.tight,
+        delayChildren: delay,
+      },
+    },
+  }
 
   return (
     <Tag
       className={className}
-      variants={reduce ? undefined : revealIn}
-      initial={false}
-      animate={safe ? 'show' : undefined}
-      whileInView={reduce || safe ? undefined : 'show'}
-      viewport={{ once: true, amount: 0.08 }}
-      transition={reduce ? { duration: dur.fast } : { delay }}
-      style={{ opacity: 1 }}
+      variants={reduce ? motionSafe(item) : item}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.15 }}
       aria-label={ariaLabel}
       id={id}
     >
@@ -52,6 +62,19 @@ export const Reveal = ({
   )
 }
 
+/** Elemento hijo opcional: hereda el escalonado del contenedor. */
 export const RevealItem = ({ children, className = '' }: { children: ReactNode; className?: string }) => (
-  <motion.div className={className} variants={revealItem} style={{ opacity: 1 }}>{children}</motion.div>
+  <motion.div
+    className={className}
+    variants={{
+      hidden: { opacity: 0, y: distance.rise },
+      show: {
+        opacity: 1,
+        y: 0,
+        transition: { y: spring.soft, opacity: { duration: dur.base, ease: ease.out } },
+      },
+    }}
+  >
+    {children}
+  </motion.div>
 )

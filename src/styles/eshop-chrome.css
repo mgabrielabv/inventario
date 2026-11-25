@@ -23,7 +23,6 @@
   color: var(--on-primary);
   font-size: var(--fs-min);
 }
-.eshop-nav__utility[hidden] { display: none; }
 .eshop-nav__utility-inner {
   display: flex;
   align-items: center;

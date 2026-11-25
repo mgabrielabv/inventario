@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import {
   ArrowLeft, ArrowRight, Check, Copy, CreditCard, FileCheck2, MapPin,
   ShieldCheck, Store, Truck, Wallet,
@@ -13,8 +13,8 @@ import { Chip } from '../../components/ui/Chip'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Field, Input, Select, Textarea } from '../../components/ui/Field'
 import { useToast } from '../../components/ui/Toast'
-import { spring } from '../../motion/tokens'
-import { stepBack, stepForward } from '../../motion/variants'
+import { reduced, spring } from '../../motion/tokens'
+import { shake, stepBack, stepForward } from '../../motion/variants'
 import { errorMessage } from '../../logic/errors'
 import { buildCheckoutOrder, couponStatus, revalidateCheckout, validateStep } from '../../logic/services/checkout'
 import { estimarEntrega } from '../../logic/services/delivery'
@@ -50,6 +50,7 @@ export const CheckoutPage = () => {
   const addOrder = useOrdersStore((state) => state.add)
   const settings = useSettingsStore((state) => state.settings)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const reduce = useReducedMotion()
   const [alert, setAlert] = useState('')
   const [direction, setDirection] = useState(1)
   const [submitting, setSubmitting] = useState(false)
@@ -630,11 +631,26 @@ export const CheckoutPage = () => {
             </div>
             <div className="checkout-progress__track" role="progressbar"
               aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
-              <motion.span animate={{ width: `${progress}%` }} transition={spring.soft} />
+              <motion.span
+                style={{ width: '100%', transformOrigin: 'left' }}
+                initial={false}
+                animate={{ scaleX: progress / 100 }}
+                transition={reduce ? { duration: reduced.duration } : spring.soft}
+              />
             </div>
           </div>
 
-          {alert && <div className="checkout-alert" role="alert" aria-live="assertive">{alert}</div>}
+          {alert && (
+            <motion.div
+              key={alert}
+              className="checkout-alert"
+              role="alert"
+              aria-live="assertive"
+              animate={reduce ? undefined : shake}
+            >
+              {alert}
+            </motion.div>
+          )}
           {blocking.length > 0 && (
             <div className="checkout-alert" role="alert">
               <p className="t-mid">Revisa el carrito</p>

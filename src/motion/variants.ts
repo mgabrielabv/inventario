@@ -1,11 +1,11 @@
 import type { Variants } from 'framer-motion'
-import { dur, ease, spring, stagger } from './tokens'
+import { distance, dur, ease, feedback, spring, stagger } from './tokens'
 
-/** A1 · transiciones de ruta */
+/** A1 · transiciones de ruta: entrada elegante, salida rápida. */
 export const routeVariants: Variants = {
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0, transition: { duration: dur.base, ease: ease.out } },
-  exit: { opacity: 0, y: -8, transition: { duration: dur.fast, ease: ease.out } },
+  initial: { opacity: 0, y: distance.riseLg },
+  animate: { opacity: 1, y: 0, transition: { duration: dur.base, ease: ease.easeOutQuint } },
+  exit: { opacity: 0, y: -distance.rise, transition: { duration: dur.fast, ease: ease.ios } },
 }
 
 /** A5 / A6 · entrada al aparecer en pantalla */
@@ -45,14 +45,14 @@ export const toastAnimate: Variants = {
 
 /** A11 · pasos direccionales */
 export const stepForward: Variants = {
-  initial: { opacity: 0, x: 32 },
-  animate: { opacity: 1, x: 0, transition: { duration: dur.base, ease: ease.out } },
-  exit: { opacity: 0, x: -32, transition: { duration: dur.fast } },
+  initial: { opacity: 0, x: distance.riseLg },
+  animate: { opacity: 1, x: 0, transition: { duration: dur.base, ease: ease.easeOutQuint } },
+  exit: { opacity: 0, x: -distance.riseLg, transition: { duration: dur.fast, ease: ease.ios } },
 }
 export const stepBack: Variants = {
-  initial: { opacity: 0, x: -32 },
-  animate: { opacity: 1, x: 0, transition: { duration: dur.base, ease: ease.out } },
-  exit: { opacity: 0, x: 32, transition: { duration: dur.fast } },
+  initial: { opacity: 0, x: -distance.riseLg },
+  animate: { opacity: 1, x: 0, transition: { duration: dur.base, ease: ease.easeOutQuint } },
+  exit: { opacity: 0, x: distance.riseLg, transition: { duration: dur.fast, ease: ease.ios } },
 }
 
 /** A18 · press y check de botón */
@@ -62,8 +62,8 @@ export const pressable = {
 }
 
 export const shake = {
-  x: [0, -4, 4, -3, 3, 0],
-  transition: { duration: 0.28, ease: ease.inOut },
+  x: [0, -feedback.shake, feedback.shake, -feedback.shake / 2, feedback.shake / 2, 0],
+  transition: { duration: dur.step + dur.micro, ease: ease.inOut },
 }
 
 /** A20 · caja vacía que se asienta */

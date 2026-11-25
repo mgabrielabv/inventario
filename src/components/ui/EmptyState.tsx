@@ -10,7 +10,7 @@ interface Props {
 
 export const EmptyState = ({ title, description, action, compact = false }: Props) => (
   <div className={`empty-state${compact ? ' empty-state--compact' : ''}`}>
-    <OpenBox size={compact ? 110 : 180} />
+    <span className="empty-state__art"><OpenBox size={compact ? 110 : 180} /></span>
     <h2 className="t-ui t-strong">{title}</h2>
     {description && <p className="t-caption t-pretty">{description}</p>}
     {action && <div className="empty-state__action">{action}</div>}

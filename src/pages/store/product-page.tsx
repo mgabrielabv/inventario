@@ -9,7 +9,6 @@ import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Stepper } from '../../components/ui/Stepper'
 import { StatusDot } from '../../components/ui/StatusDot'
-import { useToast } from '../../components/ui/Toast'
 import { Reveal } from '../../motion/components/Reveal'
 import { useParallaxTilt } from '../../motion/hooks/useParallaxTilt'
 import { useFlyToCart } from '../../motion/hooks/useFlyToCart'
@@ -43,8 +42,8 @@ export const ProductPage = () => {
   const recentIds = useRecentStore((state) => state.ids)
   const visit = useRecentStore((state) => state.visit)
   const { fly } = useFlyToCart()
-  const { toast } = useToast()
   const tilt = useParallaxTilt()
+  const [feedback, setFeedback] = useState('')
   const [quantity, setQuantity] = useState(1)
   const [view, setView] = useState<ArtView>('hero')
   const [excluded, setExcluded] = useState<string[]>([])
@@ -90,8 +89,10 @@ export const ProductPage = () => {
     for (const item of extra ?? []) {
       if (item.precio !== null) add(item.id, 1, item.precio)
     }
-    fly(event.currentTarget.getBoundingClientRect(), product.id)
-    toast(extra?.length ? 'Conjunto agregado al carrito' : 'Agregado al carrito')
+    fly(event.currentTarget.getBoundingClientRect(), product)
+    setFeedback(extra?.length
+      ? `Conjunto agregado al carrito: ${product.nombre}`
+      : `Agregado al carrito: ${product.nombre}`)
   }
 
   if (!product) {
@@ -115,6 +116,7 @@ export const ProductPage = () => {
 
   return (
     <div className="pdp-page container-detail">
+      <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">{feedback}</span>
       <nav className="pdp-breadcrumb" aria-label="Ruta de navegación">
         <ol>
           <li><Link to="/">Inicio</Link></li>
