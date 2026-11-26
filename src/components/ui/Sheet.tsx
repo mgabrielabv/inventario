@@ -33,7 +33,7 @@ export const Sheet = ({ open, onClose, title, children, side = 'right', classNam
   const panel = useRef<HTMLDivElement | null>(null)
   const previous = useRef<HTMLElement | null>(null)
   const closeRef = useRef(onClose)
-  closeRef.current = onClose
+  useEffect(() => { closeRef.current = onClose }, [onClose])
   const smallScreen = useIsMobile()
   const isMobile = side === 'bottom' || smallScreen
 

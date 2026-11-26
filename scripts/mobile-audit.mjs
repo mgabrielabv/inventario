@@ -204,7 +204,7 @@ const staticAudit = async () => {
   let safeArea = 0
   let hoverGuarded = 0
   let hoverTotal = 0
-  for (const [name, css] of Object.entries(contents)) {
+  for (const css of Object.values(contents)) {
     for (const match of css.matchAll(/@media[^{]*?(?:max|min)-width:\s*(\d+)px/g)) breakpoints.add(Number(match[1]))
     vh += (css.match(/(?<![\d.])100vh/g) ?? []).length
     safeArea += (css.match(/env\(safe-area-inset-/g) ?? []).length

@@ -76,7 +76,7 @@ export const CheckoutPage = () => {
       || current.zona || current.notas || current.step > 0 || current.reached > 0,
     )
     current.patch({
-      nombre: current.nombre || (account
+      nombre: current.nombre || (account?.id
         ? `${account.nombre} ${account.apellido}`.trim()
         : profile?.nombre ?? ''),
       telefono: current.telefono || account?.telefono || profile?.telefono || '',
@@ -87,7 +87,10 @@ export const CheckoutPage = () => {
       notas: current.notas || (!hasDraft ? cart.nota : ''),
       ...(!hasDraft ? { entrega: cart.entrega } : {}),
     })
-  }, [account?.id])
+  }, [
+    account?.id, account?.nombre, account?.apellido, account?.telefono,
+    account?.email, account?.documento, account?.direcciones,
+  ])
 
   useEffect(() => {
     let alive = true

@@ -30,6 +30,8 @@ import { RollingNumber } from '../../motion/components/RollingNumber'
 import { chromeMotion, dur, ease, reduced, spring } from '../../motion/tokens'
 import type { Product } from '../../logic/types'
 
+const ANO_ACTUAL = new Date().getFullYear()
+
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   Electrónica: Laptop, Accesorios: Mouse, Papelería: PenLine, Hogar: House, Otras: Package,
 }
@@ -301,7 +303,7 @@ const SearchDialog = ({ open, onClose }: { open: boolean; onClose: () => void })
   const panel = useRef<HTMLDivElement | null>(null)
   const previous = useRef<HTMLElement | null>(null)
   const close = useRef(onClose)
-  close.current = onClose
+  useEffect(() => { close.current = onClose }, [onClose])
   const reduce = useReducedMotion()
 
   useEffect(() => {
@@ -1027,9 +1029,8 @@ export const StoreFooter = () => {
   const whatsapp = settings.tienda.whatsapp.replace(/\D/g, '')
   // En escritorio las columnas van abiertas; en móvil empiezan plegadas.
   // El valor es constante: el navegador gestiona después el estado de cada details.
-  const openByDefault = useRef(
-    typeof window === 'undefined' || !window.matchMedia('(max-width: 768px)').matches,
-  ).current
+  const [openByDefault] = useState(() =>
+    typeof window === 'undefined' || !window.matchMedia('(max-width: 768px)').matches)
 
   return (
     <footer className="eshop-footer">
@@ -1102,7 +1103,7 @@ export const StoreFooter = () => {
 
         <div className="eshop-footer__bottom">
           <Link className="eshop-footer__staff" to="/ingresar">Acceso del personal</Link>
-          <p className="eshop-footer__rights">© {new Date().getFullYear()} {BRAND.name}. Todos los derechos reservados.</p>
+          <p className="eshop-footer__rights">© {ANO_ACTUAL} {BRAND.name}. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

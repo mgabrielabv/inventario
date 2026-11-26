@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-26T17:22:54.172Z",
+  "generatedAt": "2026-11-26T18:36:55.300Z",
   "html": {
-    "bytes": 2637975,
-    "gzipBytes": 968709,
+    "bytes": 2638198,
+    "gzipBytes": 968762,
     "limitBytes": 4718592
   },
   "routes": {
     "home-light": {
       "hueOk": 1,
-      "sampled": 79438,
+      "sampled": 79091,
       "overflow": 0
     },
     "inicio-light": {
@@ -33,22 +33,22 @@
     },
     "carrito-light": {
       "hueOk": 1,
-      "sampled": 76898,
+      "sampled": 76912,
       "overflow": 0
     },
     "checkout-light": {
       "hueOk": 1,
-      "sampled": 59647,
+      "sampled": 59646,
       "overflow": 0
     },
     "seguimiento-light": {
       "hueOk": 1,
-      "sampled": 74906,
+      "sampled": 74903,
       "overflow": 0
     },
     "favoritos-light": {
       "hueOk": 1,
-      "sampled": 51462,
+      "sampled": 51467,
       "overflow": 0
     },
     "cuenta-ingresar-light": {
@@ -63,7 +63,7 @@
     },
     "login-light": {
       "hueOk": 1,
-      "sampled": 188028,
+      "sampled": 188023,
       "overflow": 0
     },
     "admin-inicio-light": {
@@ -83,12 +83,12 @@
     },
     "admin-movimientos-light": {
       "hueOk": 1,
-      "sampled": 10003,
+      "sampled": 9874,
       "overflow": 0
     },
     "admin-pedidos-light": {
       "hueOk": 1,
-      "sampled": 16747,
+      "sampled": 16757,
       "overflow": 0
     },
     "admin-reposicion-light": {
@@ -103,7 +103,7 @@
     },
     "home-dark": {
       "hueOk": 1,
-      "sampled": 79405,
+      "sampled": 79237,
       "overflow": 0
     },
     "inicio-dark": {
@@ -128,17 +128,17 @@
     },
     "carrito-dark": {
       "hueOk": 1,
-      "sampled": 60994,
+      "sampled": 60991,
       "overflow": 0
     },
     "checkout-dark": {
       "hueOk": 1,
-      "sampled": 43224,
+      "sampled": 43226,
       "overflow": 0
     },
     "seguimiento-dark": {
       "hueOk": 1,
-      "sampled": 22598,
+      "sampled": 22615,
       "overflow": 0
     },
     "favoritos-dark": {
@@ -158,7 +158,7 @@
     },
     "login-dark": {
       "hueOk": 1,
-      "sampled": 10820,
+      "sampled": 10830,
       "overflow": 0
     },
     "admin-inicio-dark": {
@@ -178,12 +178,12 @@
     },
     "admin-movimientos-dark": {
       "hueOk": 1,
-      "sampled": 15496,
+      "sampled": 16120,
       "overflow": 0
     },
     "admin-pedidos-dark": {
       "hueOk": 1,
-      "sampled": 22474,
+      "sampled": 22496,
       "overflow": 0
     },
     "admin-reposicion-dark": {
@@ -198,7 +198,7 @@
     },
     "home-320-light": {
       "hueOk": 1,
-      "sampled": 18193,
+      "sampled": 18213,
       "overflow": 0
     },
     "inicio-320-light": {
@@ -223,12 +223,12 @@
     },
     "admin-inventario-320-light": {
       "hueOk": 1,
-      "sampled": 4571,
+      "sampled": 4564,
       "overflow": 0
     },
     "home-320-dark": {
       "hueOk": 1,
-      "sampled": 18209,
+      "sampled": 18198,
       "overflow": 0
     },
     "inicio-320-dark": {
@@ -258,7 +258,7 @@
     },
     "home-mobile-light": {
       "hueOk": 1,
-      "sampled": 33191,
+      "sampled": 33339,
       "overflow": 0
     },
     "inicio-mobile-light": {
@@ -288,7 +288,7 @@
     },
     "home-mobile-dark": {
       "hueOk": 1,
-      "sampled": 33349,
+      "sampled": 33354,
       "overflow": 0
     },
     "inicio-mobile-dark": {
@@ -313,12 +313,12 @@
     },
     "admin-inventario-mobile-dark": {
       "hueOk": 1,
-      "sampled": 5722,
+      "sampled": 5728,
       "overflow": 0
     },
     "home-412-light": {
       "hueOk": 1,
-      "sampled": 33540,
+      "sampled": 33582,
       "overflow": 0
     },
     "inicio-412-light": {
@@ -348,7 +348,7 @@
     },
     "home-412-dark": {
       "hueOk": 1,
-      "sampled": 33560,
+      "sampled": 33555,
       "overflow": 0
     },
     "inicio-412-dark": {
@@ -378,7 +378,7 @@
     },
     "home-768-light": {
       "hueOk": 1,
-      "sampled": 32487,
+      "sampled": 32482,
       "overflow": 0
     },
     "inicio-768-light": {
@@ -408,7 +408,7 @@
     },
     "home-768-dark": {
       "hueOk": 1,
-      "sampled": 32567,
+      "sampled": 32562,
       "overflow": 0
     },
     "inicio-768-dark": {
@@ -438,7 +438,7 @@
     },
     "home-1280-light": {
       "hueOk": 1,
-      "sampled": 59827,
+      "sampled": 59851,
       "overflow": 0
     },
     "inicio-1280-light": {
@@ -453,12 +453,12 @@
     },
     "ficha-1280-light": {
       "hueOk": 1,
-      "sampled": 110665,
+      "sampled": 111211,
       "overflow": 0
     },
     "carrito-1280-light": {
       "hueOk": 1,
-      "sampled": 73344,
+      "sampled": 73358,
       "overflow": 0
     },
     "admin-inventario-1280-light": {
@@ -468,7 +468,7 @@
     },
     "home-1280-dark": {
       "hueOk": 1,
-      "sampled": 59853,
+      "sampled": 59835,
       "overflow": 0
     },
     "inicio-1280-dark": {
@@ -483,12 +483,12 @@
     },
     "ficha-1280-dark": {
       "hueOk": 1,
-      "sampled": 89829,
+      "sampled": 89846,
       "overflow": 0
     },
     "carrito-1280-dark": {
       "hueOk": 1,
-      "sampled": 60526,
+      "sampled": 60523,
       "overflow": 0
     },
     "admin-inventario-1280-dark": {
@@ -511,16 +511,16 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 88
+      "longTasks": 3,
+      "maxTask": 66
     },
     "320-light-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 53
+      "longTasks": 0,
+      "maxTask": 0
     },
     "320-light-ficha": {
       "smallTargets": [],
@@ -559,16 +559,16 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 3,
+      "maxTask": 83
     },
     "320-dark-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 2,
+      "maxTask": 61
     },
     "320-dark-ficha": {
       "smallTargets": [],
@@ -608,7 +608,7 @@
       "overflow": 0,
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 52
+      "maxTask": 57
     },
     "390-light-catalogo": {
       "smallTargets": [],
@@ -655,16 +655,16 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 63
+      "longTasks": 2,
+      "maxTask": 96
     },
     "390-dark-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 51
     },
     "390-dark-ficha": {
       "smallTargets": [],
@@ -703,8 +703,8 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 60
+      "longTasks": 2,
+      "maxTask": 71
     },
     "412-light-catalogo": {
       "smallTargets": [],
@@ -751,8 +751,8 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 3,
+      "maxTask": 90
     },
     "412-dark-catalogo": {
       "smallTargets": [],
@@ -799,16 +799,16 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 2,
-      "maxTask": 55
+      "longTasks": 4,
+      "maxTask": 67
     },
     "768-light-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 2,
+      "maxTask": 85
     },
     "768-light-ficha": {
       "smallTargets": [],
@@ -846,9 +846,9 @@
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
-      "cls": 0.008368327592809996,
-      "longTasks": 1,
-      "maxTask": 53
+      "cls": 0,
+      "longTasks": 5,
+      "maxTask": 77
     },
     "768-dark-catalogo": {
       "smallTargets": [],
@@ -856,7 +856,7 @@
       "overflow": 0,
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 53
+      "maxTask": 52
     },
     "768-dark-ficha": {
       "smallTargets": [],
@@ -895,24 +895,24 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 52
     },
     "1280-light-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 2,
+      "maxTask": 53
     },
     "1280-light-ficha": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 51
     },
     "1280-light-carrito": {
       "smallTargets": [],
@@ -943,16 +943,16 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 2,
-      "maxTask": 65
+      "longTasks": 3,
+      "maxTask": 70
     },
     "1280-dark-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 50
     },
     "1280-dark-ficha": {
       "smallTargets": [],
@@ -967,8 +967,8 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 57
     },
     "1280-dark-admin-inventario": {
       "smallTargets": [],
@@ -1064,14 +1064,6 @@
     "light: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
     "light: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
     "light: https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/1.webp",
-    "light: https://images.openfoodfacts.org/images/products/322/885/700/0166/front_en.1884.400.jpg",
-    "light: https://images.openfoodfacts.org/images/products/302/933/002/2428/front_fr.311.400.jpg",
-    "light: https://images.openfoodfacts.org/images/products/000/001/625/6866/front_fr.105.400.jpg",
-    "light: https://cdn.dummyjson.com/product-images/vehicle/300-touring/1.webp",
-    "light: https://images.openfoodfacts.org/images/products/611/125/175/3912/front_en.10.400.jpg",
-    "light: https://images.openfoodfacts.org/images/products/328/423/001/1884/front_fr.161.400.jpg",
-    "light: https://images.openfoodfacts.org/images/products/611/103/500/1635/front_en.38.400.jpg",
-    "light: https://images.openfoodfacts.org/images/products/611/103/500/1673/front_fr.3.400.jpg",
     "light: https://images.openfoodfacts.org/images/products/322/885/700/0166/front_en.1884.400.jpg",
     "light: https://images.openfoodfacts.org/images/products/302/933/002/2428/front_fr.311.400.jpg",
     "light: https://images.openfoodfacts.org/images/products/000/001/625/6866/front_fr.105.400.jpg",
@@ -1287,7 +1279,7 @@
     "smallTargets": 0,
     "smallFields": 0,
     "maxOverflow": 0,
-    "maxCls": 0.008368327592809996,
-    "maxTask": 88
+    "maxCls": 0.00003448333740234375,
+    "maxTask": 96
   }
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T17:25:22.072Z",
+  "generatedAt": "2026-11-26T18:41:25.834Z",
   "budget": {
     "targetFps": 55,
     "minFps": 32,
@@ -10,25 +10,25 @@
     "maxOrphans": 0
   },
   "warnings": [
-    "390-anadir-carrito: FPS 49.3 por debajo del objetivo 55",
+    "390-anadir-carrito: FPS 41.3 por debajo del objetivo 55",
     "390-anadir-carrito: 3 tareas largas (objetivo 0)",
-    "390-abrir-ficha: FPS 46.3 por debajo del objetivo 55",
-    "390-abrir-ficha: 1 tareas largas (objetivo 0)",
-    "390-hoja-filtros: FPS 51 por debajo del objetivo 55",
+    "390-abrir-ficha: FPS 49.3 por debajo del objetivo 55",
+    "390-abrir-ficha: 2 tareas largas (objetivo 0)",
+    "390-hoja-filtros: FPS 52.4 por debajo del objetivo 55",
     "390-hoja-filtros: 3 tareas largas (objetivo 0)",
-    "390-confirmar-pedido: FPS 46.5 por debajo del objetivo 55",
-    "390-confirmar-pedido: 4 tareas largas (objetivo 0)",
-    "390-estado-pedido: FPS 48.9 por debajo del objetivo 55",
-    "390-estado-pedido: 3 tareas largas (objetivo 0)",
-    "1280-anadir-carrito: FPS 51.6 por debajo del objetivo 55",
+    "390-confirmar-pedido: FPS 49.2 por debajo del objetivo 55",
+    "390-confirmar-pedido: 3 tareas largas (objetivo 0)",
+    "390-estado-pedido: FPS 52.4 por debajo del objetivo 55",
+    "390-estado-pedido: 2 tareas largas (objetivo 0)",
+    "1280-anadir-carrito: FPS 54.2 por debajo del objetivo 55",
     "1280-anadir-carrito: 1 tareas largas (objetivo 0)",
-    "1280-abrir-ficha: FPS 39.5 por debajo del objetivo 55",
-    "1280-abrir-ficha: 2 tareas largas (objetivo 0)",
-    "1280-hoja-filtros: FPS 48.8 por debajo del objetivo 55",
+    "1280-abrir-ficha: FPS 41.9 por debajo del objetivo 55",
+    "1280-abrir-ficha: 3 tareas largas (objetivo 0)",
+    "1280-hoja-filtros: FPS 49.5 por debajo del objetivo 55",
     "1280-hoja-filtros: 3 tareas largas (objetivo 0)",
-    "1280-confirmar-pedido: FPS 46.6 por debajo del objetivo 55",
+    "1280-confirmar-pedido: FPS 49.8 por debajo del objetivo 55",
     "1280-confirmar-pedido: 3 tareas largas (objetivo 0)",
-    "1280-estado-pedido: FPS 28.9 por debajo del objetivo 55",
+    "1280-estado-pedido: FPS 30.5 por debajo del objetivo 55",
     "1280-estado-pedido: 2 tareas largas (objetivo 0)"
   ],
   "conditions": {
@@ -49,14 +49,14 @@
         "thumb": true,
         "ripple": 0
       },
-      "fps": 49.3,
-      "frames": 102,
-      "jank": 12,
-      "maxFrameGapMs": 149.9,
+      "fps": 41.3,
+      "frames": 99,
+      "jank": 16,
+      "maxFrameGapMs": 233.3,
       "cls": 0,
       "shifts": [],
       "longTasks": 3,
-      "maxTaskMs": 130,
+      "maxTaskMs": 189,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -81,14 +81,14 @@
       "flow": "abrir-ficha",
       "hash": "#/tienda/alpro-plantaardig-variatie-vanille-off-5411188103387",
       "title": "Catálogo",
-      "fps": 46.3,
-      "frames": 76,
-      "jank": 7,
-      "maxFrameGapMs": 200,
+      "fps": 49.3,
+      "frames": 80,
+      "jank": 5,
+      "maxFrameGapMs": 166.8,
       "cls": 0,
       "shifts": [],
-      "longTasks": 1,
-      "maxTaskMs": 166,
+      "longTasks": 2,
+      "maxTaskMs": 144,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -105,21 +105,21 @@
       "viewport": "390",
       "flow": "hoja-filtros",
       "sheetOpen": 1,
-      "fps": 51,
-      "frames": 143,
-      "jank": 12,
-      "maxFrameGapMs": 183.4,
+      "fps": 52.4,
+      "frames": 145,
+      "jank": 10,
+      "maxFrameGapMs": 183.3,
       "cls": 0,
       "shifts": [],
       "longTasks": 1,
-      "maxTaskMs": 186,
+      "maxTaskMs": 172,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
           "cls": 0,
           "longTasks": 2,
-          "maxTask": 250,
+          "maxTask": 180,
           "shifts": []
         },
         "live": [
@@ -134,14 +134,14 @@
       "hash": "#/pedido/IVO-2026-000007",
       "celebration": 1,
       "live": 1,
-      "fps": 46.5,
-      "frames": 115,
-      "jank": 15,
-      "maxFrameGapMs": 100,
+      "fps": 49.2,
+      "frames": 120,
+      "jank": 14,
+      "maxFrameGapMs": 100.1,
       "cls": 0,
       "shifts": [],
-      "longTasks": 4,
-      "maxTaskMs": 102,
+      "longTasks": 3,
+      "maxTaskMs": 112,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -157,27 +157,27 @@
     "390-estado-pedido": {
       "viewport": "390",
       "flow": "estado-pedido",
-      "before": "Pendiente",
-      "fps": 48.9,
-      "frames": 114,
-      "jank": 19,
-      "maxFrameGapMs": 83.3,
+      "before": "Confirmado",
+      "fps": 52.4,
+      "frames": 120,
+      "jank": 12,
+      "maxFrameGapMs": 116.6,
       "cls": 0,
       "shifts": [],
       "longTasks": 2,
-      "maxTaskMs": 85,
-      "statusChip": "Confirmado",
+      "maxTaskMs": 111,
+      "statusChip": "Preparando",
       "after": {
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
           "cls": 0,
-          "longTasks": 1,
-          "maxTask": 52,
+          "longTasks": 0,
+          "maxTask": 0,
           "shifts": []
         },
         "live": [
-          "Pedido IVO-2026-000001 pasó a Confirmado"
+          "Pedido IVO-2026-000002 pasó a Preparando"
         ]
       }
     },
@@ -189,14 +189,14 @@
         "thumb": true,
         "ripple": 0
       },
-      "fps": 51.6,
-      "frames": 100,
-      "jank": 9,
-      "maxFrameGapMs": 133.4,
+      "fps": 54.2,
+      "frames": 104,
+      "jank": 8,
+      "maxFrameGapMs": 83.3,
       "cls": 0,
       "shifts": [],
       "longTasks": 1,
-      "maxTaskMs": 118,
+      "maxTaskMs": 67,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -221,14 +221,14 @@
       "flow": "abrir-ficha",
       "hash": "#/tienda/alpro-plantaardig-variatie-vanille-off-5411188103387",
       "title": "Catálogo",
-      "fps": 39.5,
-      "frames": 71,
-      "jank": 15,
-      "maxFrameGapMs": 216.7,
+      "fps": 41.9,
+      "frames": 72,
+      "jank": 10,
+      "maxFrameGapMs": 266.7,
       "cls": 0,
       "shifts": [],
-      "longTasks": 2,
-      "maxTaskMs": 185,
+      "longTasks": 3,
+      "maxTaskMs": 231,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -245,21 +245,21 @@
       "viewport": "1280",
       "flow": "hoja-filtros",
       "sheetOpen": 1,
-      "fps": 48.8,
-      "frames": 85,
-      "jank": 8,
-      "maxFrameGapMs": 183.3,
+      "fps": 49.5,
+      "frames": 89,
+      "jank": 9,
+      "maxFrameGapMs": 216.8,
       "cls": 0,
       "shifts": [],
       "longTasks": 1,
-      "maxTaskMs": 177,
+      "maxTaskMs": 212,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
           "cls": 0,
           "longTasks": 2,
-          "maxTask": 295,
+          "maxTask": 182,
           "shifts": []
         },
         "live": [
@@ -274,14 +274,14 @@
       "hash": "#/pedido/IVO-2026-000007",
       "celebration": 1,
       "live": 1,
-      "fps": 46.6,
+      "fps": 49.8,
       "frames": 117,
       "jank": 12,
-      "maxFrameGapMs": 183.4,
+      "maxFrameGapMs": 100,
       "cls": 0,
       "shifts": [],
       "longTasks": 3,
-      "maxTaskMs": 181,
+      "maxTaskMs": 84,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -298,14 +298,14 @@
       "viewport": "1280",
       "flow": "estado-pedido",
       "before": "Pendiente",
-      "fps": 28.9,
-      "frames": 71,
-      "jank": 29,
-      "maxFrameGapMs": 116.6,
+      "fps": 30.5,
+      "frames": 75,
+      "jank": 33,
+      "maxFrameGapMs": 83.3,
       "cls": 0,
       "shifts": [],
       "longTasks": 2,
-      "maxTaskMs": 126,
+      "maxTaskMs": 131,
       "statusChip": "Confirmado",
       "after": {
         "orphans": 0,
@@ -335,10 +335,10 @@
         "perf": {
           "cls": 0.1670616113744076,
           "longTasks": 8,
-          "maxTask": 439,
+          "maxTask": 398,
           "shifts": [
             {
-              "at": 2000,
+              "at": 1880,
               "value": 0.1671,
               "sources": [
                 {
@@ -371,10 +371,10 @@
         "perf": {
           "cls": 0.1670616113744076,
           "longTasks": 8,
-          "maxTask": 439,
+          "maxTask": 398,
           "shifts": [
             {
-              "at": 2000,
+              "at": 1880,
               "value": 0.1671,
               "sources": [
                 {
@@ -406,10 +406,10 @@
         "perf": {
           "cls": 0.2671149648785591,
           "longTasks": 10,
-          "maxTask": 459,
+          "maxTask": 365,
           "shifts": [
             {
-              "at": 1597,
+              "at": 1498,
               "value": 0.0001,
               "sources": [
                 {
@@ -435,7 +435,7 @@
               ]
             },
             {
-              "at": 2106,
+              "at": 1910,
               "value": 0.267,
               "sources": [
                 {
@@ -483,10 +483,10 @@
         "perf": {
           "cls": 0.2671149648785591,
           "longTasks": 11,
-          "maxTask": 459,
+          "maxTask": 365,
           "shifts": [
             {
-              "at": 1597,
+              "at": 1498,
               "value": 0.0001,
               "sources": [
                 {
@@ -512,7 +512,7 @@
               ]
             },
             {
-              "at": 2106,
+              "at": 1910,
               "value": 0.267,
               "sources": [
                 {
@@ -551,6 +551,6 @@
   "errors": [],
   "externalRequests": [],
   "problems": [
-    "1280-estado-pedido: FPS 28.9 por debajo del suelo 32"
+    "1280-estado-pedido: FPS 30.5 por debajo del suelo 32"
   ]
 }

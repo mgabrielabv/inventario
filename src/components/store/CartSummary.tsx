@@ -35,9 +35,10 @@ export const CartSummary = ({ compact = false, onNavigate, mobileBar = false }: 
   const issues = useMemo(
     () => validateCart(active, products, orders), [active, products, orders],
   )
-  const entrega = draft.entrega === 'delivery'
+  const entrega = useMemo(() => draft.entrega === 'delivery'
     ? { tipo: 'delivery' as const, zona: draft.zona || undefined, direccion: draft.direccion || undefined }
-    : { tipo: 'retiro' as const }
+    : { tipo: 'retiro' as const },
+  [draft.entrega, draft.zona, draft.direccion])
   const totals = useMemo(() => calcTotals(
     buildOrderLines(active, products), entrega, settings, findCoupon(draft.cupon, settings),
   ), [active, products, entrega, settings, draft.cupon])

@@ -18,7 +18,7 @@ export const Modal = ({ open, onClose, title, children, className = '' }: Props)
   const panel = useRef<HTMLDivElement | null>(null)
   const previous = useRef<HTMLElement | null>(null)
   const closeRef = useRef(onClose)
-  closeRef.current = onClose
+  useEffect(() => { closeRef.current = onClose }, [onClose])
 
   const onKey = useCallback((event: KeyboardEvent) => {
     if (event.key === 'Escape') { event.stopPropagation(); closeRef.current(); return }

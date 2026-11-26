@@ -79,12 +79,13 @@ export const ProductPage = () => {
   )
   const line = product ? lines.find((item) => item.productoId === product.id) : undefined
 
+  const productId = product?.id
   useEffect(() => {
     setQuantity(1)
     setView('hero')
     setExcluded([])
-    if (product) visit(product.id)
-  }, [product?.id, visit])
+    if (productId) visit(productId)
+  }, [productId, visit])
 
   const onAdd = (event: MouseEvent<HTMLButtonElement>, extra?: typeof together) => {
     if (!product || soldOut) return

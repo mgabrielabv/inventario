@@ -94,6 +94,12 @@ El respaldo pasa a **v5**: incluye `fotos`, un mapa de data URLs de las imágene
 
 Salvedad de verificación de esta fase: `verify:motion` vuelve a completar 10/10 flujos funcionales, pero `1280-estado-pedido` queda en 28,9 FPS frente al suelo de 32, la misma salvedad aceptada en la fase anterior y sin rebajar el presupuesto del script. `verify:visual` terminó limpio en la tercera ejecución; en las dos anteriores apareció de forma transitoria una tarea larga (233 ms y 219 ms) y un CLS de 0,0125 en `768-light-inicio`, ruta que no se modificó en esta fase, con CPU ×4 y alta carga externa. No se ajustaron umbrales.
 
+## Pulido de código (fase 8)
+
+Se corrigieron las advertencias accionables del lint sin cambiar comportamiento: dependencias completas en los efectos de `product-page.tsx` y `checkout-page.tsx` (con la hidratación de cuenta guiada por `account?.id`), memoización de `entrega` en `CartSummary.tsx`, variable sin uso en `scripts/mobile-audit.mjs`, año del pie y del placeholder de seguimiento calculados una sola vez en `StoreChrome.tsx` y `tracking-page.tsx`, valor inicial de `openByDefault` con `useState` en lugar de acceder a un ref durante el render, y actualización de `closeRef.current` dentro de un efecto en `Modal.tsx`, `Sheet.tsx` y `StoreChrome.tsx`. Quedan las advertencias de fast-refresh en proveedores/hooks y las de `set-state-in-effect` en sincronizaciones deliberadas con tiendas y medios; no se refactorizó código estable solo para silenciarlas.
+
+Tras el pulido: `npm run lint` sin errores, `npx tsc -b` correcto, `npm test` 21/109 en verde, `npm run build` con `dist/index.html` de 2.638.198 bytes (970.847 gzip), `verify:seed` 9/9, `verify:visual` limpio en la repetición (la primera medición tuvo una tarea larga transitoria de 394 ms en `1280-light-inicio`), `verify:motion` 10/10 con la salvedad conocida de `1280-estado-pedido` en 30,5 FPS y tareas largas transitorias en `hoja-filtros`, y `audit:mobile` 280 mediciones con 0 problemas. No se rebajaron umbrales ni se añadieron dependencias.
+
 ## Accesibilidad
 
 Contraste AA en claro y oscuro, foco visible, `aria-*`, errores asociados al campo con `aria-describedby`, navegación por teclado, texteos alternativos para el arte de producto y avisos accesibles. Los atajos de teclado ignoran campos, `contenteditable` y diálogos.

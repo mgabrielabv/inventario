@@ -13,6 +13,8 @@ import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
 import type { Order } from '../../logic/types'
 
+const ANO_ACTUAL = new Date().getFullYear()
+
 const Timeline = ({ items }: { items: Order['historial'] }) => (
   <ol className="tracking-timeline">
     {items.map((item, index) => (
@@ -76,7 +78,7 @@ export const TrackingPage = () => {
                 id={id}
                 className="code"
                 value={code}
-                placeholder={`${BRAND.orderPrefix}-${new Date().getFullYear()}-000001`}
+                placeholder={`${BRAND.orderPrefix}-${ANO_ACTUAL}-000001`}
                 aria-describedby={describedBy || undefined}
                 autoComplete="off"
                 inputMode="text"
