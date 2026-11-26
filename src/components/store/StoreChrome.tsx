@@ -1,16 +1,17 @@
-import { AnimatePresence, motion, useReducedMotion, useScroll } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import {
   ArrowRight, Banknote, ChevronDown, CreditCard, Heart, House, Laptop, LayoutGrid,
   MapPin, Menu, MessageCircle, Mouse, Package, PenLine, Phone, Search, ShoppingBag,
   LogOut, Smartphone, Sparkles, Tag, TrendingUp, UserRound, Wallet, X, type LucideIcon,
 } from 'lucide-react'
 import {
-  useEffect, useId, useMemo, useRef, useState, type FormEvent, type KeyboardEvent,
+  useEffect, useMemo, useRef, useState,
 } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { CartLineItem } from './CartLineItem'
 import { CartSummary } from './CartSummary'
-import { BRAND, storageKey } from '../../config/brand'
+import { SearchIsland } from './SearchIsland'
+import { BRAND } from '../../config/brand'
 import { useCartStore } from '../../logic/store/cart'
 import { useCartDraftStore } from '../../logic/store/cartDraft'
 import { useCustomer } from '../../app/providers/customer-provider'
@@ -19,10 +20,11 @@ import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
 import { cartCount, validateCart } from '../../logic/services/cart'
-import { formatPhoneDisplay, normalizeText, storeName } from '../../logic/services/formatters'
+import { formatPhoneDisplay, storeName } from '../../logic/services/formatters'
 import { formatMoney } from '../../logic/services/pricing'
 import { getAvailable } from '../../logic/services/stock'
 import { BrandMark } from '../brand/BrandMark'
+import { Popover } from '../ui/Popover'
 import { Sheet } from '../ui/Sheet'
 import { ThemeToggle } from '../ui/ThemeToggle'
 import { useCartBump, useCartBumpValue, useFlyToCart } from '../../motion/hooks/useFlyToCart'
@@ -38,21 +40,6 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
 const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])'
 
 const iconFor = (category: string): LucideIcon => CATEGORY_ICONS[category] ?? Package
-
-const extraText = (product: Product): string => {
-  let value = ''
-  if ('subcategoria' in product && typeof product.subcategoria === 'string') {
-    value += ` ${product.subcategoria}`
-  }
-  if ('marca' in product && typeof product.marca === 'string') {
-    value += ` ${product.marca}`
-  }
-  return value.trim()
-}
-
-const searchText = (product: Product): string => normalizeText([
-  product.nombre, product.categoria, ...product.etiquetas, extraText(product),
-].join(' '))
 
 const subcategoriesFor = (categoria: string, products: Product[]): string[] => {
   const found = new Set<string>()
@@ -77,228 +64,6 @@ const useIsMobile = () => {
 }
 
 /* ------------------------------- Buscador -------------------------------- */
-type Match = {
-  id: string
-  label: string
-  detail: string
-  to: string
-  group: 'Categorías' | 'Productos'
-  price?: string
-  status?: string
-}
-
-interface SearchBoxProps {
-  overlay?: boolean
-  onClose?: () => void
-}
-
-export const SearchBox = ({ overlay = false, onClose }: SearchBoxProps) => {
-  const [query, setQuery] = useState('')
-  const [active, setActive] = useState(0)
-  const [open, setOpen] = useState(false)
-  const [recent, setRecent] = useState<string[]>(() => {
-    try { return JSON.parse(localStorage.getItem(storageKey('recent-searches')) ?? '[]') as string[] }
-    catch { return [] }
-  })
-  const root = useRef<HTMLDivElement | null>(null)
-  const input = useRef<HTMLInputElement | null>(null)
-  const panelId = useId()
-  const navigate = useNavigate()
-  const products = useInventoryStore((state) => state.products)
-  const orders = useOrdersStore((state) => state.orders)
-  const categories = useSettingsStore((state) => state.settings.catalogo.categorias)
-  const reduce = useReducedMotion()
-  const visible = overlay || open
-
-  const matches = useMemo<Match[]>(() => {
-    const q = normalizeText(query.trim())
-    const categoryMatches: Match[] = categories
-      .filter((category) => !q || normalizeText(category).includes(q))
-      .slice(0, q ? 3 : 4)
-      .map((category) => ({
-        id: `cat-${category}`,
-        label: category,
-        detail: 'Ver productos',
-        to: `/tienda?categoria=${encodeURIComponent(category)}`,
-        group: 'Categorías' as const,
-      }))
-    const pool = products.filter((product) => product.publicado && !product.archivado
-      && product.precio !== null && (!q || searchText(product).includes(q)))
-    const chosen = (q ? pool : pool.filter((product) => product.destacado))
-    const productMatches: Match[] = (chosen.length ? chosen : pool).slice(0, 6).map((product) => ({
-      id: product.id,
-      label: product.nombre,
-      detail: [product.categoria, ...product.etiquetas.slice(0, 2), extraText(product)]
-        .filter(Boolean).join(' · '),
-      to: `/tienda/${product.slug}`,
-      group: 'Productos' as const,
-      price: formatMoney(product.precio ?? 0),
-      status: getAvailable(product, orders) > 0 ? 'Disponible' : 'Agotado',
-    }))
-    return [...categoryMatches, ...productMatches]
-  }, [query, products, categories, orders])
-
-  useEffect(() => setActive(0), [query])
-  useEffect(() => {
-    if (overlay) input.current?.focus()
-  }, [overlay])
-  useEffect(() => {
-    if (overlay) return
-    const onPointer = (event: PointerEvent) => {
-      if (root.current && !root.current.contains(event.target as Node)) setOpen(false)
-    }
-    document.addEventListener('pointerdown', onPointer)
-    return () => document.removeEventListener('pointerdown', onPointer)
-  }, [overlay])
-
-  const go = (match: Match) => {
-    setOpen(false)
-    onClose?.()
-    navigate(match.to)
-  }
-
-  const submit = () => {
-    const term = query.trim()
-    if (term) {
-      const next = [term, ...recent.filter((item) => item !== term)].slice(0, 6)
-      setRecent(next)
-      try { localStorage.setItem(storageKey('recent-searches'), JSON.stringify(next)) } catch { /* sin almacenamiento */ }
-    }
-    const match = matches[active]
-    if (visible && match) go(match)
-    else {
-      setOpen(false)
-      onClose?.()
-      navigate(term ? `/tienda?q=${encodeURIComponent(term)}` : '/tienda')
-    }
-  }
-
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    submit()
-  }
-
-  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Escape') {
-      setOpen(false)
-      onClose?.()
-      return
-    }
-    if (event.key === 'ArrowDown') {
-      event.preventDefault()
-      setOpen(true)
-      setActive((value) => Math.min(value + 1, Math.max(0, matches.length - 1)))
-      return
-    }
-    if (event.key === 'ArrowUp') {
-      event.preventDefault()
-      setActive((value) => Math.max(0, value - 1))
-      return
-    }
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      submit()
-    }
-  }
-
-  return (
-    <div ref={root} className={`eshop-search${overlay ? ' eshop-search--overlay' : ''}`}>
-      <form className="eshop-search__form" role="search" onSubmit={onSubmit}>
-        <Search size={19} strokeWidth={1.8} className="eshop-search__icon" aria-hidden="true" />
-        <input
-          ref={input}
-          className="eshop-search__input"
-          type="search"
-          value={query}
-          placeholder="Busca por nombre, categoría o etiqueta"
-          aria-label="Buscar productos"
-          aria-expanded={visible}
-          aria-controls={panelId}
-          autoComplete="off"
-          inputMode="search"
-          enterKeyHint="search"
-          onFocus={() => setOpen(true)}
-          onChange={(event) => setQuery(event.target.value)}
-          onKeyDown={onKeyDown}
-        />
-        {query && (
-          <button
-            type="button"
-            className="eshop-search__clear"
-            aria-label="Limpiar búsqueda"
-            onClick={() => { setQuery(''); setActive(0); input.current?.focus() }}
-          >
-            <X size={16} strokeWidth={1.8} aria-hidden="true" />
-          </button>
-        )}
-        {!overlay && <button type="submit" className="eshop-search__submit">Buscar</button>}
-      </form>
-      <AnimatePresence>
-        {visible && (
-          <motion.div
-            id={panelId}
-            className="eshop-search__panel"
-            role="region"
-            aria-label="Sugerencias de búsqueda"
-            initial={{ opacity: 0, y: reduce ? 0 : -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: reduce ? 0 : -4 }}
-            transition={{ duration: reduce ? 0 : 0.14 }}
-          >
-            {overlay && !query.trim() && recent.length > 0 && (
-              <div className="eshop-search__recent">
-                <p className="eshop-search__label">Búsquedas recientes</p>
-                <div className="eshop-search__recent-list">
-                  {recent.map((term) => (
-                    <button
-                      key={term}
-                      type="button"
-                      className="chip"
-                      onClick={() => { setQuery(term); input.current?.focus() }}
-                    >
-                      {term}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-            {matches.length === 0 ? (
-              <p className="eshop-search__empty">No hay sugerencias para “{query}”.</p>
-            ) : matches.map((match, index) => (
-              <div key={match.id}>
-                {(index === 0 || matches[index - 1]!.group !== match.group) && (
-                  <p className="eshop-search__label">{match.group}</p>
-                )}
-                <button
-                  type="button"
-                  className={`eshop-search__item${index === active ? ' eshop-search__item--active' : ''}`}
-                  onMouseEnter={() => setActive(index)}
-                  onClick={() => go(match)}
-                >
-                  <span className="eshop-search__thumb" aria-hidden="true">
-                    {match.group === 'Categorías' ? <LayoutGrid size={17} /> : <Package size={17} />}
-                  </span>
-                  <span className="eshop-search__text">
-                    <span className="eshop-search__title">{match.label}</span>
-                    <span className="eshop-search__meta">{match.detail}</span>
-                  </span>
-                  {match.price && <span className="eshop-search__price">{match.price}</span>}
-                  {match.status && <span className="eshop-search__status">{match.status}</span>}
-                </button>
-              </div>
-            ))}
-            {!overlay && (
-              <button type="button" className="eshop-search__all" onClick={submit}>
-                Ver todos los resultados <ArrowRight size={15} strokeWidth={1.8} aria-hidden="true" />
-              </button>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  )
-}
-
 const SearchDialog = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const panel = useRef<HTMLDivElement | null>(null)
   const previous = useRef<HTMLElement | null>(null)
@@ -360,7 +125,7 @@ const SearchDialog = ({ open, onClose }: { open: boolean; onClose: () => void })
                 <X size={19} strokeWidth={1.8} aria-hidden="true" />
               </button>
             </div>
-            <SearchBox overlay onClose={onClose} />
+            <SearchIsland expanded />
           </motion.div>
         </motion.div>
       )}
@@ -371,6 +136,8 @@ const SearchDialog = ({ open, onClose }: { open: boolean; onClose: () => void })
 /* ------------------------------- Navegación ------------------------------ */
 export const StoreNav = () => {
   const [scrolled, setScrolled] = useState(() => window.scrollY > chromeMotion.scrollDelta)
+  const [utilityHidden, setUtilityHidden] = useState(false)
+  const [catsHidden, setCatsHidden] = useState(false)
   const [headerHidden, setHeaderHidden] = useState(false)
   const [mobileViewport, setMobileViewport] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
@@ -381,13 +148,15 @@ export const StoreNav = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false)
   const [openCategory, setOpenCategory] = useState<string | null>(null)
   const [ripple, setRipple] = useState(0)
-  const { scrollY } = useScroll()
   const { setCartTarget } = useFlyToCart()
   const bump = useCartBumpValue()
   const cartRef = useRef<HTMLButtonElement | null>(null)
   const mobileCartRef = useRef<HTMLButtonElement | null>(null)
   const tabbarCartRef = useRef<HTMLButtonElement | null>(null)
   const lastScrollY = useRef(0)
+  const chromeState = useRef({
+    scrolled: false, headerHidden: false, utilityHidden: false, catsHidden: false,
+  })
   const megaRef = useRef<HTMLDivElement | null>(null)
   const reduce = useReducedMotion()
   const location = useLocation()
@@ -437,14 +206,37 @@ export const StoreNav = () => {
     query.addEventListener('change', update)
     return () => query.removeEventListener('change', update)
   }, [])
-  useEffect(() => scrollY.on('change', (value) => {
-    setScrolled(value > chromeMotion.scrollDelta)
-    const delta = value - lastScrollY.current
-    if (Math.abs(delta) >= chromeMotion.scrollDelta) {
-      setHeaderHidden(mobileViewport && value > chromeMotion.hideAfter && delta > 0)
+  // Un solo listener pasivo y un frame por ronda: la cabecera no provoca
+  // renders de React en cada evento de scroll, solo cuando cambia un estado.
+  useEffect(() => {
+    let frame = 0
+    const apply = () => {
+      frame = 0
+      const value = window.scrollY
+      const delta = value - lastScrollY.current
+      const hidden = value > chromeMotion.hideAfter && delta > chromeMotion.scrollDelta
+      const next = {
+        scrolled: value > chromeMotion.scrollDelta,
+        headerHidden: mobileViewport && hidden,
+        utilityHidden: hidden,
+        catsHidden: hidden,
+      }
+      const previous = chromeState.current
+      if (next.scrolled !== previous.scrolled) setScrolled(next.scrolled)
+      if (next.headerHidden !== previous.headerHidden) setHeaderHidden(next.headerHidden)
+      if (next.utilityHidden !== previous.utilityHidden) setUtilityHidden(next.utilityHidden)
+      if (next.catsHidden !== previous.catsHidden) setCatsHidden(next.catsHidden)
+      chromeState.current = next
       lastScrollY.current = value
     }
-  }), [scrollY, mobileViewport])
+    const onScroll = () => { if (!frame) frame = window.requestAnimationFrame(apply) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    apply()
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.cancelAnimationFrame(frame)
+    }
+  }, [mobileViewport])
   useEffect(() => {
     setCartTarget('header', cartRef.current)
     setCartTarget('mobile', mobileCartRef.current)
@@ -460,6 +252,12 @@ export const StoreNav = () => {
     setMegaOpen(false)
     setAccountMenuOpen(false)
     setHeaderHidden(false)
+    setUtilityHidden(false)
+    setCatsHidden(false)
+    chromeState.current = {
+      scrolled: false, headerHidden: false, utilityHidden: false, catsHidden: false,
+    }
+    lastScrollY.current = window.scrollY
   }, [location.pathname, location.search])
   useEffect(() => {
     if (!megaOpen) return
@@ -556,7 +354,7 @@ export const StoreNav = () => {
         </button>
       </div>
 
-      <header className={`eshop-nav${scrolled ? ' eshop-nav--scrolled' : ''}`}>
+      <header className={`eshop-nav${scrolled ? ' eshop-nav--scrolled' : ''}${utilityHidden ? ' eshop-nav--utility-hidden' : ''}${catsHidden ? ' eshop-nav--cats-hidden' : ''}`}>
         {/* Siempre en flujo: ocultarla al bajar desplazaba toda la página 44 px
             y contaba como CLS al volver arriba. La cabecera móvil sí se oculta
             con transform, que no altera el layout. */}
@@ -598,7 +396,7 @@ export const StoreNav = () => {
               <span className="eshop-brand__name">{name}</span>
             </Link>
 
-            <div className="eshop-nav__search"><SearchBox /></div>
+            <div className="eshop-nav__search"><SearchIsland /></div>
 
             <div className="eshop-nav__actions">
               <div className="eshop-nav__account">
@@ -614,8 +412,13 @@ export const StoreNav = () => {
                       <UserRound size={15} aria-hidden="true" /> Hola, {account.nombre}
                       <ChevronDown size={14} aria-hidden="true" />
                     </button>
-                    {accountMenuOpen && (
-                      <div className="eshop-nav__account-panel" role="menu">
+                    <Popover
+                      open={accountMenuOpen}
+                      onClose={() => setAccountMenuOpen(false)}
+                      label="Menú de cuenta"
+                      className="eshop-nav__account-panel"
+                    >
+                      <nav role="menu" aria-label="Opciones de cuenta" onClick={() => setAccountMenuOpen(false)}>
                         <Link role="menuitem" to="/cuenta">Mi cuenta</Link>
                         <Link role="menuitem" to="/cuenta/pedidos">Mis pedidos</Link>
                         <Link role="menuitem" to="/cuenta/direcciones">Direcciones</Link>
@@ -623,8 +426,8 @@ export const StoreNav = () => {
                         <button role="menuitem" type="button" onClick={() => { signOut(); setAccountMenuOpen(false) }}>
                           <LogOut size={14} aria-hidden="true" /> Cerrar sesión
                         </button>
-                      </div>
-                    )}
+                      </nav>
+                    </Popover>
                   </div>
                 ) : (
                   <>
@@ -641,9 +444,9 @@ export const StoreNav = () => {
               >
                 <Search size={20} strokeWidth={1.7} />
               </button>
-              <Link className="eshop-nav__icon-btn" to="/favoritos" aria-label={`Favoritos: ${favoriteCount}`}>
+              <Link className="eshop-nav__icon-btn" to="/favoritos" aria-label={`Favoritos${favoriteCount ? `: ${favoriteCount}` : ''}`}>
                 <Heart size={20} strokeWidth={1.7} />
-                <span className="eshop-nav__badge">{favoriteCount}</span>
+                {favoriteCount > 0 && <span className="eshop-nav__badge"><RollingNumber value={favoriteCount} ariaLabel={`${favoriteCount} favoritos`} /></span>}
               </Link>
               <motion.button
                 ref={cartRef}
@@ -654,7 +457,7 @@ export const StoreNav = () => {
                 onClick={() => setCartOpen(true)}
               >
                 <ShoppingBag size={20} strokeWidth={1.7} />
-                <span className="eshop-nav__badge"><RollingNumber value={units} ariaLabel={`${units} unidades`} /></span>
+                {units > 0 && <span className="eshop-nav__badge"><RollingNumber value={units} ariaLabel={`${units} unidades`} /></span>}
                 <span className="eshop-nav__cart-total">{formatMoney(total)}</span>
                 {!reduce && ripple > 0 && <span key={`ripple-h-${ripple}`} className="cart-ripple" aria-hidden="true" onAnimationEnd={() => setRipple(0)} />}
               </motion.button>

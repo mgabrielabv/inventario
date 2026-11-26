@@ -41,7 +41,8 @@ describe('panel de personal · fase 7', () => {
     expect(page).toContain('ESCENARIOS.map')
     expect(page).toContain('ESCENARIO_LABELS[item]')
     expect(stage).toContain('data-escenario={escenario}')
-    expect(pdp).toContain('<ProductStage escenario={product.escenario}>')
+    expect(pdp).toMatch(/<ProductStage escenario=\{product\.escenario\}/)
+    expect(pdp).toContain('categoria={product.categoria}')
     for (const selector of ['estudio', 'arena', 'noche']) {
       expect(storeCss).toContain(`[data-escenario='${selector}']`)
       expect(adminCss).toContain(`[data-escenario='${selector}']`)

@@ -18,6 +18,7 @@ import {
 import type {
   CatalogFilters, Density, PriceRange, SortKey,
 } from '../../logic/services/catalog'
+import { pluralize } from '../../logic/services/formatters'
 import { formatMoney } from '../../logic/services/pricing'
 import { getAvailable } from '../../logic/services/stock'
 import { useInventoryStore } from '../../logic/store/inventory'
@@ -318,7 +319,7 @@ export const CatalogPage = () => {
             <p className="eshop-catalog__subtitle">{subtitulo}</p>
           </div>
           <p className="eshop-catalog__total" aria-live="polite">
-            {results.length} {results.length === 1 ? 'producto' : 'productos'}
+            {results.length} {pluralize(results.length, 'producto', 'productos')}
           </p>
         </header>
 
@@ -342,7 +343,7 @@ export const CatalogPage = () => {
                 )}
               </Button>
               <div className="eshop-toolbar__count" role="status">
-                {shownCount} de {results.length} {results.length === 1 ? 'producto' : 'productos'}
+                {shownCount} de {results.length} {pluralize(results.length, 'producto', 'productos')}
                 {filters.cat !== 'Todas' ? ` · ${filters.cat}` : ''}
               </div>
               <div className="eshop-toolbar__controls">
@@ -427,7 +428,8 @@ export const CatalogPage = () => {
             {shownCount < results.length && (
               <div className="eshop-more">
                 <p>
-                  Mostrando {shownCount} de {results.length} productos
+                  Mostrando {shownCount} de {results.length}{' '}
+                  {pluralize(results.length, 'producto', 'productos')}
                 </p>
                 <Button variant="secondary" onClick={() => update({ pagina: page + 1 })}>
                   Cargar más
@@ -447,7 +449,7 @@ export const CatalogPage = () => {
       >
         <FilterPanel {...panelProps} />
         <Button full className="eshop-filter-sheet__done" onClick={() => setMobileFilters(false)}>
-          Ver {results.length} {results.length === 1 ? 'producto' : 'productos'}
+          Ver {results.length} {pluralize(results.length, 'producto', 'productos')}
         </Button>
       </Sheet>
     </div>

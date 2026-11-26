@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T18:41:25.834Z",
+  "generatedAt": "2026-11-26T22:42:00.857Z",
   "budget": {
     "targetFps": 55,
     "minFps": 32,
@@ -10,29 +10,19 @@
     "maxOrphans": 0
   },
   "warnings": [
-    "390-anadir-carrito: FPS 41.3 por debajo del objetivo 55",
-    "390-anadir-carrito: 3 tareas largas (objetivo 0)",
-    "390-abrir-ficha: FPS 49.3 por debajo del objetivo 55",
-    "390-abrir-ficha: 2 tareas largas (objetivo 0)",
-    "390-hoja-filtros: FPS 52.4 por debajo del objetivo 55",
+    "390-anadir-carrito: 1 tareas largas (objetivo 0)",
+    "390-abrir-ficha: FPS 52.2 por debajo del objetivo 55",
+    "390-abrir-ficha: 1 tareas largas (objetivo 0)",
+    "390-hoja-filtros: FPS 53.9 por debajo del objetivo 55",
     "390-hoja-filtros: 3 tareas largas (objetivo 0)",
-    "390-confirmar-pedido: FPS 49.2 por debajo del objetivo 55",
-    "390-confirmar-pedido: 3 tareas largas (objetivo 0)",
-    "390-estado-pedido: FPS 52.4 por debajo del objetivo 55",
-    "390-estado-pedido: 2 tareas largas (objetivo 0)",
-    "1280-anadir-carrito: FPS 54.2 por debajo del objetivo 55",
-    "1280-anadir-carrito: 1 tareas largas (objetivo 0)",
-    "1280-abrir-ficha: FPS 41.9 por debajo del objetivo 55",
-    "1280-abrir-ficha: 3 tareas largas (objetivo 0)",
-    "1280-hoja-filtros: FPS 49.5 por debajo del objetivo 55",
-    "1280-hoja-filtros: 3 tareas largas (objetivo 0)",
-    "1280-confirmar-pedido: FPS 49.8 por debajo del objetivo 55",
-    "1280-confirmar-pedido: 3 tareas largas (objetivo 0)",
-    "1280-estado-pedido: FPS 30.5 por debajo del objetivo 55",
-    "1280-estado-pedido: 2 tareas largas (objetivo 0)"
+    "1280-abrir-ficha: FPS 44.4 por debajo del objetivo 55",
+    "1280-abrir-ficha: 1 tareas largas (objetivo 0)",
+    "1280-hoja-filtros: 2 tareas largas (objetivo 0)",
+    "1280-confirmar-pedido: FPS 52.7 por debajo del objetivo 55",
+    "1280-confirmar-pedido: 1 tareas largas (objetivo 0)"
   ],
   "conditions": {
-    "cpuThrottling": 4,
+    "cpuThrottling": 1.5,
     "network": {
       "latencyMs": 180,
       "downloadKbps": 120,
@@ -49,14 +39,14 @@
         "thumb": true,
         "ripple": 0
       },
-      "fps": 41.3,
-      "frames": 99,
-      "jank": 16,
-      "maxFrameGapMs": 233.3,
+      "fps": 57.3,
+      "frames": 116,
+      "jank": 3,
+      "maxFrameGapMs": 100,
       "cls": 0,
       "shifts": [],
-      "longTasks": 3,
-      "maxTaskMs": 189,
+      "longTasks": 1,
+      "maxTaskMs": 74,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -80,15 +70,15 @@
       "viewport": "390",
       "flow": "abrir-ficha",
       "hash": "#/tienda/alpro-plantaardig-variatie-vanille-off-5411188103387",
-      "title": "Catálogo",
-      "fps": 49.3,
-      "frames": 80,
-      "jank": 5,
-      "maxFrameGapMs": 166.8,
+      "title": "Alpro Plantaardig variatie vanille",
+      "fps": 52.2,
+      "frames": 86,
+      "jank": 2,
+      "maxFrameGapMs": 166.7,
       "cls": 0,
       "shifts": [],
-      "longTasks": 2,
-      "maxTaskMs": 144,
+      "longTasks": 1,
+      "maxTaskMs": 133,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -105,21 +95,21 @@
       "viewport": "390",
       "flow": "hoja-filtros",
       "sheetOpen": 1,
-      "fps": 52.4,
-      "frames": 145,
-      "jank": 10,
+      "fps": 53.9,
+      "frames": 94,
+      "jank": 2,
       "maxFrameGapMs": 183.3,
       "cls": 0,
       "shifts": [],
       "longTasks": 1,
-      "maxTaskMs": 172,
+      "maxTaskMs": 192,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
           "cls": 0,
           "longTasks": 2,
-          "maxTask": 180,
+          "maxTask": 103,
           "shifts": []
         },
         "live": [
@@ -134,14 +124,14 @@
       "hash": "#/pedido/IVO-2026-000007",
       "celebration": 1,
       "live": 1,
-      "fps": 49.2,
-      "frames": 120,
-      "jank": 14,
-      "maxFrameGapMs": 100.1,
+      "fps": 57.4,
+      "frames": 112,
+      "jank": 4,
+      "maxFrameGapMs": 50,
       "cls": 0,
       "shifts": [],
-      "longTasks": 3,
-      "maxTaskMs": 112,
+      "longTasks": 0,
+      "maxTaskMs": 0,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -157,16 +147,16 @@
     "390-estado-pedido": {
       "viewport": "390",
       "flow": "estado-pedido",
-      "before": "Confirmado",
-      "fps": 52.4,
-      "frames": 120,
-      "jank": 12,
-      "maxFrameGapMs": 116.6,
+      "before": "Pendiente",
+      "fps": 60.5,
+      "frames": 159,
+      "jank": 0,
+      "maxFrameGapMs": 16.8,
       "cls": 0,
       "shifts": [],
-      "longTasks": 2,
-      "maxTaskMs": 111,
-      "statusChip": "Preparando",
+      "longTasks": 0,
+      "maxTaskMs": 0,
+      "statusChip": "Confirmado",
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -177,7 +167,7 @@
           "shifts": []
         },
         "live": [
-          "Pedido IVO-2026-000002 pasó a Preparando"
+          "Pedido IVO-2026-000001 pasó a Confirmado"
         ]
       }
     },
@@ -189,14 +179,14 @@
         "thumb": true,
         "ripple": 0
       },
-      "fps": 54.2,
-      "frames": 104,
-      "jank": 8,
-      "maxFrameGapMs": 83.3,
+      "fps": 59,
+      "frames": 108,
+      "jank": 2,
+      "maxFrameGapMs": 50.1,
       "cls": 0,
       "shifts": [],
-      "longTasks": 1,
-      "maxTaskMs": 67,
+      "longTasks": 0,
+      "maxTaskMs": 0,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -220,15 +210,15 @@
       "viewport": "1280",
       "flow": "abrir-ficha",
       "hash": "#/tienda/alpro-plantaardig-variatie-vanille-off-5411188103387",
-      "title": "Catálogo",
-      "fps": 41.9,
-      "frames": 72,
-      "jank": 10,
-      "maxFrameGapMs": 266.7,
+      "title": "Alpro Plantaardig variatie vanille",
+      "fps": 44.4,
+      "frames": 73,
+      "jank": 9,
+      "maxFrameGapMs": 166.6,
       "cls": 0,
       "shifts": [],
-      "longTasks": 3,
-      "maxTaskMs": 231,
+      "longTasks": 1,
+      "maxTaskMs": 117,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -245,21 +235,21 @@
       "viewport": "1280",
       "flow": "hoja-filtros",
       "sheetOpen": 1,
-      "fps": 49.5,
+      "fps": 57.2,
       "frames": 89,
-      "jank": 9,
-      "maxFrameGapMs": 216.8,
+      "jank": 2,
+      "maxFrameGapMs": 66.6,
       "cls": 0,
       "shifts": [],
       "longTasks": 1,
-      "maxTaskMs": 212,
+      "maxTaskMs": 81,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
           "cls": 0,
-          "longTasks": 2,
-          "maxTask": 182,
+          "longTasks": 1,
+          "maxTask": 65,
           "shifts": []
         },
         "live": [
@@ -274,14 +264,14 @@
       "hash": "#/pedido/IVO-2026-000007",
       "celebration": 1,
       "live": 1,
-      "fps": 49.8,
-      "frames": 117,
+      "fps": 52.7,
+      "frames": 109,
       "jank": 12,
-      "maxFrameGapMs": 100,
+      "maxFrameGapMs": 50,
       "cls": 0,
       "shifts": [],
-      "longTasks": 3,
-      "maxTaskMs": 84,
+      "longTasks": 1,
+      "maxTaskMs": 52,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -298,14 +288,14 @@
       "viewport": "1280",
       "flow": "estado-pedido",
       "before": "Pendiente",
-      "fps": 30.5,
-      "frames": 75,
-      "jank": 33,
-      "maxFrameGapMs": 83.3,
+      "fps": 59.4,
+      "frames": 127,
+      "jank": 2,
+      "maxFrameGapMs": 33.3,
       "cls": 0,
       "shifts": [],
-      "longTasks": 2,
-      "maxTaskMs": 131,
+      "longTasks": 0,
+      "maxTaskMs": 0,
       "statusChip": "Confirmado",
       "after": {
         "orphans": 0,
@@ -333,22 +323,10 @@
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
-          "cls": 0.1670616113744076,
-          "longTasks": 8,
-          "maxTask": 398,
-          "shifts": [
-            {
-              "at": 1880,
-              "value": 0.1671,
-              "sources": [
-                {
-                  "node": "footer.eshop-footer",
-                  "from": "703,141",
-                  "to": "0,0"
-                }
-              ]
-            }
-          ]
+          "cls": 0,
+          "longTasks": 5,
+          "maxTask": 252,
+          "shifts": []
         },
         "live": [
           "489 productos",
@@ -369,22 +347,10 @@
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
-          "cls": 0.1670616113744076,
-          "longTasks": 8,
-          "maxTask": 398,
-          "shifts": [
-            {
-              "at": 1880,
-              "value": 0.1671,
-              "sources": [
-                {
-                  "node": "footer.eshop-footer",
-                  "from": "703,141",
-                  "to": "0,0"
-                }
-              ]
-            }
-          ]
+          "cls": 0,
+          "longTasks": 5,
+          "maxTask": 252,
+          "shifts": []
         },
         "live": [
           "489 productos",
@@ -404,49 +370,18 @@
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
-          "cls": 0.2671149648785591,
-          "longTasks": 10,
-          "maxTask": 365,
+          "cls": 0.20802238101959228,
+          "longTasks": 5,
+          "maxTask": 240,
           "shifts": [
             {
-              "at": 1498,
-              "value": 0.0001,
+              "at": 772,
+              "value": 0.0005,
               "sources": [
                 {
-                  "node": "button.eshop-nav__icon-btn.eshop-nav__cart",
-                  "from": "54,44",
-                  "to": "54,44"
-                },
-                {
-                  "node": "a.eshop-nav__icon-btn",
-                  "from": "54,44",
-                  "to": "54,44"
-                },
-                {
-                  "node": "span.eshop-nav__badge",
-                  "from": "53,18",
-                  "to": "53,18"
-                },
-                {
-                  "node": "span.eshop-nav__badge",
-                  "from": "53,18",
-                  "to": "53,18"
-                }
-              ]
-            },
-            {
-              "at": 1910,
-              "value": 0.267,
-              "sources": [
-                {
-                  "node": "footer.eshop-footer",
-                  "from": "634,166",
-                  "to": "0,0"
-                },
-                {
-                  "node": "div.eshop-search",
-                  "from": "54,44",
-                  "to": "54,44"
+                  "node": "div.search-island-root",
+                  "from": "50,54",
+                  "to": "50,54"
                 },
                 {
                   "node": "div.eshop-nav__actions",
@@ -457,6 +392,22 @@
                   "node": "div.eshop-nav__utility-links",
                   "from": "0,44",
                   "to": "0,44"
+                },
+                {
+                  "node": "span.eshop-nav__delivery-msg",
+                  "from": "13,18",
+                  "to": "13,18"
+                }
+              ]
+            },
+            {
+              "at": 1021,
+              "value": 0.2075,
+              "sources": [
+                {
+                  "node": "footer.eshop-footer",
+                  "from": "634,166",
+                  "to": "0,0"
                 }
               ]
             }
@@ -481,49 +432,18 @@
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
-          "cls": 0.2671149648785591,
-          "longTasks": 11,
-          "maxTask": 365,
+          "cls": 0.20802238101959228,
+          "longTasks": 5,
+          "maxTask": 240,
           "shifts": [
             {
-              "at": 1498,
-              "value": 0.0001,
+              "at": 772,
+              "value": 0.0005,
               "sources": [
                 {
-                  "node": "button.eshop-nav__icon-btn.eshop-nav__cart",
-                  "from": "54,44",
-                  "to": "54,44"
-                },
-                {
-                  "node": "a.eshop-nav__icon-btn",
-                  "from": "54,44",
-                  "to": "54,44"
-                },
-                {
-                  "node": "span.eshop-nav__badge",
-                  "from": "53,18",
-                  "to": "53,18"
-                },
-                {
-                  "node": "span.eshop-nav__badge",
-                  "from": "53,18",
-                  "to": "53,18"
-                }
-              ]
-            },
-            {
-              "at": 1910,
-              "value": 0.267,
-              "sources": [
-                {
-                  "node": "footer.eshop-footer",
-                  "from": "634,166",
-                  "to": "0,0"
-                },
-                {
-                  "node": "div.eshop-search",
-                  "from": "54,44",
-                  "to": "54,44"
+                  "node": "div.search-island-root",
+                  "from": "50,54",
+                  "to": "50,54"
                 },
                 {
                   "node": "div.eshop-nav__actions",
@@ -534,6 +454,22 @@
                   "node": "div.eshop-nav__utility-links",
                   "from": "0,44",
                   "to": "0,44"
+                },
+                {
+                  "node": "span.eshop-nav__delivery-msg",
+                  "from": "13,18",
+                  "to": "13,18"
+                }
+              ]
+            },
+            {
+              "at": 1021,
+              "value": 0.2075,
+              "sources": [
+                {
+                  "node": "footer.eshop-footer",
+                  "from": "634,166",
+                  "to": "0,0"
                 }
               ]
             }
@@ -550,7 +486,5 @@
   },
   "errors": [],
   "externalRequests": [],
-  "problems": [
-    "1280-estado-pedido: FPS 30.5 por debajo del suelo 32"
-  ]
+  "problems": []
 }

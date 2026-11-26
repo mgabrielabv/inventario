@@ -7,7 +7,7 @@ import { Button } from '../../components/ui/Button'
 import { Chip } from '../../components/ui/Chip'
 import { Field, Input } from '../../components/ui/Field'
 import { estimarEntrega } from '../../logic/services/delivery'
-import { formatShortDate, formatTime } from '../../logic/services/formatters'
+import { formatShortDate, formatTime, pluralize } from '../../logic/services/formatters'
 import { friendlyStatus, friendlyStatusDetail } from '../../logic/services/order-labels'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
@@ -135,7 +135,7 @@ export const TrackingPage = () => {
               </header>
               <p className="t-caption">
                 {formatShortDate(result.fecha)} · {result.lineas.length}{' '}
-                {result.lineas.length === 1 ? 'producto' : 'productos'}
+                {pluralize(result.lineas.length, 'producto', 'productos')}
               </p>
 
               {estimate && (

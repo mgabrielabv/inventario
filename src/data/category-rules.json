@@ -2,28 +2,26 @@
   "arquetipos": {
     "Tecnología": "laptop",
     "Accesorios": "reloj",
+    "Alimentos y bebidas": "paquete",
     "Hogar y cocina": "taza",
-    "Papelería y oficina": "cuaderno",
-    "Juguetes y juegos": "paquete",
     "Deportes y aire libre": "ventilador",
-    "Cuidado personal": "paquete",
-    "Mascotas": "paquete",
-    "Ferretería básica": "cable"
+    "Cuidado personal": "paquete"
   },
   "porNombre": [
-    { "keywords": ["cat food", "dog food", "pet food"], "categoria": "Mascotas", "subcategoria": "Alimentos" },
-    { "keywords": ["tissue paper", "paper box"], "categoria": "Papelería y oficina", "subcategoria": "Papelería" },
-    { "keywords": ["party glasses"], "categoria": "Juguetes y juegos", "subcategoria": "Accesorios de fiesta" },
-    { "keywords": ["magsafe battery", "battery pack"], "categoria": "Ferretería básica", "subcategoria": "Pilas y baterías" },
+    { "keywords": ["cat food", "dog food", "pet food"], "categoria": "Alimentos y bebidas", "subcategoria": "Alimentos para mascotas" },
+    { "keywords": ["tissue paper", "paper box"], "categoria": "Accesorios", "subcategoria": "Papelería" },
+    { "keywords": ["party glasses"], "categoria": "Accesorios", "subcategoria": "Accesorios de fiesta" },
+    { "keywords": ["magsafe battery", "battery pack"], "categoria": "Tecnología", "subcategoria": "Energía y baterías" },
     { "keywords": ["protein powder"], "categoria": "Deportes y aire libre", "subcategoria": "Nutrición deportiva" }
   ],
   "porCategoria": [
-    { "keywords": ["beverage", "water", "juice", "coffee", "tea", "soda", "drink"], "categoria": "Hogar y cocina", "subcategoria": "Bebidas" },
-    { "keywords": ["cheese", "yogurt", "milk", "cream", "butter", "egg"], "categoria": "Hogar y cocina", "subcategoria": "Lácteos y huevos" },
-    { "keywords": ["frozen", "ice cream"], "categoria": "Hogar y cocina", "subcategoria": "Congelados" },
-    { "keywords": ["chocolate", "candy", "snack", "biscuit", "cookie", "cake", "nuts"], "categoria": "Hogar y cocina", "subcategoria": "Snacks y dulces" },
-    { "keywords": ["bread", "cereal", "flour", "pasta", "rice", "crispbread", "oat"], "categoria": "Hogar y cocina", "subcategoria": "Cereales y horneados" },
-    { "keywords": ["fruit", "vegetable", "tomato", "salad"], "categoria": "Hogar y cocina", "subcategoria": "Frutas y verduras" },
-    { "keywords": ["sauce", "oil", "spice", "salt", "sugar"], "categoria": "Hogar y cocina", "subcategoria": "Condimentos y aceites" }
+    { "keywords": ["beverage", "water", "juice", "coffee", "tea", "soda", "drink"], "categoria": "Alimentos y bebidas", "subcategoria": "Bebidas" },
+    { "keywords": ["cheese", "yogurt", "milk", "cream", "butter", "egg"], "categoria": "Alimentos y bebidas", "subcategoria": "Lácteos y huevos" },
+    { "keywords": ["frozen", "ice cream"], "categoria": "Alimentos y bebidas", "subcategoria": "Congelados" },
+    { "keywords": ["chocolate", "candy", "snack", "biscuit", "cookie", "cake", "nuts"], "categoria": "Alimentos y bebidas", "subcategoria": "Snacks y dulces" },
+    { "keywords": ["bread", "cereal", "flour", "pasta", "rice", "crispbread", "oat"], "categoria": "Alimentos y bebidas", "subcategoria": "Cereales y horneados" },
+    { "keywords": ["fruit", "vegetable", "tomato", "salad"], "categoria": "Alimentos y bebidas", "subcategoria": "Frutas y verduras" },
+    { "keywords": ["sauce", "oil", "spice", "salt", "sugar"], "categoria": "Alimentos y bebidas", "subcategoria": "Condimentos y aceites" },
+    { "keywords": ["supermercado", "despensa"], "categoria": "Alimentos y bebidas", "subcategoria": "Despensa" }
   ]
 }

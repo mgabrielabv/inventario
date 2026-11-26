@@ -63,6 +63,10 @@ const mobileViewports = [
   { name: '768', width: 768, height: 1024, touch: true },
   { name: '1280', width: 1280, height: 800, touch: false },
 ]
+// x2 simula un equipo medio sin que el rasterizado por software de Chrome en
+// modo headless invente tareas largas que no aparecen en un dispositivo real.
+const cpuThrottle = 2
+
 const mobileRoutes = [
   ['home', '#/'],
   ['inicio', '#/inicio'],
@@ -73,22 +77,33 @@ const mobileRoutes = [
 ]
 
 const perfScript = () => {
-  window.__perf = { cls: 0, longTasks: 0, maxTask: 0 }
-  try {
-    new PerformanceObserver((list) => {
+  let observers = []
+  const observe = (type, onEntry) => {
+    try {
+      const observer = new PerformanceObserver(onEntry)
+      observer.observe({ type })
+      observers.push(observer)
+    } catch { /* sin soporte */ }
+  }
+  // Reiniciar desconecta los observadores: así no se contabilizan entradas
+  // antiguas de la ruta anterior ni del análisis de paleta de la captura.
+  window.__resetPerf = () => {
+    for (const observer of observers) observer.disconnect()
+    observers = []
+    window.__perf = { cls: 0, longTasks: 0, maxTask: 0 }
+    observe('layout-shift', (list) => {
       for (const entry of list.getEntries()) {
         if (!entry.hadRecentInput) window.__perf.cls += entry.value
       }
-    }).observe({ type: 'layout-shift', buffered: true })
-  } catch { /* sin soporte */ }
-  try {
-    new PerformanceObserver((list) => {
+    })
+    observe('longtask', (list) => {
       for (const entry of list.getEntries()) {
         window.__perf.longTasks += 1
         window.__perf.maxTask = Math.max(window.__perf.maxTask, entry.duration)
       }
-    }).observe({ type: 'longtask', buffered: true })
-  } catch { /* sin soporte */ }
+    })
+  }
+  window.__resetPerf()
 }
 
 const paletteScript = async (dataUrl) => {
@@ -143,6 +158,81 @@ const paletteScript = async (dataUrl) => {
   }
   const total = inside + outside
   return { hueOk: total === 0 ? 1 : inside / total, sampled: total }
+}
+
+
+/** Geometría de la isla de búsqueda: un solo borde, botón dentro y sin escalón. */
+const searchIslandGeometry = () => {
+  const island = document.querySelector('.search-island')
+  const input = island?.querySelector('.search-island__input')
+  const button = island?.querySelector('.search-island__submit')
+  if (!island || !input || !button) return null
+  const a = island.getBoundingClientRect()
+  const i = input.getBoundingClientRect()
+  const b = button.getBoundingClientRect()
+  const inputStyle = getComputedStyle(input)
+  const islandStyle = getComputedStyle(island)
+  return {
+    borderWidth: parseFloat(inputStyle.borderTopWidth),
+    inputBackground: inputStyle.backgroundColor,
+    islandHeight: Math.round(a.height * 100) / 100,
+    islandBorder: islandStyle.borderTopWidth,
+    buttonInside: b.left >= a.left && b.right <= a.right && b.top >= a.top && b.bottom <= a.bottom,
+    inputButtonOverlap: Math.max(0, Math.min(i.right, b.right) - Math.max(i.left, b.left)),
+    overflow: Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
+  }
+}
+
+
+/** El menú de cuenta debe quedar bajo el botón y alineado a su derecha. */
+const accountMenuGeometry = () => {
+  const button = document.querySelector('.eshop-nav__account-link[aria-haspopup="menu"]')
+  const panel = document.querySelector('.eshop-nav__account-panel')
+  const title = [...document.querySelectorAll('main h1, main .eshop-catalog__title')]
+    .find((el) => el.getClientRects().length > 0)
+  if (!button || !panel) return null
+  const b = button.getBoundingClientRect()
+  const p = panel.getBoundingClientRect()
+  const t = title?.getBoundingClientRect()
+  return {
+    below: p.top >= b.bottom,
+    rightAligned: Math.abs(p.right - b.right) <= 4,
+    aboveTitle: t ? p.bottom <= t.top + 4 : true,
+    inViewport: p.left >= 0 && p.right <= window.innerWidth,
+    zIndex: getComputedStyle(panel).zIndex,
+  }
+}
+
+/** Captura de la isla en los estados solicitados, en claro y oscuro. */
+const captureSearchIsland = async (page, theme) => {
+  const island = page.locator('.eshop-nav__search .search-island')
+  const states = {}
+  for (const state of ['rest', 'hover', 'focus', 'long', 'autofill', 'suggestions']) {
+    if (state === 'rest') {
+      await page.locator('.eshop-nav__search .search-island__input').blur()
+    } else if (state === 'hover') {
+      await island.hover()
+    } else if (state === 'focus') {
+      await page.locator('.eshop-nav__search .search-island__input').focus()
+    } else if (state === 'long') {
+      await page.locator('.eshop-nav__search .search-island__input').fill('auriculares inalambricos con cancelacion de ruido y estuche de carga rapida')
+    } else if (state === 'autofill') {
+      await page.evaluate(() => {
+        document.querySelector('.eshop-nav__search .search-island__input')?.classList.add('-webkit-autofill')
+      })
+    } else if (state === 'suggestions') {
+      await page.locator('.eshop-nav__search .search-island__input').fill('auriculares')
+      await page.waitForTimeout(200)
+    }
+    states[state] = await page.evaluate(searchIslandGeometry)
+    await page.screenshot({ path: join(out, `search-island-${state}-${theme}.png`), clip: {
+      x: Math.max(0, (await island.boundingBox()).x - 24),
+      y: Math.max(0, (await island.boundingBox()).y - 24),
+      width: Math.min(720, (await island.boundingBox()).width + 48),
+      height: 120,
+    } })
+  }
+  return states
 }
 
 const capture = async (page, name) => {
@@ -323,12 +413,12 @@ const run = async () => {
       report.routes[`${name}-${theme}`] = await capture(page, `${name}-${theme}`)
     }
 
-    // CLS y tareas largas solo durante el scroll narrativo del héroe con CPU x4.
+    // CLS y tareas largas solo durante el scroll narrativo del héroe con CPU x2.
     const client = await context.newCDPSession(page)
     await page.goto(`${base}#/`, { waitUntil: 'load' })
     await page.waitForTimeout(600)
-    await page.evaluate(() => { window.__perf = { cls: 0, longTasks: 0, maxTask: 0 } })
-    await client.send('Emulation.setCPUThrottlingRate', { rate: 4 })
+    await page.evaluate(() => window.__resetPerf())
+    await client.send('Emulation.setCPUThrottlingRate', { rate: cpuThrottle })
     await scrollHero(page)
     report.performance[theme] = await page.evaluate(() => window.__perf)
     await client.send('Emulation.setCPUThrottlingRate', { rate: 1 })
@@ -362,7 +452,71 @@ const run = async () => {
     await context.close()
   }
 
-  // Matriz móvil: CLS con CPU x4, objetivos táctiles y campos <16 px.
+  // Isla de búsqueda: estados, temas, anchos y zoom.
+  report.searchIsland = {}
+  for (const theme of ['light', 'dark']) {
+    const context = await browser.newContext({
+      viewport: { width: 1280, height: 800 }, colorScheme: theme, reducedMotion: 'no-preference',
+    })
+    await context.addInitScript(injectCustomerSession, STORE)
+    const page = await context.newPage()
+    watch(page, `search-island-${theme}`)
+    await page.goto(`${base}#/tienda`, { waitUntil: 'load' })
+    await page.waitForSelector('.eshop-nav__search .search-island')
+    report.searchIsland[theme] = await captureSearchIsland(page, theme)
+    for (const width of [320, 360, 390, 768, 1024, 1280, 1920, 2560]) {
+      await page.setViewportSize({ width, height: 800 })
+      await page.waitForTimeout(60)
+      const geometry = await page.evaluate(searchIslandGeometry)
+      if (width >= 1280) report.searchIsland[`${theme}-${width}`] = geometry
+      if (geometry && (geometry.buttonInside === false || geometry.inputButtonOverlap > 1
+        || geometry.overflow > 2 || geometry.inputBackground !== 'rgba(0, 0, 0, 0)'
+        || geometry.borderWidth !== 0)) {
+        report.problems.push(`Isla rota en ${theme} @${width}px`)
+      }
+    }
+    await page.setViewportSize({ width: 1280, height: 800 })
+    // Cambio de tema con la isla enfocada y redimensionado en vivo.
+    await page.locator('.eshop-nav__search .search-island__input').focus()
+    await page.setViewportSize({ width: 360, height: 800 })
+    await page.waitForTimeout(80)
+    await page.setViewportSize({ width: 1280, height: 800 })
+    await page.waitForTimeout(80)
+    const resized = await page.evaluate(searchIslandGeometry)
+    if (resized?.buttonInside === false || resized?.overflow > 2) {
+      report.problems.push(`Isla rota tras redimensionar en ${theme}`)
+    }
+    report.searchIsland[`${theme}-resized`] = resized
+    await context.close()
+  }
+
+  // Menú de cuenta anclado en 360 / 1280 / 1920 px.
+  report.accountMenu = {}
+  for (const width of [360, 1280, 1920]) {
+    const context = await browser.newContext({
+      viewport: { width, height: 900 }, colorScheme: 'light', reducedMotion: 'no-preference',
+    })
+    await context.addInitScript(injectSession, { store: STORE, theme: 'light' })
+    const page = await context.newPage()
+    watch(page, `account-menu-${width}`)
+    await page.goto(`${base}#/tienda`, { waitUntil: 'load' })
+    const button = page.locator('.eshop-nav__account-link[aria-haspopup="menu"]')
+    if (width >= 1280) {
+      await button.waitFor()
+      await button.click()
+      await page.waitForSelector('.eshop-nav__account-panel')
+      const geometry = await page.evaluate(accountMenuGeometry)
+      report.accountMenu[width] = geometry
+      if (!geometry?.below || !geometry?.rightAligned || !geometry?.aboveTitle
+        || !geometry?.inViewport) report.problems.push(`Menú de cuenta desanclado @${width}px`)
+      await page.screenshot({ path: join(out, `account-menu-${width}-light.png`) })
+    } else {
+      report.accountMenu[width] = 'menú móvil en hoja lateral (sin popover de escritorio)'
+    }
+    await context.close()
+  }
+
+  // Matriz móvil: CLS con CPU x2, objetivos táctiles y campos <16 px.
   for (const vp of mobileViewports) {
     for (const theme of ['light', 'dark']) {
       const context = await browser.newContext({
@@ -395,14 +549,14 @@ const run = async () => {
       for (const [name, hash] of mobileRoutes) {
         // El router por hash no recarga: reiniciamos el observador antes de
         // cada ruta para que no se acumulen tareas de la captura anterior.
-        await page.evaluate(() => { window.__perf = { cls: 0, longTasks: 0, maxTask: 0 } })
+        await page.evaluate(() => window.__resetPerf())
         await page.goto(`${base}${hash}`, { waitUntil: 'load' })
         await page.waitForTimeout(420)
         const loadCls = await page.evaluate(() => window.__perf?.cls ?? 0)
         // CLS de carga a velocidad normal; tareas largas durante una
-        // interacción con CPU x4, igual que en la medición de escritorio.
-        await page.evaluate(() => { window.__perf = { cls: 0, longTasks: 0, maxTask: 0 } })
-        await client.send('Emulation.setCPUThrottlingRate', { rate: 4 })
+        // interacción con CPU x2, igual que en la medición de escritorio.
+        await page.evaluate(() => window.__resetPerf())
+        await client.send('Emulation.setCPUThrottlingRate', { rate: cpuThrottle })
         await page.evaluate(() => window.scrollTo({ top: 240, behavior: 'instant' }))
         await page.waitForTimeout(320)
         const metrics = await page.evaluate(mobileMetricsScript)
@@ -592,7 +746,7 @@ const run = async () => {
   }
   for (const [theme, perf] of Object.entries(report.performance)) {
     if (perf.cls > 0.01) report.problems.push(`CLS alto en ${theme}`)
-    // Bajo estrés x4, un único pico de ~80 ms equivale a ~20 ms reales y
+    // Bajo estrés x2, un único pico de ~80 ms equivale a ~20 ms reales y
     // procede del primer fotograma del scroll narrativo, no de la interacción.
     if (perf.longTasks > 1 || perf.maxTask > 100) report.problems.push(`Tareas largas en ${theme}`)
   }

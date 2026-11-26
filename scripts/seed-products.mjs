@@ -61,13 +61,10 @@ const CATEGORY_MAP = {
 const ARCHETYPE_MAP = {
   'Tecnología': 'laptop',
   'Accesorios': 'reloj',
+  'Alimentos y bebidas': 'paquete',
   'Hogar y cocina': 'taza',
-  'Papelería y oficina': 'cuaderno',
-  'Juguetes y juegos': 'paquete',
   'Deportes y aire libre': 'ventilador',
   'Cuidado personal': 'paquete',
-  'Mascotas': 'paquete',
-  'Ferretería básica': 'cable',
 }
 
 const isUrl = (value) =>

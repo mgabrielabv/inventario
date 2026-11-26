@@ -46,6 +46,18 @@ const discountPercent = (product: Product): number => {
   return Math.round((1 - price / before) * 100)
 }
 
+/** Tono decorativo derivado de la categoría; nunca un color literal nuevo. */
+const categoryTone = (categoria: string): string => {
+  const value = categoria.toLocaleLowerCase('es')
+  if (value.includes('cuidado')) return 'cuidado'
+  if (value.includes('tecnolog')) return 'tecnologia'
+  if (value.includes('deport')) return 'deportes'
+  if (value.includes('aliment')) return 'alimentos'
+  if (value.includes('hogar')) return 'hogar'
+  if (value.includes('accesor')) return 'accesorios'
+  return 'natural'
+}
+
 /** Vibración opcional: desactivada hasta confirmar la decisión (docs/motion.md). */
 const haptic = (reduce: boolean) => {
   if (haptics.enabled && !reduce && typeof navigator !== 'undefined' && 'vibrate' in navigator) {
@@ -84,9 +96,9 @@ export const ProductCard = ({ product, available, compact = false }: Props) => {
   const href = `/tienda/${product.slug}`
   const variants = reduce ? motionSafe(swap) : swap
 
-  const withMeta = product as Product & { marca?: unknown; subcategoria?: unknown }
+  const withMeta = product as Product & { marca?: unknown }
   const brand = typeof withMeta.marca === 'string' ? withMeta.marca.trim() : ''
-  const subtype = typeof withMeta.subcategoria === 'string' ? withMeta.subcategoria.trim() : ''
+  const tone = categoryTone(product.categoria)
 
   const baseBadge = productBadge(product, available)
   let badge: Badge | null = null
@@ -187,8 +199,10 @@ export const ProductCard = ({ product, available, compact = false }: Props) => {
     <article className={`product-card eshop-card${compact ? ' eshop-card--compact' : ''}${soldOut ? ' eshop-card--sold-out' : ''}`}>
       {/* Feedback funcional: siempre presente, con o sin movimiento. */}
       <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">{status}</span>
-      <div className="eshop-card__media">
-        <ProductImage product={product} />
+      <div className="eshop-card__media" data-categoria={tone}>
+        <div className="eshop-card__float">
+          <ProductImage product={product} />
+        </div>
         <Link className="eshop-card__cover" to={href} tabIndex={-1} aria-hidden="true" />
         {badge && (
           <motion.span
@@ -268,13 +282,11 @@ export const ProductCard = ({ product, available, compact = false }: Props) => {
       <div className="eshop-card__body">
         <p className="eshop-card__meta">
           {brand && <span>{brand}</span>}
-          {subtype && <span>{subtype}</span>}
-          {!brand && !subtype && <span>{product.categoria}</span>}
+          <span>{product.categoria}</span>
         </p>
         <Link className="eshop-card__title" to={href}>{product.nombre}</Link>
-        <span className="eshop-card__presentation">Presentación · {product.unidad}</span>
         {prices}
-        {!soldOut && available <= 5 && (
+        {!soldOut && available <= 5 && badge?.kind !== 'ultimas' && (
           <span className="eshop-card__availability">
             <AlertCircle size={13} strokeWidth={1.8} aria-hidden="true" />
             Pocas unidades

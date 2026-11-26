@@ -18,7 +18,7 @@ import { shake, stepBack, stepForward } from '../../motion/variants'
 import { errorMessage } from '../../logic/errors'
 import { buildCheckoutOrder, couponStatus, revalidateCheckout, validateStep } from '../../logic/services/checkout'
 import { estimarEntrega } from '../../logic/services/delivery'
-import { storeName } from '../../logic/services/formatters'
+import { pluralize, storeName } from '../../logic/services/formatters'
 import { getImage, saveImage } from '../../logic/services/images'
 import { buildOrderLines } from '../../logic/services/orders'
 import { formatMoney, formatSecondary } from '../../logic/services/pricing'
@@ -268,7 +268,7 @@ export const CheckoutPage = () => {
       ? `${draft.zona || 'Zona sin elegir'}${draft.ventana ? ` · ${draft.ventana}` : ''}`
       : settings.tienda.direccion
     if (index === 2) return paymentOptions.find((option) => option.value === payment)?.label ?? ''
-    return `${lineas.length} ${lineas.length === 1 ? 'producto' : 'productos'} · ${formatMoney(totals.total)}`
+    return `${lineas.length} ${pluralize(lineas.length, 'producto', 'productos')} · ${formatMoney(totals.total)}`
   }
 
   const stepBody = (index: number) => {

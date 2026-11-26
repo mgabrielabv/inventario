@@ -62,7 +62,7 @@ describe('migración de facetas', () => {
     ]
     const migrated = migrateProductFacets(original)
     expect(migrated.map((item) => item.categoria))
-      .toEqual(['Tecnología', 'Papelería y oficina', 'Hogar y cocina', 'Mascotas'])
+      .toEqual(['Tecnología', 'Accesorios', 'Hogar y cocina', 'Alimentos y bebidas'])
     expect(migrated[0]?.subcategoria).toBeTruthy()
     expect(migrated[0]?.marca).toBeTruthy()
     expect(migrated[3]).toMatchObject({ subcategoria: 'Accesorios', marca: 'Nivea' })

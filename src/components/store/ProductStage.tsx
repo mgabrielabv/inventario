@@ -7,6 +7,19 @@ interface Props {
   children: ReactNode
   className?: string
   escenario?: Escenario
+  categoria?: string
+}
+
+/** Mismo vocabulario de tonos que la tarjeta, sin introducir colores nuevos. */
+const categoryTone = (categoria?: string): string => {
+  const value = (categoria ?? '').toLocaleLowerCase('es')
+  if (value.includes('cuidado')) return 'cuidado'
+  if (value.includes('tecnolog')) return 'tecnologia'
+  if (value.includes('deport')) return 'deportes'
+  if (value.includes('aliment')) return 'alimentos'
+  if (value.includes('hogar')) return 'hogar'
+  if (value.includes('accesor')) return 'accesorios'
+  return 'natural'
 }
 
 /**
@@ -14,10 +27,14 @@ interface Props {
  * entrada corta sin desplazar el layout. El contenido sigue siendo el único
  * foco interactivo; el halo es decorativo y se omite con reduced-motion.
  */
-export const ProductStage = ({ children, className = '', escenario = 'natural' }: Props) => {
+export const ProductStage = ({ children, className = '', escenario = 'natural', categoria }: Props) => {
   const reduce = useReducedMotion()
   return (
-    <div className={`stage-scene ${className}`.trim()} data-escenario={escenario}>
+    <div
+      className={`stage-scene ${className}`.trim()}
+      data-escenario={escenario}
+      data-categoria={categoryTone(categoria)}
+    >
       {!reduce && (
         <motion.span
           className="stage-scene__halo"
@@ -46,7 +63,7 @@ export const ProductStage = ({ children, className = '', escenario = 'natural' }
           ? { duration: dur.micro }
           : { duration: dur.slow, ease: ease.easeOutQuint }}
       >
-        {children}
+        <div className="stage-scene__float">{children}</div>
       </motion.div>
     </div>
   )

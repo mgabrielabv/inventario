@@ -126,7 +126,6 @@ export const cardMotion = {
   badgeFrom: 0.9,
   shimmerFrom: -120,
   shimmerTo: 120,
-  blurFrom: 8,
   favoritePop: 1.18,
   sparkCount: 6,
   sparkAngle: 60,
@@ -178,8 +177,33 @@ export const celebration = {
   wave: 4,
 } as const
 
+/** Escena flotante del héroe: rotación pausada, flotación corta y órbita ancha. */
+export const heroSceneMotion = {
+  rotateMs: 5600,
+  floatMin: 6,
+  floatJitter: 0.2,
+  travel: 22,
+  orbitSeconds: 34,
+} as const
+
+/** Fondo vivo de portada: capas decorativas y muestreo de rendimiento. */
+export const livingMotion = {
+  meshDuration: 26,
+  auroraDuration: 18,
+  particleDuration: 9,
+  particleCount: 10,
+  lightSize: 520,
+  sampleMs: 1200,
+  minFps: 45,
+} as const
+
 /** Parámetros CSS derivados de estos tokens (inyectados en :root por css-vars.ts). */
 export const cssMotion = {
+  '--orbit-seconds': `${heroSceneMotion.orbitSeconds}s`,
+  '--m-living-mesh': `${livingMotion.meshDuration}s`,
+  '--m-living-aurora': `${livingMotion.auroraDuration}s`,
+  '--m-living-particle': `${livingMotion.particleDuration}s`,
+  '--m-living-light-size': `${livingMotion.lightSize}px`,
   '--m-dur-micro': `${dur.micro}s`,
   '--m-dur-fast': `${dur.fast}s`,
   '--m-dur-step': `${dur.step}s`,

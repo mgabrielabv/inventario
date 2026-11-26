@@ -9,7 +9,7 @@ describe('reglas de departamento para productos importados', () => {
     expect(clasificarImportado({
       id: 'dj-gato', nombre: 'Cat Food', categoria: 'Hogar y cocina',
       subcategoria: 'Despensa',
-    })).toMatchObject({ categoria: 'Mascotas', subcategoria: 'Alimentos' })
+    })).toMatchObject({ categoria: 'Alimentos y bebidas', subcategoria: 'Alimentos para mascotas' })
     expect(clasificarImportado({
       id: 'dj-apple', nombre: 'Apple MacBook', categoria: 'Tecnología',
       especificaciones: [{ clave: 'Marca', valor: 'Apple' }],
@@ -20,9 +20,14 @@ describe('reglas de departamento para productos importados', () => {
     expect(reclasificarImportados(realProducts)).toEqual(realProducts)
   })
 
-  it('deja los nueve departamentos con al menos una ficha real', () => {
-    const presentes = new Set(realProducts.map((product) => product.categoria))
-    for (const categoria of DEFAULT_CATEGORIES) expect(presentes.has(categoria)).toBe(true)
+  it('deja los seis departamentos con al menos cuatro fichas reales', () => {
+    const conteo = new Map<string, number>()
+    for (const product of realProducts) {
+      conteo.set(product.categoria, (conteo.get(product.categoria) ?? 0) + 1)
+    }
+    for (const categoria of DEFAULT_CATEGORIES) {
+      expect(conteo.get(categoria) ?? 0).toBeGreaterThanOrEqual(4)
+    }
   })
 
   it('respeta fichas creadas en el panel', () => {

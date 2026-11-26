@@ -14,7 +14,7 @@
   border: 1px solid var(--hairline);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.24s ease, transform 0.24s ease;
+  transition: transform var(--m-dur-hover) var(--m-ease-out-quint);
 }
 
 /* Rejillas de productos ---------------------------------------------------- */
@@ -72,7 +72,7 @@
 .checkout-page,
 .tracking-page,
 .order-page,
-.pdp-page { padding-block: var(--s7) var(--s9); }
+.pdp-page { padding-block: max(var(--page-top), var(--s7)) var(--s9); }
 
 .catalog-page__head,
 .favorites-page__head,
@@ -130,11 +130,56 @@
 }
 
 .stage-scene {
+  --stage-tone: var(--tan);
   position: relative;
   display: grid;
   place-items: center;
   width: 100%;
   height: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--radius-media);
+  background: linear-gradient(
+    155deg,
+    var(--stage),
+    color-mix(in oklab, var(--stage-deep) 62%, var(--stage))
+  );
+}
+.stage-scene::before {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 40%,
+    color-mix(in oklab, var(--stage-tone) 24%, transparent),
+    transparent 70%
+  );
+  content: '';
+  pointer-events: none;
+}
+.stage-scene[data-categoria='cuidado'] { --stage-tone: var(--clay); }
+.stage-scene[data-categoria='tecnologia'] { --stage-tone: var(--burgundy); }
+.stage-scene[data-categoria='deportes'] { --stage-tone: var(--clay-text); }
+.stage-scene[data-categoria='alimentos'] { --stage-tone: var(--tan-strong); }
+.stage-scene[data-categoria='hogar'] { --stage-tone: var(--tan); }
+.stage-scene[data-categoria='accesorios'] { --stage-tone: var(--clay); }
+.stage-scene::after {
+  position: absolute;
+  z-index: 1;
+  right: 26%;
+  bottom: 14%;
+  left: 26%;
+  height: 7%;
+  border-radius: var(--radius-pill);
+  background: radial-gradient(
+    ellipse,
+    color-mix(in oklab, var(--text) 18%, transparent),
+    transparent 72%
+  );
+  content: '';
+  transform: translateY(calc(var(--m-rise) / 3)) scale(0.96);
+  transition: transform var(--m-dur-hover) var(--m-ease-out-quint),
+    opacity var(--m-dur-hover) var(--m-ease-out-quint);
+  pointer-events: none;
 }
 .stage-scene__halo {
   position: absolute;
@@ -146,19 +191,50 @@
 }
 .stage-scene__content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   place-items: center;
   width: 100%;
   height: 100%;
 }
+.stage-scene__float {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  transform: translateY(calc(var(--m-rise) / -3));
+  transition: transform var(--m-dur-hover) var(--m-ease-out-quint);
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .stage-scene:hover .stage-scene__float {
+    transform: translateY(calc(var(--m-rise) * -1)) rotate(-1.2deg) scale(var(--m-hover-scale));
+  }
+  .stage-scene:hover::after {
+    transform: translateY(calc(var(--m-rise) * 2 / 3)) scale(1.04);
+    opacity: 0.65;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage-scene,
+  .stage-scene * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .stage-scene__float,
+  .stage-scene::after {
+    transform: none !important;
+    transition: none !important;
+  }
+}
 /* Escenario elegido en la ficha: solo cambia el fondo decorativo. */
-.stage-scene[data-escenario='estudio'] { background: var(--stage-deep); }
+.stage-scene[data-escenario='estudio'] {
+  background: linear-gradient(155deg, var(--stage-deep), var(--stage) 78%);
+}
 .stage-scene[data-escenario='arena'] {
-  background: color-mix(in oklab, var(--tan) 30%, var(--stage));
+  background: linear-gradient(155deg, color-mix(in oklab, var(--tan) 30%, var(--stage)), var(--stage));
 }
 .stage-scene[data-escenario='noche'] {
-  background: color-mix(in oklab, var(--burgundy) 44%, var(--stage));
+  background: linear-gradient(155deg, color-mix(in oklab, var(--burgundy) 44%, var(--stage)), var(--stage));
 }
 .stage-scene[data-escenario='noche'] .stage-scene__halo {
   background: radial-gradient(circle, var(--stage-glow), var(--stage-halo) 52%, transparent 74%);

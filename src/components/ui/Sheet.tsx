@@ -91,9 +91,9 @@ export const Sheet = ({ open, onClose, title, children, side = 'right', classNam
         <div className="sheet-root">
           <motion.div
             className="sheet-backdrop"
-            initial={{ opacity: 0, backdropFilter: `blur(0px)` }}
-            animate={{ opacity: 1, backdropFilter: `blur(${sheetUI.backdropBlur}px)` }}
-            exit={{ opacity: 0, backdropFilter: `blur(0px)` }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: sheetUI.backdropDuration }}
             onClick={onClose}
           />

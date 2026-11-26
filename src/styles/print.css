@@ -3,7 +3,7 @@
   @page { size: A4; margin: 16mm; }
   html, body { background: var(--surface); color: var(--text); }
   .store-nav, .store-footer, .admin-sidebar, .admin-topbar,
-  .btn, .toast-island, .fly-layer, .mesh, .sheet-backdrop,
+  .btn, .toast-island, .fly-layer, .mesh, .living-bg, .sheet-backdrop,
   .catalog-filters, .admin-actions { display: none !important; }
   .store-main, .admin-main { padding: 0; }
   .card, .table-wrap { box-shadow: none; border-color: var(--hairline-strong); }

@@ -1,5 +1,5 @@
-import { motion, useReducedMotion, type Variants } from 'framer-motion'
-import { useEffect, useMemo, useState } from 'react'
+import { useReducedMotion } from 'framer-motion'
+import { memo, useEffect, useMemo, useState } from 'react'
 import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ResponsiveTable } from '../../components/ui/ResponsiveTable'
@@ -19,24 +19,9 @@ import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
 import { ACTIVE_ORDER_STATUSES, type Order, type OrderStatus, type PaymentMethod } from '../../logic/types'
-import { dur, ease, panelMotion } from '../../motion/tokens'
-import { motionSafe } from '../../motion/helpers'
+
 
 type OrderFilter = 'Todos' | OrderStatus
-
-/** Chip sobrio: el estado nuevo entra con un fundido corto y escala mínima. */
-const chipVariants: Variants = {
-  hidden: { opacity: 0, scale: panelMotion.barRise },
-  show: {
-    opacity: 1,
-    scale: 1,
-    transition: {
-      opacity: { duration: dur.fast, ease: ease.easeOutQuint },
-      scale: { duration: dur.base, ease: ease.easeOutQuint },
-    },
-  },
-  exit: { opacity: 0, transition: { duration: dur.micro } },
-}
 
 /** Resaltado único de la fila: animación CSS que se retira con onAnimationEnd. */
 const RowFlash = ({ onDone }: { onDone: () => void }) => {
@@ -44,21 +29,15 @@ const RowFlash = ({ onDone }: { onDone: () => void }) => {
   return reduce ? null : <span className="admin-order-flash" aria-hidden="true" onAnimationEnd={onDone} />
 }
 
-const StatusChip = ({ status }: { status: OrderStatus }) => {
-  const reduce = useReducedMotion()
-  // Un solo nodo: el cambio se comunica también por aria-live en el toast.
-  return (
-    <motion.span
-      key={status}
-      className={`admin-order-status${ACTIVE_ORDER_STATUSES.includes(status) ? ' is-active' : ''}`}
-      variants={reduce ? motionSafe(chipVariants) : chipVariants}
-      initial="hidden"
-      animate="show"
-    >
-      {status}
-    </motion.span>
-  )
-}
+/** Un solo nodo con animación CSS: el cambio también se anuncia en el toast. */
+const StatusChip = memo(({ status }: { status: OrderStatus }) => (
+  <span
+    key={status}
+    className={`admin-order-status${ACTIVE_ORDER_STATUSES.includes(status) ? ' is-active' : ''}`}
+  >
+    {status}
+  </span>
+))
 
 const FILTROS: Array<{ value: OrderFilter; label: string }> = [
   { value: 'Todos', label: 'Todos' },

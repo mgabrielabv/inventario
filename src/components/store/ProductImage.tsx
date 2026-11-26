@@ -1,10 +1,10 @@
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { ProductArt } from '../art/ProductArt'
 import { getImage, isRemoteImage } from '../../logic/services/images'
 import { localImageFor, type LocalImage } from '../../logic/services/local-images'
 import type { Product } from '../../logic/types'
-import { cardMotion, distance, dur, ease } from '../../motion/tokens'
+import { distance, dur, ease } from '../../motion/tokens'
 import { isLightDevice } from '../../motion/helpers'
 
 interface Props {
@@ -25,8 +25,6 @@ export const ProductImage = ({ product, className = '' }: Props) => {
   const remoteUrl = isRemoteImage(imageId) ? imageId.trim() : null
   const local: LocalImage | undefined = localImageFor(product.id)
   const [photo, setPhoto] = useState<string | null>(null)
-  const [blur, setBlur] = useState<string | null>(null)
-  const [loaded, setLoaded] = useState(false)
   const [state, setState] = useState<PhotoState>(imageId ? 'loading' : 'fallback')
   const reduce = useReducedMotion()
   const light = isLightDevice()
@@ -34,8 +32,6 @@ export const ProductImage = ({ product, className = '' }: Props) => {
   useEffect(() => {
     let alive = true
     setPhoto(null)
-    setBlur(null)
-    setLoaded(false)
     if (!imageId) {
       setState('fallback')
       return () => { alive = false }
@@ -44,7 +40,6 @@ export const ProductImage = ({ product, className = '' }: Props) => {
     const applyLocal = () => {
       if (!alive || !local) return false
       setPhoto(local.src)
-      setBlur(local.blur)
       setState('photo')
       return true
     }
@@ -70,10 +65,8 @@ export const ProductImage = ({ product, className = '' }: Props) => {
   }, [imageId, remoteUrl, local])
 
   const onError = () => {
-    if (local && photo === local.src) {
+    if (local && photo === local.src && remoteUrl) {
       setPhoto(remoteUrl)
-      setBlur(null)
-      setLoaded(false)
     } else {
       setState('fallback')
     }
@@ -83,37 +76,18 @@ export const ProductImage = ({ product, className = '' }: Props) => {
     <div className={`eshop-photo ${className}`.trim()}>
       {state === 'loading' && <span className="eshop-photo__skeleton" aria-hidden="true" />}
       {state === 'photo' && photo && (
-        <>
-          <AnimatePresence>
-            {blur && !loaded && (
-              <motion.img
-                key="blur"
-                className="eshop-photo__blur"
-                src={blur}
-                alt=""
-                aria-hidden="true"
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: dur.base, ease: ease.easeOutQuint }}
-              />
-            )}
-          </AnimatePresence>
-          <motion.img
-            className="eshop-photo__img"
-            src={photo}
-            alt={product.nombre}
-            loading="lazy"
-            decoding="async"
-            referrerPolicy="no-referrer"
-            onLoad={() => setLoaded(true)}
-            onError={onError}
-            initial={reduce || light
-              ? { opacity: 0 }
-              : { opacity: 0, filter: `blur(${cardMotion.blurFrom}px)` }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: reduce ? dur.micro : dur.base, ease: ease.easeOutQuint }}
-          />
-        </>
+        <motion.img
+          className="eshop-photo__img"
+          src={photo}
+          alt={product.nombre}
+          loading="eager"
+          decoding="sync"
+          referrerPolicy="no-referrer"
+          onError={onError}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: reduce || light ? dur.micro : dur.base, ease: ease.easeOutQuint }}
+        />
       )}
       {state === 'fallback' && (
         <motion.div

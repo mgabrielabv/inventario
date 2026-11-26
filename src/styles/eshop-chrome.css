@@ -10,6 +10,15 @@
   box-shadow: var(--shadow-sm);
 }
 .eshop-nav--scrolled { box-shadow: var(--shadow-md); }
+/* Cinta y fila de categorías se pliegan con transform: no cambian el layout. */
+.eshop-nav__utility { transition: transform 180ms ease, opacity 180ms ease; }
+.eshop-nav--utility-hidden .eshop-nav__utility,
+.eshop-nav--cats-hidden .eshop-nav__cats {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+.eshop-nav__cats { transition: transform 180ms ease, opacity 180ms ease; }
 .eshop-nav__utility-inner,
 .eshop-nav__main-inner,
 .eshop-nav__cats-inner {
@@ -105,10 +114,15 @@
   white-space: nowrap;
 }
 .eshop-nav__search {
+  display: flex;
+  justify-content: center;
   flex: 1 1 auto;
   min-width: 0;
-  max-width: 720px;
+  max-width: 640px;
+  margin-inline: auto;
 }
+.eshop-nav__search .search-island-root { max-width: 640px; }
+.eshop-nav__search .search-island:focus-within { box-shadow: 0 0 0 3px var(--focus-ring); }
 .eshop-nav__actions {
   display: flex;
   align-items: center;
@@ -159,8 +173,8 @@
 .eshop-nav__menu-btn { display: none; }
 .eshop-nav__badge {
   position: absolute;
-  top: -2px;
-  right: -2px;
+  top: -4px;
+  right: -4px;
   display: grid;
   place-items: center;
   min-width: 18px;
@@ -181,132 +195,8 @@
   white-space: nowrap;
 }
 
-.eshop-search { position: relative; width: 100%; min-width: 0; }
-.eshop-search__form {
-  display: flex;
-  align-items: center;
-  gap: var(--s2);
-  height: 42px;
-  padding: 0 var(--s2) 0 var(--s3);
-  border: 1px solid var(--control-border);
-  border-radius: var(--radius-pill);
-  background: var(--bg);
-}
-.eshop-search__form:focus-within {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--focus-ring);
-}
-.eshop-search__icon { flex: 0 0 auto; color: var(--text-2); }
-.eshop-search__input {
-  flex: 1 1 auto;
-  min-width: 0;
-  border: 0;
-  outline: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-ui);
-  font-size: var(--fs-ui);
-}
-.eshop-search__input::placeholder { color: var(--text-2); opacity: 1; }
-.eshop-search__clear,
-.eshop-search__submit {
-  flex: 0 0 auto;
-  border-radius: var(--radius-pill);
-  color: var(--primary-text);
-  font-size: var(--fs-caption);
-  font-weight: 700;
-}
-.eshop-search__clear { display: grid; place-items: center; width: var(--tap-min); height: var(--tap-min); }
-.eshop-search__submit {
-  min-height: var(--tap-min);
-  padding: var(--s2) var(--s4);
-  background: var(--primary);
-  color: var(--on-primary);
-}
-.eshop-search__panel {
-  position: absolute;
-  top: calc(100% + var(--s2));
-  left: 0;
-  right: 0;
-  z-index: var(--z-overlay);
-  max-height: min(60vh, 420px);
-  overflow: auto;
-  padding: var(--s2);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-card);
-  background: var(--surface);
-  box-shadow: var(--shadow-lg);
-}
-.eshop-search--overlay .eshop-search__panel {
-  position: static;
-  max-height: 50vh;
-  margin-top: var(--s3);
-  box-shadow: var(--shadow-sm);
-}
-.eshop-search__label {
-  padding: var(--s2) var(--s3) var(--s1);
-  color: var(--text-2);
-  font-size: var(--fs-min);
-  font-weight: 700;
-  text-transform: uppercase;
-}
-.eshop-search__item {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto auto;
-  align-items: center;
-  gap: var(--s3);
-  width: 100%;
-  min-height: var(--tap-min);
-  padding: var(--s2) var(--s3);
-  border-radius: var(--radius-active);
-  background: var(--surface);
-  color: var(--text);
-  text-align: left;
-}
-.eshop-search__item--active { background: var(--surface-2); }
-.eshop-search__thumb {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-active);
-  color: var(--primary-text);
-}
-.eshop-search__text { display: flex; flex-direction: column; min-width: 0; }
-.eshop-search__title {
-  overflow: hidden;
-  font-size: var(--fs-caption);
-  font-weight: 700;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.eshop-search__meta {
-  overflow: hidden;
-  color: var(--text-2);
-  font-size: var(--fs-min);
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.eshop-search__price { color: var(--text); font-size: var(--fs-caption); font-weight: 700; white-space: nowrap; }
-.eshop-search__status { color: var(--tan-strong); font-size: var(--fs-min); white-space: nowrap; }
-.eshop-search__empty { padding: var(--s4); color: var(--text-2); font-size: var(--fs-caption); }
-.eshop-search__all,
-.eshop-search__empty + .eshop-search__all {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--s2);
-  width: 100%;
-  min-height: var(--tap-min);
-  margin-top: var(--s2);
-  padding: var(--s3);
-  border-top: 1px solid var(--hairline);
-  color: var(--primary-text);
-  font-size: var(--fs-caption);
-  font-weight: 700;
-}
-
+/* El buscador vive en search-island.css; aquí solo se eliminan los
+   estilos de la antigua píldora partida para que no haya reglas duplicadas. */
 .eshop-search-dialog {
   position: fixed;
   inset: 0;
@@ -680,7 +570,7 @@
   .eshop-nav__cats { display: none; }
   .eshop-mega { display: none; }
   .eshop-footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s5); }
-  .eshop-search__price { display: none; }
+  .search-island__price { display: none; }
 }
 
 @media (max-width: 480px) {
@@ -704,10 +594,12 @@
   display: inline-flex; align-items: center; gap: var(--s1);
 }
 .eshop-nav__account-panel {
-  position: absolute; top: calc(100% + var(--s2)); right: 0; z-index: var(--z-nav);
+  position: absolute; right: 0; z-index: var(--z-popover);
   min-width: 190px; padding: var(--s1); border: 1px solid var(--hairline);
   border-radius: var(--radius-card); background: var(--surface);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+  transform-origin: top right;
+  left: auto;
 }
 .eshop-nav__account-panel a,
 .eshop-nav__account-panel button {
@@ -723,7 +615,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .eshop-nav *,
-  .eshop-search *,
+  .search-island-root *,
   .eshop-search-dialog *,
   .eshop-cart *,
   .eshop-footer * {

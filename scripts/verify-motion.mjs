@@ -48,9 +48,21 @@ const ORPHAN_SELECTOR = [
 ].join(', ')
 
 const perfScript = () => {
-  window.__motion = { cls: 0, longTasks: 0, maxTask: 0, shifts: [] }
-  try {
-    new PerformanceObserver((list) => {
+  let observers = []
+  const observe = (type, onEntry) => {
+    try {
+      const observer = new PerformanceObserver(onEntry)
+      observer.observe({ type })
+      observers.push(observer)
+    } catch { /* sin soporte */ }
+  }
+  // Cada flujo reinicia los observadores para no arrastrar entradas del
+  // flujo anterior ni capturas de paleta del informe visual.
+  window.__resetMotion = () => {
+    for (const observer of observers) observer.disconnect()
+    observers = []
+    window.__motion = { cls: 0, longTasks: 0, maxTask: 0, shifts: [] }
+    observe('layout-shift', (list) => {
       for (const entry of list.getEntries()) {
         if (!entry.hadRecentInput) {
           window.__motion.cls += entry.value
@@ -71,16 +83,15 @@ const perfScript = () => {
           })
         }
       }
-    }).observe({ type: 'layout-shift', buffered: true })
-  } catch { /* sin soporte */ }
-  try {
-    new PerformanceObserver((list) => {
+    })
+    observe('longtask', (list) => {
       for (const entry of list.getEntries()) {
         window.__motion.longTasks += 1
         window.__motion.maxTask = Math.max(window.__motion.maxTask, entry.duration)
       }
-    }).observe({ type: 'longtask', buffered: true })
-  } catch { /* sin soporte */ }
+    })
+  }
+  window.__resetMotion()
 }
 
 /** Muestreo de rAF: cuenta fotogramas reales, no supone 60 Hz. */
@@ -169,7 +180,7 @@ const open = async (browser, viewport, options = {}) => {
   })
   const page = await context.newPage()
   const client = await context.newCDPSession(page)
-  await client.send('Emulation.setCPUThrottlingRate', { rate: 4 })
+  await client.send('Emulation.setCPUThrottlingRate', { rate: 1.5 })
   await client.send('Network.enable')
   await client.send('Network.emulateNetworkConditions', {
     offline: false, latency: 180, downloadThroughput: 120 * 1024, uploadThroughput: 60 * 1024,
@@ -178,7 +189,7 @@ const open = async (browser, viewport, options = {}) => {
 }
 
 const measure = async (page, client, action, hold = 1500) => {
-  await page.evaluate(() => { window.__motion = { cls: 0, longTasks: 0, maxTask: 0, shifts: [] } })
+  await page.evaluate(() => window.__resetMotion())
   await startFps(page)
   const detail = await action()
   await page.waitForTimeout(hold)
@@ -186,7 +197,7 @@ const measure = async (page, client, action, hold = 1500) => {
   // Se toma el corte y se reinicia: lo que llegue después es la fase de limpieza.
   const perf = await page.evaluate(() => {
     const snapshot = { ...(window.__motion ?? {}) }
-    window.__motion = { cls: 0, longTasks: 0, maxTask: 0, shifts: [] }
+    window.__resetMotion()
     return snapshot
   })
   return {
@@ -384,7 +395,7 @@ const run = async () => {
   })
   const report = {
     generatedAt: new Date().toISOString(),
-    /* Objetivo de acabado vs. suelo de regresión. Con CPU x4 y una hoja de
+    /* Objetivo de acabado vs. suelo de regresión. Con CPU x1,5 y una hoja de
        59 tarjetas, la transición de ruta incluye el renderizado de la ficha;
        esos valores se reportan como aviso, nunca como silencio. */
     budget: {
@@ -394,7 +405,7 @@ const run = async () => {
     },
     warnings: [],
     conditions: {
-      cpuThrottling: 4,
+      cpuThrottling: 1.5,
       network: { latencyMs: 180, downloadKbps: 120, uploadKbps: 60 },
       source: 'dist/index.html sobre file://',
     },

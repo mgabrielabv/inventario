@@ -4,12 +4,16 @@ export const LEGACY_PREFIX = 'inventario-'
 /** Nombre histórico de la marca, reemplazado al migrar ajustes guardados. */
 export const LEGACY_BRAND_NAME = 'Inventario'
 
-/** Departamentos anteriores, migrados a los 9 actuales. */
+/** Departamentos anteriores, migrados a los seis actuales. */
 export const LEGACY_CATEGORIES: Record<string, string> = {
   Electrónica: 'Tecnología',
   Hogar: 'Hogar y cocina',
-  Papelería: 'Papelería y oficina',
   Otras: 'Hogar y cocina',
+  Papelería: 'Accesorios',
+  'Papelería y oficina': 'Accesorios',
+  'Juguetes y juegos': 'Accesorios',
+  Mascotas: 'Alimentos y bebidas',
+  'Ferretería básica': 'Tecnología',
 }
 export const LEGACY_IMAGE_DB = `${LEGACY_PREFIX}imagenes`
 /** Prefijos históricos de pedidos: se conservan y cuentan en la secuencia. */

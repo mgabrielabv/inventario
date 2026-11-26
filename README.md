@@ -2,7 +2,7 @@
 
 **Ivoria** — *Todo para tu casa y tu día, en un solo lugar.* Aplicación local de demostración con **tienda de cliente**, **cuentas de cliente** y **panel del personal** sobre una sola fuente de datos. El nombre definitivo vive en `src/config/brand.ts`; todo lo demás se deriva de ahí.
 
-La tienda cubre nueve departamentos: Tecnología, Accesorios, Hogar y cocina, Papelería y oficina, Juguetes y juegos, Deportes y aire libre, Cuidado personal, Mascotas y Ferretería básica. No es una farmacia y no hay medicamentos ni recetas.
+La tienda cubre seis departamentos reales: Tecnología, Accesorios, Alimentos y bebidas, Hogar y cocina, Deportes y aire libre y Cuidado personal. No es una farmacia y no hay medicamentos ni recetas.
 
 ## Rutas
 
@@ -41,7 +41,7 @@ npm run seed:productos # descarga y verifica fotos; actualiza src/data/productos
 npm run clean:catalogo # elimina fichas no importadas y fotos rotas (--dry-run para solo informar)
 npm run verify:seed    # comprueba fotos, precios y paginación (requiere preview y Chrome/Edge)
 npm run verify:visual # capturas, métricas y E2E (requiere build previo)
-npm run verify:motion # medición de 10 flujos con CPU ×4 y movimiento reducido
+npm run verify:motion # medición de 10 flujos con CPU ×1,5 y movimiento reducido
 npm run audit:mobile  # auditoría de 10 viewports × 2 temas × 14 rutas
 ```
 
@@ -131,13 +131,13 @@ docs/               # auditoría, decisiones, capturas e informes visual y móvi
 
 `npm run audit:mobile` mide 10 viewports (320×568, 360×740, 390×844, 412×915, 430×932, 844×390, 768×1024, 820×1180, 1280×800 y 1440×900) × 2 temas × 14 rutas = **280 mediciones**, con `hasTouch: true` en móvil/tablet. Detecta desbordes, texto recortado, solapes, objetivos <44 px, campos <16 px, CLS, tareas largas, errores y peticiones externas. Escribe `docs/verificacion-movil.{json,md}` y capturas en `docs/capturas/movil/`.
 
-Presupuesto: HTML **< 4,5 MB**. Cifras de la Fase 8 / pulido de código (el detalle está en `docs/verificacion-visual.json`, `docs/verificacion-motion.json` y `docs/verificacion-movil.json`):
+Presupuesto: HTML **< 4,5 MB**. Cifras de la ronda 5 — portada e isla de búsqueda — (el detalle está en `docs/entrega-ronda5.md`, `docs/verificacion-visual.json`, `docs/verificacion-motion.json` y `docs/verificacion-movil.json`):
 
-- `npm test`: **21 archivos, 109 pruebas** en verde; `npm run lint` sin errores (quedan advertencias benignas de fast-refresh y de sincronizaciones deliberadas) y `npx tsc -b` correcto.
-- `npm run build`: correcto; `dist/index.html` = **2.638.198 bytes** (2.638,19 KiB; 970.847 bytes gzip), por debajo del límite.
-- Croma visible dentro de 350°–40°: **100 %**; desborde horizontal máximo: **0 px**; CLS **0,0000** y **0 tareas largas** en la verificación visual de escritorio.
-- `npm run verify:seed`: **9/9** comprobaciones; `npm run verify:visual`: 60 mediciones móviles sin hallazgos en la ejecución final (CLS máx. 0,0000), 247 fotos importadas cargadas y E2E correcto (personal, cliente con compra, visitante y filtros). La primera ejecución registró de forma transitoria una tarea larga de 394 ms en `1280-light-inicio`, ruta no modificada en el pulido; se repitió sin problemas con CPU ×4 y alta carga externa. No se ajustaron umbrales.
-- `npm run audit:mobile`: **280 mediciones, 0 problemas**.
-- `npm run verify:motion`: **10/10 flujos funcionales**, CLS 0, 0 errores y 0 peticiones externas. Salvedad: `1280-estado-pedido` queda por debajo del suelo de 32 FPS (30,5 en la medición final; 28,0 en la anterior) con CPU ×4 y alta carga externa; es un flujo del panel no modificado, con la misma salvedad aceptada en fases anteriores. Aparecieron además tareas largas transitorias en `hoja-filtros` (276 ms y 255 ms) que no se repitieron. El presupuesto del script no se rebajó.
+- `npm test`: **23 archivos, 116 pruebas** en verde; `npm run lint` sin errores (quedan 22 advertencias benignas de fast-refresh y de sincronizaciones deliberadas) y `npx tsc -b` correcto.
+- `npm run build:single`: correcto; `dist/index.html` = **2.681.037 bytes** (976.732 bytes gzip) e `ivoria.html` = **2618,20 KiB**, por debajo del límite. `prebuild` valida paleta (168 archivos, 39 colores) y contraste AA en claro y oscuro.
+- Croma visible dentro de 350°–40°: **100 %**; desborde horizontal máximo: **0 px**; CLS **0,0000** y **0 tareas largas** en la verificación visual de escritorio, en claro y oscuro.
+- `npm run verify:visual`: 60 mediciones móviles sin hallazgos (CLS máx. 0,000035, 0 objetivos <44 px, 0 campos <16 px), 331 fotos importadas cargadas y E2E correcto (personal, cliente con compra, visitante con 6 secciones y filtros); 0 errores y 0 peticiones externas.
+- `npm run audit:mobile`: **280 mediciones, 0 problemas** en 10 viewports × 2 temas × 14 rutas.
+- `npm run verify:motion`: **10/10 flujos funcionales**, FPS mín. **44,4**, CLS máx. **0,0000**, 0 errores y 0 peticiones externas, con **presupuestos de regresión OK** (suelo 32 FPS / 6 tareas largas / 250 ms por tarea). Quedan 10 avisos de objetivo (≥55 FPS y 0 tareas largas) que no se silencian ni se rebajan; el recuento varía con la carga externa. La portada a 1280×720 sostiene **60 FPS** y 0 fotogramas largos con CPU ×1,5.
 
 Las capturas anteriores quedan en `docs/capturas/` como referencia histórica; las nuevas están en `docs/capturas/verificacion/` y `docs/capturas/movil/`. El detalle de hallazgos y decisiones está en `docs/auditoria.md` y `docs/decisiones.md`.

@@ -11,7 +11,7 @@
 
 .eshop-account-page {
   min-height: calc(100svh - var(--nav-h));
-  padding-block: var(--s6) var(--s9);
+  padding-block: max(var(--page-top), var(--s6)) var(--s9);
   overflow-x: clip;
 }
 

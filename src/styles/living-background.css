@@ -1,0 +1,179 @@
+/* Fondo vivo de la portada: capas decorativas fijas dentro de `.landing`.
+   Todo lo que se mueve lo hace con transform/opacity; el layout no cambia. */
+
+.living-bg {
+  position: fixed;
+  inset: 0;
+  height: 100svh;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint style;
+}
+.living-bg > span {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+/* Malla suave: cuatro manchas que derivan sin filtros animados. */
+.living-bg__mesh { inset: -12%; }
+.living-bg__blob {
+  position: absolute;
+  width: 46vmax;
+  height: 46vmax;
+  border-radius: 50%;
+  opacity: 0.72;
+  will-change: transform;
+  transition: background var(--m-dur-slow) ease;
+}
+.living-bg__blob--1 {
+  top: -14%; left: -8%;
+  background: radial-gradient(circle, var(--tone-mesh-a), transparent 68%);
+}
+.living-bg__blob--2 {
+  top: 22%; right: -10%;
+  background: radial-gradient(circle, var(--tone-mesh-b), transparent 68%);
+}
+.living-bg__blob--3 {
+  bottom: -22%; left: 24%;
+  background: radial-gradient(circle, var(--tone-mesh-c), transparent 70%);
+}
+.living-bg--full .living-bg__blob--1 {
+  animation: living-drift-one var(--m-living-mesh) ease-in-out infinite;
+}
+.living-bg--full .living-bg__blob--2 {
+  animation: living-drift-two var(--m-living-mesh) ease-in-out infinite;
+}
+.living-bg--full .living-bg__blob--3 {
+  animation: living-drift-three var(--m-living-mesh) ease-in-out infinite;
+}
+@keyframes living-drift-one {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(6%, 8%, 0) scale(1.12); }
+}
+@keyframes living-drift-two {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.08); }
+  50% { transform: translate3d(-7%, -6%, 0) scale(0.94); }
+}
+@keyframes living-drift-three {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(0.96); }
+  50% { transform: translate3d(5%, -9%, 0) scale(1.14); }
+}
+
+/* Aurora: dos bandas anchas que respiran sin tocar el fondo de la página. */
+.living-bg__aurora {
+  top: -20%; right: -10%; left: -10%;
+  height: 70%;
+  background: radial-gradient(60% 100% at 50% 0%, var(--tone-glow), transparent 72%);
+  opacity: 0.45;
+  will-change: transform, opacity;
+}
+.living-bg__aurora::after {
+  content: '';
+  position: absolute;
+  top: 40%; left: 12%;
+  width: 76%;
+  height: 46%;
+  border-radius: 50%;
+  background: radial-gradient(70% 100% at 50% 50%, var(--living-aurora), transparent 74%);
+  will-change: transform, opacity;
+}
+.living-bg--full .living-bg__aurora {
+  animation: living-aurora var(--m-living-aurora) ease-in-out infinite;
+}
+.living-bg--full .living-bg__aurora::after {
+  animation: living-aurora-two calc(var(--m-living-aurora) * 1.4) ease-in-out infinite;
+}
+@keyframes living-aurora {
+  0%, 100% { transform: translate3d(-4%, 0, 0) scale(1); opacity: 0.35; }
+  50% { transform: translate3d(4%, 2%, 0) scale(1.08); opacity: 0.6; }
+}
+@keyframes living-aurora-two {
+  0%, 100% { transform: translate3d(5%, 0, 0) skewX(-6deg); opacity: 0.3; }
+  50% { transform: translate3d(-6%, 4%, 0) skewX(5deg); opacity: 0.52; }
+}
+
+/* Rejilla y grano: estáticos, con degradado para no endurecer los bordes. */
+.living-bg__grid {
+  inset: 0;
+  background-image:
+    linear-gradient(var(--living-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--living-grid) 1px, transparent 1px);
+  background-size: 72px 72px;
+  opacity: 0.28;
+}
+.living-bg__grain {
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg, var(--living-particle) 0 1px, transparent 1px 3px
+  );
+  opacity: 0.06;
+}
+
+/* Partículas: distribución determinista, desfase por índice y nivel. */
+.living-bg__particles { inset: 0; }
+.living-bg__particle {
+  top: var(--living-y);
+  left: var(--living-x);
+  width: 4px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--living-particle);
+  opacity: 0.3;
+}
+.living-bg--full .living-bg__particle {
+  animation: living-float var(--living-duration) ease-in-out infinite;
+  animation-delay: var(--living-delay);
+}
+@keyframes living-float {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.16; }
+  50% {
+    transform: translate3d(var(--m-rise), calc(var(--m-rise-lg) * -1), 0);
+    opacity: 0.6;
+  }
+}
+
+/* Luz de cursor: se recoloca solo con transform. */
+.living-bg__light {
+  top: 0; left: 0;
+  width: var(--m-living-light-size);
+  height: var(--m-living-light-size);
+  margin-top: calc(var(--m-living-light-size) / -2);
+  margin-left: calc(var(--m-living-light-size) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--living-light), transparent 68%);
+  opacity: 0;
+  transform: translate3d(var(--living-cursor-x, 50vw), var(--living-cursor-y, 20vh), 0);
+  transition: opacity var(--m-dur-base) ease;
+  will-change: transform, opacity;
+}
+.living-bg--full .living-bg__light { opacity: 0.9; }
+.living-bg--lite .living-bg__light,
+.living-bg--static .living-bg__light { display: none; }
+
+/* Pausa al desplazarse o con la pestaña oculta; apagado total en estático. */
+.living-bg--paused .living-bg__blob,
+.living-bg--paused .living-bg__aurora,
+.living-bg--paused .living-bg__aurora::after,
+.living-bg--paused .living-bg__particle {
+  animation-play-state: paused;
+}
+.living-bg--static .living-bg__blob,
+.living-bg--static .living-bg__aurora,
+.living-bg--static .living-bg__aurora::after,
+.living-bg--static .living-bg__particle {
+  animation: none;
+}
+
+@media (max-width: 768px) {
+  .living-bg__grid { background-size: 48px 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .living-bg__particles,
+  .living-bg__light { display: none; }
+  .living-bg__blob,
+  .living-bg__aurora,
+  .living-bg__aurora::after { animation: none !important; }
+}

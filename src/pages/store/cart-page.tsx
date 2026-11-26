@@ -10,6 +10,7 @@ import { EmptyState } from '../../components/ui/EmptyState'
 import { useToast } from '../../components/ui/Toast'
 import { repeatOrderLines, validateCart } from '../../logic/services/cart'
 import { ordersForAccount } from '../../logic/services/customer-auth'
+import { pluralize } from '../../logic/services/formatters'
 import { cartRecommendations } from '../../logic/services/recommendations'
 import { getAvailable } from '../../logic/services/stock'
 import { useCartStore } from '../../logic/store/cart'
@@ -182,7 +183,7 @@ export const CartPage = () => {
               <section className="card cart-main__panel" aria-label="Guardados para después">
                 <header className="cart-main__head">
                   <h2 className="t-ui t-strong">Guardados para después</h2>
-                  <span className="t-caption t-muted">{saved.length} {saved.length === 1 ? 'producto' : 'productos'}</span>
+                  <span className="t-caption t-muted">{saved.length} {pluralize(saved.length, 'producto', 'productos')}</span>
                 </header>
                 <ul className="cart-lines">
                   {rows(saved).map(({ line, product, available }) => (

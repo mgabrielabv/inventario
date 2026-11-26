@@ -72,6 +72,18 @@
   --mesh-3: rgba(137, 0, 0, 0.14);
   --mesh-veil: color-mix(in oklab, var(--bg) 55%, transparent);
 
+  /* --- Fondo vivo de portada --------------------------------------------- */
+  --living-grid: color-mix(in oklab, var(--tan) 18%, transparent);
+  --living-aurora: color-mix(in oklab, var(--clay) 30%, transparent);
+  --living-light: color-mix(in oklab, var(--cream) 14%, transparent);
+  --living-particle: color-mix(in oklab, var(--cream) 55%, transparent);
+  --living-marquee: color-mix(in oklab, var(--clay) 42%, transparent);
+  /* El color del fondo sigue al producto héroe sin salir de la paleta. */
+  --tone-mesh-a: var(--mesh-1);
+  --tone-mesh-b: var(--mesh-2);
+  --tone-mesh-c: var(--mesh-3);
+  --tone-glow: var(--stage-glow);
+
   /* --- Caja ilustrada --------------------------------------------------- */
   --box-top: color-mix(in oklab, var(--clay) 55%, var(--cream));
   --box-left: color-mix(in oklab, var(--clay) 82%, var(--burgundy));
@@ -160,13 +172,14 @@
      --nav-h mide la cabecera completa de la tienda: utility + principal +
      categorías. El main compensa esa altura y la cabecera aplica el mismo
      valor como margen negativo, así que no debe haber rellenos adicionales. */
-  --eshop-nav-utility-h: 44px;
+  --eshop-nav-utility-h: 32px;
   --eshop-nav-main-h: 64px;
   --eshop-nav-main-h-compact: 56px;
   --eshop-nav-cats-h: 44px;
   --eshop-nav-edges: 2px;
   --nav-h: calc(var(--eshop-nav-utility-h) + var(--eshop-nav-main-h)
     + var(--eshop-nav-cats-h) + var(--eshop-nav-edges));
+  --page-top: clamp(24px, 4vw, 56px);
   --sidebar-w: 232px;
   --sidebar-collapsed: 72px;
   --topbar-h: 60px;
@@ -174,10 +187,13 @@
   /* --- Capas ------------------------------------------------------------ */
   --z-base: 0;
   --z-sticky: 20;
-  --z-nav: 40;
+  --z-header: 40;
+  --z-nav: var(--z-header);
   --z-overlay: 60;
-  --z-sheet: 70;
-  --z-toast: 90;
+  --z-popover: 60;
+  --z-sheet: 80;
+  --z-modal: 80;
+  --z-toast: 100;
 }
 
 /* Altura dinámica real en navegadores modernos; svh y vh quedan como fallback. */
@@ -268,6 +284,44 @@
   --art-metal: color-mix(in oklab, var(--tan) 52%, var(--surface-2));
   --art-paper: color-mix(in oklab, var(--cream) 70%, var(--tan));
   --art-edge: color-mix(in oklab, var(--cream) 22%, var(--hairline));
+}
+
+/* El escaparate cambia el acento del fondo con el producto héroe. */
+.landing[data-tone='accesorios'] {
+  --tone-mesh-a: color-mix(in oklab, var(--clay) 40%, transparent);
+  --tone-mesh-b: color-mix(in oklab, var(--cream) 12%, transparent);
+  --tone-mesh-c: color-mix(in oklab, var(--tan) 22%, transparent);
+  --tone-glow: color-mix(in oklab, var(--cream) 26%, transparent);
+}
+.landing[data-tone='tecnologia'] {
+  --tone-mesh-a: color-mix(in oklab, var(--tan) 30%, transparent);
+  --tone-mesh-b: color-mix(in oklab, var(--burgundy) 30%, transparent);
+  --tone-mesh-c: color-mix(in oklab, var(--clay) 22%, transparent);
+  --tone-glow: color-mix(in oklab, var(--tan) 32%, transparent);
+}
+.landing[data-tone='hogar'] {
+  --tone-mesh-a: color-mix(in oklab, var(--tan) 38%, transparent);
+  --tone-mesh-b: color-mix(in oklab, var(--clay) 26%, transparent);
+  --tone-mesh-c: color-mix(in oklab, var(--cream) 10%, transparent);
+  --tone-glow: color-mix(in oklab, var(--clay) 34%, transparent);
+}
+.landing[data-tone='deportes'] {
+  --tone-mesh-a: color-mix(in oklab, var(--burgundy) 34%, transparent);
+  --tone-mesh-b: color-mix(in oklab, var(--clay) 34%, transparent);
+  --tone-mesh-c: color-mix(in oklab, var(--tan) 16%, transparent);
+  --tone-glow: color-mix(in oklab, var(--burgundy) 28%, transparent);
+}
+.landing[data-tone='alimentos'] {
+  --tone-mesh-a: color-mix(in oklab, var(--clay) 32%, transparent);
+  --tone-mesh-b: color-mix(in oklab, var(--cream) 16%, transparent);
+  --tone-mesh-c: color-mix(in oklab, var(--tan) 26%, transparent);
+  --tone-glow: color-mix(in oklab, var(--cream) 22%, transparent);
+}
+.landing[data-tone='cuidado'] {
+  --tone-mesh-a: color-mix(in oklab, var(--cream) 18%, transparent);
+  --tone-mesh-b: color-mix(in oklab, var(--clay) 30%, transparent);
+  --tone-mesh-c: color-mix(in oklab, var(--burgundy) 22%, transparent);
+  --tone-glow: color-mix(in oklab, var(--clay) 28%, transparent);
 }
 
 /* Botón primario en oscuro: borde interior + halo para separarlo del fondo. */

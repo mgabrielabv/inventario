@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import {
-  ArrowRight, ChevronLeft, ChevronRight, Clock3, Headphones, Heart, Home as HomeIcon,
-  LayoutGrid, Laptop, MapPin, NotebookPen, PackageCheck, Pause, Play, RotateCcw, Search,
+  ArrowRight, ChevronLeft, ChevronRight, Clock3, Dumbbell, Headphones, Heart, Home as HomeIcon,
+  LayoutGrid, Laptop, MapPin, PackageCheck, Pause, Play, RotateCcw, Search,
   ShoppingBag, Sparkles, Store, Tag, Truck, UserRound, Wallet, type LucideIcon,
 } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState, type TouchEvent } from 'react'
@@ -12,6 +12,7 @@ import { ProductImage } from '../../components/store/ProductImage'
 import { banners, type Banner } from '../../data/banners'
 import { categoryTiles } from '../../logic/services/catalog'
 import { ordersForAccount } from '../../logic/services/customer-auth'
+import { pluralize } from '../../logic/services/formatters'
 import { getAvailable } from '../../logic/services/stock'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
@@ -27,11 +28,12 @@ const BANNER_ICONS: Record<Banner['variante'], LucideIcon> = {
 }
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
-  'Electrónica': Laptop,
+  'Tecnología': Laptop,
   'Accesorios': Headphones,
-  'Papelería': NotebookPen,
-  'Hogar': HomeIcon,
-  'Otras': LayoutGrid,
+  'Alimentos y bebidas': ShoppingBag,
+  'Hogar y cocina': HomeIcon,
+  'Deportes y aire libre': Dumbbell,
+  'Cuidado personal': Sparkles,
   'Ofertas': Tag,
   'Novedades': Sparkles,
 }
@@ -237,12 +239,6 @@ export const HomePage = () => {
   const pagos = useSettingsStore((state) => state.settings.pagos)
   const configuredCategories = useSettingsStore((state) => state.settings.catalogo.categorias)
   const recentIds = useRecentStore((state) => state.ids)
-  const [ready, setReady] = useState(false)
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => setReady(true), 280)
-    return () => window.clearTimeout(timer)
-  }, [])
 
   const benefits = useMemo(() => {
     const result: Array<{ id: string; icon: LucideIcon; titulo: string; detalle: string }> = []
@@ -428,8 +424,8 @@ export const HomePage = () => {
                     <span className="eshop-category__name">{nombre}</span>
                     <span className="eshop-category__count">
                       {disponibles > 0
-                        ? `${disponibles} ${disponibles === 1 ? 'disponible' : 'disponibles'}`
-                        : `${total} ${total === 1 ? 'producto' : 'productos'}`}
+                        ? `${disponibles} ${pluralize(disponibles, 'disponible', 'disponibles')}`
+                        : `${total} ${pluralize(total, 'producto', 'productos')}`}
                     </span>
                   </Link>
                 </li>
@@ -444,7 +440,7 @@ export const HomePage = () => {
             titulo="Comprar de nuevo"
             descripcion="Tus últimas compras, listas para repetir."
             items={paraRepetir}
-            cargando={!ready}
+            cargando={false}
             vacio="Cuando hagas tu primera compra, tus productos aparecerán aquí."
             verTodo={{ label: 'Mis pedidos', to: '/cuenta/pedidos' }}
           />
@@ -453,7 +449,7 @@ export const HomePage = () => {
             titulo="Ofertas del día"
             descripcion="Precios especiales para decidirte hoy."
             items={ofertas}
-            cargando={!ready}
+            cargando={false}
             vacio="Pronto habrá ofertas para ti."
             verTodo={{ label: 'Ver catálogo', to: '/tienda?orden=precio-asc' }}
           />
@@ -462,7 +458,7 @@ export const HomePage = () => {
             titulo="Los más vendidos"
             descripcion="Los favoritos de quienes ya compraron."
             items={masVendidos}
-            cargando={!ready}
+            cargando={false}
             verTodo={{ label: 'Ver destacados', to: '/tienda?orden=destacados' }}
           />
           <HomeRail
@@ -470,7 +466,7 @@ export const HomePage = () => {
             titulo="Novedades"
             descripcion="Lo último que llegó a la tienda."
             items={novedades}
-            cargando={!ready}
+            cargando={false}
             verTodo={{ label: 'Ver novedades', to: '/tienda?orden=recientes' }}
           />
           <HomeRail
@@ -478,7 +474,7 @@ export const HomePage = () => {
             titulo="Vistos recientemente"
             descripcion="Retoma donde lo dejaste."
             items={recientes}
-            cargando={!ready}
+            cargando={false}
             vacio="Cuando explores productos, aparecerán aquí."
           />
         </div>
@@ -527,8 +523,8 @@ export const HomePage = () => {
                   <p className="eshop-personal__code">{ultimoPedido.codigo}</p>
                   <p className="eshop-personal__state">
                     <Clock3 size={15} strokeWidth={1.7} aria-hidden="true" />
-                    {ultimoPedido.estado} · {ultimoPedido.lineas.length}
-                    {ultimoPedido.lineas.length === 1 ? ' producto' : ' productos'}
+                    {ultimoPedido.estado} · {ultimoPedido.lineas.length}{' '}
+                    {pluralize(ultimoPedido.lineas.length, 'producto', 'productos')}
                   </p>
                   <Link className="eshop-personal__detail" to={`/cuenta/pedidos/${ultimoPedido.codigo}`}>
                     Ver detalle <ArrowRight size={16} strokeWidth={1.8} aria-hidden="true" />

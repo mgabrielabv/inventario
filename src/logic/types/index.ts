@@ -22,9 +22,8 @@ export const MOTIVOS_BY_TYPE: Record<MovementType, Motivo[]> = {
 }
 
 export const DEFAULT_CATEGORIES = [
-  'Tecnología', 'Accesorios', 'Hogar y cocina', 'Papelería y oficina',
-  'Juguetes y juegos', 'Deportes y aire libre', 'Cuidado personal',
-  'Mascotas', 'Ferretería básica',
+  'Tecnología', 'Accesorios', 'Alimentos y bebidas', 'Hogar y cocina',
+  'Deportes y aire libre', 'Cuidado personal',
 ]
 export const DEFAULT_LOCATIONS = [
   'A-01', 'A-02', 'A-03', 'A-04', 'A-05', 'B-01', 'B-02', 'B-03', 'C-01', 'C-02',
