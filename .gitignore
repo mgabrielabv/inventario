@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# Respaldo / entregables comprimidos (nunca versionar)
+*.tar
+*.tar.xz
+*.tar.gz
+*.tgz
+*.zip
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
