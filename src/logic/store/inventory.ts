@@ -3,7 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { initialMovements, initialProducts } from '../../data/products'
 import { AppError } from '../errors'
 import { applyMovement, buildVoidMovement } from '../services/stock'
-import { migrateProductFacets } from '../services/product-migrate'
+import { migrateProductFacets, reclasificarImportados } from '../services/product-migrate'
 import { cleanImportedProducts } from '../services/real-products'
 import { KEYS, safeStorage } from '../services/storage'
 import { slugify } from '../services/formatters'
@@ -123,11 +123,12 @@ const migrate = (persisted: unknown, version: number): InventoryStore | undefine
     // v7: se incorporan los productos reales de las APIs sin duplicar los que
     // ya existan.
     // v8: se descartan las fichas de relleno (p001..p060) y sus movimientos.
+    // v9: las fichas de las APIs se reubican con las reglas compartidas.
     const movements = (state.movements ?? [])
       .filter((movement) => !wasFillerId((movement as Movement | undefined)?.productoId))
     return {
       ...state,
-      products: cleanImportedProducts(migrateProductFacets(products)),
+      products: cleanImportedProducts(reclasificarImportados(migrateProductFacets(products))),
       movements,
     } as InventoryStore
   }
@@ -139,7 +140,9 @@ const migrate = (persisted: unknown, version: number): InventoryStore | undefine
     .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime())
   return {
     ...state,
-    products: cleanImportedProducts(products.length ? products : initialProducts),
+    products: cleanImportedProducts(reclasificarImportados(
+      products.length ? products : initialProducts,
+    )),
     movements: movements.length ? movements : initialMovements,
   } as InventoryStore
 }
@@ -241,7 +244,7 @@ export const useInventoryStore = create<InventoryStore>()(
     {
       name: KEYS.inventory,
       storage: createJSONStorage(() => safeStorage),
-      version: 8,
+      version: 9,
       migrate: (persisted, version) => migrate(persisted, version) ?? ({} as InventoryStore),
       partialize: (state) => ({ products: state.products, movements: state.movements }) as InventoryStore,
     },

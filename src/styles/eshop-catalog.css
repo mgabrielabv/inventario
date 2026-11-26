@@ -1,9 +1,8 @@
 /* Catálogo y tarjeta de tienda: rejilla densa, sin recursos externos.
-   Solo tokens de color definidos en tokens.css. */
+   Solo tokens de color definidos en tokens.css. La cabecera ya se compensa
+   en .store-main con --nav-h: no añadir relleno superior aquí. */
 
 .eshop-catalog {
-  --eshop-nav-space: 156px;
-  padding-top: var(--eshop-nav-space);
   padding-bottom: var(--s8);
   overflow-x: clip;
   background: var(--bg);
@@ -15,7 +14,7 @@
   margin-inline: auto;
 }
 
-/* --- Migras de pan -------------------------------------------------------- */
+/* --- Migas de pan --------------------------------------------------------- */
 
 .eshop-crumbs { margin-bottom: var(--s4); }
 .eshop-crumbs__list {
@@ -728,7 +727,6 @@
 }
 
 @media (max-width: 1024px) {
-  .eshop-catalog { --eshop-nav-space: 116px; }
   .eshop-catalog__wrap { width: min(100% - 24px, 1440px); }
   .eshop-catalog__layout { grid-template-columns: minmax(0, 1fr); }
   .eshop-catalog__sidebar { display: none; }

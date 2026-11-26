@@ -149,8 +149,17 @@
   --app-h: 100vh;
   --app-h: 100svh;
 
-  /* --- Estructura ------------------------------------------------------- */
-  --nav-h: 52px;
+  /* --- Estructura -------------------------------------------------------
+     --nav-h mide la cabecera completa de la tienda: utility + principal +
+     categorías. El main compensa esa altura y la cabecera aplica el mismo
+     valor como margen negativo, así que no debe haber rellenos adicionales. */
+  --eshop-nav-utility-h: 44px;
+  --eshop-nav-main-h: 64px;
+  --eshop-nav-main-h-compact: 56px;
+  --eshop-nav-cats-h: 44px;
+  --eshop-nav-edges: 2px;
+  --nav-h: calc(var(--eshop-nav-utility-h) + var(--eshop-nav-main-h)
+    + var(--eshop-nav-cats-h) + var(--eshop-nav-edges));
   --sidebar-w: 232px;
   --sidebar-collapsed: 72px;
   --topbar-h: 60px;
@@ -181,6 +190,15 @@
 
 @media (min-width: 1024px) {
   :root { --space-page-x: 32px; }
+}
+
+/* En tablet desaparece la fila de categorías; en móvil manda mobile.css. */
+@media (max-width: 1024px) {
+  :root {
+    --eshop-nav-edges: 1px;
+    --nav-h: calc(var(--eshop-nav-utility-h) + var(--eshop-nav-main-h-compact)
+      + var(--eshop-nav-edges));
+  }
 }
 
 .dark {

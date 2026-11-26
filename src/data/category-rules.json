@@ -1,0 +1,29 @@
+{
+  "arquetipos": {
+    "Tecnología": "laptop",
+    "Accesorios": "reloj",
+    "Hogar y cocina": "taza",
+    "Papelería y oficina": "cuaderno",
+    "Juguetes y juegos": "paquete",
+    "Deportes y aire libre": "ventilador",
+    "Cuidado personal": "paquete",
+    "Mascotas": "paquete",
+    "Ferretería básica": "cable"
+  },
+  "porNombre": [
+    { "keywords": ["cat food", "dog food", "pet food"], "categoria": "Mascotas", "subcategoria": "Alimentos" },
+    { "keywords": ["tissue paper", "paper box"], "categoria": "Papelería y oficina", "subcategoria": "Papelería" },
+    { "keywords": ["party glasses"], "categoria": "Juguetes y juegos", "subcategoria": "Accesorios de fiesta" },
+    { "keywords": ["magsafe battery", "battery pack"], "categoria": "Ferretería básica", "subcategoria": "Pilas y baterías" },
+    { "keywords": ["protein powder"], "categoria": "Deportes y aire libre", "subcategoria": "Nutrición deportiva" }
+  ],
+  "porCategoria": [
+    { "keywords": ["beverage", "water", "juice", "coffee", "tea", "soda", "drink"], "categoria": "Hogar y cocina", "subcategoria": "Bebidas" },
+    { "keywords": ["cheese", "yogurt", "milk", "cream", "butter", "egg"], "categoria": "Hogar y cocina", "subcategoria": "Lácteos y huevos" },
+    { "keywords": ["frozen", "ice cream"], "categoria": "Hogar y cocina", "subcategoria": "Congelados" },
+    { "keywords": ["chocolate", "candy", "snack", "biscuit", "cookie", "cake", "nuts"], "categoria": "Hogar y cocina", "subcategoria": "Snacks y dulces" },
+    { "keywords": ["bread", "cereal", "flour", "pasta", "rice", "crispbread", "oat"], "categoria": "Hogar y cocina", "subcategoria": "Cereales y horneados" },
+    { "keywords": ["fruit", "vegetable", "tomato", "salad"], "categoria": "Hogar y cocina", "subcategoria": "Frutas y verduras" },
+    { "keywords": ["sauce", "oil", "spice", "salt", "sugar"], "categoria": "Hogar y cocina", "subcategoria": "Condimentos y aceites" }
+  ]
+}

@@ -14,6 +14,7 @@
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { cleanProducts } from './lib/catalog-clean.mjs'
+import { clasificarImportado } from './lib/category-rules.mjs'
 
 const ROOT = new URL('../', import.meta.url)
 const OUTPUT = new URL('src/data/productos-reales.json', ROOT)
@@ -120,36 +121,40 @@ const groceryPrice = (categories, random) => {
 
 const common = ({ id, codigo, nombre, categoria, subcategoria, marca, unidad, stock, precio,
   precioAnterior, imagenes, descripcionCorta, descripcion, especificaciones, etiquetas,
-  proveedor, notas, index }) => ({
-  id,
-  codigo,
-  slug: `${slugify(nombre)}-${id}`,
-  nombre,
-  categoria,
-  subcategoria,
-  marca,
-  unidad,
-  stock,
-  stockMinimo: 5,
-  stockObjetivo: Math.max(30, stock * 2),
-  ubicacion: LOCATIONS[index % LOCATIONS.length],
-  costo: round(precio * 0.62),
-  publicado: true,
-  arquetipo: ARCHETYPE_MAP[categoria] ?? 'paquete',
-  precio,
-  precioAnterior,
-  descripcionCorta,
-  descripcion,
-  especificaciones,
-  etiquetas,
-  destacado: index % 37 === 0,
-  imagenes,
-  proveedor,
-  notas,
-  archivado: false,
-  creadoEn: CREATED_AT,
-  actualizadoEn: CREATED_AT,
-})
+  proveedor, notas, index }) => {
+  const destino = clasificarImportado({ nombre, categoria, subcategoria, etiquetas, especificaciones })
+    ?? { categoria, subcategoria, arquetipo: ARCHETYPE_MAP[categoria] ?? 'paquete' }
+  return {
+    id,
+    codigo,
+    slug: `${slugify(nombre)}-${id}`,
+    nombre,
+    categoria: destino.categoria,
+    subcategoria: destino.subcategoria,
+    marca,
+    unidad,
+    stock,
+    stockMinimo: 5,
+    stockObjetivo: Math.max(30, stock * 2),
+    ubicacion: LOCATIONS[index % LOCATIONS.length],
+    costo: round(precio * 0.62),
+    publicado: true,
+    arquetipo: destino.arquetipo,
+    precio,
+    precioAnterior,
+    descripcionCorta,
+    descripcion,
+    especificaciones,
+    etiquetas,
+    destacado: index % 37 === 0,
+    imagenes,
+    proveedor,
+    notas,
+    archivado: false,
+    creadoEn: CREATED_AT,
+    actualizadoEn: CREATED_AT,
+  }
+}
 
 /** DummyJSON -> Product. */
 const fromDummy = (item, index) => {

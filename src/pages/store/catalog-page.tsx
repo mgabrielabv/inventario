@@ -257,6 +257,12 @@ export const CatalogPage = () => {
     [searchOpen, filters.q, products, orders],
   )
   const chips = activeFilterChips(filters)
+  const titulo = filters.cat === 'Todas' ? 'Catálogo' : filters.cat
+  const subtitulo = filters.q.trim()
+    ? `Resultados para «${filters.q.trim()}»`
+    : filters.cat === 'Todas'
+      ? 'Encuentra lo que necesitas y compáralo de un vistazo.'
+      : `Descubre nuestra selección de ${filters.cat.toLowerCase()}.`
   const page = filters.pagina ?? 1
   const shownCount = Math.min(results.length, page * PAGE_SIZE)
   const shown = results.slice(0, shownCount)
@@ -308,10 +314,8 @@ export const CatalogPage = () => {
 
         <header className="eshop-catalog__head">
           <div>
-            <h1 className="eshop-catalog__title">Catálogo</h1>
-            <p className="eshop-catalog__subtitle">
-              Encuentra lo que necesitas y compáralo de un vistazo.
-            </p>
+            <h1 className="eshop-catalog__title">{titulo}</h1>
+            <p className="eshop-catalog__subtitle">{subtitulo}</p>
           </div>
           <p className="eshop-catalog__total" aria-live="polite">
             {results.length} {results.length === 1 ? 'producto' : 'productos'}

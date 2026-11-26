@@ -8,6 +8,7 @@
     "check:contrast": "node scripts/check-contrast.mjs",
     "prebuild": "npm run check:palette && npm run check:contrast",
     "seed:productos": "node scripts/seed-products.mjs",
+    "reclasificar:catalogo": "node scripts/reclasificar-catalogo.mjs",
     "clean:catalogo": "node scripts/clean-catalog.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
