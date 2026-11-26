@@ -88,6 +88,27 @@ export const boxInteractive = {
   tapScale: 0.98,
 } as const
 
+/** Escenarios de producto: halo que respira y entrada sin salto de layout. */
+export const stageMotion = {
+  revealY: 18,
+  revealScale: 0.97,
+  haloScale: 1.06,
+  haloFrom: 0.45,
+  haloTo: 0.8,
+  haloDuration: 6,
+  tileStagger: 0.07,
+} as const
+
+/** Entradas cinematográficas de portada: velo corto y revelado escalonado. */
+export const cinematic = {
+  routeScale: 0.995,
+  titleRise: 28,
+  titleDelay: 0.08,
+  copyDelay: 0.18,
+  artDelay: 0.26,
+  revealDuration: dur.hero,
+} as const
+
 /** A20· caja abierta de estados vacíos. */
 export const openBox = {
   drawDuration: 0.8,
@@ -185,6 +206,11 @@ export const cssMotion = {
   '--m-quick-offset': `${cardMotion.quickOffset}px`,
   '--m-badge-from': String(cardMotion.badgeFrom),
   '--m-confetti-duration': `${celebration.duration}s`,
+  '--m-stage-halo-scale': String(stageMotion.haloScale),
+  '--m-stage-halo-duration': `${stageMotion.haloDuration}s`,
+  '--m-stage-halo-from': String(stageMotion.haloFrom),
+  '--m-stage-halo-to': String(stageMotion.haloTo),
+  '--m-tile-stagger': `${stageMotion.tileStagger}s`,
 } as const
 
 /** Fondo de malla: se detiene mientras se desplaza la página. */

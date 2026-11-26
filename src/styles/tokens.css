@@ -81,6 +81,13 @@
   --box-label: var(--cream);
   --box-shadow: rgb(42 15 13 / 0.16);
 
+  /* --- Escenarios de producto y portada ---------------------------------- */
+  --stage: color-mix(in oklab, var(--surface-2) 62%, var(--surface));
+  --stage-deep: color-mix(in oklab, var(--burgundy) 16%, var(--surface));
+  --stage-glow: color-mix(in oklab, var(--clay) 34%, transparent);
+  --stage-halo: color-mix(in oklab, var(--tan) 22%, transparent);
+  --stage-edge: color-mix(in oklab, var(--cream) 14%, var(--hairline));
+
   /* --- Arte isométrico de producto --------------------------------------- */
   --art-base: color-mix(in oklab, var(--clay) 72%, var(--cream));
   --art-accent: color-mix(in oklab, var(--burgundy) 78%, var(--clay));

@@ -1,11 +1,46 @@
 import type { Variants } from 'framer-motion'
-import { distance, dur, ease, feedback, spring, stagger } from './tokens'
+import { cinematic, distance, dur, ease, feedback, spring, stagger } from './tokens'
 
 /** A1 · transiciones de ruta: entrada elegante, salida rápida. */
 export const routeVariants: Variants = {
-  initial: { opacity: 0, y: distance.riseLg },
-  animate: { opacity: 1, y: 0, transition: { duration: dur.base, ease: ease.easeOutQuint } },
+  initial: { opacity: 0, y: distance.riseLg, scale: cinematic.routeScale },
+  animate: { opacity: 1, y: 0, scale: 1, transition: { duration: dur.base, ease: ease.easeOutQuint } },
   exit: { opacity: 0, y: -distance.rise, transition: { duration: dur.fast, ease: ease.ios } },
+}
+
+/** Portada cinematográfica: título, texto y arte entran con un mismo compás. */
+const stageStagger = cinematic.copyDelay - cinematic.titleDelay
+
+export const cinematicVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: stageStagger, delayChildren: cinematic.titleDelay },
+  },
+}
+
+export const cinematicTitle: Variants = {
+  hidden: { opacity: 0, y: cinematic.titleRise },
+  show: {
+    opacity: 1, y: 0,
+    transition: { duration: cinematic.revealDuration, ease: ease.easeOutQuint },
+  },
+}
+
+export const cinematicCopy: Variants = {
+  hidden: { opacity: 0, y: distance.riseLg },
+  show: {
+    opacity: 1, y: 0,
+    transition: { duration: cinematic.revealDuration, ease: ease.easeOutQuint },
+  },
+}
+
+export const cinematicArt: Variants = {
+  hidden: { opacity: 0, scale: cinematic.routeScale },
+  show: {
+    opacity: 1, scale: 1,
+    transition: { duration: cinematic.revealDuration, ease: ease.out, delay: cinematic.artDelay },
+  },
 }
 
 /** A5 / A6 · entrada al aparecer en pantalla */

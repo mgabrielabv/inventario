@@ -123,10 +123,34 @@
   place-items: center;
   width: 100%;
   aspect-ratio: 1 / 1;
-  background: color-mix(in oklab, var(--surface-2) 60%, var(--surface));
-  border: 1px solid var(--hairline);
+  background: radial-gradient(circle at 50% 48%, var(--stage-deep), var(--stage) 72%);
+  border: 1px solid var(--stage-edge);
   border-radius: var(--radius-media);
   view-transition-name: ivoria-producto;
+}
+
+.stage-scene {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+.stage-scene__halo {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--stage-glow), var(--stage-halo) 46%, transparent 72%);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.stage-scene__content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .pdp-tilt { display: grid; place-items: center; }

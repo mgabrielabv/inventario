@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom'
 import { ArtZoom } from '../../components/art/ArtZoom'
 import { ProductArt, type ArtView } from '../../components/art/ProductArt'
 import { ProductCard } from '../../components/store/ProductCard'
+import { ProductStage } from '../../components/store/ProductStage'
 import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Stepper } from '../../components/ui/Stepper'
@@ -129,19 +130,21 @@ export const ProductPage = () => {
       <div className="pdp-layout">
         <div className="pdp-gallery">
           <div className="pdp-stage">
-            <motion.div
-              ref={tilt.ref}
-              className="pdp-tilt"
-              style={tilt.style}
-              onPointerMove={tilt.onPointerMove}
-              onPointerLeave={tilt.onPointerLeave}
-            >
-              <ArtZoom
-                product={product}
-                view={view}
-                layoutId={`product-art-${product.id}`}
-              />
-            </motion.div>
+            <ProductStage>
+              <motion.div
+                ref={tilt.ref}
+                className="pdp-tilt"
+                style={tilt.style}
+                onPointerMove={tilt.onPointerMove}
+                onPointerLeave={tilt.onPointerLeave}
+              >
+                <ArtZoom
+                  product={product}
+                  view={view}
+                  layoutId={`product-art-${product.id}`}
+                />
+              </motion.div>
+            </ProductStage>
           </div>
           <div className="pdp-views" role="tablist" aria-label="Vistas del producto">
             {VIEWS.map((item) => (
