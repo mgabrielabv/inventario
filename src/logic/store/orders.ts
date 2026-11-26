@@ -16,6 +16,9 @@ interface OrdersStore {
   findByCode: (codigo: string, telefonoOrEmail: string) => Order | null
 }
 
+const wasFillerId = (id: unknown): boolean =>
+  typeof id === 'string' && /^p\d{3}$/.test(id)
+
 /** Los pedidos guardados antes del rediseño no tenían descuento ni comprobante. */
 const normalizeOrder = (value: unknown): Order | null => {
   if (!value || typeof value !== 'object') return null
@@ -89,14 +92,14 @@ export const useOrdersStore = create<OrdersStore>()(
     {
       name: KEYS.orders,
       storage: createJSONStorage(() => safeStorage),
-      version: 2,
+      version: 3,
       migrate: (persisted) => {
         const state = persisted as Partial<OrdersStore> | undefined
-        return {
-          orders: (state?.orders ?? initialOrders)
-            .map(normalizeOrder)
-            .filter((order): order is Order => order !== null),
-        } as OrdersStore
+        const orders = (state?.orders ?? [])
+          .map(normalizeOrder)
+          .filter((order): order is Order => order !== null)
+          .filter((order) => !order.lineas.some((linea) => wasFillerId(linea.productoId)))
+        return { orders: orders.length ? orders : initialOrders } as OrdersStore
       },
       partialize: (state) => ({ orders: state.orders }) as OrdersStore,
     },

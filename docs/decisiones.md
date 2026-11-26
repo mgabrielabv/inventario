@@ -46,7 +46,7 @@ Inter Variable embebida como woff2 (latin y latin-ext) en `src/styles/fonts.css`
 
 Tienda y panel comparten inventario. `reservado` suma las líneas de pedidos activos (`Pendiente`, `Confirmado`, `Preparando`, `Listo`) y `disponible = stock - reservado`. Al entregar se generan movimientos `Salida/Venta`; al cancelar se libera la reserva sin crear movimientos. La confirmación revalida el stock.
 
-El estado se persiste en `localStorage` con versiones y migración de claves antiguas; si no está disponible, se usa un mapa en memoria. La persistencia del inventario pasó a v6 para completar facetas; los ajustes migran el nombre comercial y los diez departamentos aunque el respaldo sea antiguo. El respaldo es v3 e importa cuentas de cliente sin sobrescribir las existentes cuando el archivo es v2. “Restablecer datos de demostración” repone productos, movimientos, pedidos, ajustes y la cuenta demo; conserva personal y auditoría.
+El estado se persiste en `localStorage` con versiones y migración de claves antiguas; si no está disponible, se usa un mapa en memoria. La persistencia del inventario pasó a v8 para completar facetas y descartar las fichas de relleno `p001`…`p060` junto con sus movimientos; los pedidos migran a v3 y el respaldo a v4, sanitizando importaciones antiguas. El respaldo importa cuentas de cliente sin sobrescribir las existentes cuando el archivo es v2. “Restablecer datos de demostración” repone los 489 productos reales, movimientos, pedidos, ajustes y la cuenta demo; conserva personal y auditoría.
 
 ## Sesiones, cuentas y permisos
 

@@ -31,7 +31,7 @@ El recorrido de `verify:visual` cubre 86 combinaciones de ruta/tema/medio, inclu
 | 11 | `StoreChrome.tsx`, `CartPopover`, `CartSheet`, `cart-page.tsx` | Tres carritos sin componentes compartidos. | media | `CartLineItem` y `CartSummary` únicos para las tres superficies. | Resuelto |
 | 12 | `checkout-page.tsx` | Estado y UI mezclados; hidratación que podía pisar datos. | alta | Accordion de cuatro pasos con resumen sticky, prioridad explícita y cuenta al inicio del paso de datos. | Resuelto |
 | 13 | `ProductArt.tsx`, tarjetas, ficha, carrito | Las fotos nunca se mostraban. | media | `ProductImage` usa foto real si existe y `ProductArt` como respaldo con `aspect-ratio` fijo. | Resuelto |
-| 14 | `products.ts` | Solo 25 productos y 5 categorías. | media | 60 productos, 9 departamentos, `subcategoria` y `marca`; botón de restablecimiento de demo. | Resuelto |
+| 14 | `products.ts` | Solo 25 productos y 5 categorías. | media | 489 productos reales verificados (DummyJSON + Open Food Facts), `subcategoria` y `marca`; se eliminaron las 60 fichas ilustradas y sus marcas ficticias. | Resuelto |
 | 15 | `types/index.ts`, `inventory.ts`, `backup.ts` | Faltaban facetas, `clienteId` y cuentas en el respaldo. | alta | Campos opcionales, migración a inventario v6 y backup v3 con clientes. | Resuelto |
 | 16 | `scripts/visual-check.mjs` | E2E roto y cobertura insuficiente. | alta | Selectores reales, 86 combinaciones, cinco anchos, cuenta/admin-clientes/filtros, claves derivadas de la marca y fallo por CLS/consola/externos/desbordes/objetivos táctiles/campos. | Resuelto |
 | 17 | `store.css`, `chrome.css` | CSS muerto y valores mágicos. | media | CSS denso de tienda (`eshop-*.css`), reglas huérfanas eliminadas y colores solo en `tokens.css`. | Resuelto |

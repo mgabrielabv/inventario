@@ -16,7 +16,7 @@ const product = (overrides: Partial<Product> = {}): Product => ({
   descripcionCorta: 'Ligera', descripcion: 'Para trabajar', especificaciones: [],
   etiquetas: [], destacado: false, imagenes: [], proveedor: '', notas: '',
   archivado: false, creadoEn: '2026-01-01T00:00:00Z', actualizadoEn: '2026-01-01T00:00:00Z',
-  subcategoria: 'Cómputo', marca: 'Velmar',
+  subcategoria: 'Cómputo', marca: 'Essence',
   ...overrides,
 })
 
@@ -26,12 +26,12 @@ describe('filtros y URL', () => {
       ...defaultFilters(),
       q: 'mochila escolar', cat: 'Accesorios', solo: true, enOferta: true,
       min: 10, max: 90, orden: 'precio-desc' as const, densidad: 'compacta' as const,
-      pagina: 3, marca: 'Velmar', subcategoria: 'Mochilas',
+      pagina: 3, marca: 'Essence', subcategoria: 'Mochilas',
     }
     const query = serializeFilters(filters)
     expect(query).toContain('categoria=Accesorios')
     expect(query).toContain('pagina=3')
-    expect(query).toContain('marca=Velmar')
+    expect(query).toContain('marca=Essence')
     expect(query).toContain('subcategoria=Mochilas')
     expect(parseFilters(query)).toEqual(filters)
   })
@@ -50,14 +50,14 @@ describe('filtros y URL', () => {
       product(),
       product({
         id: 'p2', codigo: '002', nombre: 'Mochila escolar', categoria: 'Accesorios',
-        precio: 40, precioAnterior: 55, subcategoria: 'Mochilas', marca: 'Papelux',
+        precio: 40, precioAnterior: 55, subcategoria: 'Mochilas', marca: 'Alpro',
       }),
       product({ id: 'p3', codigo: '003', nombre: 'Cuaderno A4', archivado: true }),
     ]
     expect(filterCatalog(products, defaultFilters(), []).map((item) => item.id)).toEqual(['p1', 'p2'])
     expect(filterCatalog(products, { ...defaultFilters(), enOferta: true }, []).map((item) => item.id))
       .toEqual(['p2'])
-    expect(filterCatalog(products, { ...defaultFilters(), marca: 'Papelux' }, []).map((item) => item.id))
+    expect(filterCatalog(products, { ...defaultFilters(), marca: 'Alpro' }, []).map((item) => item.id))
       .toEqual(['p2'])
     expect(filterCatalog(products, { ...defaultFilters(), subcategoria: 'Mochilas' }, []).map((item) => item.id))
       .toEqual(['p2'])
@@ -67,11 +67,11 @@ describe('filtros y URL', () => {
 
   it('muestra chips con etiquetas comprensibles', () => {
     const chips = activeFilterChips({
-      ...defaultFilters(), q: 'silla', cat: 'Hogar y cocina', marca: 'Hogaria',
+      ...defaultFilters(), q: 'silla', cat: 'Hogar y cocina', marca: 'Nivea',
       subcategoria: 'Sillas', min: 20, max: 80, enOferta: true,
     })
     expect(chips.map((chip) => chip.label)).toEqual([
-      'Búsqueda: silla', 'Hogar y cocina', 'En oferta', 'Marca: Hogaria',
+      'Búsqueda: silla', 'Hogar y cocina', 'En oferta', 'Marca: Nivea',
       'Tipo: Sillas', 'Precio 20 – 80',
     ])
   })

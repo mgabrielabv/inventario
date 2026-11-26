@@ -14,9 +14,10 @@ import { useRecentStore } from '../store/recent'
 import { DEFAULT_SETTINGS, useSettingsStore } from '../store/settings'
 import { logActivity } from './audit'
 import { ensureDemoCustomer, saveCustomers } from './customer-auth'
+import { cleanImportedProducts } from './real-products'
 
 export const resetDemoData = (): void => {
-  useInventoryStore.getState().replaceAll(initialProducts, initialMovements)
+  useInventoryStore.getState().replaceAll(cleanImportedProducts(initialProducts), initialMovements)
   useOrdersStore.getState().replace(initialOrders)
   useSettingsStore.getState().replace(DEFAULT_SETTINGS)
 

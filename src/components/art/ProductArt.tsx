@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useId, useMemo, useState, type CSSProperties } from 'react'
-import { getImage } from '../../logic/services/images'
+import { getImage, isRemoteImage } from '../../logic/services/images'
 import { ARQUETIPOS_ARTE } from './arquetipos'
 import {
   boxFaces, ellipsePath, polygon, project, toneFill,
@@ -113,6 +113,10 @@ export const ProductArt = ({
     setPhoto(null)
     const first = photoIds[0]
     if (!first) return () => { alive = false }
+    if (isRemoteImage(first)) {
+      setPhoto(first.trim())
+      return () => { alive = false }
+    }
     getImage(first)
       .then((data) => { if (alive) setPhoto(data) })
       .catch(() => { if (alive) setPhoto(null) })
@@ -144,7 +148,15 @@ export const ProductArt = ({
     >
       <div className="product-art__glow" aria-hidden="true" />
       {photo ? (
-        <img className="product-art__photo" src={photo} alt={sourceName} />
+        <img
+          className="product-art__photo"
+          src={photo}
+          alt={sourceName}
+          loading="lazy"
+          decoding="async"
+          referrerPolicy="no-referrer"
+          onError={() => setPhoto(null)}
+        />
       ) : (
         <svg className="product-art__svg" viewBox="0 0 200 200" aria-hidden="true">
           <defs>

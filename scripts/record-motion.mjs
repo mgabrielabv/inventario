@@ -29,7 +29,7 @@ const STORE = {
 const session = ({ store, admin }) => {
   try {
     localStorage.setItem(store.cart, JSON.stringify({
-      state: { lines: [{ productoId: 'p002', cantidad: 1, agregadoEn: new Date().toISOString() }] },
+      state: { lines: [{ productoId: 'dj-1', cantidad: 1, agregadoEn: new Date().toISOString() }] },
       version: 2,
     }))
     if (admin) {

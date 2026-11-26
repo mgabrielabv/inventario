@@ -1,40 +1,42 @@
 import { describe, expect, it } from 'vitest'
 import { initialMovements, initialOrders, initialProducts } from '../../data/products'
 import { migrateProductFacets } from './product-migrate'
+import { isRealPhotoProduct, realProducts } from './real-products'
 import { DEFAULT_CATEGORIES, type Product } from '../types'
 
 const DEPARTAMENTOS = new Set(DEFAULT_CATEGORIES)
+const FILLER = /^p\d{3}$/
+const MARCAS_FICTICIAS = /velmar|nordisa|andaria|ferrival|papelux|hogaria|ludania|cuidalia|patalia/i
 const TERMINOS_FARMACIA = /farmacia|medicamento|receta|pastilla|jarabe|antibiotico/i
 
-describe('catálogo semilla departamental', () => {
-  it('mantiene las 25 fichas originales y llega a 60', () => {
-    expect(initialProducts).toHaveLength(60)
-    expect(initialProducts.slice(0, 25).map((item) => item.id))
-      .toEqual(Array.from({ length: 25 }, (_, i) => `p${String(i + 1).padStart(3, '0')}`))
-    expect(initialProducts.slice(0, 25).map((item) => item.codigo))
-      .toEqual(Array.from({ length: 25 }, (_, i) => String(i + 1).padStart(3, '0')))
-    expect(initialProducts.slice(25).map((item) => item.id))
-      .toEqual(Array.from({ length: 35 }, (_, i) => `p${String(i + 26).padStart(3, '0')}`))
-    expect(new Set(initialProducts.map((item) => item.codigo)).size).toBe(60)
+describe('catálogo real (sin fichas de relleno)', () => {
+  it('publica solo productos importados de las APIs', () => {
+    expect(initialProducts).toBe(realProducts)
+    expect(initialProducts.length).toBeGreaterThan(400)
+    expect(new Set(initialProducts.map((p) => p.codigo)).size).toBe(initialProducts.length)
+    for (const product of initialProducts) {
+      expect(product.id).toMatch(/^(dj-|off-)/)
+      expect(product.id).not.toMatch(FILLER)
+      expect(isRealPhotoProduct(product)).toBe(true)
+    }
   })
 
-  it('cubre los 9 departamentos con facetas y sin términos de farmacia', () => {
-    const categorias = new Set(initialProducts.map((item) => item.categoria))
-    expect([...categorias].sort()).toEqual([...DEPARTAMENTOS].sort())
-    expect(initialProducts.filter((item) => item.publicado !== false).length).toBeGreaterThanOrEqual(59)
+  it('no conserva marcas ficticias ni imágenes inventadas', () => {
     for (const product of initialProducts) {
       expect(DEPARTAMENTOS.has(product.categoria)).toBe(true)
       expect(product.subcategoria?.trim()).toBeTruthy()
       expect(product.marca?.trim()).toBeTruthy()
       expect(product.archivado).toBe(false)
+      expect(product.publicado).toBe(true)
       expect(`${product.nombre} ${product.descripcionCorta}`).not.toMatch(TERMINOS_FARMACIA)
-      expect(product.imagenes.join(' ')).not.toMatch(/#[0-9a-f]{3,8}|rgb\(/i)
+      expect(`${product.marca} ${product.proveedor}`).not.toMatch(MARCAS_FICTICIAS)
+      expect(product.imagenes.join(' ')).not.toMatch(/^data:|\.svg|#[0-9a-f]{3,8}|rgb\(/i)
     }
   })
 
-  it('no rompe pedidos ni movimientos semilla', () => {
-    expect(initialOrders.length).toBeGreaterThan(0)
-    expect(initialMovements.length).toBeGreaterThan(0)
+  it('mantiene movimientos y pedidos de muestra coherentes', () => {
+    expect(initialOrders).toHaveLength(6)
+    expect(initialMovements).toHaveLength(25)
     const ids = new Set(initialProducts.map((item) => item.id))
     for (const order of initialOrders) {
       for (const line of order.lineas) expect(ids.has(line.productoId)).toBe(true)
@@ -56,14 +58,14 @@ describe('migración de facetas', () => {
       legacy(),
       legacy({ id: 'p-old-2', categoria: 'Papelería' }),
       legacy({ id: 'p-old-3', categoria: 'Otras' }),
-      legacy({ id: 'p-new', categoria: 'Mascotas', subcategoria: 'Accesorios', marca: 'Patalia' }),
+      legacy({ id: 'p-new', categoria: 'Mascotas', subcategoria: 'Accesorios', marca: 'Nivea' }),
     ]
     const migrated = migrateProductFacets(original)
     expect(migrated.map((item) => item.categoria))
       .toEqual(['Tecnología', 'Papelería y oficina', 'Hogar y cocina', 'Mascotas'])
     expect(migrated[0]?.subcategoria).toBeTruthy()
     expect(migrated[0]?.marca).toBeTruthy()
-    expect(migrated[3]).toMatchObject({ subcategoria: 'Accesorios', marca: 'Patalia' })
+    expect(migrated[3]).toMatchObject({ subcategoria: 'Accesorios', marca: 'Nivea' })
     expect(original[0]).toMatchObject({ categoria: 'Electrónica', subcategoria: undefined })
     expect(migrated[0]).not.toBe(original[0])
   })

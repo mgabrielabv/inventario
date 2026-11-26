@@ -4,6 +4,7 @@ import { initialMovements, initialProducts } from '../../data/products'
 import { AppError } from '../errors'
 import { applyMovement, buildVoidMovement } from '../services/stock'
 import { migrateProductFacets } from '../services/product-migrate'
+import { cleanImportedProducts } from '../services/real-products'
 import { KEYS, safeStorage } from '../services/storage'
 import { slugify } from '../services/formatters'
 import {
@@ -31,6 +32,8 @@ const nowIso = (): string => new Date().toISOString()
 const asNumber = (v: unknown, fallback = 0): number =>
   typeof v === 'number' && Number.isFinite(v) ? v : fallback
 const asString = (v: unknown, fallback = ''): string => (typeof v === 'string' ? v : fallback)
+const wasFillerId = (id: unknown): boolean =>
+  typeof id === 'string' && /^p\d{3}$/.test(id)
 
 const legacyProductId = (v: unknown): string => {
   if (typeof v === 'string') return v
@@ -117,16 +120,26 @@ const migrate = (persisted: unknown, version: number): InventoryStore | undefine
         ? product.arquetipo : 'paquete' as Arquetipo,
     }))
     // v6: las fichas antiguas pasan a las 9 categorías y estrenan facetas.
-    return { ...state, products: migrateProductFacets(products) } as InventoryStore
+    // v7: se incorporan los productos reales de las APIs sin duplicar los que
+    // ya existan.
+    // v8: se descartan las fichas de relleno (p001..p060) y sus movimientos.
+    const movements = (state.movements ?? [])
+      .filter((movement) => !wasFillerId((movement as Movement | undefined)?.productoId))
+    return {
+      ...state,
+      products: cleanImportedProducts(migrateProductFacets(products)),
+      movements,
+    } as InventoryStore
   }
   const products = (state.products ?? []).map(normalizeProduct).filter((p): p is Product => p !== null)
   const movements = (state.movements ?? [])
     .map((m) => normalizeMovement(m, products))
     .filter((m): m is Movement => m !== null)
+    .filter((m) => !wasFillerId(m.productoId))
     .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime())
   return {
     ...state,
-    products: products.length ? products : initialProducts,
+    products: cleanImportedProducts(products.length ? products : initialProducts),
     movements: movements.length ? movements : initialMovements,
   } as InventoryStore
 }
@@ -134,7 +147,7 @@ const migrate = (persisted: unknown, version: number): InventoryStore | undefine
 export const useInventoryStore = create<InventoryStore>()(
   persist(
     (set, get) => ({
-      products: initialProducts,
+      products: cleanImportedProducts(initialProducts),
       movements: initialMovements,
 
       addProduct: (draft, usuario) => {
@@ -228,7 +241,7 @@ export const useInventoryStore = create<InventoryStore>()(
     {
       name: KEYS.inventory,
       storage: createJSONStorage(() => safeStorage),
-      version: 6,
+      version: 8,
       migrate: (persisted, version) => migrate(persisted, version) ?? ({} as InventoryStore),
       partialize: (state) => ({ products: state.products, movements: state.movements }) as InventoryStore,
     },

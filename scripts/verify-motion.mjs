@@ -140,7 +140,7 @@ const session = ({ store, theme = 'light', admin = false, cart = true }) => {
       localStorage.setItem(store.cart, JSON.stringify({
         state: {
           lines: [{
-            productoId: 'p002', cantidad: 1, agregadoEn: new Date().toISOString(),
+            productoId: 'dj-1', cantidad: 1, agregadoEn: new Date().toISOString(),
           }],
         },
         version: 2,

@@ -36,7 +36,7 @@ const routes = [
   ['home', '#/'],
   ['catalogo', '#/tienda'],
   ['catalogo-filtros', '#/tienda?categoria=Accesorios&orden=precio-asc&densidad=compacta'],
-  ['ficha', '#/tienda/001-laptop-14'],
+  ['ficha', '#/tienda/essence-mascara-lash-princess-dj-1'],
   ['carrito', '#/carrito'],
   ['checkout', '#/pagar'],
   ['seguimiento', '#/seguimiento'],
@@ -64,7 +64,7 @@ const mobileViewports = [
 const mobileRoutes = [
   ['home', '#/'],
   ['catalogo', '#/tienda'],
-  ['ficha', '#/tienda/002-mouse-inalambrico'],
+  ['ficha', '#/tienda/essence-mascara-lash-princess-dj-1'],
   ['carrito', '#/carrito'],
   ['admin-inventario', '#/admin/inventario'],
 ]
@@ -258,7 +258,7 @@ const run = async () => {
         id: 'u-admin', username: 'admin', name: 'Administrador', role: 'Administrador',
       }))
       localStorage.setItem(store.cart, JSON.stringify({
-        state: { lines: [{ productoId: 'p002', cantidad: 1, agregadoEn: new Date().toISOString() }] },
+        state: { lines: [{ productoId: 'dj-1', cantidad: 1, agregadoEn: new Date().toISOString() }] },
         version: 2,
       }))
     } catch { /* file:// sin almacenamiento: la app usa memoria */ }
@@ -267,7 +267,7 @@ const run = async () => {
   const injectCart = (store) => {
     try {
       localStorage.setItem(store.cart, JSON.stringify({
-        state: { lines: [{ productoId: 'p002', cantidad: 1, agregadoEn: new Date().toISOString() }] },
+        state: { lines: [{ productoId: 'dj-1', cantidad: 1, agregadoEn: new Date().toISOString() }] },
         version: 2,
       }))
     } catch { /* ignore */ }
@@ -359,7 +359,7 @@ const run = async () => {
             id: 'u-admin', username: 'admin', name: 'Administrador', role: 'Administrador',
           }))
           localStorage.setItem(store.cart, JSON.stringify({
-            state: { lines: [{ productoId: 'p002', cantidad: 1, agregadoEn: new Date().toISOString() }] },
+            state: { lines: [{ productoId: 'dj-1', cantidad: 1, agregadoEn: new Date().toISOString() }] },
             version: 2,
           }))
         } catch { /* file:// sin almacenamiento */ }

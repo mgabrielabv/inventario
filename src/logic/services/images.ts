@@ -4,6 +4,10 @@
 import { storageKey } from '../../config/brand'
 import { LEGACY_IMAGE_DB, LEGACY_SLUGS } from '../../config/legacy'
 
+/** Las fotos importadas son URLs; las subidas desde el panel son ids de IndexedDB. */
+export const isRemoteImage = (value: string | undefined): value is string =>
+  typeof value === 'string' && /^https?:\/\/\S+$/i.test(value.trim())
+
 const DB_NAME = storageKey('imagenes')
 const STORE = 'fotos'
 const MAX_EDGE = 1200

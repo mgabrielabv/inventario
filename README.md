@@ -37,6 +37,9 @@ npm test              # pruebas unitarias
 npm run build         # chequeo de tipos + paleta + contraste + dist/index.html
 npm run build:single  # genera ivoria.html en la raíz desde BRAND.slug
 npm run preview       # sirve dist/
+npm run seed:productos # descarga y verifica fotos; actualiza src/data/productos-reales.json
+npm run clean:catalogo # elimina fichas no importadas y fotos rotas (--dry-run para solo informar)
+npm run verify:seed    # comprueba fotos, precios y paginación (requiere preview y Chrome/Edge)
 npm run verify:visual # capturas, métricas y E2E (requiere build previo)
 npm run audit:mobile  # auditoría de 10 viewports × 2 temas × 13 rutas
 ```
@@ -76,7 +79,15 @@ El slug anterior `tienda` está en `LEGACY_SLUGS` (`src/config/legacy.ts`) para 
 - Al cancelar se libera la reserva; no se crea un movimiento.
 - La compra revalida el stock antes de confirmar y muestra conflictos si cambió.
 - El panel de Clientes busca por nombre, correo o teléfono; su auditoría no guarda contraseñas ni datos sensibles.
-- El respaldo es v3 e incluye las cuentas de cliente. “Restablecer datos de demostración” devuelve los 60 productos semilla sin borrar usuarios del personal ni auditoría.
+- El respaldo es v3 e incluye las cuentas de cliente. “Restablecer datos de demostración” devuelve las 489 fichas reales sin borrar usuarios del personal ni auditoría.
+
+## Catálogo con productos reales
+
+`npm run seed:productos` consulta DummyJSON (`?limit=0`) y Open Food Facts (páginas 1–3) y escribe `src/data/productos-reales.json` con el esquema exacto de `Product`: **489 fichas reales** (194 de DummyJSON y 295 de supermercado). Solo se guardan URLs de imágenes (713 en total); no se descarga ningún archivo binario. El script reintenta ante los `503` intermitentes de Open Food Facts, conserva las fichas ya sembradas si una página falla y es idempotente: al repetirlo, el JSON queda byte a byte idéntico.
+
+`npm run clean:catalogo` comprueba cada URL con HEAD (o GET parcial), descarta respuestas `404`/`410`/`timeout`/HTML y tipos MIME no imagen, y elimina cualquier producto que se quede sin foto válida. También descarta fichas que no vengan de las dos APIs. El informe queda en `docs/limpieza-catalogo.json`. La limpieza está integrada en el seeder para que las futuras cargas mantengan el mismo filtro.
+
+El catálogo ya no incluye las 60 fichas de relleno con ilustraciones inventadas: el store se migra a la versión **8**, conserva solo productos importados con foto de `cdn.dummyjson.com` o `images.openfoodfacts.org`, y fusiona por `id` y `codigo`. Resultado: **489 productos limpios**, paginados de 24 en 24 mediante «Cargar más». Si una URL externa falla en el navegador, `ProductImage` y `ProductArt` sustituyen la foto por la ilustración del arquetipo (`onError`).
 
 Los estados llevan siempre punto, icono y texto; el lenguaje de pago deja claro que no hay cobro real. Los PDF se obtienen con la impresión del navegador.
 
@@ -93,7 +104,7 @@ src/
 ├── app/            # router, layouts, providers y rutas protegidas
 ├── components/     # chrome de tienda, tarjetas, carrito unificado y biblioteca de UI
 ├── config/         # brand.ts, legacy.ts y pruebas de marca/idioma
-├── data/           # 60 productos, facetas, movimientos y pedidos semilla
+├── data/           # 489 productos reales verificados, facetas, movimientos y pedidos
 ├── logic/          # tipos, stores de Zustand y servicios puros
 ├── motion/         # tokens, variantes, hooks y componentes funcionales
 ├── pages/          # tienda, cuenta, acceso y panel
@@ -115,7 +126,7 @@ Presupuesto: HTML **< 2.5 MB**. Resultado medido en la entrega:
 - Croma visible dentro de 350°–40°: **100 %**; desborde horizontal máximo: **0 px**.
 - CLS **0,0052** en claro y oscuro (móvil máx. **0,0066**); **0 tareas largas**.
 - Auditoría móvil: **260 mediciones, 0 hallazgos, 0 problemas**.
-- **0** errores de consola y **0** peticiones externas.
+- **0** errores de consola y **0** peticiones externas en esa medición histórica (anterior a la importación de fotos; ahora el catálogo solicita imágenes a los CDNs de las APIs).
 - E2E correcto: personal (`admin`), cliente (cuenta, bloqueo de `/admin` y compra), invitado (`IVO-2026-000007`) y filtros por URL.
 
 Las capturas anteriores quedan en `docs/capturas/` como referencia histórica; las nuevas están en `docs/capturas/verificacion/` y `docs/capturas/movil/`. El detalle de hallazgos y decisiones está en `docs/auditoria.md` y `docs/decisiones.md`.

@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { ProductArt } from '../art/ProductArt'
-import { getImage } from '../../logic/services/images'
+import { getImage, isRemoteImage } from '../../logic/services/images'
 import type { Product } from '../../logic/types'
 import { cardMotion, distance, dur, ease } from '../../motion/tokens'
 import { isLightDevice } from '../../motion/helpers'
@@ -14,12 +14,14 @@ interface Props {
 type PhotoState = 'loading' | 'photo' | 'fallback'
 
 /**
- * Foto real almacenada en IndexedDB. Mientras se lee se reserva el espacio con
- * un skeleton; si no hay imagen (o falla la lectura) se dibuja el arquetipo.
+ * Foto real: URL externa (productos importados) o id de IndexedDB (subidas
+ * desde el panel). Mientras se lee se reserva el espacio con un skeleton; si
+ * falla la URL o la lectura se dibuja el arquetipo.
  * No se pasa `codigo` a ProductArt para que nunca aparezca el SKU en la tienda.
  */
 export const ProductImage = ({ product, className = '' }: Props) => {
   const imageId = product.imagenes?.[0]
+  const remoteUrl = isRemoteImage(imageId) ? imageId.trim() : null
   const [photo, setPhoto] = useState<string | null>(null)
   const [state, setState] = useState<PhotoState>(imageId ? 'loading' : 'fallback')
   const reduce = useReducedMotion()
@@ -33,6 +35,11 @@ export const ProductImage = ({ product, className = '' }: Props) => {
       return () => { alive = false }
     }
     setState('loading')
+    if (remoteUrl) {
+      setPhoto(remoteUrl)
+      setState('photo')
+      return () => { alive = false }
+    }
     getImage(imageId)
       .then((data) => {
         if (!alive) return
@@ -41,7 +48,7 @@ export const ProductImage = ({ product, className = '' }: Props) => {
       })
       .catch(() => { if (alive) setState('fallback') })
     return () => { alive = false }
-  }, [imageId])
+  }, [imageId, remoteUrl])
 
   return (
     <div className={`eshop-photo ${className}`.trim()}>
@@ -53,6 +60,8 @@ export const ProductImage = ({ product, className = '' }: Props) => {
           alt={product.nombre}
           loading="lazy"
           decoding="async"
+          referrerPolicy="no-referrer"
+          onError={() => setState('fallback')}
           initial={reduce || light
             ? { opacity: 0 }
             : { opacity: 0, filter: `blur(${cardMotion.blurFrom}px)` }}

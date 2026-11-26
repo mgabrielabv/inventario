@@ -1,7 +1,10 @@
 import type { BackupPayload } from '../types'
 import { getCustomers } from './customer-auth'
+import { realProducts } from './real-products'
 
-const VERSION = 3
+const VERSION = 4
+const wasFillerId = (id: unknown): boolean =>
+  typeof id === 'string' && /^p\d{3}$/.test(id)
 
 export const buildBackup = (payload: Omit<BackupPayload, 'version' | 'exportedAt'>): BackupPayload => ({
   ...payload,
@@ -23,7 +26,18 @@ export const validateBackup = (value: unknown): { ok: true; data: BackupPayload 
     return { ok: false, error: 'La lista de clientes no es válida' }
   }
   if (!data.settings || typeof data.settings !== 'object') return { ok: false, error: 'Falta la configuración' }
-  return { ok: true, data: data as BackupPayload }
+  const payload = data as BackupPayload
+  const productos = payload.products.filter((product) => !wasFillerId(product?.id))
+  return {
+    ok: true,
+    data: {
+      ...payload,
+      products: productos.length ? productos : realProducts,
+      movements: payload.movements.filter((movement) => !wasFillerId(movement?.productoId)),
+      orders: payload.orders.filter((order) =>
+        !order?.lineas?.some((linea) => wasFillerId(linea.productoId))),
+    },
+  }
 }
 
 export const backupSummary = (data: BackupPayload): string => {

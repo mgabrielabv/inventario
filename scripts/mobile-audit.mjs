@@ -44,7 +44,7 @@ const viewports = [
 const routes = [
   ['home', '#/'],
   ['catalogo', '#/tienda'],
-  ['ficha', '#/tienda/001-laptop-14'],
+  ['ficha', '#/tienda/essence-mascara-lash-princess-dj-1'],
   ['carrito', '#/carrito'],
   ['checkout', '#/pagar'],
   ['pedido', '#/pedido/IVO-2026-000001'],
@@ -288,7 +288,7 @@ const run = async () => {
         state: { accountId: 'c-demo-cliente', remember: true, guestCheckout: false }, version: 1,
       }))
       localStorage.setItem(store.cart, JSON.stringify({
-        state: { lines: [{ productoId: 'p002', cantidad: 1, agregadoEn: new Date().toISOString() }] }, version: 2,
+        state: { lines: [{ productoId: 'dj-1', cantidad: 1, agregadoEn: new Date().toISOString() }] }, version: 2,
       }))
     } catch { /* file:// sin almacenamiento: la app usa memoria */ }
   }
