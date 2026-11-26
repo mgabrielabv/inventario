@@ -170,6 +170,36 @@
   font-weight: 800;
   box-shadow: var(--shadow-sm);
 }
+.eshop-hero__detail {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: 44px;
+  color: inherit;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (hover: hover) {
+  .eshop-hero__detail:hover { text-decoration-thickness: 2px; }
+}
+.eshop-hero__product {
+  position: relative;
+  width: min(78%, 250px);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-media);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+.eshop-hero__photo {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  border-radius: inherit;
+}
 
 .eshop-hero__controls {
   position: absolute;
@@ -352,9 +382,16 @@
   place-items: center;
   width: 54px;
   aspect-ratio: 1;
+  overflow: hidden;
   border-radius: var(--radius-pill);
   background: var(--surface-2);
   color: var(--primary-text);
+}
+.eshop-category__photo {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  border-radius: inherit;
 }
 .eshop-categories__grid > li:nth-child(3n + 2) .eshop-category__icon {
   background: var(--tan);
@@ -556,6 +593,88 @@
 .eshop-register__button--secondary { background: var(--surface); color: var(--text); }
 .eshop-register__note { margin: 0; color: var(--text-2); font-size: var(--fs-min); line-height: 1.45; }
 
+/* --- Panel personal de la tienda ---------------------------------------- */
+
+.eshop-personal__links {
+  display: grid;
+  gap: var(--s2);
+  margin: var(--s4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.eshop-personal__links a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s3);
+  min-height: 44px;
+  padding: var(--s2) var(--s3);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-input);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+.eshop-personal__links svg:first-child { color: var(--primary-text); }
+.eshop-personal__links svg:last-child { color: var(--text-2); }
+@media (hover: hover) {
+  .eshop-personal__links a:hover {
+    border-color: var(--control-border);
+    background: var(--surface-2);
+  }
+}
+.eshop-personal__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s2);
+  width: 100%;
+  padding: var(--s4);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+.eshop-personal__code {
+  margin: 0;
+  font-size: var(--fs-ui);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.eshop-personal__state {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-caption);
+  line-height: 1.4;
+}
+.eshop-personal__state svg { flex: 0 0 auto; color: var(--primary-text); }
+.eshop-personal__detail {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  min-height: 44px;
+  color: var(--primary-text);
+  font-size: var(--fs-caption);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.eshop-personal__note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s2);
+  margin: 0;
+  color: var(--text-2);
+  font-size: var(--fs-min);
+  line-height: 1.45;
+}
+.eshop-personal__note svg { flex: 0 0 auto; color: var(--clay-text); }
+
 /* --- Etiquetas y pasos --------------------------------------------------- */
 
 .eshop-tags { margin-block: var(--s7); }
@@ -680,7 +799,8 @@
   .eshop-category,
   .eshop-rail__arrow,
   .eshop-tag,
-  .eshop-register__button { transition: none; }
+  .eshop-register__button,
+  .eshop-personal__links a { transition: none; }
 @media (hover: hover) {
   .eshop-hero__cta:hover,
   .eshop-hero__arrow:hover,

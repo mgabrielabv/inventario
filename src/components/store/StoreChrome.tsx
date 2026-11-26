@@ -1072,13 +1072,10 @@ export const StoreFooter = () => {
           <details className="eshop-footer__col eshop-footer__accordion" open={openByDefault}>
             <summary className="eshop-footer__title">Mi cuenta</summary>
             <nav className="eshop-footer__links" aria-label="Mi cuenta">
-              <Link className="eshop-footer__link" to="/cuenta/ingresar">Ingresar</Link>
-              <Link className="eshop-footer__link" to="/cuenta/registro">Crear cuenta</Link>
-              <Link className="eshop-footer__link" to="/cuenta/perfil">Mis datos</Link>
-              <Link className="eshop-footer__link" to="/favoritos">Favoritos</Link>
-              <Link className="eshop-footer__link" to="/seguimiento">Seguimiento</Link>
-              <Link className="eshop-footer__link" to="/cuenta/direcciones">Direcciones guardadas</Link>
+              <Link className="eshop-footer__link" to="/cuenta">Mi cuenta</Link>
               <Link className="eshop-footer__link" to="/cuenta/pedidos">Mis pedidos</Link>
+              <Link className="eshop-footer__link" to="/cuenta/direcciones">Direcciones</Link>
+              <Link className="eshop-footer__link" to="/favoritos">Favoritos</Link>
             </nav>
           </details>
 

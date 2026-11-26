@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-11-26T05:21:25.903Z",
+  "generatedAt": "2026-11-26T05:52:57.317Z",
   "html": {
-    "bytes": 2621710,
-    "gzipBytes": 964676,
+    "bytes": 2628527,
+    "gzipBytes": 966261,
     "limitBytes": 4718592
   },
   "routes": {
     "home-light": {
       "hueOk": 1,
-      "sampled": 79339,
+      "sampled": 79350,
       "overflow": 0
     },
     "inicio-light": {
       "hueOk": 1,
-      "sampled": 180415,
+      "sampled": 180262,
       "overflow": 0
     },
     "catalogo-light": {
@@ -28,7 +28,7 @@
     },
     "ficha-light": {
       "hueOk": 1,
-      "sampled": 132491,
+      "sampled": 132574,
       "overflow": 0
     },
     "carrito-light": {
@@ -38,17 +38,17 @@
     },
     "checkout-light": {
       "hueOk": 1,
-      "sampled": 51033,
+      "sampled": 59646,
       "overflow": 0
     },
     "seguimiento-light": {
       "hueOk": 1,
-      "sampled": 74906,
+      "sampled": 74903,
       "overflow": 0
     },
     "favoritos-light": {
       "hueOk": 1,
-      "sampled": 51469,
+      "sampled": 51468,
       "overflow": 0
     },
     "cuenta-ingresar-light": {
@@ -63,7 +63,7 @@
     },
     "login-light": {
       "hueOk": 1,
-      "sampled": 188027,
+      "sampled": 188026,
       "overflow": 0
     },
     "admin-inicio-light": {
@@ -83,12 +83,12 @@
     },
     "admin-movimientos-light": {
       "hueOk": 1,
-      "sampled": 9598,
+      "sampled": 9475,
       "overflow": 0
     },
     "admin-pedidos-light": {
       "hueOk": 1,
-      "sampled": 16741,
+      "sampled": 16762,
       "overflow": 0
     },
     "admin-reposicion-light": {
@@ -103,12 +103,12 @@
     },
     "home-dark": {
       "hueOk": 1,
-      "sampled": 79323,
+      "sampled": 79223,
       "overflow": 0
     },
     "inicio-dark": {
       "hueOk": 1,
-      "sampled": 165914,
+      "sampled": 165782,
       "overflow": 0
     },
     "catalogo-dark": {
@@ -123,7 +123,7 @@
     },
     "ficha-dark": {
       "hueOk": 1,
-      "sampled": 109493,
+      "sampled": 109869,
       "overflow": 0
     },
     "carrito-dark": {
@@ -133,17 +133,17 @@
     },
     "checkout-dark": {
       "hueOk": 1,
-      "sampled": 34622,
+      "sampled": 43226,
       "overflow": 0
     },
     "seguimiento-dark": {
       "hueOk": 1,
-      "sampled": 22598,
+      "sampled": 22615,
       "overflow": 0
     },
     "favoritos-dark": {
       "hueOk": 1,
-      "sampled": 22724,
+      "sampled": 22727,
       "overflow": 0
     },
     "cuenta-ingresar-dark": {
@@ -158,7 +158,7 @@
     },
     "login-dark": {
       "hueOk": 1,
-      "sampled": 10831,
+      "sampled": 10842,
       "overflow": 0
     },
     "admin-inicio-dark": {
@@ -178,12 +178,12 @@
     },
     "admin-movimientos-dark": {
       "hueOk": 1,
-      "sampled": 15904,
+      "sampled": 14190,
       "overflow": 0
     },
     "admin-pedidos-dark": {
       "hueOk": 1,
-      "sampled": 22436,
+      "sampled": 22495,
       "overflow": 0
     },
     "admin-reposicion-dark": {
@@ -198,12 +198,12 @@
     },
     "home-320-light": {
       "hueOk": 1,
-      "sampled": 18196,
+      "sampled": 18193,
       "overflow": 0
     },
     "inicio-320-light": {
       "hueOk": 1,
-      "sampled": 26781,
+      "sampled": 26317,
       "overflow": 0
     },
     "catalogo-320-light": {
@@ -213,7 +213,7 @@
     },
     "ficha-320-light": {
       "hueOk": 1,
-      "sampled": 25254,
+      "sampled": 25221,
       "overflow": 0
     },
     "carrito-320-light": {
@@ -228,12 +228,12 @@
     },
     "home-320-dark": {
       "hueOk": 1,
-      "sampled": 18227,
+      "sampled": 18256,
       "overflow": 0
     },
     "inicio-320-dark": {
       "hueOk": 1,
-      "sampled": 24145,
+      "sampled": 23746,
       "overflow": 0
     },
     "catalogo-320-dark": {
@@ -243,7 +243,7 @@
     },
     "ficha-320-dark": {
       "hueOk": 1,
-      "sampled": 20271,
+      "sampled": 20259,
       "overflow": 0
     },
     "carrito-320-dark": {
@@ -263,7 +263,7 @@
     },
     "inicio-mobile-light": {
       "hueOk": 1,
-      "sampled": 35995,
+      "sampled": 34930,
       "overflow": 0
     },
     "catalogo-mobile-light": {
@@ -273,7 +273,7 @@
     },
     "ficha-mobile-light": {
       "hueOk": 1,
-      "sampled": 36219,
+      "sampled": 36236,
       "overflow": 0
     },
     "carrito-mobile-light": {
@@ -288,12 +288,12 @@
     },
     "home-mobile-dark": {
       "hueOk": 1,
-      "sampled": 33369,
+      "sampled": 33370,
       "overflow": 0
     },
     "inicio-mobile-dark": {
       "hueOk": 1,
-      "sampled": 32267,
+      "sampled": 31365,
       "overflow": 0
     },
     "catalogo-mobile-dark": {
@@ -303,7 +303,7 @@
     },
     "ficha-mobile-dark": {
       "hueOk": 1,
-      "sampled": 28792,
+      "sampled": 28802,
       "overflow": 0
     },
     "carrito-mobile-dark": {
@@ -313,17 +313,17 @@
     },
     "admin-inventario-mobile-dark": {
       "hueOk": 1,
-      "sampled": 5358,
+      "sampled": 5364,
       "overflow": 0
     },
     "home-412-light": {
       "hueOk": 1,
-      "sampled": 33502,
+      "sampled": 33507,
       "overflow": 0
     },
     "inicio-412-light": {
       "hueOk": 1,
-      "sampled": 39223,
+      "sampled": 38116,
       "overflow": 0
     },
     "catalogo-412-light": {
@@ -333,7 +333,7 @@
     },
     "ficha-412-light": {
       "hueOk": 1,
-      "sampled": 40104,
+      "sampled": 40087,
       "overflow": 0
     },
     "carrito-412-light": {
@@ -348,12 +348,12 @@
     },
     "home-412-dark": {
       "hueOk": 1,
-      "sampled": 33521,
+      "sampled": 33570,
       "overflow": 0
     },
     "inicio-412-dark": {
       "hueOk": 1,
-      "sampled": 35548,
+      "sampled": 34624,
       "overflow": 0
     },
     "catalogo-412-dark": {
@@ -363,7 +363,7 @@
     },
     "ficha-412-dark": {
       "hueOk": 1,
-      "sampled": 32472,
+      "sampled": 32459,
       "overflow": 0
     },
     "carrito-412-dark": {
@@ -378,12 +378,12 @@
     },
     "home-768-light": {
       "hueOk": 1,
-      "sampled": 32483,
+      "sampled": 32506,
       "overflow": 0
     },
     "inicio-768-light": {
       "hueOk": 1,
-      "sampled": 79283,
+      "sampled": 78462,
       "overflow": 0
     },
     "catalogo-768-light": {
@@ -393,7 +393,7 @@
     },
     "ficha-768-light": {
       "hueOk": 1,
-      "sampled": 64639,
+      "sampled": 64606,
       "overflow": 0
     },
     "carrito-768-light": {
@@ -408,12 +408,12 @@
     },
     "home-768-dark": {
       "hueOk": 1,
-      "sampled": 32606,
+      "sampled": 32599,
       "overflow": 0
     },
     "inicio-768-dark": {
       "hueOk": 1,
-      "sampled": 72054,
+      "sampled": 71227,
       "overflow": 0
     },
     "catalogo-768-dark": {
@@ -423,7 +423,7 @@
     },
     "ficha-768-dark": {
       "hueOk": 1,
-      "sampled": 51682,
+      "sampled": 51670,
       "overflow": 0
     },
     "carrito-768-dark": {
@@ -443,7 +443,7 @@
     },
     "inicio-1280-light": {
       "hueOk": 1,
-      "sampled": 90597,
+      "sampled": 90135,
       "overflow": 0
     },
     "catalogo-1280-light": {
@@ -453,7 +453,7 @@
     },
     "ficha-1280-light": {
       "hueOk": 1,
-      "sampled": 110791,
+      "sampled": 111209,
       "overflow": 0
     },
     "carrito-1280-light": {
@@ -468,12 +468,12 @@
     },
     "home-1280-dark": {
       "hueOk": 1,
-      "sampled": 59843,
+      "sampled": 59835,
       "overflow": 0
     },
     "inicio-1280-dark": {
       "hueOk": 1,
-      "sampled": 77575,
+      "sampled": 77120,
       "overflow": 0
     },
     "catalogo-1280-dark": {
@@ -483,12 +483,12 @@
     },
     "ficha-1280-dark": {
       "hueOk": 1,
-      "sampled": 89483,
+      "sampled": 89977,
       "overflow": 0
     },
     "carrito-1280-dark": {
       "hueOk": 1,
-      "sampled": 60526,
+      "sampled": 60523,
       "overflow": 0
     },
     "admin-inventario-1280-dark": {
@@ -511,16 +511,16 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 57
     },
     "320-light-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 54
+      "longTasks": 0,
+      "maxTask": 0
     },
     "320-light-ficha": {
       "smallTargets": [],
@@ -559,16 +559,16 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 3,
+      "maxTask": 81
     },
     "320-dark-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 3,
-      "maxTask": 63
+      "longTasks": 0,
+      "maxTask": 0
     },
     "320-dark-ficha": {
       "smallTargets": [],
@@ -607,16 +607,16 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 58
+      "longTasks": 0,
+      "maxTask": 0
     },
     "390-light-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 64
+      "longTasks": 0,
+      "maxTask": 0
     },
     "390-light-ficha": {
       "smallTargets": [],
@@ -656,15 +656,15 @@
       "overflow": 0,
       "cls": 0,
       "longTasks": 3,
-      "maxTask": 80
+      "maxTask": 64
     },
     "390-dark-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 59
+      "longTasks": 0,
+      "maxTask": 0
     },
     "390-dark-ficha": {
       "smallTargets": [],
@@ -703,16 +703,16 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 54
     },
     "412-light-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 53
+      "longTasks": 0,
+      "maxTask": 0
     },
     "412-light-ficha": {
       "smallTargets": [],
@@ -751,8 +751,8 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 50
+      "longTasks": 2,
+      "maxTask": 62
     },
     "412-dark-catalogo": {
       "smallTargets": [],
@@ -800,7 +800,7 @@
       "overflow": 0,
       "cls": 0,
       "longTasks": 3,
-      "maxTask": 68
+      "maxTask": 56
     },
     "768-light-catalogo": {
       "smallTargets": [],
@@ -848,15 +848,15 @@
       "overflow": 0,
       "cls": 0,
       "longTasks": 3,
-      "maxTask": 89
+      "maxTask": 80
     },
     "768-dark-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 65
     },
     "768-dark-ficha": {
       "smallTargets": [],
@@ -895,8 +895,8 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 2,
-      "maxTask": 75
+      "longTasks": 3,
+      "maxTask": 77
     },
     "1280-light-catalogo": {
       "smallTargets": [],
@@ -919,8 +919,8 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 51
+      "longTasks": 0,
+      "maxTask": 0
     },
     "1280-light-admin-inventario": {
       "smallTargets": [],
@@ -944,7 +944,7 @@
       "overflow": 0,
       "cls": 0,
       "longTasks": 3,
-      "maxTask": 68
+      "maxTask": 81
     },
     "1280-dark-catalogo": {
       "smallTargets": [],
@@ -1234,6 +1234,6 @@
     "smallFields": 0,
     "maxOverflow": 0,
     "maxCls": 0.00003448333740234375,
-    "maxTask": 89
+    "maxTask": 81
   }
 }

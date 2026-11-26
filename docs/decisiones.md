@@ -66,6 +66,18 @@ El checkout mantiene cuatro pasos con resumen sticky. El paso de datos abre con 
 
 Los códigos son `IVO-AAAA-NNNNNN` y la secuencia respeta pedidos `PED-` e `INV-` históricos. El precio principal sigue `settings.moneda.codigo`; el equivalente en bolívares aparece solo si hay `tasaVES` positiva y `mostrarSecundario`. El pago es simulado y se dice explícitamente; no hay pasarela, notificaciones ni reseñas. Los PDF salen de la impresión del navegador.
 
+## Tienda personalizada
+
+`#/inicio` ya no invita a crear cuenta: saluda al cliente por su nombre, abre con un carrusel cuyas fotos son productos reales del catálogo y usa `ProductImage` también en las categorías, con la misma prioridad foto subida → miniatura local → URL importada → ilustración. Las fichas de categoría siguen saliendo de `categoryTiles`, así que no se muestran departamentos vacíos. El antiguo bloque de registro se sustituyó por el panel «Tu espacio», con accesos a pedidos, direcciones y favoritos y el estado del último pedido. El cuarto banner apunta a `#/cuenta/pedidos` en lugar del registro.
+
+`ordersForAccount` selecciona los pedidos de la sesión, incluidos los históricos vinculados por correo o teléfono, y ordena por fecha. Con esa base, el riel «Comprar de nuevo» y el acceso «Comprar de nuevo» del carrito devuelven los productos de compras anteriores. En el carrito, `repeatOrderLines` descarta lo que ya no se puede vender, limita cada cantidad a lo disponible hoy y respeta el precio actual; antes de fusionar las líneas con el carrito existente se pasa `validateCart`, y si aparece algún conflicto se informa sin modificar el carrito. El botón nunca aumenta una reserva por encima de `disponible`.
+
+La ficha de producto conserva sus cuatro vistas y el zoom, pero la nota de la galería ya no promete una ilustración y añade una señal de cuenta: quién compra y dónde quedan sus pedidos. Los enlaces a la categoría usan el parámetro canónico `?categoria=` (el antiguo `?cat=` sigue siendo compatible en `parseFilters`). El checkout mantiene los cuatro pasos, la tarjeta de cuenta y el orden de hidratación; el aviso de pago simulado se consolidó en `PAYMENT_NOTICE` para que paso de pago, revisión y resumen digan exactamente lo mismo. El pie de la tienda redujo sus siete enlaces de cuenta a cuatro, porque el registro ya no es el objetivo de la tienda privada.
+
+Las pruebas `store-personal-v6` y `session-routes-v6` comprueban estas decisiones leyendo el código fuente: sin registro en la tienda, sin parámetros heredados, fotos en el escaparate y las categorías, repetición validada del pedido y un solo texto de pago simulado.
+
+Salvedad de verificación de esta fase: `verify:motion` completa 10/10 flujos funcionales con CLS 0,0000, 0 errores y 0 peticiones externas, pero `1280-estado-pedido` no alcanza el suelo de 32 FPS (mediciones de 28,2 a 30,5). Ese flujo mide el panel de pedidos, que no se modificó en esta fase; en la línea base ya rozaba el límite (32,4) y el entorno de medición tenía CPU ×4 con alta carga externa. Se acepta el resultado con esta salvedad, sin rebajar el presupuesto del script; el resto de verificaciones pasan sin problemas.
+
 ## Accesibilidad
 
 Contraste AA en claro y oscuro, foco visible, `aria-*`, errores asociados al campo con `aria-describedby`, navegación por teclado, texteos alternativos para el arte de producto y avisos accesibles. Los atajos de teclado ignoran campos, `contenteditable` y diálogos.

@@ -8,7 +8,7 @@ La tienda cubre nueve departamentos: Tecnología, Accesorios, Hogar y cocina, Pa
 
 |Superficie|Rutas|
 |---|---|
-|Tienda|`#/`, `#/tienda`, `#/tienda?categoria=…`, `#/tienda/:slug`, `#/carrito`, `#/pagar`, `#/pedido/:codigo`, `#/seguimiento`, `#/favoritos`, `#/arte`|
+|Tienda|`#/` (portada pública), `#/inicio`, `#/tienda`, `#/tienda?categoria=…`, `#/tienda/:slug`, `#/carrito`, `#/pagar`, `#/pedido/:codigo`, `#/seguimiento`, `#/favoritos`, `#/arte`|
 |Cuenta de cliente|`#/cuenta/ingresar`, `#/cuenta/registro`, `#/cuenta/recuperar`, `#/cuenta`, `#/cuenta/pedidos`, `#/cuenta/direcciones`, `#/cuenta/datos`, `#/cuenta/favoritos`|
 |Personal|`#/ingresar`|
 |Panel|`#/admin`, `#/admin/inventario`, `#/admin/movimientos`, `#/admin/pedidos`, `#/admin/reposicion`, `#/admin/reportes`, `#/admin/clientes`, `#/admin/configuracion`|
@@ -41,7 +41,8 @@ npm run seed:productos # descarga y verifica fotos; actualiza src/data/productos
 npm run clean:catalogo # elimina fichas no importadas y fotos rotas (--dry-run para solo informar)
 npm run verify:seed    # comprueba fotos, precios y paginación (requiere preview y Chrome/Edge)
 npm run verify:visual # capturas, métricas y E2E (requiere build previo)
-npm run audit:mobile  # auditoría de 10 viewports × 2 temas × 13 rutas
+npm run verify:motion # medición de 10 flujos con CPU ×4 y movimiento reducido
+npm run audit:mobile  # auditoría de 10 viewports × 2 temas × 14 rutas
 ```
 
 `prebuild` ejecuta `check:palette` y `check-contrast`; la build falla si aparece un color fuera de la familia permitida o un par de texto que no alcance WCAG AA. El artefacto descargable se llama `ivoria.html` y se abre con doble clic (`file://`). Los antiguos `Sistema de Control e Inventario.html`, `index-completo.html` y `tienda.html` se eliminaron.
@@ -65,9 +66,11 @@ El slug anterior `tienda` está en `LEGACY_SLUGS` (`src/config/legacy.ts`) para 
 ## Portada, cuentas y checkout
 
 - La portada de seis secciones vive en `#/` con tema oscuro propio: escaparate sticky, bento de beneficios, cómo funciona, departamentos y cierre con «Crear cuenta». La tienda privada empieza en `#/inicio`.
+- `#/inicio` saluda al cliente, muestra fotos reales en el escaparate y las categorías, y ofrece el riel «Comprar de nuevo» con los productos de sus pedidos. El panel «Tu espacio» reúne pedidos, direcciones, favoritos y el estado del último pedido; ya no hay bloque de registro dentro de la tienda.
+- El carrito permite «Comprar de nuevo» desde el último pedido: solo agrega lo que sigue disponible, limita las cantidades al `disponible` actual y valida el resultado antes de fusionarlo con el carrito.
 - Personal y clientes guardan sesiones separadas (`KEYS.user` frente a `KEYS.customerSession`).
 - La cuenta de cliente permite registrarse, entrar por correo o teléfono venezolano, editar datos, administrar direcciones, ver pedidos y recuperar la contraseña de forma simulada.
-- El checkout conserva cuatro pasos (Datos, Entrega, Pago y Revisar) con resumen sticky. La tarjeta del paso de datos muestra siempre la cuenta con la que se compra; no hay modo invitado.
+- El checkout conserva cuatro pasos (Datos, Entrega, Pago y Revisar) con resumen sticky. La tarjeta del paso de datos muestra siempre la cuenta con la que se compra; no hay modo invitado. El aviso de pago simulado es el mismo en pago, revisión y resumen.
 - Prioridad de hidratación: borrador del checkout > datos de la cuenta > carrito.
 - Los pedidos se numeran `IVO-AAAA-NNNNNN`; los históricos `PED-` e `INV-` siguen siendo válidos, se buscan igual en seguimiento y cuentan para la secuencia del año.
 - La moneda respeta `settings.moneda`: si hay `tasaVES` y `mostrarSecundario`, se muestra el equivalente en bolívares junto al precio principal.
@@ -120,14 +123,13 @@ docs/               # auditoría, decisiones, capturas e informes visual y móvi
 
 `npm run audit:mobile` mide 10 viewports (320×568, 360×740, 390×844, 412×915, 430×932, 844×390, 768×1024, 820×1180, 1280×800 y 1440×900) × 2 temas × 14 rutas = **280 mediciones**, con `hasTouch: true` en móvil/tablet. Detecta desbordes, texto recortado, solapes, objetivos <44 px, campos <16 px, CLS, tareas largas, errores y peticiones externas. Escribe `docs/verificacion-movil.{json,md}` y capturas en `docs/capturas/movil/`.
 
-Presupuesto: HTML **< 4,5 MB**. Cifras medidas en la entrega anterior (el estado actual se registra en `docs/verificacion-visual.json` y `docs/verificacion-movil.json`):
+Presupuesto: HTML **< 4,5 MB**. Cifras de la Fase 6 (el detalle está en `docs/verificacion-visual.json`, `docs/verificacion-motion.json` y `docs/verificacion-movil.json`):
 
-- `npm test`: **14 archivos, 65 pruebas** en verde, incluidas tres de migración real de `localStorage`.
-- `npm run build` y `npm run build:single`: correctos; `dist/index.html`/`ivoria.html` = **1.310.724 bytes** (1.280,00 KiB; 490.031 bytes gzip).
-- Croma visible dentro de 350°–40°: **100 %**; desborde horizontal máximo: **0 px**.
-- CLS **0,0052** en claro y oscuro (móvil máx. **0,0066**); **0 tareas largas**.
-- Auditoría móvil: **260 mediciones, 0 hallazgos, 0 problemas**.
-- **0** errores de consola y **0** peticiones externas en esa medición histórica (anterior a la importación de fotos; ahora el catálogo solicita imágenes a los CDNs de las APIs).
-- E2E correcto: personal (`admin`), cliente (cuenta, bloqueo de `/admin` y compra), visitante (portada, guardas y rutas públicas) y filtros por URL.
+- `npm test`: **19 archivos, 94 pruebas** en verde; `npm run lint` sin errores y `npx tsc -b` correcto.
+- `npm run build`: correcto; `dist/index.html` = **2.628.520 bytes** (2.566,91 KiB; 969.820 bytes gzip), por debajo del límite.
+- Croma visible dentro de 350°–40°: **100 %**; desborde horizontal máximo: **0 px**; CLS **0,0000** y **0 tareas largas** en la verificación visual.
+- `npm run verify:seed`: **9/9** comprobaciones; `npm run verify:visual`: 60 mediciones móviles sin hallazgos, 193 fotos importadas cargadas y E2E correcto (personal, cliente con compra, visitante y filtros).
+- `npm run audit:mobile`: **280 mediciones, 0 problemas**.
+- `npm run verify:motion`: **10/10 flujos funcionales**, CLS 0, 0 errores y 0 peticiones externas. Salvedad: `1280-estado-pedido` queda por debajo del suelo de 32 FPS (28,2–30,5) con CPU ×4 y alta carga externa; es un flujo del panel no modificado en esta fase, que ya rozaba el límite en la medición anterior. El presupuesto del script no se rebajó.
 
 Las capturas anteriores quedan en `docs/capturas/` como referencia histórica; las nuevas están en `docs/capturas/verificacion/` y `docs/capturas/movil/`. El detalle de hallazgos y decisiones está en `docs/auditoria.md` y `docs/decisiones.md`.

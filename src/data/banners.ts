@@ -37,10 +37,10 @@ export const banners: Banner[] = [
   },
   {
     id: 'cuenta-facil',
-    titulo: 'Tu cuenta te hace la vida fácil',
-    subtitulo: 'Guarda tus datos, repite tus compras favoritas y revisa tus pedidos cuando quieras.',
-    cta: 'Crear mi cuenta',
-    ruta: '/cuenta/registro',
+    titulo: 'Tu compra, siempre a mano',
+    subtitulo: 'Revisa el avance de tus pedidos, guarda tus direcciones y repite lo que más te gusta.',
+    cta: 'Ver mis pedidos',
+    ruta: '/cuenta/pedidos',
     variante: 'primario',
   },
 ]

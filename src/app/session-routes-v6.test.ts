@@ -102,4 +102,16 @@ describe('portada pública y tienda privada', () => {
     expect(source('src/pages/store/checkout-page.tsx'))
       .toContain('Comprando como {account?.nombre}')
   })
+
+  it('la tienda privada usa los pedidos de la cuenta y la URL canónica', () => {
+    expect(source('src/pages/store/home-page.tsx'))
+      .toContain('ordersForAccount(account, orders)')
+    expect(source('src/pages/store/cart-page.tsx'))
+      .toContain('repeatOrderLines(order, products, orders)')
+    for (const archivo of [
+      'src/pages/store/home-page.tsx', 'src/pages/store/product-page.tsx',
+    ]) {
+      expect(source(archivo)).not.toContain('?cat=')
+    }
+  })
 })

@@ -200,6 +200,23 @@ export const associateGuestOrders = (account: CustomerAccount, orders: Order[]):
     return matches ? { ...order, clienteId: account.id } : order
   })
 
+/** Pedidos de la cuenta, incluidos los históricos ya vinculados por datos. */
+export const ordersForAccount = (
+  account: CustomerAccount | null, orders: Order[],
+): Order[] => {
+  if (!account) return []
+  const email = normalizeEmail(account.email)
+  const phone = normalizePhoneVE(account.telefono) ?? ''
+  return orders
+    .filter((order) => order.clienteId === account.id || (
+      !order.clienteId && (
+        (order.cliente.email ? normalizeEmail(order.cliente.email) === email : false)
+        || (phone !== '' && normalizePhoneVE(order.cliente.telefono) === phone)
+      )
+    ))
+    .sort((a, b) => b.fecha.localeCompare(a.fecha))
+}
+
 /** Cuenta de demostración sembrada solo si no hay datos previos. */
 export const ensureDemoCustomer = async (): Promise<void> => {
   if (findByEmail('cliente@ejemplo.com')) return

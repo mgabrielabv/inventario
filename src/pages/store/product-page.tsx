@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
-import { Check, Heart, ShieldCheck, ShoppingBag } from 'lucide-react'
+import { Check, Heart, ShieldCheck, ShoppingBag, UserRound } from 'lucide-react'
 import { useEffect, useMemo, useState, type MouseEvent } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { useCustomer } from '../../app/providers/customer-provider'
 import { ArtZoom } from '../../components/art/ArtZoom'
 import { ProductArt, type ArtView } from '../../components/art/ProductArt'
 import { ProductCard } from '../../components/store/ProductCard'
@@ -33,6 +34,7 @@ const VIEWS: Array<{ value: ArtView; label: string }> = [
 
 export const ProductPage = () => {
   const { slug } = useParams<{ slug: string }>()
+  const { account } = useCustomer()
   const products = useInventoryStore((state) => state.products)
   const orders = useOrdersStore((state) => state.orders)
   const settings = useSettingsStore((state) => state.settings)
@@ -122,7 +124,7 @@ export const ProductPage = () => {
         <ol>
           <li><Link to="/inicio">Inicio</Link></li>
           <li><Link to="/tienda">Catálogo</Link></li>
-          <li><Link to={`/tienda?cat=${encodeURIComponent(product.categoria)}`}>{product.categoria}</Link></li>
+          <li><Link to={`/tienda?categoria=${encodeURIComponent(product.categoria)}`}>{product.categoria}</Link></li>
           <li aria-current="page">{product.nombre}</li>
         </ol>
       </nav>
@@ -162,7 +164,7 @@ export const ProductPage = () => {
             ))}
           </div>
           <p className="pdp-gallery__note t-min">
-            Ilustración generada · pasa el cursor para ampliar
+            Imagen del producto · pasa el cursor para ampliar
           </p>
         </div>
 
@@ -234,6 +236,12 @@ export const ProductPage = () => {
               <ShieldCheck size={16} strokeWidth={1.5} aria-hidden="true" />
               Compra segura: no se realiza ningún cobro real.
             </p>
+            {account && (
+              <p className="pdp-account-note t-min">
+                <UserRound size={15} strokeWidth={1.6} aria-hidden="true" />
+                Compras con la cuenta de {account.nombre}. Tus pedidos quedan en tu espacio personal.
+              </p>
+            )}
           </div>
 
           <Reveal className="pdp-content" as="div">
@@ -329,7 +337,7 @@ export const ProductPage = () => {
         <Reveal as="section" className="pdp-related" aria-labelledby="pdp-related-title">
           <header className="pdp-related__head">
             <h2 id="pdp-related-title" className="t-section">También te puede gustar</h2>
-            <Link className="pdp-related__all t-mid" to={`/tienda?cat=${encodeURIComponent(product.categoria)}`}>
+            <Link className="pdp-related__all t-mid" to={`/tienda?categoria=${encodeURIComponent(product.categoria)}`}>
               Ver categoría
             </Link>
           </header>

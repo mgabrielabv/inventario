@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import {
   addAddress, associateGuestOrders, authenticateCustomer, ensureDemoCustomer,
-  findByEmail, findByPhone, getCustomers, normalizePhoneVE, passwordStrength,
-  registerCustomer, removeAddress, saveCustomers, setCustomerActive, setDefaultAddress,
+  findByEmail, findByPhone, getCustomers, normalizePhoneVE, ordersForAccount,
+  passwordStrength, registerCustomer, removeAddress, saveCustomers, setCustomerActive,
+  setDefaultAddress,
 } from './customer-auth'
 import { useCustomerStore } from '../store/customer'
 import { useOrdersStore } from '../store/orders'
@@ -110,6 +111,19 @@ describe('cuentas de cliente', () => {
     expect(linked.map((item) => item.clienteId))
       .toEqual([account.id, account.id, undefined, 'otra-cuenta'])
     expect(getCustomers()).toHaveLength(1)
+  })
+
+  it('selecciona los pedidos de la cuenta sin mezclar los ajenos', async () => {
+    const account = await signUp()
+    const mine = [
+      order('1', account.email, '0424-0000000', account.id),
+      order('2', account.email, '0424-0000000'),
+    ]
+    const dates = ['2026-11-18T12:00:00Z', '2026-11-21T12:00:00Z']
+    const sorted = ordersForAccount(account, [...mine, order('3', 'otro@ejemplo.com', '0424-1111111')]
+      .map((item, index) => ({ ...item, fecha: dates[index] ?? item.fecha })))
+    expect(sorted.map((item) => item.id)).toEqual(['2', '1'])
+    expect(ordersForAccount(null, mine)).toEqual([])
   })
 
   it('siembra una única cuenta de demostración usable', async () => {

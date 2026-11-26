@@ -34,6 +34,8 @@ import type {
 } from '../../logic/types'
 
 const STEP_LABELS = ['Datos', 'Entrega', 'Pago', 'Revisar']
+/** Un único texto para el aviso de pago simulado en todo el checkout. */
+const PAYMENT_NOTICE = 'Pago simulado. No se realiza ningún cobro.'
 
 type DeliveryType = OrderDelivery['tipo']
 
@@ -276,6 +278,11 @@ export const CheckoutPage = () => {
           <p className="t-caption t-muted">
             Usaremos tus datos y tu dirección guardada. Puedes cambiarlos abajo.
           </p>
+          <div className="checkout-account-card__actions">
+            <Link className="checkout-account-card__link" to="/cuenta/direcciones">
+              Ver mis direcciones
+            </Link>
+          </div>
         </section>
         <div className="checkout-fields">
           <Field label="Nombre y apellido" error={errors.nombre} required>
@@ -493,7 +500,7 @@ export const CheckoutPage = () => {
         </div>
         <p className="checkout-hint t-caption">
           <ShieldCheck size={15} strokeWidth={1.6} aria-hidden="true" />
-          Pago simulado. No se realiza ningún cargo ni transferencia real.
+          {PAYMENT_NOTICE}
         </p>
       </div>
     )
@@ -536,7 +543,7 @@ export const CheckoutPage = () => {
             </div>
             <Chip active>{paymentOptions.find((option) => option.value === payment)?.label ?? 'Efectivo'}</Chip>
             {draft.comprobante && <p className="t-min t-muted"><FileCheck2 size={14} strokeWidth={1.6} aria-hidden="true" /> Comprobante adjunto</p>}
-            <p className="t-caption">Pago simulado: sin cobro real.</p>
+            <p className="t-caption">{PAYMENT_NOTICE}</p>
           </div>
         </div>
 
@@ -737,7 +744,7 @@ export const CheckoutPage = () => {
           {secondary && <p className="t-min t-muted checkout-summary__secondary">{secondary}</p>}
           <p className="checkout-summary__note t-min">
             <ShieldCheck size={15} strokeWidth={1.5} aria-hidden="true" />
-            Pago simulado. No se realiza ningún cobro.
+            {PAYMENT_NOTICE}
           </p>
         </aside>
       </form>

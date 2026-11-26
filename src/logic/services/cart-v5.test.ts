@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import {
-  cartCount, cartSubtotal, migrateCartLines, normalizeCartLine, pruneCartLines, validateCart,
+  cartCount, cartSubtotal, migrateCartLines, normalizeCartLine, pruneCartLines,
+  repeatOrderLines, validateCart,
 } from './cart'
-import type { Product } from '../types'
+import type { Order, Product } from '../types'
 
 const NOW = '2026-11-22T12:00:00.000Z'
 
@@ -64,5 +65,28 @@ describe('carrito v5', () => {
       { productoId: 'p2', cantidad: 1, agregadoEn: NOW, guardado: true },
     ]
     expect(pruneCartLines(lines, [product()]).map((line) => line.productoId)).toEqual(['p1'])
+  })
+
+  it('repite un pedido solo con lo que hoy se puede vender', () => {
+    const previous: Order = {
+      id: 'o1', codigo: 'PED-2026-000001', fecha: NOW,
+      cliente: { nombre: 'Ana', telefono: '0414-1234567' },
+      entrega: { tipo: 'retiro' },
+      lineas: [
+        { productoId: 'p1', nombre: 'Producto uno', codigo: '001', precioUnit: 50, cantidad: 4 },
+        { productoId: 'p1', nombre: 'Producto uno', codigo: '001', precioUnit: 50, cantidad: 1 },
+        { productoId: 'p2', nombre: 'Producto dos', codigo: '002', precioUnit: 30, cantidad: 9 },
+        { productoId: 'p3', nombre: 'Fuera', codigo: '003', precioUnit: 10, cantidad: 1 },
+      ],
+      subtotal: 0, descuento: 0, envio: 0, total: 0, moneda: 'USD',
+      pago: { metodo: 'efectivo', verificado: false },
+      estado: 'Entregado', historial: [],
+    }
+    expect(repeatOrderLines(previous, [product(), product({ id: 'p2', stock: 3 })], []))
+      .toEqual([
+        { productoId: 'p1', cantidad: 4, agregadoEn: expect.any(String), precioAlAgregar: 50 },
+        { productoId: 'p2', cantidad: 3, agregadoEn: expect.any(String), precioAlAgregar: 50 },
+      ])
+    expect(repeatOrderLines(undefined, [], [])).toEqual([])
   })
 })

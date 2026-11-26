@@ -1,14 +1,17 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import {
-  ArrowRight, Check, ChevronLeft, ChevronRight, Clock3, Headphones, Home as HomeIcon,
-  LayoutGrid, Laptop, NotebookPen, PackageCheck, Pause, Play, RotateCcw, Search,
-  ShoppingBag, Sparkles, Store, Tag, Truck, UserPlus, Wallet, type LucideIcon,
+  ArrowRight, ChevronLeft, ChevronRight, Clock3, Headphones, Heart, Home as HomeIcon,
+  LayoutGrid, Laptop, MapPin, NotebookPen, PackageCheck, Pause, Play, RotateCcw, Search,
+  ShoppingBag, Sparkles, Store, Tag, Truck, UserRound, Wallet, type LucideIcon,
 } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState, type TouchEvent } from 'react'
 import { Link } from 'react-router-dom'
+import { useCustomer } from '../../app/providers/customer-provider'
 import { HomeRail, type HomeRailItem } from '../../components/store/HomeRail'
+import { ProductImage } from '../../components/store/ProductImage'
 import { banners, type Banner } from '../../data/banners'
 import { categoryTiles } from '../../logic/services/catalog'
+import { ordersForAccount } from '../../logic/services/customer-auth'
 import { getAvailable } from '../../logic/services/stock'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
@@ -51,20 +54,13 @@ const STEPS: Array<{ icon: LucideIcon; titulo: string; texto: string }> = [
   },
 ]
 
-const ACCOUNT_BENEFITS: Array<{ icon: LucideIcon; texto: string }> = [
-  { icon: Check, texto: 'Guarda tus direcciones y datos de contacto.' },
-  { icon: RotateCcw, texto: 'Repite tus compras favoritas en dos toques.' },
-  { icon: Clock3, texto: 'Revisa el avance de tus pedidos cuando quieras.' },
-  { icon: Tag, texto: 'Entérate primero de las ofertas para ti.' },
-]
-
 const discount = (product: Product): number => {
   const before = product.precioAnterior
   if (before === null || before <= (product.precio ?? 0)) return 0
   return 1 - (product.precio ?? 0) / before
 }
 
-const HeroArt = ({ variante }: { variante: Banner['variante'] }) => {
+const HeroArt = ({ variante, product }: { variante: Banner['variante']; product?: Product }) => {
   const Icon = BANNER_ICONS[variante]
   return (
     <div className="eshop-hero__art" aria-hidden="true">
@@ -75,13 +71,19 @@ const HeroArt = ({ variante }: { variante: Banner['variante'] }) => {
         <rect className="eshop-hero__tile" x="76" y="78" width="46" height="46" rx="12" />
         <rect className="eshop-hero__tile eshop-hero__tile--small" x="200" y="132" width="34" height="34" rx="9" />
       </svg>
-      <span className="eshop-hero__glyph"><Icon size={92} strokeWidth={1.1} /></span>
-      <span className="eshop-hero__chip">Compra fácil</span>
+      {product ? (
+        <div className="eshop-hero__product">
+          <ProductImage product={product} className="eshop-hero__photo" />
+        </div>
+      ) : (
+        <span className="eshop-hero__glyph"><Icon size={92} strokeWidth={1.1} /></span>
+      )}
+      <span className="eshop-hero__chip">{product ? 'Selección destacada' : 'Compra fácil'}</span>
     </div>
   )
 }
 
-const PromoCarousel = () => {
+const PromoCarousel = ({ productos }: { productos: Array<Product | undefined> }) => {
   const [index, setIndex] = useState(0)
   const [direction, setDirection] = useState(1)
   const [paused, setPaused] = useState(false)
@@ -89,6 +91,7 @@ const PromoCarousel = () => {
   const touchX = useRef<number | null>(null)
   const total = banners.length
   const active = banners[index] ?? banners[0]!
+  const featured = productos[index]
 
   const goTo = useCallback((position: number) => {
     setDirection(position >= index ? 1 : -1)
@@ -148,6 +151,12 @@ const PromoCarousel = () => {
               {active.cta}
               <ArrowRight size={18} strokeWidth={1.8} aria-hidden="true" />
             </Link>
+            {featured && (
+              <Link className="eshop-hero__detail" to={`/tienda/${featured.slug}`}>
+                Descubre {featured.nombre}
+                <ArrowRight size={15} strokeWidth={1.8} aria-hidden="true" />
+              </Link>
+            )}
           </motion.div>
           <motion.div
             className="eshop-hero__art-layer"
@@ -155,7 +164,7 @@ const PromoCarousel = () => {
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: dur.slow, ease: ease.easeOutQuint }}
           >
-            <HeroArt variante={active.variante} />
+            <HeroArt variante={active.variante} product={featured} />
           </motion.div>
         </div>
 
@@ -223,6 +232,7 @@ const PromoCarousel = () => {
 export const HomePage = () => {
   const products = useInventoryStore((state) => state.products)
   const orders = useOrdersStore((state) => state.orders)
+  const { account } = useCustomer()
   const entrega = useSettingsStore((state) => state.settings.entrega)
   const pagos = useSettingsStore((state) => state.settings.pagos)
   const configuredCategories = useSettingsStore((state) => state.settings.catalogo.categorias)
@@ -272,7 +282,7 @@ export const HomePage = () => {
   [products, orders])
 
   const categories = useMemo(() => {
-    const tiles = new Map(categoryTiles(products).map((tile) => [tile.categoria, tile.total]))
+    const tiles = new Map(categoryTiles(products).map((tile) => [tile.categoria, tile]))
     const byCategory = new Map<string, number>()
     for (const item of items) {
       if (item.available > 0) {
@@ -282,11 +292,17 @@ export const HomePage = () => {
     const names = [...new Set([...configuredCategories, ...tiles.keys()])]
     return names.map((nombre) => ({
       nombre,
-      total: tiles.get(nombre) ?? 0,
+      total: tiles.get(nombre)?.total ?? 0,
       disponibles: byCategory.get(nombre) ?? 0,
       icon: CATEGORY_ICONS[nombre] ?? LayoutGrid,
+      sample: tiles.get(nombre)?.sample ?? null,
     }))
   }, [configuredCategories, items, products])
+
+  const byId = useMemo(
+    () => new Map(items.map((item) => [item.product.id, item])),
+    [items],
+  )
 
   const sales = useMemo(() => {
     const counts = new Map<string, number>()
@@ -318,13 +334,38 @@ export const HomePage = () => {
     .sort((a, b) => b.product.creadoEn.localeCompare(a.product.creadoEn))
     .slice(0, 8), [items])
 
-  const recientes = useMemo(() => {
-    const byId = new Map(items.map((item) => [item.product.id, item]))
-    return recentIds
-      .map((id) => byId.get(id))
-      .filter((item): item is HomeRailItem => item !== undefined)
+  const recientes = useMemo(() => recentIds
+    .map((id) => byId.get(id))
+    .filter((item): item is HomeRailItem => item !== undefined)
+    .slice(0, 8), [byId, recentIds])
+
+  const misPedidos = useMemo(
+    () => ordersForAccount(account, orders), [account, orders],
+  )
+  const ultimoPedido = misPedidos[0]
+
+  const paraRepetir = useMemo(() => {
+    const seen = new Set<string>()
+    return misPedidos
+      .flatMap((order) => order.lineas.map((line) => line.productoId))
+      .flatMap((id) => {
+        const item = byId.get(id)
+        if (!item || seen.has(id)) return []
+        seen.add(id)
+        return [item]
+      })
       .slice(0, 8)
-  }, [items, recentIds])
+  }, [misPedidos, byId])
+
+  const heroProducts = useMemo<Array<Product | undefined>>(() => [
+    ofertas[0]?.product,
+    masVendidos[0]?.product,
+    novedades[0]?.product,
+    misPedidos.flatMap((order) => order.lineas)
+      .map((line) => byId.get(line.productoId)?.product)
+      .find((product): product is Product => product !== undefined)
+      ?? items[0]?.product,
+  ], [ofertas, masVendidos, novedades, misPedidos, byId, items])
 
   const tags = useMemo(() => {
     const counts = new Map<string, number>()
@@ -344,7 +385,7 @@ export const HomePage = () => {
   return (
     <main className="eshop-home">
       <div className="eshop-wrap">
-        <PromoCarousel />
+        <PromoCarousel productos={heroProducts} />
 
         <section className="eshop-benefits" aria-label="Ventajas de comprar aquí">
           <ul className="eshop-benefits__grid">
@@ -374,13 +415,15 @@ export const HomePage = () => {
             </Link>
           </header>
           <ul className="eshop-categories__grid">
-            {categories.map(({ nombre, total, disponibles, icon: Icon }) => {
-              const query = new URLSearchParams({ categoria: nombre, cat: nombre })
+            {categories.map(({ nombre, total, disponibles, icon: Icon, sample }) => {
+              const query = new URLSearchParams({ categoria: nombre })
               return (
                 <li key={nombre}>
                   <Link className="eshop-category" to={`/tienda?${query.toString()}`}>
                     <span className="eshop-category__icon">
-                      <Icon size={24} strokeWidth={1.6} aria-hidden="true" />
+                      {sample
+                        ? <ProductImage product={sample} className="eshop-category__photo" />
+                        : <Icon size={24} strokeWidth={1.6} aria-hidden="true" />}
                     </span>
                     <span className="eshop-category__name">{nombre}</span>
                     <span className="eshop-category__count">
@@ -396,6 +439,15 @@ export const HomePage = () => {
         </section>
 
         <div className="eshop-rails">
+          <HomeRail
+            id="eshop-repetir"
+            titulo="Comprar de nuevo"
+            descripcion="Tus últimas compras, listas para repetir."
+            items={paraRepetir}
+            cargando={!ready}
+            vacio="Cuando hagas tu primera compra, tus productos aparecerán aquí."
+            verTodo={{ label: 'Mis pedidos', to: '/cuenta/pedidos' }}
+          />
           <HomeRail
             id="eshop-ofertas"
             titulo="Ofertas del día"
@@ -431,32 +483,70 @@ export const HomePage = () => {
           />
         </div>
 
-        <section className="eshop-register" aria-labelledby="eshop-register-title">
+        <section className="eshop-register eshop-personal" aria-labelledby="eshop-personal-title">
           <div className="eshop-register__intro">
             <span className="eshop-register__icon">
-              <UserPlus size={24} strokeWidth={1.6} aria-hidden="true" />
+              <UserRound size={24} strokeWidth={1.6} aria-hidden="true" />
             </span>
-            <h2 className="eshop-register__title" id="eshop-register-title">Haz tu cuenta y compra más rápido</h2>
+            <p className="eshop-section__eyebrow">Tu espacio</p>
+            <h2 className="eshop-register__title" id="eshop-personal-title">Hola, {account?.nombre}</h2>
             <p className="eshop-register__text">
-              Es gratis y te ahorra pasos en cada compra.
+              Retoma donde lo dejaste: pedidos, direcciones y favoritos en un mismo lugar.
             </p>
-            <ul className="eshop-register__list">
-              {ACCOUNT_BENEFITS.map(({ icon: Icon, texto }) => (
-                <li className="eshop-register__item" key={texto}>
-                  <Icon size={17} strokeWidth={1.8} aria-hidden="true" />
-                  <span>{texto}</span>
-                </li>
-              ))}
+            <ul className="eshop-personal__links">
+              <li>
+                <Link to="/cuenta/pedidos">
+                  <PackageCheck size={18} strokeWidth={1.7} aria-hidden="true" />
+                  <span>Mis pedidos</span>
+                  <ArrowRight size={16} strokeWidth={1.8} aria-hidden="true" />
+                </Link>
+              </li>
+              <li>
+                <Link to="/cuenta/direcciones">
+                  <MapPin size={18} strokeWidth={1.7} aria-hidden="true" />
+                  <span>Direcciones</span>
+                  <ArrowRight size={16} strokeWidth={1.8} aria-hidden="true" />
+                </Link>
+              </li>
+              <li>
+                <Link to="/favoritos">
+                  <Heart size={18} strokeWidth={1.7} aria-hidden="true" />
+                  <span>Favoritos</span>
+                  <ArrowRight size={16} strokeWidth={1.8} aria-hidden="true" />
+                </Link>
+              </li>
             </ul>
           </div>
           <div className="eshop-register__actions">
-            <Link className="eshop-register__button eshop-register__button--primary" to="/cuenta/registro">
-              Crear cuenta <ArrowRight size={17} strokeWidth={1.8} aria-hidden="true" />
-            </Link>
-            <Link className="eshop-register__button eshop-register__button--secondary" to="/cuenta/ingresar">
-              Ya tengo cuenta
-            </Link>
-            <p className="eshop-register__note">También puedes seguir tu pedido sin iniciar sesión.</p>
+            <section className="eshop-personal__card card" aria-label="Estado de tu cuenta">
+              <p className="eshop-section__eyebrow">
+                {ultimoPedido ? 'Tu último pedido' : 'Lista para comprar'}
+              </p>
+              {ultimoPedido ? (
+                <>
+                  <p className="eshop-personal__code">{ultimoPedido.codigo}</p>
+                  <p className="eshop-personal__state">
+                    <Clock3 size={15} strokeWidth={1.7} aria-hidden="true" />
+                    {ultimoPedido.estado} · {ultimoPedido.lineas.length}
+                    {ultimoPedido.lineas.length === 1 ? ' producto' : ' productos'}
+                  </p>
+                  <Link className="eshop-personal__detail" to={`/cuenta/pedidos/${ultimoPedido.codigo}`}>
+                    Ver detalle <ArrowRight size={16} strokeWidth={1.8} aria-hidden="true" />
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <p className="eshop-personal__state">Tu primera compra aparecerá aquí con su estado.</p>
+                  <Link className="eshop-register__button eshop-register__button--primary" to="/tienda">
+                    Explorar catálogo <ArrowRight size={17} strokeWidth={1.8} aria-hidden="true" />
+                  </Link>
+                </>
+              )}
+            </section>
+            <p className="eshop-personal__note">
+              <RotateCcw size={15} strokeWidth={1.7} aria-hidden="true" />
+              «Comprar de nuevo» te devuelve a lo que ya elegiste.
+            </p>
           </div>
         </section>
 

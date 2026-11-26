@@ -87,3 +87,26 @@ export const pruneCartLines = (lines: CartLine[], products: Product[]): CartLine
     const product = products.find((item) => item.id === line.productoId)
     return Boolean(product && !product.archivado && product.publicado && product.precio !== null)
   })
+
+/** Repite un pedido anterior respetando lo que hoy se puede vender. */
+export const repeatOrderLines = (
+  order: Order | undefined, products: Product[], orders: Order[],
+): CartLine[] => {
+  if (!order) return []
+  const seen = new Set<string>()
+  const stamp = now()
+  return order.lineas.flatMap((line): CartLine[] => {
+    const product = products.find((item) => item.id === line.productoId)
+    if (!product || product.archivado || !product.publicado || product.precio === null
+      || seen.has(product.id)) return []
+    const available = getAvailable(product, orders)
+    if (available <= 0) return []
+    seen.add(product.id)
+    return [{
+      productoId: product.id,
+      cantidad: Math.min(Math.max(1, line.cantidad), available),
+      agregadoEn: stamp,
+      precioAlAgregar: product.precio,
+    }]
+  })
+}

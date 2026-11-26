@@ -1,6 +1,6 @@
 # Verificación móvil — Ivoria (ronda 2, Fase 2)
 
-Generado: 2026-11-26T05:33:36.324Z. Se recorrieron 10 viewports × 2 temas × 14 rutas sobre el HTML único con `file://` y Chrome sin cabecera, con `hasTouch: true` en teléfono/tablet y puntero fino en escritorio.
+Generado: 2026-11-26T06:00:52.250Z. Se recorrieron 10 viewports × 2 temas × 14 rutas sobre el HTML único con `file://` y Chrome sin cabecera, con `hasTouch: true` en teléfono/tablet y puntero fino en escritorio.
 
 ## Resumen por viewport
 
@@ -36,8 +36,8 @@ Ninguno.
   ],
   "vh100": 4,
   "safeAreaUses": 4,
-  "hoverRules": 57,
-  "hoverRulesGuarded": 57,
+  "hoverRules": 59,
+  "hoverRulesGuarded": 59,
   "fsUi": "16",
   "colorLiteralsOutsideTokens": "ver check:palette"
 }
