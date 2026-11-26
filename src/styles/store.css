@@ -152,6 +152,17 @@
   width: 100%;
   height: 100%;
 }
+/* Escenario elegido en la ficha: solo cambia el fondo decorativo. */
+.stage-scene[data-escenario='estudio'] { background: var(--stage-deep); }
+.stage-scene[data-escenario='arena'] {
+  background: color-mix(in oklab, var(--tan) 30%, var(--stage));
+}
+.stage-scene[data-escenario='noche'] {
+  background: color-mix(in oklab, var(--burgundy) 44%, var(--stage));
+}
+.stage-scene[data-escenario='noche'] .stage-scene__halo {
+  background: radial-gradient(circle, var(--stage-glow), var(--stage-halo) 52%, transparent 74%);
+}
 
 .pdp-tilt { display: grid; place-items: center; }
 .pdp-gallery__note { margin-top: var(--s2); text-align: center; }

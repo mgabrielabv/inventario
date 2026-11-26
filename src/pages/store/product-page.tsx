@@ -132,7 +132,7 @@ export const ProductPage = () => {
       <div className="pdp-layout">
         <div className="pdp-gallery">
           <div className="pdp-stage">
-            <ProductStage>
+            <ProductStage escenario={product.escenario}>
               <motion.div
                 ref={tilt.ref}
                 className="pdp-tilt"

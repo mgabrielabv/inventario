@@ -38,6 +38,10 @@ export type ProductStatus = 'agotado' | 'critico' | 'bajo' | 'normal'
 export type StoreStatus = 'disponible' | 'pocas' | 'agotado'
 export interface StatusInfo { status: ProductStatus; label: string }
 
+/** Fondo de la presentación del producto. No altera la foto ni el precio. */
+export const ESCENARIOS = ['natural', 'estudio', 'arena', 'noche'] as const
+export type Escenario = (typeof ESCENARIOS)[number]
+
 /** Forma ilustrada del producto. Un mismo arquetipo sirve a varias fichas. */
 export const ARQUETIPOS = [
   'laptop', 'monitor', 'mouse', 'teclado', 'audifonos', 'cargador', 'camara',
@@ -75,7 +79,9 @@ export interface Product {
   especificaciones: Especificacion[]
   etiquetas: string[]
   destacado: boolean
-  imagenes: string[]            // ids de IndexedDB
+  imagenes: string[]            // ids de IndexedDB o URLs importadas; la primera es la principal
+  /** v10: escenario visual opcional; las fichas antiguas se muestran en «natural». */
+  escenario?: Escenario
 
   proveedor: string
   notas: string
@@ -92,6 +98,7 @@ export interface ProductDraft {
   publicado?: boolean
   destacado?: boolean
   imagenes?: string[]
+  escenario?: Escenario
   unidad: Unit
   stockInicial: number
   stockMinimo: number
@@ -302,6 +309,8 @@ export interface BackupPayload {
   activity: ActivityEntry[]
   /** v3: cuentas de cliente. Los respaldos antiguos no lo traen. */
   customers?: CustomerAccount[]
+  /** v5: fotos subidas, como data URL por id. Las importadas siguen siendo URLs. */
+  fotos?: Record<string, string>
 }
 
 export interface CsvRowError { row: number; message: string }

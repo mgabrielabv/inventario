@@ -1,12 +1,11 @@
 import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Pencil, Plus } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Pencil, Plus, SlidersHorizontal } from 'lucide-react'
 import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Field, Input, Select, Textarea } from '../../components/ui/Field'
 import { ResponsiveTable } from '../../components/ui/ResponsiveTable'
 import { ProductArt } from '../../components/art/ProductArt'
-import { ProductBox } from '../../components/box/ProductBox'
 import { Segmented } from '../../components/ui/Segmented'
 import { Sheet } from '../../components/ui/Sheet'
 import { StatusDot } from '../../components/ui/StatusDot'
@@ -16,17 +15,20 @@ import { useAuth } from '../../app/providers/auth-provider'
 import { logActivity } from '../../logic/services/audit'
 import { errorMessage } from '../../logic/errors'
 import { formatNumber, normalizeText } from '../../logic/services/formatters'
-import { saveImage } from '../../logic/services/images'
+import { deleteImage, isRemoteImage, saveImage } from '../../logic/services/images'
 import { denyReason } from '../../logic/services/permissions'
 import { formatMoney } from '../../logic/services/pricing'
-import { getAvailable, getProductStatus, getReserved } from '../../logic/services/stock'
-import { firstError, validateProductDraft, type ProductDraftErrors } from '../../logic/services/validation'
+import { ESCENARIO_LABELS } from '../../logic/services/stage'
+import { applyMovement, getAvailable, getProductStatus, getReserved } from '../../logic/services/stock'
+import {
+  firstError, validateMovementQuantity, validateProductDraft, type ProductDraftErrors,
+} from '../../logic/services/validation'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
 import { useSettingsStore } from '../../logic/store/settings'
 import {
-  ARQUETIPOS, UNITS, type Arquetipo, type Product, type ProductDraft,
-  type ProductStatus, type Unit,
+  ARQUETIPOS, ESCENARIOS, MOTIVOS_BY_TYPE, UNITS, type Arquetipo, type Motivo,
+  type MovementType, type Product, type ProductDraft, type ProductStatus, type Unit,
 } from '../../logic/types'
 
 type StatusFilter = 'todos' | ProductStatus
@@ -62,10 +64,23 @@ export const AdminInventoryPage = () => {
   const [draft, setDraft] = useState<ProductDraft | null>(null)
   const [errors, setErrors] = useState<ProductDraftErrors>({})
   const [confirmTarget, setConfirmTarget] = useState<{ id: string; kind: 'archive' | 'delete' } | null>(null)
+  const [soloSinFoto, setSoloSinFoto] = useState(false)
+  const [soloBajoMinimo, setSoloBajoMinimo] = useState(false)
+  const [fotoActual, setFotoActual] = useState(0)
+  const [fotosEliminadas, setFotosEliminadas] = useState<string[]>([])
+  const [fotosNuevas, setFotosNuevas] = useState<string[]>([])
+  const [movTarget, setMovTarget] = useState<Product | null>(null)
+  const [movTipo, setMovTipo] = useState<MovementType>('Entrada')
+  const [movMotivo, setMovMotivo] = useState<Motivo>('Compra')
+  const [movCantidad, setMovCantidad] = useState('1')
+  const [movReferencia, setMovReferencia] = useState('')
+  const [movNota, setMovNota] = useState('')
+  const [movError, setMovError] = useState('')
 
   const products = useInventoryStore((state) => state.products)
   const addProduct = useInventoryStore((state) => state.addProduct)
   const updateProduct = useInventoryStore((state) => state.updateProduct)
+  const addMovement = useInventoryStore((state) => state.addMovement)
   const archiveProduct = useInventoryStore((state) => state.archiveProduct)
   const deleteProduct = useInventoryStore((state) => state.deleteProduct)
   const orders = useOrdersStore((state) => state.orders)
@@ -89,13 +104,16 @@ export const AdminInventoryPage = () => {
         if (estado === 'todos') return true
         return getProductStatus(product, orders).status === estado
       })
+      .filter((product) => !soloSinFoto || (product.imagenes?.length ?? 0) === 0)
+      .filter((product) => !soloBajoMinimo
+        || (product.stockMinimo > 0 && getAvailable(product, orders) < product.stockMinimo))
       .filter((product) => {
         if (!needle) return true
         return normalizeText(`${product.nombre} ${product.codigo} ${product.ubicacion} ${product.categoria}`)
           .includes(needle)
       })
       .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
-  }, [products, orders, q, categoria, estado, incluirArchivados])
+  }, [products, orders, q, categoria, estado, incluirArchivados, soloSinFoto, soloBajoMinimo])
 
   const changeQuery = (value: string) => {
     const next = new URLSearchParams(params)
@@ -110,9 +128,12 @@ export const AdminInventoryPage = () => {
       codigo: '', nombre: '', categoria: settings.catalogo.categorias[0] ?? 'Otras',
       unidad: 'unidad', stockInicial: 0, stockMinimo: 0, stockObjetivo: 0,
       ubicacion: ubicaciones[0] ?? '', costo: null, precio: null, proveedor: '', notas: '',
-      arquetipo: 'paquete', publicado: false, destacado: false, imagenes: [],
+      arquetipo: 'paquete', publicado: false, destacado: false, imagenes: [], escenario: 'natural',
     })
     setErrors({})
+    setFotoActual(0)
+    setFotosEliminadas([])
+    setFotosNuevas([])
     setSheetOpen(true)
   }
 
@@ -125,8 +146,12 @@ export const AdminInventoryPage = () => {
       costo: product.costo, precio: product.precio, proveedor: product.proveedor, notas: product.notas,
       arquetipo: product.arquetipo, publicado: product.publicado,
       destacado: product.destacado, imagenes: [...product.imagenes],
+      escenario: product.escenario ?? 'natural',
     })
     setErrors({})
+    setFotoActual(0)
+    setFotosEliminadas([])
+    setFotosNuevas([])
     setSheetOpen(true)
   }
 
@@ -154,16 +179,24 @@ export const AdminInventoryPage = () => {
         publicado: draft.publicado ?? false,
         destacado: draft.destacado ?? false,
         imagenes: draft.imagenes ?? [],
+        escenario: draft.escenario,
       }
       if (can('editar:precio')) patch.precio = draft.precio
       updateProduct(editingId, patch)
-      logActivity(who, 'Producto actualizado', `${patch.nombre} (${patch.codigo})`)
+      const detalle = `${patch.nombre} (${patch.codigo}) · ${patch.imagenes?.length ?? 0} fotos · ${patch.escenario ?? 'natural'}`
+      logActivity(who, 'Producto actualizado', detalle)
       toast('Producto actualizado')
     } else {
       addProduct(draft, who)
-      logActivity(who, 'Producto creado', `${draft.nombre.trim()} (${draft.codigo.trim()})`)
+      logActivity(who, 'Producto creado',
+        `${draft.nombre.trim()} (${draft.codigo.trim()}) · ${draft.imagenes?.length ?? 0} fotos`)
       toast('Producto creado')
     }
+    if (fotosEliminadas.length > 0) {
+      void Promise.all(fotosEliminadas.map((id) => deleteImage(id).catch(() => undefined)))
+    }
+    setFotosEliminadas([])
+    setFotosNuevas([])
     setSheetOpen(false)
     setDraft(null)
   }
@@ -190,14 +223,102 @@ export const AdminInventoryPage = () => {
   }
 
   const subirFoto = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const files = Array.from(event.target.files ?? [])
     event.target.value = ''
-    if (!file || !draft) return
+    if (files.length === 0 || !draft) return
     try {
-      const id = await saveImage(file)
-      setField('imagenes', [...(draft.imagenes ?? []), id])
-      toast('Foto guardada. Se muestra antes que el arte generado.')
+      const ids: string[] = []
+      for (const file of files) ids.push(await saveImage(file))
+      setField('imagenes', [...(draft.imagenes ?? []), ...ids])
+      setFotosNuevas((current) => [...current, ...ids])
+      setFotoActual(draft.imagenes?.length ?? 0)
+      toast(ids.length === 1
+        ? 'Foto guardada. La primera foto es la principal.'
+        : `${ids.length} fotos guardadas. La primera es la principal.`)
     } catch (cause) {
+      toast(errorMessage(cause), { tone: 'critical' })
+    }
+  }
+
+  const moverFoto = (index: number, delta: number) => {
+    if (!draft) return
+    const imagenes = [...(draft.imagenes ?? [])]
+    const destino = index + delta
+    if (destino < 0 || destino >= imagenes.length) return
+    const actual = imagenes[index]!
+    imagenes[index] = imagenes[destino]!
+    imagenes[destino] = actual
+    setField('imagenes', imagenes)
+    setFotoActual(destino)
+  }
+
+  const quitarFoto = (index: number) => {
+    if (!draft) return
+    const id = draft.imagenes?.[index]
+    if (!id) return
+    setField('imagenes', draft.imagenes!.filter((_, i) => i !== index))
+    if (!isRemoteImage(id)) setFotosEliminadas((current) => [...current, id])
+    setFotoActual((current) => Math.max(0, Math.min(current, (draft.imagenes?.length ?? 1) - 2)))
+  }
+
+  const cerrarHoja = () => {
+    // Las fotos recién subidas no pertenecen a ninguna ficha si se cancela.
+    if (fotosNuevas.length > 0) {
+      void Promise.all(fotosNuevas.map((id) => deleteImage(id).catch(() => undefined)))
+    }
+    setSheetOpen(false)
+    setDraft(null)
+    setErrors({})
+    setFotoActual(0)
+    setFotosEliminadas([])
+    setFotosNuevas([])
+  }
+
+  const abrirMovimiento = (product: Product) => {
+    setMovTarget(product)
+    setMovTipo('Entrada')
+    setMovMotivo(MOTIVOS_BY_TYPE.Entrada[0] ?? 'Compra')
+    setMovCantidad('1')
+    setMovReferencia('')
+    setMovNota('')
+    setMovError('')
+  }
+
+  const changeMovTipo = (next: MovementType) => {
+    setMovTipo(next)
+    setMovMotivo(MOTIVOS_BY_TYPE[next][0] ?? 'Compra')
+    setMovError('')
+  }
+
+  const registrarMovimiento = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!movTarget) return
+    const who = user?.name ?? 'sistema'
+    if (!can('registrar:movimiento')) {
+      setMovError(denyReason('registrar:movimiento'))
+      return
+    }
+    const cantidad = Number(movCantidad)
+    const disponible = getAvailable(movTarget, orders)
+    const validation = movCantidad.trim() === ''
+      ? (movTipo === 'Ajuste' ? 'Escribe el conteo real' : 'Escribe la cantidad')
+      : validateMovementQuantity(movTipo, cantidad, disponible)
+    if (validation) { setMovError(validation); return }
+    try {
+      const input = {
+        productoId: movTarget.id, tipo: movTipo, cantidad, motivo: movMotivo,
+        referencia: movReferencia, nota: movNota,
+      }
+      // addMovement vuelve a aplicar la regla antes de escribir; aquí solo se
+      // calcula el resultado para el aviso y la auditoría.
+      const applied = applyMovement(movTarget, input)
+      addMovement({ ...input, usuario: who })
+      logActivity(who, 'Movimiento registrado',
+        `${movTipo} de ${formatNumber(cantidad)} en ${movTarget.nombre} · ${movMotivo} · ${applied.stockAntes} → ${applied.stockDespues}`)
+      toast(`${movTipo} registrada en ${movTarget.nombre}`)
+      setMovTarget(null)
+    } catch (cause) {
+      setMovError(errorMessage(cause))
       toast(errorMessage(cause), { tone: 'critical' })
     }
   }
@@ -235,6 +356,14 @@ export const AdminInventoryPage = () => {
         <Field label="Incluir archivados">
           {() => <Switch checked={incluirArchivados} onChange={setIncluirArchivados} label="Incluir archivados" />}
         </Field>
+        <Field label="Filtros rápidos">
+          {() => (
+            <div className="admin-toolbar__toggles">
+              <Switch checked={soloSinFoto} onChange={setSoloSinFoto} label="Sin foto" />
+              <Switch checked={soloBajoMinimo} onChange={setSoloBajoMinimo} label="Bajo mínimo" />
+            </div>
+          )}
+        </Field>
       </div>
       <Segmented value={estado} options={ESTADOS} onChange={setEstado} label="Filtrar por estado de stock" size="sm" />
 
@@ -250,6 +379,7 @@ export const AdminInventoryPage = () => {
                 <th>Categoría</th>
                 <th>Ubicación</th>
                 <th>Stock</th>
+                <th>Reservado</th>
                 <th>Disponible</th>
                 <th>Estado</th>
                 <th>Precio</th>
@@ -265,8 +395,7 @@ export const AdminInventoryPage = () => {
                   <tr key={product.id} className={product.archivado ? 'is-archived' : undefined}>
                     <td>
                       <div className="admin-product-cell">
-                        <ProductBox categoria={product.categoria} codigo={product.codigo}
-                          nombre={product.nombre} size={46} />
+                        <ProductArt product={product} size={46} view="solo" />
                         <div className="col">
                           <span className="t-mid">{product.nombre}</span>
                           <span className="product-code t-min t-muted">
@@ -278,14 +407,19 @@ export const AdminInventoryPage = () => {
                     <td>{product.categoria}</td>
                     <td>{product.ubicacion || '—'}</td>
                     <td className="t-num">{formatNumber(product.stock)}</td>
-                    <td>
-                      <span className="t-num t-mid">{formatNumber(disponible)}</span>
-                      {reservado > 0 && <span className="t-min t-muted"> · {reservado} reservado</span>}
-                    </td>
+                    <td className="t-num">{formatNumber(reservado)}</td>
+                    <td className="t-num t-mid">{formatNumber(disponible)}</td>
                     <td><StatusDot status={status.status} label={status.label} compact /></td>
                     <td className="t-num">{product.precio === null ? '—' : formatMoney(product.precio)}</td>
                     <td>
                       <div className="actions">
+                        {can('registrar:movimiento') && (
+                          <Button size="sm" variant="secondary" disabled={product.archivado}
+                            aria-label={`Registrar movimiento de ${product.nombre}`}
+                            onClick={() => abrirMovimiento(product)}>
+                            <SlidersHorizontal size={15} strokeWidth={1.6} />Mover
+                          </Button>
+                        )}
                         {can('editar:producto') && (
                           <Button size="sm" variant="secondary" aria-label={`Editar ${product.nombre}`}
                             onClick={() => abrirEdicion(product)}>
@@ -329,7 +463,7 @@ export const AdminInventoryPage = () => {
         </div>
       )}
 
-      <Sheet open={sheetOpen} onClose={() => setSheetOpen(false)}
+      <Sheet open={sheetOpen} onClose={cerrarHoja}
         title={editingId ? 'Editar producto' : 'Nuevo producto'}>
         {draft && (
           <form className="admin-sheet-form" onSubmit={guardar} noValidate>
@@ -423,17 +557,20 @@ export const AdminInventoryPage = () => {
               <section className="admin-store-section admin-form-grid__full" aria-label="Presentación en tienda">
                 <h3 className="t-ui t-strong">Tienda</h3>
                 <div className="admin-store-preview">
-                  <ProductArt
-                    categoria={draft.categoria}
-                    arquetipo={draft.arquetipo ?? 'paquete'}
-                    codigo={draft.codigo}
-                    nombre={draft.nombre || 'Vista previa'}
-                    imagenes={draft.imagenes ?? []}
-                    size={140}
-                    view="hero"
-                  />
+                  <div className="admin-store-stage" data-escenario={draft.escenario ?? 'natural'}>
+                    <ProductArt
+                      categoria={draft.categoria}
+                      arquetipo={draft.arquetipo ?? 'paquete'}
+                      codigo={draft.codigo}
+                      nombre={draft.nombre || 'Vista previa'}
+                      imagenes={draft.imagenes ?? []}
+                      size={140}
+                      view="hero"
+                    />
+                  </div>
                   <p className="t-min t-muted">
-                    Las fotos tienen prioridad sobre el arte generado. Si no hay foto, se usa el arquetipo.
+                    Las fotos tienen prioridad sobre el arte generado. La primera foto es la principal;
+                    el escenario cambia el fondo de la presentación.
                   </p>
                 </div>
                 <div className="admin-form-grid">
@@ -446,23 +583,58 @@ export const AdminInventoryPage = () => {
                       </Select>
                     )}
                   </Field>
-                  <Field label="Foto del producto" hint="JPG, PNG o WebP. Se guarda en este equipo.">
+                  <Field label="Escenario" hint="Fondo de la presentación en la tienda.">
                     {(id, describedBy) => (
-                      <input id={id} className="input" type="file" accept="image/*"
-                        aria-describedby={describedBy || undefined} onChange={(event) => void subirFoto(event)} />
+                      <Select id={id} value={draft.escenario ?? 'natural'}
+                        aria-describedby={describedBy || undefined}
+                        onChange={(event) => setField('escenario', event.target.value as ProductDraft['escenario'])}>
+                        {ESCENARIOS.map((item) => <option key={item} value={item}>{ESCENARIO_LABELS[item]}</option>)}
+                      </Select>
                     )}
                   </Field>
                 </div>
+                <Field label="Fotos del producto"
+                  hint="JPG, PNG o WebP. Puedes subir varias; la primera será la principal.">
+                  {(id, describedBy) => (
+                    <input id={id} className="input" type="file" accept="image/*" multiple
+                      aria-describedby={describedBy || undefined} onChange={(event) => void subirFoto(event)} />
+                  )}
+                </Field>
                 {(draft.imagenes?.length ?? 0) > 0 && (
-                  <div className="admin-store-photos">
-                    {draft.imagenes!.map((imageId, index) => (
-                      <button key={imageId} type="button" className="admin-store-photo"
-                        onClick={() => setField('imagenes', draft.imagenes!.filter((_, i) => i !== index))}
-                        aria-label={`Quitar foto ${index + 1}`} title="Quitar foto">
-                        <ProductArt imagenes={[imageId]} size={64} view="solo" />
-                        <span aria-hidden="true">×</span>
-                      </button>
-                    ))}
+                  <div className="admin-gallery">
+                    <div className="admin-gallery__preview">
+                      <ProductArt
+                        imagenes={[draft.imagenes![Math.min(fotoActual, draft.imagenes!.length - 1)]!]}
+                        size="100%" view="hero"
+                      />
+                    </div>
+                    <div className="admin-gallery__side">
+                      <p className="t-min t-muted">Elige una foto para verla y cambiar su posición.</p>
+                      <div className="admin-store-photos" role="group" aria-label="Fotos del producto">
+                        {draft.imagenes!.map((imageId, index) => (
+                          <button key={`${imageId}-${index}`} type="button" className={`admin-store-photo${index === fotoActual ? ' is-active' : ''}`}
+                            aria-label={`Ver foto ${index + 1}${index === 0 ? ', principal' : ''}`}
+                            aria-pressed={index === fotoActual} onClick={() => setFotoActual(index)}>
+                            <ProductArt imagenes={[imageId]} size={64} view="solo" />
+                            <span className="admin-store-photo__tag">{index === 0 ? 'Principal' : String(index + 1)}</span>
+                          </button>
+                        ))}
+                      </div>
+                      <div className="admin-gallery__actions">
+                        <Button size="sm" variant="secondary" disabled={fotoActual === 0}
+                          onClick={() => moverFoto(fotoActual, -1)}>
+                          <ArrowLeft size={15} strokeWidth={1.6} />Antes
+                        </Button>
+                        <Button size="sm" variant="secondary"
+                          disabled={fotoActual >= (draft.imagenes?.length ?? 0) - 1}
+                          onClick={() => moverFoto(fotoActual, 1)}>
+                          <ArrowRight size={15} strokeWidth={1.6} />Después
+                        </Button>
+                        <Button size="sm" variant="danger" onClick={() => quitarFoto(fotoActual)}>
+                          Quitar foto {fotoActual + 1}
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 )}
                 <div className="admin-switch-row">
@@ -482,7 +654,60 @@ export const AdminInventoryPage = () => {
             </div>
             <div className="admin-sheet-actions">
               <Button type="submit" size="sm">{editingId ? 'Guardar cambios' : 'Crear producto'}</Button>
-              <Button size="sm" variant="secondary" onClick={() => setSheetOpen(false)}>Cancelar</Button>
+              <Button size="sm" variant="secondary" onClick={cerrarHoja}>Cancelar</Button>
+            </div>
+          </form>
+        )}
+      </Sheet>
+
+      <Sheet open={Boolean(movTarget)} onClose={() => setMovTarget(null)}
+        title={`Movimiento · ${movTarget?.nombre ?? 'producto'}`}>
+        {movTarget && (
+          <form className="admin-sheet-form" onSubmit={registrarMovimiento} noValidate>
+            <p className="t-caption t-pretty">
+              Stock {formatNumber(movTarget.stock)} · reservado {formatNumber(getReserved(movTarget.id, orders))}
+              {' · '}disponible {formatNumber(getAvailable(movTarget, orders))}. El stock cambia solo con movimientos.
+            </p>
+            {!can('registrar:movimiento') && <p className="inline-note">{denyReason('registrar:movimiento')}</p>}
+            <Segmented value={movTipo} options={[
+              { value: 'Entrada', label: 'Entrada' },
+              { value: 'Salida', label: 'Salida' },
+              { value: 'Ajuste', label: 'Ajuste' },
+            ]} onChange={changeMovTipo} label="Tipo de movimiento" size="sm" />
+            <div className="admin-form-grid">
+              <Field label="Motivo" required>
+                {(id) => (
+                  <Select id={id} value={movMotivo} onChange={(event) => setMovMotivo(event.target.value as Motivo)}>
+                    {MOTIVOS_BY_TYPE[movTipo].map((item) => <option key={item} value={item}>{item}</option>)}
+                  </Select>
+                )}
+              </Field>
+              <Field label={movTipo === 'Ajuste' ? 'Conteo real' : 'Cantidad'} required
+                hint={movTipo === 'Salida'
+                  ? `Máximo ${formatNumber(getAvailable(movTarget, orders))} unidades`
+                  : movTipo === 'Ajuste' ? 'El conteo fija el stock a esta cifra.' : undefined}>
+                {(id, describedBy) => (
+                  <Input id={id} type="number" step="1" aria-describedby={describedBy || undefined}
+                    value={movCantidad} onChange={(event) => { setMovCantidad(event.target.value); setMovError('') }} />
+                )}
+              </Field>
+              <Field label="Referencia">
+                {(id) => (
+                  <Input id={id} value={movReferencia} placeholder="Factura, pedido o albarán"
+                    onChange={(event) => setMovReferencia(event.target.value)} />
+                )}
+              </Field>
+              <Field label="Nota">
+                {(id) => (
+                  <Input id={id} value={movNota} placeholder="Detalle opcional"
+                    onChange={(event) => setMovNota(event.target.value)} />
+                )}
+              </Field>
+            </div>
+            {movError && <p className="inline-alert" role="alert">{movError}</p>}
+            <div className="admin-sheet-actions">
+              <Button type="submit" size="sm" disabled={!can('registrar:movimiento')}>Guardar movimiento</Button>
+              <Button size="sm" variant="secondary" onClick={() => setMovTarget(null)}>Cancelar</Button>
             </div>
           </form>
         )}

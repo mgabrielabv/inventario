@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-26T06:00:52.250Z",
+  "generatedAt": "2026-11-26T17:27:02.829Z",
   "viewports": [
     {
       "name": "320x568",
@@ -154,8 +154,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 97
     },
     "320x568|light|catalogo": {
       "overflowPx": 0,
@@ -400,8 +400,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 4,
-      "maxTask": 2629
+      "longTasks": 6,
+      "maxTask": 3934
     },
     "320x568|light|admin-pedidos": {
       "overflowPx": 0,
@@ -443,7 +443,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 375
+      "maxTask": 607
     },
     "320x568|light|admin-config": {
       "overflowPx": 0,
@@ -569,7 +569,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 57
+      "maxTask": 83
     },
     "320x568|dark|catalogo": {
       "overflowPx": 0,
@@ -814,8 +814,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 4,
-      "maxTask": 2708
+      "longTasks": 7,
+      "maxTask": 3708
     },
     "320x568|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -857,7 +857,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 406
+      "maxTask": 624
     },
     "320x568|dark|admin-config": {
       "overflowPx": 0,
@@ -920,17 +920,17 @@
           "right": 455
         },
         {
-          "el": "img.eshop-photo__blur",
-          "left": 237,
-          "right": 463
-        },
-        {
           "el": "img.eshop-photo__img",
           "left": 245,
           "right": 455
         },
         {
           "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "p.landing-showcase__price «USD 79,99»",
           "left": 244,
           "right": 456
         }
@@ -983,7 +983,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 117
+      "maxTask": 85
     },
     "360x740|light|catalogo": {
       "overflowPx": 0,
@@ -1222,8 +1222,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 4,
-      "maxTask": 2678
+      "longTasks": 7,
+      "maxTask": 3961
     },
     "360x740|light|admin-pedidos": {
       "overflowPx": 0,
@@ -1264,8 +1264,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 462
+      "longTasks": 0,
+      "maxTask": 0
     },
     "360x740|light|admin-config": {
       "overflowPx": 0,
@@ -1390,8 +1390,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 53
+      "longTasks": 2,
+      "maxTask": 80
     },
     "360x740|dark|catalogo": {
       "overflowPx": 0,
@@ -1630,8 +1630,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 4,
-      "maxTask": 2603
+      "longTasks": 7,
+      "maxTask": 3796
     },
     "360x740|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -1736,17 +1736,17 @@
           "right": 455
         },
         {
+          "el": "img.eshop-photo__blur",
+          "left": 237,
+          "right": 463
+        },
+        {
           "el": "img.eshop-photo__img",
           "left": 245,
           "right": 455
         },
         {
           "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
-          "left": 244,
-          "right": 456
-        },
-        {
-          "el": "p.landing-showcase__price «USD 79,99»",
           "left": 244,
           "right": 456
         }
@@ -1798,8 +1798,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 61
     },
     "390x844|light|catalogo": {
       "overflowPx": 0,
@@ -2038,8 +2038,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 3,
-      "maxTask": 2620
+      "longTasks": 5,
+      "maxTask": 4021
     },
     "390x844|light|admin-pedidos": {
       "overflowPx": 0,
@@ -2081,7 +2081,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 381
+      "maxTask": 602
     },
     "390x844|light|admin-config": {
       "overflowPx": 0,
@@ -2144,17 +2144,17 @@
           "right": 455
         },
         {
-          "el": "img.eshop-photo__blur",
-          "left": 237,
-          "right": 463
-        },
-        {
           "el": "img.eshop-photo__img",
           "left": 245,
           "right": 455
         },
         {
           "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "p.landing-showcase__price «USD 79,99»",
           "left": 244,
           "right": 456
         }
@@ -2207,7 +2207,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 76
+      "maxTask": 72
     },
     "390x844|dark|catalogo": {
       "overflowPx": 0,
@@ -2446,8 +2446,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 4,
-      "maxTask": 2652
+      "longTasks": 6,
+      "maxTask": 3946
     },
     "390x844|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -2489,7 +2489,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 393
+      "maxTask": 599
     },
     "390x844|dark|admin-config": {
       "overflowPx": 0,
@@ -2615,7 +2615,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 63
+      "maxTask": 74
     },
     "412x915|light|catalogo": {
       "overflowPx": 0,
@@ -2855,7 +2855,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 4,
-      "maxTask": 2561
+      "maxTask": 3871
     },
     "412x915|light|admin-pedidos": {
       "overflowPx": 0,
@@ -2896,8 +2896,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 446
+      "longTasks": 0,
+      "maxTask": 0
     },
     "412x915|light|admin-config": {
       "overflowPx": 0,
@@ -3023,7 +3023,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 51
+      "maxTask": 70
     },
     "412x915|dark|catalogo": {
       "overflowPx": 0,
@@ -3262,8 +3262,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 2,
-      "maxTask": 2557
+      "longTasks": 5,
+      "maxTask": 3788
     },
     "412x915|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -3304,8 +3304,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 426
+      "longTasks": 0,
+      "maxTask": 0
     },
     "412x915|dark|admin-config": {
       "overflowPx": 0,
@@ -3430,8 +3430,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 2,
+      "maxTask": 89
     },
     "430x932|light|catalogo": {
       "overflowPx": 0,
@@ -3670,8 +3670,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 4,
-      "maxTask": 2672
+      "longTasks": 5,
+      "maxTask": 3972
     },
     "430x932|light|admin-pedidos": {
       "overflowPx": 0,
@@ -3712,8 +3712,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 445
+      "longTasks": 0,
+      "maxTask": 0
     },
     "430x932|light|admin-config": {
       "overflowPx": 0,
@@ -3838,8 +3838,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 2,
-      "maxTask": 57
+      "longTasks": 1,
+      "maxTask": 65
     },
     "430x932|dark|catalogo": {
       "overflowPx": 0,
@@ -4078,8 +4078,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 3,
-      "maxTask": 2582
+      "longTasks": 5,
+      "maxTask": 3890
     },
     "430x932|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -4121,7 +4121,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 426
+      "maxTask": 715
     },
     "430x932|dark|admin-config": {
       "overflowPx": 0,
@@ -4184,17 +4184,17 @@
           "right": 911
         },
         {
-          "el": "img.eshop-photo__blur",
-          "left": 693,
-          "right": 919
-        },
-        {
           "el": "img.eshop-photo__img",
           "left": 701,
           "right": 911
         },
         {
           "el": "p.landing-showcase__name «Apple AirPods Max Silver»",
+          "left": 700,
+          "right": 912
+        },
+        {
+          "el": "p.landing-showcase__price «USD 549,99»",
           "left": 700,
           "right": 912
         }
@@ -4246,8 +4246,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 77
+      "longTasks": 2,
+      "maxTask": 104
     },
     "844x390|light|catalogo": {
       "overflowPx": 0,
@@ -4461,8 +4461,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 6,
-      "maxTask": 2472
+      "longTasks": 7,
+      "maxTask": 4143
     },
     "844x390|light|admin-pedidos": {
       "overflowPx": 0,
@@ -4504,7 +4504,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 422
+      "maxTask": 602
     },
     "844x390|light|admin-config": {
       "overflowPx": 0,
@@ -4630,7 +4630,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 61
+      "maxTask": 96
     },
     "844x390|dark|catalogo": {
       "overflowPx": 0,
@@ -4844,8 +4844,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 5,
-      "maxTask": 2627
+      "longTasks": 6,
+      "maxTask": 3923
     },
     "844x390|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -4887,7 +4887,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 406
+      "maxTask": 570
     },
     "844x390|dark|admin-config": {
       "overflowPx": 0,
@@ -4950,17 +4950,17 @@
           "right": 911
         },
         {
-          "el": "img.eshop-photo__blur",
-          "left": 693,
-          "right": 919
-        },
-        {
           "el": "img.eshop-photo__img",
           "left": 701,
           "right": 911
         },
         {
           "el": "p.landing-showcase__name «Apple AirPods Max Silver»",
+          "left": 700,
+          "right": 912
+        },
+        {
+          "el": "p.landing-showcase__price «USD 549,99»",
           "left": 700,
           "right": 912
         }
@@ -5013,7 +5013,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 94
+      "maxTask": 134
     },
     "768x1024|light|catalogo": {
       "overflowPx": 0,
@@ -5227,8 +5227,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 3,
-      "maxTask": 2562
+      "longTasks": 5,
+      "maxTask": 3955
     },
     "768x1024|light|admin-pedidos": {
       "overflowPx": 0,
@@ -5270,7 +5270,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 411
+      "maxTask": 595
     },
     "768x1024|light|admin-config": {
       "overflowPx": 0,
@@ -5333,17 +5333,17 @@
           "right": 911
         },
         {
-          "el": "img.eshop-photo__blur",
-          "left": 693,
-          "right": 919
-        },
-        {
           "el": "img.eshop-photo__img",
           "left": 701,
           "right": 911
         },
         {
           "el": "p.landing-showcase__name «Apple AirPods Max Silver»",
+          "left": 700,
+          "right": 912
+        },
+        {
+          "el": "p.landing-showcase__price «USD 549,99»",
           "left": 700,
           "right": 912
         }
@@ -5396,7 +5396,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 2,
-      "maxTask": 108
+      "maxTask": 86
     },
     "768x1024|dark|catalogo": {
       "overflowPx": 0,
@@ -5610,8 +5610,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 3,
-      "maxTask": 2557
+      "longTasks": 5,
+      "maxTask": 4127
     },
     "768x1024|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -5653,7 +5653,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 448
+      "maxTask": 600
     },
     "768x1024|dark|admin-config": {
       "overflowPx": 0,
@@ -5778,8 +5778,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 79
+      "longTasks": 2,
+      "maxTask": 102
     },
     "820x1180|light|catalogo": {
       "overflowPx": 0,
@@ -5999,7 +5999,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 5,
-      "maxTask": 2499
+      "maxTask": 3652
     },
     "820x1180|light|admin-pedidos": {
       "overflowPx": 0,
@@ -6040,8 +6040,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 436
+      "longTasks": 0,
+      "maxTask": 0
     },
     "820x1180|light|admin-config": {
       "overflowPx": 0,
@@ -6167,7 +6167,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 57
+      "maxTask": 86
     },
     "820x1180|dark|catalogo": {
       "overflowPx": 0,
@@ -6387,7 +6387,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 5,
-      "maxTask": 2471
+      "maxTask": 3873
     },
     "820x1180|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -6428,8 +6428,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 427
+      "longTasks": 0,
+      "maxTask": 0
     },
     "820x1180|dark|admin-config": {
       "overflowPx": 0,
@@ -6555,7 +6555,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 63
+      "maxTask": 145
     },
     "1280x800|light|catalogo": {
       "overflowPx": 0,
@@ -6685,14 +6685,45 @@
     },
     "1280x800|light|admin-inventario": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "table.table.table--cards «ProductoCategoríaUbicaciónStockReservadoDi»",
+          "left": 267,
+          "right": 1325
+        },
+        {
+          "el": "thead «ProductoCategoríaUbicaciónStockReservadoDi»",
+          "left": 267,
+          "right": 1325
+        },
+        {
+          "el": "tr «ProductoCategoríaUbicaciónStockReservadoDi»",
+          "left": 267,
+          "right": 1325
+        },
+        {
+          "el": "th.admin-cell-right «Acciones»",
+          "left": 1189,
+          "right": 1325
+        },
+        {
+          "el": "tbody «OFF-3228857000166100% mie completOFF-32288»",
+          "left": 267,
+          "right": 1325
+        },
+        {
+          "el": "tr «OFF-3228857000166100% mie completOFF-32288»",
+          "left": 267,
+          "right": 1325
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 4,
-      "maxTask": 2643
+      "longTasks": 5,
+      "maxTask": 3875
     },
     "1280x800|light|admin-pedidos": {
       "overflowPx": 0,
@@ -6703,7 +6734,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 378
+      "maxTask": 607
     },
     "1280x800|light|admin-config": {
       "overflowPx": 0,
@@ -6735,17 +6766,17 @@
           "right": 1543
         },
         {
+          "el": "img.eshop-photo__blur",
+          "left": 1246,
+          "right": 1554
+        },
+        {
           "el": "img.eshop-photo__img",
           "left": 1257,
           "right": 1543
         },
         {
           "el": "p.landing-showcase__name «Apple Airpower Wireless Charger»",
-          "left": 1256,
-          "right": 1544
-        },
-        {
-          "el": "p.landing-showcase__price «USD 79,99»",
           "left": 1256,
           "right": 1544
         }
@@ -6797,8 +6828,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 93
+      "longTasks": 0,
+      "maxTask": 0
     },
     "1280x800|dark|catalogo": {
       "overflowPx": 0,
@@ -6928,14 +6959,45 @@
     },
     "1280x800|dark|admin-inventario": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "table.table.table--cards «ProductoCategoríaUbicaciónStockReservadoDi»",
+          "left": 267,
+          "right": 1325
+        },
+        {
+          "el": "thead «ProductoCategoríaUbicaciónStockReservadoDi»",
+          "left": 267,
+          "right": 1325
+        },
+        {
+          "el": "tr «ProductoCategoríaUbicaciónStockReservadoDi»",
+          "left": 267,
+          "right": 1325
+        },
+        {
+          "el": "th.admin-cell-right «Acciones»",
+          "left": 1189,
+          "right": 1325
+        },
+        {
+          "el": "tbody «OFF-3228857000166100% mie completOFF-32288»",
+          "left": 267,
+          "right": 1325
+        },
+        {
+          "el": "tr «OFF-3228857000166100% mie completOFF-32288»",
+          "left": 267,
+          "right": 1325
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 3,
-      "maxTask": 2593
+      "longTasks": 5,
+      "maxTask": 3775
     },
     "1280x800|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -6946,7 +7008,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 412
+      "maxTask": 605
     },
     "1280x800|dark|admin-config": {
       "overflowPx": 0,
@@ -7041,7 +7103,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 118
+      "maxTask": 75
     },
     "1440x900|light|catalogo": {
       "overflowPx": 0,
@@ -7171,8 +7233,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 3,
-      "maxTask": 2721
+      "longTasks": 6,
+      "maxTask": 3831
     },
     "1440x900|light|admin-pedidos": {
       "overflowPx": 0,
@@ -7183,7 +7245,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 473
+      "maxTask": 610
     },
     "1440x900|light|admin-config": {
       "overflowPx": 0,
@@ -7277,8 +7339,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 85
+      "longTasks": 2,
+      "maxTask": 66
     },
     "1440x900|dark|catalogo": {
       "overflowPx": 0,
@@ -7408,8 +7470,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 2,
-      "maxTask": 2501
+      "longTasks": 5,
+      "maxTask": 3737
     },
     "1440x900|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -7420,7 +7482,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 456
+      "maxTask": 629
     },
     "1440x900|dark|admin-config": {
       "overflowPx": 0,

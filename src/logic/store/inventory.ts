@@ -3,6 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { initialMovements, initialProducts } from '../../data/products'
 import { AppError } from '../errors'
 import { applyMovement, buildVoidMovement } from '../services/stock'
+import { normalizeEscenario } from '../services/stage'
 import { migrateProductFacets, reclasificarImportados } from '../services/product-migrate'
 import { cleanImportedProducts } from '../services/real-products'
 import { KEYS, safeStorage } from '../services/storage'
@@ -74,6 +75,7 @@ const normalizeProduct = (value: unknown): Product | null => {
     etiquetas: Array.isArray(raw.etiquetas) ? raw.etiquetas as string[] : [],
     destacado: raw.destacado === true,
     imagenes: Array.isArray(raw.imagenes) ? raw.imagenes as string[] : [],
+    escenario: normalizeEscenario(raw.escenario),
     proveedor: asString(raw.proveedor),
     notas: asString(raw.notas),
     archivado: raw.archivado === true,
@@ -124,11 +126,14 @@ const migrate = (persisted: unknown, version: number): InventoryStore | undefine
     // ya existan.
     // v8: se descartan las fichas de relleno (p001..p060) y sus movimientos.
     // v9: las fichas de las APIs se reubican con las reglas compartidas.
+    // v10: las fichas antiguas reciben el escenario opcional, sin inventar uno.
     const movements = (state.movements ?? [])
       .filter((movement) => !wasFillerId((movement as Movement | undefined)?.productoId))
     return {
       ...state,
-      products: cleanImportedProducts(reclasificarImportados(migrateProductFacets(products))),
+      products: cleanImportedProducts(reclasificarImportados(migrateProductFacets(
+        products.map((product) => ({ ...product, escenario: normalizeEscenario(product.escenario) })),
+      ))),
       movements,
     } as InventoryStore
   }
@@ -175,6 +180,7 @@ export const useInventoryStore = create<InventoryStore>()(
           descripcion: '',
           especificaciones: [], etiquetas: [],
           destacado: draft.destacado ?? false, imagenes: draft.imagenes ?? [],
+          escenario: draft.escenario,
           proveedor: draft.proveedor, notas: draft.notas,
           archivado: false, creadoEn: timestamp, actualizadoEn: timestamp,
         }
@@ -244,7 +250,7 @@ export const useInventoryStore = create<InventoryStore>()(
     {
       name: KEYS.inventory,
       storage: createJSONStorage(() => safeStorage),
-      version: 9,
+      version: 10,
       migrate: (persisted, version) => migrate(persisted, version) ?? ({} as InventoryStore),
       partialize: (state) => ({ products: state.products, movements: state.movements }) as InventoryStore,
     },

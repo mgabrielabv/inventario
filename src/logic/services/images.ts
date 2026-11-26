@@ -129,3 +129,60 @@ export const getImage = async (id: string): Promise<string | null> => {
 export const deleteImage = async (id: string): Promise<void> => {
   await tx('readwrite', (store) => store.delete(id))
 }
+
+/* --- Respaldo de fotos -----------------------------------------------------
+   Solo se exportan las fotos subidas desde el panel: las importadas ya son
+   URLs y viajan dentro de `product.imagenes`. El límite evita que un respaldo
+   manipulado llene IndexedDB con blobs desproporcionados. */
+
+const MAX_BACKUP_BYTES = 1_000_000
+const DATA_URL = /^data:image\/(webp|png|jpeg);base64,([A-Za-z0-9+/]+={0,2})$/i
+
+const txBatch = async (mode: IDBTransactionMode, run: (store: IDBObjectStore) => void): Promise<void> => {
+  await migrateImages()
+  const db = await openDb()
+  return new Promise<void>((resolve, reject) => {
+    const transaction = db.transaction(STORE, mode)
+    run(transaction.objectStore(STORE))
+    transaction.oncomplete = () => { db.close(); resolve() }
+    transaction.onerror = () => { db.close(); reject(transaction.error) }
+  })
+}
+
+export const dataUrlToBlob = (value: string): Blob => {
+  const match = DATA_URL.exec(value.trim())
+  if (!match) throw new Error('La foto del respaldo no es una imagen válida')
+  const binary = atob(match[2]!)
+  if (binary.length > MAX_BACKUP_BYTES) throw new Error('La foto del respaldo es demasiado grande')
+  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
+  return new Blob([bytes], { type: `image/${match[1]!.toLowerCase()}` })
+}
+
+/** Data URLs de las fotos que pidan las fichas y los comprobantes. */
+export const getImages = async (ids: string[]): Promise<Record<string, string>> => {
+  const fotos: Record<string, string> = {}
+  for (const id of [...new Set(ids)].filter(Boolean)) {
+    const data = await getImage(id)
+    if (data) fotos[id] = data
+  }
+  return fotos
+}
+
+/** Restaura las fotos con sus ids originales y devuelve cuántas se guardaron. */
+export const restoreImages = async (fotos: Record<string, string>): Promise<number> => {
+  const entries = Object.entries(fotos)
+  if (entries.length === 0) return 0
+  const blobs = entries.map(([id, data]) => [id, dataUrlToBlob(data)] as [string, Blob])
+  await txBatch('readwrite', (store) => {
+    for (const [id, blob] of blobs) store.put(blob, id)
+  })
+  return entries.length
+}
+
+export const deleteImages = async (ids: string[]): Promise<void> => {
+  const unicas = [...new Set(ids)].filter(Boolean)
+  if (unicas.length === 0) return
+  await txBatch('readwrite', (store) => {
+    for (const id of unicas) store.delete(id)
+  })
+}

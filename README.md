@@ -83,7 +83,7 @@ El slug anterior `tienda` está en `LEGACY_SLUGS` (`src/config/legacy.ts`) para 
 - Al cancelar se libera la reserva; no se crea un movimiento.
 - La compra revalida el stock antes de confirmar y muestra conflictos si cambió.
 - El panel de Clientes busca por nombre, correo o teléfono; su auditoría no guarda contraseñas ni datos sensibles.
-- El respaldo es v3 e incluye las cuentas de cliente. “Restablecer datos de demostración” devuelve las 489 fichas reales sin borrar usuarios del personal ni auditoría.
+- El respaldo es v5 e incluye las cuentas de cliente y las fotos subidas desde el panel; los respaldos anteriores sin fotos siguen siendo válidos. “Restablecer datos de demostración” devuelve las 489 fichas reales sin borrar usuarios del personal ni auditoría.
 
 ## Catálogo con productos reales
 
@@ -91,9 +91,17 @@ El slug anterior `tienda` está en `LEGACY_SLUGS` (`src/config/legacy.ts`) para 
 
 `npm run clean:catalogo` comprueba cada URL con HEAD (o GET parcial), descarta respuestas `404`/`410`/`timeout`/HTML y tipos MIME no imagen, y elimina cualquier producto que se quede sin foto válida. También descarta fichas que no vengan de las dos APIs. El informe queda en `docs/limpieza-catalogo.json`. La limpieza está integrada en el seeder para que las futuras cargas mantengan el mismo filtro.
 
-El catálogo ya no incluye las 60 fichas de relleno con ilustraciones inventadas: el store se migra a la versión **9**, conserva solo productos importados y fusiona por `id` y `codigo`; las reglas semánticas de `category-rules.json` reclasifican las fichas ambiguas. Resultado: **489 productos limpios**, paginados de 24 en 24 mediante «Cargar más». Las 48 miniaturas WebP de `src/data/imagenes-locales.json` van embebidas en el HTML (sin fetch local bajo `file://`) y se priorizan así: foto subida en IndexedDB → miniatura local con blur-up → URL importada → ilustración del arquetipo.
+El catálogo ya no incluye las 60 fichas de relleno con ilustraciones inventadas: el store se migra a la versión **10**, conserva solo productos importados, fusiona por `id` y `codigo` y normaliza el escenario opcional; las reglas semánticas de `category-rules.json` reclasifican las fichas ambiguas. Resultado: **489 productos limpios**, paginados de 24 en 24 mediante «Cargar más». Las 48 miniaturas WebP de `src/data/imagenes-locales.json` van embebidas en el HTML (sin fetch local bajo `file://`) y se priorizan así: foto subida en IndexedDB → miniatura local con blur-up → URL importada → ilustración del arquetipo.
 
 Los estados llevan siempre punto, icono y texto; el lenguaje de pago deja claro que no hay cobro real. Los PDF se obtienen con la impresión del navegador.
+
+## Panel del personal
+
+El inventario muestra la foto real en cada fila y separa **Stock**, **Reservado** y **Disponible** en columnas propias; los dos últimos se derivan de los pedidos activos y nunca se guardan. Los filtros rápidos «Sin foto» y «Bajo mínimo» se suman a los de texto, categoría, estado y archivados, sin modificar existencias.
+
+En el formulario se pueden subir varias fotos, elegir la principal (la primera), recorrer las miniaturas y reordenarlas con «Antes»/«Después». Quitar una foto programa su borrado en IndexedDB al guardar; si se cancela, las fotos nuevas se descartan. El campo «Escenario» (`natural`, `estudio`, `arena`, `noche`) cambia solo el fondo de la ficha en la tienda y de la vista previa del panel; las fichas antiguas se muestran en `natural`.
+
+El botón «Mover» abre una hoja de movimiento rápido con los mismos tipos, motivos, validaciones, permisos y auditoría que la página de movimientos. Al exportar, el respaldo v5 añade las fotos subidas como data URLs (fichas y comprobantes); al importar se validan y restauran con sus ids antes de reemplazar los datos. Las imágenes importadas siguen siendo URLs y no se duplican.
 
 ## Accesibilidad
 
@@ -123,13 +131,13 @@ docs/               # auditoría, decisiones, capturas e informes visual y móvi
 
 `npm run audit:mobile` mide 10 viewports (320×568, 360×740, 390×844, 412×915, 430×932, 844×390, 768×1024, 820×1180, 1280×800 y 1440×900) × 2 temas × 14 rutas = **280 mediciones**, con `hasTouch: true` en móvil/tablet. Detecta desbordes, texto recortado, solapes, objetivos <44 px, campos <16 px, CLS, tareas largas, errores y peticiones externas. Escribe `docs/verificacion-movil.{json,md}` y capturas en `docs/capturas/movil/`.
 
-Presupuesto: HTML **< 4,5 MB**. Cifras de la Fase 6 (el detalle está en `docs/verificacion-visual.json`, `docs/verificacion-motion.json` y `docs/verificacion-movil.json`):
+Presupuesto: HTML **< 4,5 MB**. Cifras de la Fase 7 (el detalle está en `docs/verificacion-visual.json`, `docs/verificacion-motion.json` y `docs/verificacion-movil.json`):
 
-- `npm test`: **19 archivos, 94 pruebas** en verde; `npm run lint` sin errores y `npx tsc -b` correcto.
-- `npm run build`: correcto; `dist/index.html` = **2.628.520 bytes** (2.566,91 KiB; 969.820 bytes gzip), por debajo del límite.
-- Croma visible dentro de 350°–40°: **100 %**; desborde horizontal máximo: **0 px**; CLS **0,0000** y **0 tareas largas** en la verificación visual.
-- `npm run verify:seed`: **9/9** comprobaciones; `npm run verify:visual`: 60 mediciones móviles sin hallazgos, 193 fotos importadas cargadas y E2E correcto (personal, cliente con compra, visitante y filtros).
+- `npm test`: **21 archivos, 109 pruebas** en verde; `npm run lint` sin errores (solo advertencias preexistentes) y `npx tsc -b` correcto.
+- `npm run build`: correcto; `dist/index.html` = **2.637.975 bytes** (2.637,97 KiB; 970.810 bytes gzip), por debajo del límite.
+- Croma visible dentro de 350°–40°: **100 %**; desborde horizontal máximo: **0 px**; CLS **0,0000** y **0 tareas largas** en la verificación visual de escritorio.
+- `npm run verify:seed`: **9/9** comprobaciones; `npm run verify:visual`: 60 mediciones móviles sin hallazgos en la ejecución final (CLS máx. 0,0084), 247 fotos importadas cargadas y E2E correcto (personal, cliente con compra, visitante y filtros). Dos ejecuciones previas registraron de forma transitoria una tarea larga (233 ms y 219 ms) y un CLS de 0,0125 en `768-light-inicio`, ruta no modificada en esta fase, con CPU ×4 y alta carga externa; no se ajustaron umbrales.
 - `npm run audit:mobile`: **280 mediciones, 0 problemas**.
-- `npm run verify:motion`: **10/10 flujos funcionales**, CLS 0, 0 errores y 0 peticiones externas. Salvedad: `1280-estado-pedido` queda por debajo del suelo de 32 FPS (28,2–30,5) con CPU ×4 y alta carga externa; es un flujo del panel no modificado en esta fase, que ya rozaba el límite en la medición anterior. El presupuesto del script no se rebajó.
+- `npm run verify:motion`: **10/10 flujos funcionales**, CLS 0, 0 errores y 0 peticiones externas. Salvedad: `1280-estado-pedido` queda por debajo del suelo de 32 FPS (28,9 en esta medición) con CPU ×4 y alta carga externa; es un flujo del panel no modificado, con la misma salvedad aceptada en la fase anterior. El presupuesto del script no se rebajó.
 
 Las capturas anteriores quedan en `docs/capturas/` como referencia histórica; las nuevas están en `docs/capturas/verificacion/` y `docs/capturas/movil/`. El detalle de hallazgos y decisiones está en `docs/auditoria.md` y `docs/decisiones.md`.

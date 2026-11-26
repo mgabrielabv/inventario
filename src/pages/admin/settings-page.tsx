@@ -15,6 +15,7 @@ import { resetDemoData } from '../../logic/services/demo-reset'
 import { createUser, getUsers, resetPassword, saveUsers } from '../../logic/services/auth'
 import { errorMessage } from '../../logic/errors'
 import { downloadFile } from '../../logic/services/exportCsv'
+import { getImages, isRemoteImage, restoreImages } from '../../logic/services/images'
 import { formatShortDate } from '../../logic/services/formatters'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
@@ -91,20 +92,33 @@ export const AdminSettingsPage = () => {
       cupones: draft.promociones.cupones.map((cupon, i) => (i === index ? { ...cupon, ...patch } : cupon)),
     })
 
-  const exportarRespaldo = () => {
+  const exportarRespaldo = async () => {
     const state = useInventoryStore.getState()
+    const orders = useOrdersStore.getState().orders
+    const ids = new Set<string>()
+    for (const product of state.products) {
+      for (const id of product.imagenes ?? []) {
+        if (id && !isRemoteImage(id)) ids.add(id)
+      }
+    }
+    for (const order of orders) {
+      const comprobante = order.pago?.comprobante
+      if (comprobante && !isRemoteImage(comprobante)) ids.add(comprobante)
+    }
+    const fotos = await getImages([...ids])
     const respaldo = buildBackup({
       products: state.products,
       movements: state.movements,
-      orders: useOrdersStore.getState().orders,
+      orders,
       settings: useSettingsStore.getState().settings,
       users: getUsers(),
       activity: getActivity(),
+      fotos,
     })
     downloadFile(`respaldo-${respaldo.exportedAt.slice(0, 10)}.json`,
       JSON.stringify(respaldo, null, 2), 'application/json')
     logActivity(user?.name ?? 'sistema', 'Respaldo exportado', backupSummary(respaldo))
-    toast('Respaldo descargado')
+    toast(`Respaldo descargado con ${Object.keys(fotos).length} fotos`)
   }
 
   const importarRespaldo = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -121,6 +135,7 @@ export const AdminSettingsPage = () => {
         return
       }
       const data = resultado.data
+      const fotosRestauradas = await restoreImages(data.fotos ?? {})
       useInventoryStore.getState().replaceAll(data.products, data.movements)
       useOrdersStore.getState().replace(data.orders)
       useSettingsStore.getState().replace(data.settings)
@@ -131,7 +146,8 @@ export const AdminSettingsPage = () => {
         saveCustomers(data.customers)
         refreshCustomer()
       }
-      logActivity(user?.name ?? 'sistema', 'Respaldo restaurado', backupSummary(data))
+      logActivity(user?.name ?? 'sistema', 'Respaldo restaurado',
+        `${backupSummary(data)} · ${fotosRestauradas} fotos restauradas`)
       toast(`Respaldo restaurado: ${backupSummary(data)}`)
     } catch (cause) {
       setImportError(errorMessage(cause))
@@ -432,15 +448,18 @@ export const AdminSettingsPage = () => {
 
         <Seccion title="Respaldo de datos" description="Todo se guarda en este navegador; conserva una copia fuera de él.">
           <div className="admin-backup-actions">
-            <Button size="sm" onClick={exportarRespaldo}>Exportar respaldo</Button>
+            <Button size="sm" onClick={() => void exportarRespaldo().catch((cause) => {
+              toast(errorMessage(cause), { tone: 'critical' })
+            })}>Exportar respaldo</Button>
             <label htmlFor="admin-importar-respaldo" className="btn btn--secondary btn--sm">Importar respaldo</label>
             <input id="admin-importar-respaldo" className="sr-only" type="file" accept="application/json,.json"
               onChange={importarRespaldo} />
           </div>
           {importError && <p className="inline-alert" role="alert">{importError}</p>}
           <p className="t-min t-muted">
-            Al importar se reemplazan productos, movimientos, pedidos, ajustes, cuentas de cliente y usuarios.
-            También puedes restaurar respaldos anteriores sin cuentas de cliente.
+            El respaldo incluye las fotos subidas desde el panel. Al importar se reemplazan productos,
+            movimientos, pedidos, ajustes, cuentas de cliente, usuarios y esas fotos. Los respaldos
+            anteriores sin fotos siguen siendo válidos.
           </p>
         </Seccion>
 

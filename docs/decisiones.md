@@ -46,7 +46,7 @@ Inter Variable embebida como woff2 (latin y latin-ext) en `src/styles/fonts.css`
 
 Tienda y panel comparten inventario. `reservado` suma las líneas de pedidos activos (`Pendiente`, `Confirmado`, `Preparando`, `Listo`) y `disponible = stock - reservado`. Al entregar se generan movimientos `Salida/Venta`; al cancelar se libera la reserva sin crear movimientos. La confirmación revalida el stock.
 
-El estado se persiste en `localStorage` con versiones y migración de claves antiguas; si no está disponible, se usa un mapa en memoria. La persistencia del inventario pasó a v8 para completar facetas y descartar las fichas de relleno `p001`…`p060` junto con sus movimientos; los pedidos migran a v3 y el respaldo a v4, sanitizando importaciones antiguas. El respaldo importa cuentas de cliente sin sobrescribir las existentes cuando el archivo es v2. “Restablecer datos de demostración” repone los 489 productos reales, movimientos, pedidos, ajustes y la cuenta demo; conserva personal y auditoría.
+El estado se persiste en `localStorage` con versiones y migración de claves antiguas; si no está disponible, se usa un mapa en memoria. La persistencia del inventario pasó a v10 para completar facetas, descartar las fichas de relleno `p001`…`p060` junto con sus movimientos y normalizar el escenario sin inventar valores; los pedidos migran a v3 y el respaldo a v5, sanitizando importaciones antiguas. El respaldo importa cuentas de cliente sin sobrescribir las existentes cuando el archivo es v2. “Restablecer datos de demostración” repone los 489 productos reales, movimientos, pedidos, ajustes y la cuenta demo; conserva personal y auditoría.
 
 ## Portada pública
 
@@ -77,6 +77,22 @@ La ficha de producto conserva sus cuatro vistas y el zoom, pero la nota de la ga
 Las pruebas `store-personal-v6` y `session-routes-v6` comprueban estas decisiones leyendo el código fuente: sin registro en la tienda, sin parámetros heredados, fotos en el escaparate y las categorías, repetición validada del pedido y un solo texto de pago simulado.
 
 Salvedad de verificación de esta fase: `verify:motion` completa 10/10 flujos funcionales con CLS 0,0000, 0 errores y 0 peticiones externas, pero `1280-estado-pedido` no alcanza el suelo de 32 FPS (mediciones de 28,2 a 30,5). Ese flujo mide el panel de pedidos, que no se modificó en esta fase; en la línea base ya rozaba el límite (32,4) y el entorno de medición tenía CPU ×4 con alta carga externa. Se acepta el resultado con esta salvedad, sin rebajar el presupuesto del script; el resto de verificaciones pasan sin problemas.
+
+## Panel del personal
+
+El inventario incorpora dos filtros rápidos («Sin foto» y «Bajo mínimo») junto a los existentes. «Sin foto» significa estrictamente que la ficha no tiene imágenes; «Bajo mínimo» compara el disponible derivado con el mínimo declarado y solo aplica si ese mínimo es mayor que cero. Ninguno escribe en el producto: el stock sigue cambiando únicamente por movimientos.
+
+La tabla separa **Stock**, **Reservado** y **Disponible** en tres columnas en lugar de colapsar la reserva en una nota. `reservado` y `disponible` se calculan en cada render con `getReserved`/`getAvailable` a partir de los pedidos activos; no se persisten. Las miniaturas de la tabla usan `ProductArt` con la misma prioridad que la tienda (foto subida → miniatura local → URL importada → ilustración), así que el personal ve la foto real de cada ficha.
+
+La foto principal es la primera de `imagenes`. El formulario admite subida múltiple, muestra una vista previa grande, permite recorrer las miniaturas y reordenarlas con «Antes»/«Después». Quitar una foto deja el borrado diferido hasta guardar: las fotos nuevas se descartan al cancelar y las eliminadas se borran de IndexedDB solo cuando se confirma la ficha. Las URLs importadas nunca se borran de IndexedDB porque no viven ahí.
+
+El campo `escenario` (`natural`, `estudio`, `arena`, `noche`) es opcional y se normaliza con `normalizeEscenario` en la migración v10, en la importación y en la creación de fichas. Las fichas antiguas se muestran en `natural` y un valor desconocido nunca se inventa: solo cambia el fondo decorativo de `ProductStage` y de la vista previa del panel; no altera foto, precio ni stock.
+
+El botón «Mover» abre una hoja de movimiento rápido que reutiliza `MOTIVOS_BY_TYPE`, `validateMovementQuantity`, `applyMovement` y `addMovement`; por tanto aplica los mismos permisos, límites y validación que la página de movimientos, y registra la auditoría con el antes/después calculado. «Stock inicial» sigue deshabilitado al editar.
+
+El respaldo pasa a **v5**: incluye `fotos`, un mapa de data URLs de las imágenes subidas desde el panel (fichas y comprobantes de pago). Las URL importadas viajan en `imagenes` y no se duplican. `validateBackup` rechaza mapas mal formados, ids vacíos, formatos distintos de WebP/PNG/JPEG y blobs desproporcionados antes de sobrescribir nada; `restoreImages` convierte las data URLs a blobs y las guarda con sus ids originales antes de reemplazar los datos. Los respaldos v1–v4 sin `fotos` siguen siendo válidos. Las pruebas `admin-panel-v7` y `backup-v7` fijan estas decisiones leyendo el fuente y validando el esquema.
+
+Salvedad de verificación de esta fase: `verify:motion` vuelve a completar 10/10 flujos funcionales, pero `1280-estado-pedido` queda en 28,9 FPS frente al suelo de 32, la misma salvedad aceptada en la fase anterior y sin rebajar el presupuesto del script. `verify:visual` terminó limpio en la tercera ejecución; en las dos anteriores apareció de forma transitoria una tarea larga (233 ms y 219 ms) y un CLS de 0,0125 en `768-light-inicio`, ruta que no se modificó en esta fase, con CPU ×4 y alta carga externa. No se ajustaron umbrales.
 
 ## Accesibilidad
 
