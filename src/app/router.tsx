@@ -3,6 +3,7 @@ import { AdminLayout } from './layouts/admin-layout'
 import { StoreLayout } from './layouts/store-layout'
 import { CustomerRoute, PermissionRoute, ProtectedRoute } from './protected-route'
 import { LoginPage } from '../pages/auth/login-page'
+import { LandingPage } from '../pages/landing/landing-page'
 import { CartPage } from '../pages/store/cart-page'
 import { CatalogPage } from '../pages/store/catalog-page'
 import { CheckoutPage } from '../pages/store/checkout-page'
@@ -29,6 +30,7 @@ import { AddressesPage } from '../pages/customer/addresses-page'
 import { ProfilePage } from '../pages/customer/profile-page'
 
 export const router = createHashRouter([
+  { path: '/bienvenida', element: <LandingPage /> },
   {
     path: '/',
     element: <StoreLayout />,
