@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useId, useMemo, useState, type CSSProperties } from 'react'
 import { getImage, isRemoteImage } from '../../logic/services/images'
+import { localImageFor } from '../../logic/services/local-images'
 import { ARQUETIPOS_ARTE } from './arquetipos'
 import {
   boxFaces, ellipsePath, polygon, project, toneFill,
@@ -106,22 +107,24 @@ export const ProductArt = ({
   const sourceCode = product?.codigo ?? codigo ?? ''
   const sourceName = product?.nombre ?? nombre ?? 'Producto'
   const photoIds = product?.imagenes ?? imagenes ?? []
+  const firstPhoto = photoIds[0]
+  const local = localImageFor(product?.id)
   const archetype = ARQUETIPOS_ARTE[sourceArquetipo] ?? ARQUETIPOS_ARTE.paquete
 
   useEffect(() => {
     let alive = true
     setPhoto(null)
-    const first = photoIds[0]
+    const first = firstPhoto
     if (!first) return () => { alive = false }
     if (isRemoteImage(first)) {
-      setPhoto(first.trim())
+      setPhoto(local?.src ?? first.trim())
       return () => { alive = false }
     }
     getImage(first)
-      .then((data) => { if (alive) setPhoto(data) })
-      .catch(() => { if (alive) setPhoto(null) })
+      .then((data) => { if (alive) setPhoto(data ?? local?.src ?? null) })
+      .catch(() => { if (alive) setPhoto(local?.src ?? null) })
     return () => { alive = false }
-  }, [photoIds[0]])
+  }, [firstPhoto, local])
 
   const parts = useMemo(
     () => view === 'abierto' && archetype.open ? archetype.open : archetype.parts,

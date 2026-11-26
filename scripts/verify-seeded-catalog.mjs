@@ -8,6 +8,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { chromium } from 'playwright-core'
 
 const BASE = process.env.BASE_URL ?? 'http://127.0.0.1:4173'
+const route = (hash) => new URL(hash, BASE).href
 const CANDIDATES = [
   process.env.CHROME_PATH,
   '/usr/bin/google-chrome',
@@ -22,7 +23,7 @@ const browser = await chromium.launch({ executablePath, headless: true })
 try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
   const page = await context.newPage()
-  await page.goto(`${BASE}/#/tienda`, { waitUntil: 'domcontentloaded' })
+  await page.goto(route('#/tienda'), { waitUntil: 'domcontentloaded' })
   await page.locator('.eshop-grid__cell').first().waitFor({ timeout: 30_000 })
   await page.waitForFunction(() => document.querySelectorAll('.eshop-grid__cell').length >= 24)
 
@@ -35,7 +36,7 @@ try {
   const fotoCard = page.locator('.eshop-grid__cell')
     .filter({ has: page.locator('.eshop-photo__img') }).first()
   await fotoCard.waitFor({ timeout: 30_000 })
-  card.foto = await fotoCard.locator('.eshop-photo__img').getAttribute('src')
+  card.foto = (await fotoCard.locator('.eshop-photo__img').getAttribute('src'))?.slice(0, 48)
   const cardsIniciales = await page.locator('.eshop-grid__cell').count()
   const contador = await page.locator('.eshop-toolbar__count').innerText()
   await page.waitForFunction(() => [...document.querySelectorAll('.eshop-photo__img')]
@@ -48,17 +49,35 @@ try {
   const cardsTrasCargar = await page.locator('.eshop-grid__cell').count()
   await context.close()
 
-  // Segunda pasada: bloqueamos las imágenes externas y comprobamos el placeholder.
-  const fallido = await browser.newContext({ viewport: { width: 1440, height: 900 } })
-  await fallido.route(/^https?:\/\/(cdn\.dummyjson\.com|images\.openfoodfacts\.org)\//, (route) => route.abort())
-  const pageFallido = await fallido.newPage()
-  await pageFallido.goto(`${BASE}/#/tienda`, { waitUntil: 'domcontentloaded' })
-  await pageFallido.locator('.eshop-photo__art-wrap').first().waitFor({ timeout: 30_000 })
-  const placeholders = await pageFallido.locator('.eshop-photo__art-wrap').count()
-  await fallido.close()
+  // Segunda pasada: sin red, las miniaturas embebidas siguen cargando; una
+  // ficha sin miniatura local debe caer a la ilustración de respaldo.
+  const locales = JSON.parse(readFileSync(
+    new URL('../src/data/imagenes-locales.json', import.meta.url), 'utf8'))
+  const productos = JSON.parse(readFileSync(
+    new URL('../src/data/productos-reales.json', import.meta.url), 'utf8'))
+  const sinLocal = productos.find((product) => product.publicado !== false
+    && !product.archivado && product.imagenes?.length && !locales.images[product.id])
+  if (!sinLocal) throw new Error('No hay ficha sin miniatura local para probar el respaldo.')
+  const sinRed = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+  await sinRed.route(/^https?:\/\/(cdn\.dummyjson\.com|images\.openfoodfacts\.org)\//,
+    (route) => route.abort())
+  const pageSinRed = await sinRed.newPage()
+  await pageSinRed.goto(route('#/tienda'), { waitUntil: 'domcontentloaded' })
+  await pageSinRed.waitForFunction(() => [...document.querySelectorAll('.eshop-photo__img')]
+    .some((img) => img.complete && img.naturalWidth > 0 && img.src.startsWith('data:image/webp')),
+  null, { timeout: 30_000 })
+  const fotosLocales = await pageSinRed.evaluate(() =>
+    [...document.querySelectorAll('.eshop-photo__img')]
+      .filter((img) => img.complete && img.naturalWidth > 0 && img.src.startsWith('data:image/webp'))
+      .length)
+  await pageSinRed.goto(route(`#/tienda?q=${encodeURIComponent(sinLocal.nombre)}`),
+    { waitUntil: 'domcontentloaded' })
+  await pageSinRed.locator('.eshop-photo__art-wrap').first().waitFor({ timeout: 30_000 })
+  const placeholders = await pageSinRed.locator('.eshop-photo__art-wrap').count()
+  await sinRed.close()
 
   // Tercera pasada: un navegador con datos v7 y fichas de relleno debe quedar
-  // limpio tras la migración v8 (sin duplicados y sin marcas inventadas).
+  // limpio tras las migraciones (sin duplicados ni marcas inventadas).
   const productosReales = JSON.parse(readFileSync(
     new URL('../src/data/productos-reales.json', import.meta.url), 'utf8'))
   const esperados = productosReales.filter((p) => p.publicado !== false).length
@@ -82,7 +101,7 @@ try {
     } catch { /* about:blank no permite localStorage */ }
   })
   const pageMigracion = await migracion.newPage()
-  await pageMigracion.goto(`${BASE}/#/tienda`, { waitUntil: 'domcontentloaded' })
+  await pageMigracion.goto(route('#/tienda'), { waitUntil: 'domcontentloaded' })
   await pageMigracion.waitForFunction(
     () => document.querySelectorAll('.eshop-grid__cell').length >= 24, null, { timeout: 30_000 })
   const contadorMigrado = await pageMigracion.locator('.eshop-toolbar__count').innerText()
@@ -93,11 +112,12 @@ try {
   const checks = [
     ['24 tarjetas en la primera página', cardsIniciales === 24, cardsIniciales],
     ['más de 400 productos en total', Number(/\d+ de (\d+)/.exec(contador)?.[1] ?? 0) > 400, contador],
-    ['foto externa visible', Boolean(card.foto?.startsWith('https://')) && fotosCargadas > 0, { foto: card.foto, fotosCargadas }],
+    ['miniatura WebP embebida visible', Boolean(card.foto?.startsWith('data:image/webp')) && fotosCargadas > 0, { foto: card.foto, fotosCargadas }],
     ['nombre, categoría y precio visibles', Boolean(card.titulo && card.meta && card.precio), card],
     ['Cargar más añade otra página', cardsTrasCargar === 48, cardsTrasCargar],
-    ['URL fallida usa ilustración de respaldo', placeholders > 0, placeholders],
-    ['la migración v8 elimina el relleno', migrados === esperados, { migrados, esperados, contadorMigrado }],
+    ['las miniaturas cargan sin red', fotosLocales > 0, fotosLocales],
+    ['ficha sin miniatura usa ilustración', placeholders > 0, { producto: sinLocal.id, placeholders }],
+    ['la migración v9 elimina el relleno', migrados === esperados, { migrados, esperados, contadorMigrado }],
     ['sin marcas ni fichas inventadas', !/de relleno|Velmar|Nordisa|Laptop 14/.test(textoMigrado),
       textoMigrado.match(/de relleno|Velmar|Nordisa|Laptop 14/g) ?? []],
   ]
