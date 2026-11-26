@@ -13,7 +13,6 @@ import { CartSummary } from './CartSummary'
 import { BRAND, storageKey } from '../../config/brand'
 import { useCartStore } from '../../logic/store/cart'
 import { useCartDraftStore } from '../../logic/store/cartDraft'
-import { useCustomerStore } from '../../logic/store/customer'
 import { useCustomer } from '../../app/providers/customer-provider'
 import { useFavoritesStore } from '../../logic/store/favorites'
 import { useInventoryStore } from '../../logic/store/inventory'
@@ -490,7 +489,7 @@ export const StoreNav = () => {
     return () => document.removeEventListener('keydown', onKey)
   }, [])
 
-  const tab = location.pathname === '/' ? 'inicio'
+  const tab = location.pathname === '/inicio' ? 'inicio'
     : location.pathname.startsWith('/tienda') ? 'categorias'
       : location.pathname.startsWith('/carrito') ? 'carrito'
         : location.pathname.startsWith('/cuenta') ? 'cuenta' : ''
@@ -520,7 +519,7 @@ export const StoreNav = () => {
         >
           <Menu size={21} strokeWidth={1.7} aria-hidden="true" />
         </button>
-        <Link to="/" className="mobile-nav__brand" aria-label={`${name} — inicio`}>
+        <Link to="/inicio" className="mobile-nav__brand" aria-label={`${name} — inicio`}>
           <BrandMark size={26} />
           <span>{name}</span>
         </Link>
@@ -592,7 +591,7 @@ export const StoreNav = () => {
 
         <div className="eshop-nav__main">
           <div className="eshop-nav__main-inner">
-            <Link to="/" className="eshop-brand" aria-label={`${name} — inicio`}>
+            <Link to="/inicio" className="eshop-brand" aria-label={`${name} — inicio`}>
               <BrandMark size={30} />
               <span className="eshop-brand__name">{name}</span>
             </Link>
@@ -759,7 +758,7 @@ export const StoreNav = () => {
       </header>
 
       <nav className={`mobile-tabbar${hideTabBar ? ' mobile-tabbar--hidden' : ''}`} aria-label="Navegación principal">
-        <Link to="/" className={tab === 'inicio' ? 'is-active' : ''} aria-current={tab === 'inicio' ? 'page' : undefined}>
+        <Link to="/inicio" className={tab === 'inicio' ? 'is-active' : ''} aria-current={tab === 'inicio' ? 'page' : undefined}>
           {pill(tab === 'inicio')}
           <motion.span animate={{ scale: tab === 'inicio' && !reduce ? chromeMotion.tabIconScale : 1 }} transition={spring.settle}>
             <House size={21} strokeWidth={1.7} aria-hidden="true" />
@@ -932,7 +931,6 @@ export const CartContent = ({ onClose }: { onClose?: () => void }) => {
   const orders = useOrdersStore((state) => state.orders)
   const navigate = useNavigate()
   const { account } = useCustomer()
-  const setGuestCheckout = useCustomerStore((state) => state.setGuestCheckout)
 
   const active = lines.filter((line) => !line.guardado)
   const saved = lines.filter((line) => line.guardado)
@@ -1003,28 +1001,9 @@ export const CartContent = ({ onClose }: { onClose?: () => void }) => {
               Comprando como {account.nombre}. Tus datos y direcciones están listos.
             </h3>
           ) : (
-            <>
-              <h3 className="eshop-cart__invite-title">
-                ¿Tienes cuenta? Ingresa para usar tus datos y direcciones guardadas
-              </h3>
-              <div className="eshop-cart__invite-links">
-                <Link
-                  to="/cuenta/ingresar"
-                  state={{ from: '/carrito' }}
-                  onClick={onClose}
-                >Ingresar</Link>
-                <Link
-                  to="/cuenta/registro"
-                  state={{ from: '/carrito' }}
-                  onClick={onClose}
-                >Regístrate</Link>
-                <Link
-                  className="eshop-cart__guest"
-                  to="/pagar"
-                  onClick={() => { setGuestCheckout(true); onClose?.() }}
-                >Continuar como invitado</Link>
-              </div>
-            </>
+            <h3 className="eshop-cart__invite-title">
+              Ingresa a tu cuenta para usar tus datos y direcciones guardadas
+            </h3>
           )}
         </section>
         <div className="eshop-cart__summary">
@@ -1057,7 +1036,7 @@ export const StoreFooter = () => {
       <div className="eshop-footer__inner">
         <div className="eshop-footer__grid">
           <section className="eshop-footer__col eshop-footer__brand" aria-label="Nuestra tienda">
-            <Link className="eshop-footer__logo" to="/">
+            <Link className="eshop-footer__logo" to="/inicio">
               <BrandMark size={30} />
               <span className="eshop-footer__name">{storeName(settings)}</span>
             </Link>

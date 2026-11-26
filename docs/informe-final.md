@@ -70,7 +70,7 @@ Medidos con Chrome sobre `file://`, ambos temas y 13 rutas cada uno; `hasTouch: 
 | Objetivos táctiles / campos | 0 por debajo de 44 px / 0 por debajo de 16 px |
 | Hover | 52/52 reglas dentro de `@media (hover: hover)` |
 | Errores / peticiones externas | 0 / 0 |
-| E2E | personal, cliente, invitado (`IVO-2026-000007`) y filtros por URL: OK |
+| E2E | personal, cliente, visitante (portada, guardas y rutas públicas) y filtros por URL: OK |
 | Humo final `file://` | Título Ivoria, marca visible, 5 entradas en la tabbar, 0 desbordes, 0 errores, 0 externas |
 
 ## 6. Decisiones pendientes

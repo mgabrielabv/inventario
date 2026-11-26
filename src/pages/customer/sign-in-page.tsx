@@ -5,7 +5,6 @@ import { useCustomer } from '../../app/providers/customer-provider'
 import { Button } from '../../components/ui/Button'
 import { Field, Input } from '../../components/ui/Field'
 import { useToast } from '../../components/ui/Toast'
-import { useCustomerStore } from '../../logic/store/customer'
 import { AccountLoading } from './account-page'
 
 type Prefill = {
@@ -30,7 +29,6 @@ export const CustomerSignInPage = () => {
   const navigate = useNavigate()
   const { signIn, ready } = useCustomer()
   const { toast } = useToast()
-  const setGuestCheckout = useCustomerStore((state) => state.setGuestCheckout)
   const state = (location.state as SignInState | null) ?? {}
   const raw = state.prefill
   const prefill = raw
@@ -72,7 +70,6 @@ export const CustomerSignInPage = () => {
     const result = await signIn(identifier.trim(), password, remember)
     setSubmitting(false)
     if (result.account) {
-      setGuestCheckout(false)
       toast('¡Qué bueno verte de nuevo!')
       if (state.from) navigate(state.from, { replace: true })
       else if (location.key !== 'default') navigate(-1)

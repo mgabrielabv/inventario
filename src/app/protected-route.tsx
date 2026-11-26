@@ -25,8 +25,13 @@ export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
 
 /** Rutas privadas de cliente: nunca dependen de la sesión del personal. */
 export const CustomerRoute = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated } = useCustomer()
+  const { isAuthenticated, ready } = useCustomer()
   const location = useLocation()
+  // La cuenta se hidrata de forma asíncrona (Web Crypto): no redirigimos hasta
+  // saber si hay sesión guardada, para no sacar al cliente que ya está dentro.
+  if (!ready) {
+    return <main className="customer-route-loading" role="status">Preparando tu cuenta…</main>
+  }
   if (!isAuthenticated) {
     return <Navigate to="/cuenta/ingresar" replace state={{ from: location.pathname + location.search }} />
   }

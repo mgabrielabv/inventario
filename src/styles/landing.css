@@ -43,6 +43,7 @@
 .landing-brand {
   display: inline-flex;
   align-items: center;
+  min-height: var(--tap-min);
   gap: var(--s2);
   color: var(--text);
   font-size: var(--fs-ui);
@@ -69,6 +70,8 @@
 }
 .landing-nav__links button,
 .landing-nav__tracking {
+  display: inline-flex;
+  align-items: center;
   min-height: var(--tap-min);
   padding: 0 var(--s2);
   border: 0;
@@ -435,7 +438,13 @@
   color: var(--text-2);
   font-size: var(--fs-caption);
 }
-.landing-footer__inner a { color: var(--text-2); text-decoration: none; }
+.landing-footer__inner a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-min);
+  color: var(--text-2);
+  text-decoration: none;
+}
 .landing-footer__inner p { margin: 0; }
 
 /* --- Adaptación ----------------------------------------------------------- */

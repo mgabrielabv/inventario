@@ -1,6 +1,6 @@
 # Verificación móvil — Ivoria (ronda 2, Fase 2)
 
-Generado: 2026-11-24T04:55:16.016Z. Se recorrieron 10 viewports × 2 temas × 13 rutas sobre el HTML único con `file://` y Chrome sin cabecera, con `hasTouch: true` en teléfono/tablet y puntero fino en escritorio.
+Generado: 2026-11-26T05:33:36.324Z. Se recorrieron 10 viewports × 2 temas × 14 rutas sobre el HTML único con `file://` y Chrome sin cabecera, con `hasTouch: true` en teléfono/tablet y puntero fino en escritorio.
 
 ## Resumen por viewport
 
@@ -36,8 +36,8 @@ Ninguno.
   ],
   "vh100": 4,
   "safeAreaUses": 4,
-  "hoverRules": 54,
-  "hoverRulesGuarded": 54,
+  "hoverRules": 57,
+  "hoverRulesGuarded": 57,
   "fsUi": "16",
   "colorLiteralsOutsideTokens": "ver check:palette"
 }
@@ -46,7 +46,7 @@ Ninguno.
 ## Errores, peticiones externas y problemas
 
 - Errores de consola/página: **0**
-- Peticiones externas: **0**
+- Peticiones externas (sin contar las fotos importadas): **0**
 - Problemas que hicieron fallar la auditoría: **0**
 
 Las capturas de la matriz representativa están en `docs/capturas/movil/`. El detalle por ruta y tema está en `docs/verificacion-movil.json`.

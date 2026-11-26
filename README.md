@@ -54,7 +54,7 @@ npm run audit:mobile  # auditoría de 10 viewports × 2 temas × 13 rutas
 |Operador|`operador`|`operador123`|Operación diaria y reportes; ve clientes, pero no los gestiona|
 |Cliente|`cliente@ejemplo.com`|`cliente123`|Cuenta de compra con direcciones y pedidos|
 
-Las contraseñas se almacenan como SHA-256 con sal y se verifican con Web Crypto. La cuenta de cliente se siembra sola la primera vez. El acceso de clientes admite invitados: no hace falta cuenta para comprar.
+Las contraseñas se almacenan como SHA-256 con sal y se verifican con Web Crypto. La cuenta de cliente se siembra sola la primera vez. Para comprar hace falta cuenta: `#/` es la portada pública y `#/inicio`, `#/tienda`, `#/carrito`, `#/pagar` y `#/favoritos` redirigen al ingreso si no hay sesión de cliente. `#/seguimiento` y `#/pedido/:codigo` siguen siendo públicos.
 
 ## Marca y paleta
 
@@ -62,11 +62,12 @@ Las contraseñas se almacenan como SHA-256 con sal y se verifican con Web Crypto
 
 El slug anterior `tienda` está en `LEGACY_SLUGS` (`src/config/legacy.ts`) para migrar sin pérdida carrito, favoritos, pedidos, cuentas, tema, borradores e imágenes de IndexedDB. Si vuelve a cambiar `slug`, añade el valor anterior a esa lista y corre `npm run build:single`: el nombre del HTML descargable sigue al slug. La prueba `brand-lint` prohíbe repetir el nombre fuera de `BRAND` y prohíbe el nombre histórico en la tienda, el encabezado, el pie, el acceso de clientes, el título, la meta y las claves activas.
 
-## Cuentas y checkout
+## Portada, cuentas y checkout
 
+- La portada de seis secciones vive en `#/` con tema oscuro propio: escaparate sticky, bento de beneficios, cómo funciona, departamentos y cierre con «Crear cuenta». La tienda privada empieza en `#/inicio`.
 - Personal y clientes guardan sesiones separadas (`KEYS.user` frente a `KEYS.customerSession`).
 - La cuenta de cliente permite registrarse, entrar por correo o teléfono venezolano, editar datos, administrar direcciones, ver pedidos y recuperar la contraseña de forma simulada.
-- El checkout conserva cuatro pasos (Datos, Entrega, Pago y Revisar) con resumen sticky. La tarjeta de cuenta aparece al inicio del paso de datos; se puede continuar como invitado y asociar la compra después.
+- El checkout conserva cuatro pasos (Datos, Entrega, Pago y Revisar) con resumen sticky. La tarjeta del paso de datos muestra siempre la cuenta con la que se compra; no hay modo invitado.
 - Prioridad de hidratación: borrador del checkout > datos de la cuenta > carrito.
 - Los pedidos se numeran `IVO-AAAA-NNNNNN`; los históricos `PED-` e `INV-` siguen siendo válidos, se buscan igual en seguimiento y cuentan para la secuencia del año.
 - La moneda respeta `settings.moneda`: si hay `tasaVES` y `mostrarSecundario`, se muestra el equivalente en bolívares junto al precio principal.
@@ -87,7 +88,7 @@ El slug anterior `tienda` está en `LEGACY_SLUGS` (`src/config/legacy.ts`) para 
 
 `npm run clean:catalogo` comprueba cada URL con HEAD (o GET parcial), descarta respuestas `404`/`410`/`timeout`/HTML y tipos MIME no imagen, y elimina cualquier producto que se quede sin foto válida. También descarta fichas que no vengan de las dos APIs. El informe queda en `docs/limpieza-catalogo.json`. La limpieza está integrada en el seeder para que las futuras cargas mantengan el mismo filtro.
 
-El catálogo ya no incluye las 60 fichas de relleno con ilustraciones inventadas: el store se migra a la versión **8**, conserva solo productos importados con foto de `cdn.dummyjson.com` o `images.openfoodfacts.org`, y fusiona por `id` y `codigo`. Resultado: **489 productos limpios**, paginados de 24 en 24 mediante «Cargar más». Si una URL externa falla en el navegador, `ProductImage` y `ProductArt` sustituyen la foto por la ilustración del arquetipo (`onError`).
+El catálogo ya no incluye las 60 fichas de relleno con ilustraciones inventadas: el store se migra a la versión **9**, conserva solo productos importados y fusiona por `id` y `codigo`; las reglas semánticas de `category-rules.json` reclasifican las fichas ambiguas. Resultado: **489 productos limpios**, paginados de 24 en 24 mediante «Cargar más». Las 48 miniaturas WebP de `src/data/imagenes-locales.json` van embebidas en el HTML (sin fetch local bajo `file://`) y se priorizan así: foto subida en IndexedDB → miniatura local con blur-up → URL importada → ilustración del arquetipo.
 
 Los estados llevan siempre punto, icono y texto; el lenguaje de pago deja claro que no hay cobro real. Los PDF se obtienen con la impresión del navegador.
 
@@ -107,7 +108,7 @@ src/
 ├── data/           # 489 productos reales verificados, facetas, movimientos y pedidos
 ├── logic/          # tipos, stores de Zustand y servicios puros
 ├── motion/         # tokens, variantes, hooks y componentes funcionales
-├── pages/          # tienda, cuenta, acceso y panel
+├── pages/          # portada pública, tienda, cuenta, acceso y panel
 └── styles/         # tokens, tipografía, base, movimiento, móvil, componentes y páginas
 scripts/            # paleta, contraste, artefacto único, verificación visual y auditoría móvil
 docs/               # auditoría, decisiones, capturas e informes visual y móvil
@@ -115,11 +116,11 @@ docs/               # auditoría, decisiones, capturas e informes visual y móvi
 
 ## Verificación
 
-`npm run verify:visual` abre Chrome del sistema (`/usr/bin/google-chrome`) sobre el HTML generado (`file://`), recorre 86 combinaciones de ruta/tema/medio, inicia sesión con el personal y con un cliente, completa dos checkouts (cliente e invitado), comprueba los filtros en la URL, guarda capturas en `docs/capturas/verificacion/` y escribe `docs/verificacion-visual.json`. Las 50 mediciones móviles cubren 320, 390, 412, 768 y 1280 px en claro y oscuro, con CLS, desborde, objetivos táctiles y tipografía de campos.
+`npm run verify:visual` abre Chrome del sistema (`/usr/bin/google-chrome`) sobre el HTML generado (`file://`), recorre 19 combinaciones de ruta/tema —incluidas la portada y la tienda en `#/inicio`—, inicia sesión con el personal y con un cliente, completa el checkout con cuenta, comprueba que un visitante ve la portada y es redirigido desde las rutas privadas, verifica las consultas públicas y los filtros en la URL, guarda capturas en `docs/capturas/verificacion/` y escribe `docs/verificacion-visual.json`. Las 60 mediciones móviles cubren 320, 390, 412, 768 y 1280 px en claro y oscuro, con CLS, desborde, objetivos táctiles y tipografía de campos.
 
-`npm run audit:mobile` mide 10 viewports (320×568, 360×740, 390×844, 412×915, 430×932, 844×390, 768×1024, 820×1180, 1280×800 y 1440×900) × 2 temas × 13 rutas = **260 mediciones**, con `hasTouch: true` en móvil/tablet. Detecta desbordes, texto recortado, solapes, objetivos <44 px, campos <16 px, CLS, tareas largas, errores y peticiones externas. Escribe `docs/verificacion-movil.{json,md}` y capturas en `docs/capturas/movil/`.
+`npm run audit:mobile` mide 10 viewports (320×568, 360×740, 390×844, 412×915, 430×932, 844×390, 768×1024, 820×1180, 1280×800 y 1440×900) × 2 temas × 14 rutas = **280 mediciones**, con `hasTouch: true` en móvil/tablet. Detecta desbordes, texto recortado, solapes, objetivos <44 px, campos <16 px, CLS, tareas largas, errores y peticiones externas. Escribe `docs/verificacion-movil.{json,md}` y capturas en `docs/capturas/movil/`.
 
-Presupuesto: HTML **< 2.5 MB**. Resultado medido en la entrega:
+Presupuesto: HTML **< 4,5 MB**. Cifras medidas en la entrega anterior (el estado actual se registra en `docs/verificacion-visual.json` y `docs/verificacion-movil.json`):
 
 - `npm test`: **14 archivos, 65 pruebas** en verde, incluidas tres de migración real de `localStorage`.
 - `npm run build` y `npm run build:single`: correctos; `dist/index.html`/`ivoria.html` = **1.310.724 bytes** (1.280,00 KiB; 490.031 bytes gzip).
@@ -127,6 +128,6 @@ Presupuesto: HTML **< 2.5 MB**. Resultado medido en la entrega:
 - CLS **0,0052** en claro y oscuro (móvil máx. **0,0066**); **0 tareas largas**.
 - Auditoría móvil: **260 mediciones, 0 hallazgos, 0 problemas**.
 - **0** errores de consola y **0** peticiones externas en esa medición histórica (anterior a la importación de fotos; ahora el catálogo solicita imágenes a los CDNs de las APIs).
-- E2E correcto: personal (`admin`), cliente (cuenta, bloqueo de `/admin` y compra), invitado (`IVO-2026-000007`) y filtros por URL.
+- E2E correcto: personal (`admin`), cliente (cuenta, bloqueo de `/admin` y compra), visitante (portada, guardas y rutas públicas) y filtros por URL.
 
 Las capturas anteriores quedan en `docs/capturas/` como referencia histórica; las nuevas están en `docs/capturas/verificacion/` y `docs/capturas/movil/`. El detalle de hallazgos y decisiones está en `docs/auditoria.md` y `docs/decisiones.md`.

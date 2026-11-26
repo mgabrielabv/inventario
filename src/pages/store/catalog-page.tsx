@@ -306,7 +306,7 @@ export const CatalogPage = () => {
       <div className="eshop-catalog__wrap">
         <nav className="eshop-crumbs" aria-label="Ruta de navegación">
           <ol className="eshop-crumbs__list">
-            <li><Link to="/">Inicio</Link></li>
+            <li><Link to="/inicio">Inicio</Link></li>
             <li className="eshop-crumbs__sep" aria-hidden="true">›</li>
             <li aria-current="page">{filters.cat === 'Todas' ? 'Catálogo' : filters.cat}</li>
           </ol>

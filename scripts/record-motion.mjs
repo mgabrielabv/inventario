@@ -24,6 +24,7 @@ const STORE = {
   theme: key('theme'),
   user: key('user'),
   cart: key('cart-v2'),
+  customerSession: key('customer-session-v1'),
 }
 
 const session = ({ store, admin }) => {
@@ -31,6 +32,9 @@ const session = ({ store, admin }) => {
     localStorage.setItem(store.cart, JSON.stringify({
       state: { lines: [{ productoId: 'dj-1', cantidad: 1, agregadoEn: new Date().toISOString() }] },
       version: 2,
+    }))
+    localStorage.setItem(store.customerSession, JSON.stringify({
+      state: { accountId: 'c-demo-cliente', remember: true }, version: 1,
     }))
     if (admin) {
       localStorage.setItem(store.user, JSON.stringify({
@@ -91,8 +95,7 @@ const CLIPS = [
     name: 'confirmar-pedido', width: 390, height: 844, admin: false,
     run: async (page) => {
       await page.goto(`${base}#/pagar`, { waitUntil: 'load' })
-      const guest = page.getByRole('button', { name: 'Continuar como invitado' })
-      if (await guest.count()) await guest.click()
+      await page.locator('.checkout-account-card').waitFor()
       await page.locator('[data-field="nombre"]').waitFor({ state: 'visible' })
       await page.locator('[data-field="nombre"]').fill('Ana Pérez')
       await page.locator('[data-field="telefono"]').fill('0414-1234567')

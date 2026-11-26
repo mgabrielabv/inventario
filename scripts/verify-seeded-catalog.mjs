@@ -9,6 +9,18 @@ import { chromium } from 'playwright-core'
 
 const BASE = process.env.BASE_URL ?? 'http://127.0.0.1:4173'
 const route = (hash) => new URL(hash, BASE).href
+const brandSource = readFileSync(new URL('../src/config/brand.ts', import.meta.url), 'utf8')
+const slug = /slug:\s*'([^']+)'/.exec(brandSource)?.[1] ?? 'tienda'
+const customerKey = `${slug}-customer-session-v1`
+
+/** La tienda exige cuenta: sembramos la sesión de demostración antes de cargar. */
+const injectCustomer = (storageKey) => {
+  try {
+    localStorage.setItem(storageKey, JSON.stringify({
+      state: { accountId: 'c-demo-cliente', remember: true }, version: 1,
+    }))
+  } catch { /* about:blank o file:// sin almacenamiento */ }
+}
 const CANDIDATES = [
   process.env.CHROME_PATH,
   '/usr/bin/google-chrome',
@@ -22,6 +34,7 @@ if (!executablePath) throw new Error('No se encontró Chrome/Edge; define CHROME
 const browser = await chromium.launch({ executablePath, headless: true })
 try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+  await context.addInitScript(injectCustomer, customerKey)
   const page = await context.newPage()
   await page.goto(route('#/tienda'), { waitUntil: 'domcontentloaded' })
   await page.locator('.eshop-grid__cell').first().waitFor({ timeout: 30_000 })
@@ -59,6 +72,7 @@ try {
     && !product.archivado && product.imagenes?.length && !locales.images[product.id])
   if (!sinLocal) throw new Error('No hay ficha sin miniatura local para probar el respaldo.')
   const sinRed = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+  await sinRed.addInitScript(injectCustomer, customerKey)
   await sinRed.route(/^https?:\/\/(cdn\.dummyjson\.com|images\.openfoodfacts\.org)\//,
     (route) => route.abort())
   const pageSinRed = await sinRed.newPage()
@@ -82,6 +96,7 @@ try {
     new URL('../src/data/productos-reales.json', import.meta.url), 'utf8'))
   const esperados = productosReales.filter((p) => p.publicado !== false).length
   const migracion = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+  await migracion.addInitScript(injectCustomer, customerKey)
   await migracion.addInitScript(() => {
     try {
       localStorage.setItem('ivoria-storage', JSON.stringify({

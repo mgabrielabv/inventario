@@ -65,3 +65,41 @@ describe('rutas y permisos', () => {
     expect(can(null, 'ver:clientes')).toBe(false)
   })
 })
+
+describe('portada pública y tienda privada', () => {
+  const router = source('src/app/router.tsx')
+  const guards = source('src/app/protected-route.tsx')
+
+  it('sirve la portada en la raíz y mueve la tienda a /inicio', () => {
+    expect(router).toContain('{ index: true, element: <LandingPage /> }')
+    expect(router).toContain("path: 'inicio', element: <CustomerRoute><HomePage /></CustomerRoute>")
+    expect(router).not.toContain('bienvenida')
+  })
+
+  it('exige cuenta para comprar y deja públicas las consultas de pedido', () => {
+    for (const ruta of [
+      'inicio', 'tienda', 'tienda/:slug', 'carrito', 'pagar', 'favoritos',
+    ]) {
+      expect(router).toContain(`path: '${ruta}', element: <CustomerRoute>`)
+    }
+    expect(router).toContain("{ path: 'pedido/:codigo', element: <OrderPage /> }")
+    expect(router).toContain("{ path: 'seguimiento', element: <TrackingPage /> }")
+    expect(router).toContain("{ path: 'arte', element: <ArtSheetPage /> }")
+    expect(guards).toContain('if (!ready)')
+  })
+
+  it('no ofrece checkout de invitado', () => {
+    for (const archivo of [
+      'src/logic/store/customer.ts',
+      'src/pages/store/checkout-page.tsx',
+      'src/components/store/StoreChrome.tsx',
+      'src/pages/customer/sign-in-page.tsx',
+      'src/pages/customer/sign-up-page.tsx',
+      'src/pages/customer/profile-page.tsx',
+    ]) {
+      expect(source(archivo)).not.toMatch(/invitado|guestCheckout/i)
+    }
+    expect(source('src/pages/store/checkout-page.tsx'))
+      .toContain('Comprando como {account?.nombre}')
+  })
+})

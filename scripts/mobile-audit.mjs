@@ -27,6 +27,7 @@ const STORE = {
   theme: key('theme'), user: key('user'), cart: key('cart-v2'),
   customerSession: key('customer-session-v1'),
 }
+const IMAGE_HOSTS = ['cdn.dummyjson.com', 'images.openfoodfacts.org']
 
 const viewports = [
   { name: '320x568', width: 320, height: 568, touch: true, device: 'Teléfono pequeño' },
@@ -43,6 +44,7 @@ const viewports = [
 
 const routes = [
   ['home', '#/'],
+  ['inicio', '#/inicio'],
   ['catalogo', '#/tienda'],
   ['ficha', '#/tienda/essence-mascara-lash-princess-dj-1'],
   ['carrito', '#/carrito'],
@@ -254,7 +256,7 @@ const markdown = (report) => {
   lines.push('', '## Análisis estático de CSS', '', '```json', JSON.stringify(report.staticAudit, null, 2), '```', '')
   lines.push('## Errores, peticiones externas y problemas', '')
   lines.push(`- Errores de consola/página: **${report.errors.length}**`)
-  lines.push(`- Peticiones externas: **${report.externalRequests.length}**`)
+  lines.push(`- Peticiones externas (sin contar las fotos importadas): **${report.externalRequests.length}**`)
   lines.push(`- Problemas que hicieron fallar la auditoría: **${report.problems.length}**`)
   if (report.problems.length) lines.push(...report.problems.map((p) => `- ${p}`))
   lines.push('', 'Las capturas de la matriz representativa están en `docs/capturas/movil/`. El detalle por ruta y tema está en `docs/verificacion-movil.json`.', '')
@@ -285,7 +287,7 @@ const run = async () => {
         id: 'u-admin', username: 'admin', name: 'Administrador', role: 'Administrador',
       }))
       localStorage.setItem(store.customerSession, JSON.stringify({
-        state: { accountId: 'c-demo-cliente', remember: true, guestCheckout: false }, version: 1,
+        state: { accountId: 'c-demo-cliente', remember: true }, version: 1,
       }))
       localStorage.setItem(store.cart, JSON.stringify({
         state: { lines: [{ productoId: 'dj-1', cantidad: 1, agregadoEn: new Date().toISOString() }] }, version: 2,
@@ -313,7 +315,10 @@ const run = async () => {
       })
       page.on('request', (request) => {
         const url = request.url()
-        if (!/^(?:file|data|blob|about):/.test(url)) report.externalRequests.push(`${scope}: ${url}`)
+        // Fotos importadas en la semilla: contenido, no dependencia de la app.
+        if (/^(?:file|data|blob|about):/.test(url)) return
+        if (IMAGE_HOSTS.some((host) => url.startsWith(`https://${host}/`))) return
+        report.externalRequests.push(`${scope}: ${url}`)
       })
       for (const [name, hash] of routes) {
         await page.goto(`${base}${hash}`, { waitUntil: 'load' })

@@ -10,7 +10,7 @@ Fecha: 2026-11-23. Alcance: tienda departamental online (no farmacia). Se revisa
 | `npm run build` | Correcto; `dist/index.html` ≈ 1,12 MB. | Correcto; 1.310.724 bytes (490.031 gzip), paleta y contraste AA OK. |
 | `npm test` | Correcto: 6 archivos, 32 pruebas. | Correcto: 14 archivos, 65 pruebas. |
 | `npm run dev` | Correcto: Vite 8.3.5 en 5174. | Sin cambios. |
-| `npm run verify:visual` | Falla: selectores de pasos desactualizados. | Correcto: personal, cliente, invitado y filtros OK; 0 errores, 0 peticiones externas. |
+| `npm run verify:visual` | Falla: selectores de pasos desactualizados. | Correcto: personal, cliente, visitante y filtros OK; 0 errores, 0 peticiones externas. |
 
 El recorrido de `verify:visual` cubre 86 combinaciones de ruta/tema/medio, incluidos cinco anchos (320, 390, 412, 768 y 1280); `audit:mobile` amplía la cobertura a 10 viewports × 2 temas × 13 rutas (ver `docs/verificacion-movil.md`). No hay desbordes (máx. 0 px); el CLS máximo es 0,0052 en escritorio y 0,0066 en móvil, sin tareas largas. Las capturas de la línea base y las actuales quedan en `docs/capturas/`, `docs/capturas/verificacion/` y `docs/capturas/movil/`; el detalle legible está en `docs/verificacion-visual.json` y `docs/verificacion-movil.json`.
 

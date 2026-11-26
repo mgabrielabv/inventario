@@ -25,7 +25,6 @@ import { formatMoney, formatSecondary } from '../../logic/services/pricing'
 import { KEYS, readJson, writeJson } from '../../logic/services/storage'
 import { useCartDraftStore } from '../../logic/store/cartDraft'
 import { useCartStore } from '../../logic/store/cart'
-import { useCustomerStore } from '../../logic/store/customer'
 import { useCheckoutDraftStore } from '../../logic/store/checkoutDraft'
 import { useInventoryStore } from '../../logic/store/inventory'
 import { useOrdersStore } from '../../logic/store/orders'
@@ -59,8 +58,6 @@ export const CheckoutPage = () => {
   const [saveAddress, setSaveAddress] = useState(false)
   const formRef = useRef<HTMLDivElement | null>(null)
   const { account, addAddress } = useCustomer()
-  const guestCheckout = useCustomerStore((state) => state.guestCheckout)
-  const setGuestCheckout = useCustomerStore((state) => state.setGuestCheckout)
 
   const active = useMemo(() => lines.filter((line) => !line.guardado), [lines])
 
@@ -273,52 +270,12 @@ export const CheckoutPage = () => {
     if (index === 0) return (
       <div className="checkout-step-account">
         <section className="checkout-account-card" aria-label="Tu cuenta">
-          {account ? (
-            <>
-              <p className="checkout-account-card__title t-mid t-strong">
-                Comprando como {account.nombre} {account.apellido}
-              </p>
-              <p className="t-caption t-muted">
-                Usaremos tus datos y tu dirección guardada. Puedes cambiarlos abajo.
-              </p>
-            </>
-          ) : guestCheckout ? (
-            <>
-              <p className="checkout-account-card__title t-mid t-strong">
-                Continuando como invitado
-              </p>
-              <p className="t-caption t-muted">
-                Tu carrito y lo que escribas aquí se conservan si decides entrar después.
-              </p>
-              <button type="button" className="checkout-account-card__link t-caption"
-                onClick={() => setGuestCheckout(false)}>
-                Quiero usar mi cuenta
-              </button>
-            </>
-          ) : (
-            <>
-              <p className="checkout-account-card__title t-mid t-strong">
-                ¿Compras con tu cuenta o como invitado?
-              </p>
-              <p className="t-caption t-muted">
-                Con cuenta usamos tus datos y direcciones guardadas. Sin cuenta puedes seguir igual.
-              </p>
-              <div className="checkout-account-card__actions">
-                <Link className="btn btn--primary btn--sm"
-                  to="/cuenta/ingresar" state={{ from: '/pagar' }}>
-                  Ingresar
-                </Link>
-                <Link className="btn btn--secondary btn--sm"
-                  to="/cuenta/registro" state={{ from: '/pagar' }}>
-                  Crear cuenta
-                </Link>
-                <button type="button" className="checkout-account-card__link t-caption"
-                  onClick={() => setGuestCheckout(true)}>
-                  Continuar como invitado
-                </button>
-              </div>
-            </>
-          )}
+          <p className="checkout-account-card__title t-mid t-strong">
+            Comprando como {account?.nombre} {account?.apellido}
+          </p>
+          <p className="t-caption t-muted">
+            Usaremos tus datos y tu dirección guardada. Puedes cambiarlos abajo.
+          </p>
         </section>
         <div className="checkout-fields">
           <Field label="Nombre y apellido" error={errors.nombre} required>

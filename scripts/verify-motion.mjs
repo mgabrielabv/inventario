@@ -34,6 +34,7 @@ const STORE = {
   cart: key('cart-v2'),
   customerSession: key('customer-session-v1'),
 }
+const IMAGE_HOSTS = ['cdn.dummyjson.com', 'images.openfoodfacts.org']
 
 const VIEWPORTS = [
   { name: '390', width: 390, height: 844, touch: true },
@@ -146,6 +147,9 @@ const session = ({ store, theme = 'light', admin = false, cart = true }) => {
         version: 2,
       }))
     }
+    localStorage.setItem(store.customerSession, JSON.stringify({
+      state: { accountId: 'c-demo-cliente', remember: true }, version: 1,
+    }))
   } catch { /* file:// sin almacenamiento: la app usa memoria */ }
 }
 
@@ -264,11 +268,10 @@ const filterSheet = async (page) => {
   return { ...detail, after: await sample(page) }
 }
 
-/** Checkout de invitado hasta la confirmación, con medición en el cierre. */
+/** Checkout con cuenta hasta la confirmación, con medición en el cierre. */
 const confirmOrder = async (page) => {
   await page.goto(`${base}#/pagar`, { waitUntil: 'load' })
-  const guest = page.getByRole('button', { name: 'Continuar como invitado' })
-  if (await guest.count()) await guest.click()
+  await page.locator('.checkout-account-card').waitFor()
   await page.locator('[data-field="nombre"]').fill('Ana Pérez')
   await page.locator('[data-field="telefono"]').fill('0414-1234567')
   await page.locator('[data-field="email"]').fill('ana@example.com')
@@ -409,7 +412,10 @@ const run = async () => {
     })
     page.on('request', (request) => {
       const url = request.url()
-      if (!/^(?:file|data|blob|about):/.test(url)) report.externalRequests.push(`${scope}: ${url}`)
+      // Fotos importadas en la semilla: contenido, no dependencia de la app.
+      if (/^(?:file|data|blob|about):/.test(url)) return
+      if (IMAGE_HOSTS.some((host) => url.startsWith(`https://${host}/`))) return
+      report.externalRequests.push(`${scope}: ${url}`)
     })
   }
 

@@ -70,7 +70,7 @@ export interface CouponStatus {
   descuento: number
 }
 
-/** Un cupón invitado no bloquea la compra: solo informa por qué no aplica. */
+/** Un cupón inválido no bloquea la compra: solo informa por qué no aplica. */
 export const couponStatus = (
   code: string, settings: Settings, subtotal: number,
 ): CouponStatus => {

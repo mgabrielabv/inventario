@@ -9,7 +9,6 @@ import { Switch } from '../../components/ui/Switch'
 import { useToast } from '../../components/ui/Toast'
 import { errorMessage } from '../../logic/errors'
 import { normalizePhoneVE } from '../../logic/services/customer-auth'
-import { useCustomerStore } from '../../logic/store/customer'
 import { AccountDemoNote, AccountLoading, AccountSignInPrompt } from './account-page'
 
 type ProfileForm = {
@@ -22,7 +21,6 @@ export const ProfilePage = () => {
   const navigate = useNavigate()
   const { account, isAuthenticated, ready, update, changePassword, signOut, deleteAccount } = useCustomer()
   const { toast } = useToast()
-  const setGuestCheckout = useCustomerStore((state) => state.setGuestCheckout)
   const [form, setForm] = useState<ProfileForm | null>(null)
   const [errors, setErrors] = useState<Errors>({})
   const [currentPassword, setCurrentPassword] = useState('')
@@ -110,7 +108,6 @@ export const ProfilePage = () => {
 
   const onSignOut = () => {
     signOut()
-    setGuestCheckout(true)
     toast('Cerraste sesión.')
     navigate('/')
   }
@@ -288,7 +285,6 @@ export const ProfilePage = () => {
           <Button variant="secondary" onClick={() => setDeleteOpen(false)}>Cancelar</Button>
           <Button variant="danger" disabled={confirmText !== 'ELIMINAR'} onClick={() => {
             deleteAccount()
-            setGuestCheckout(true)
             setDeleteOpen(false)
             toast('Tu cuenta se eliminó de este navegador.')
             navigate('/')

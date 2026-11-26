@@ -1,334 +1,374 @@
 {
-  "generatedAt": "2026-11-24T04:53:38.327Z",
+  "generatedAt": "2026-11-26T05:21:25.903Z",
   "html": {
-    "bytes": 1326844,
-    "gzipBytes": 495568,
-    "limitBytes": 2621440
+    "bytes": 2621710,
+    "gzipBytes": 964676,
+    "limitBytes": 4718592
   },
   "routes": {
     "home-light": {
       "hueOk": 1,
-      "sampled": 176463,
+      "sampled": 79339,
+      "overflow": 0
+    },
+    "inicio-light": {
+      "hueOk": 1,
+      "sampled": 180415,
       "overflow": 0
     },
     "catalogo-light": {
       "hueOk": 1,
-      "sampled": 86304,
+      "sampled": 111461,
       "overflow": 0
     },
     "catalogo-filtros-light": {
       "hueOk": 1,
-      "sampled": 77581,
+      "sampled": 99103,
       "overflow": 0
     },
     "ficha-light": {
       "hueOk": 1,
-      "sampled": 135804,
+      "sampled": 132491,
       "overflow": 0
     },
     "carrito-light": {
       "hueOk": 1,
-      "sampled": 77231,
+      "sampled": 76912,
       "overflow": 0
     },
     "checkout-light": {
       "hueOk": 1,
-      "sampled": 58442,
+      "sampled": 51033,
       "overflow": 0
     },
     "seguimiento-light": {
       "hueOk": 1,
-      "sampled": 74951,
+      "sampled": 74906,
       "overflow": 0
     },
     "favoritos-light": {
       "hueOk": 1,
-      "sampled": 51513,
+      "sampled": 51469,
       "overflow": 0
     },
     "cuenta-ingresar-light": {
       "hueOk": 1,
-      "sampled": 134218,
+      "sampled": 134178,
       "overflow": 0
     },
     "cuenta-registro-light": {
       "hueOk": 1,
-      "sampled": 128716,
+      "sampled": 128671,
       "overflow": 0
     },
     "login-light": {
       "hueOk": 1,
-      "sampled": 188128,
+      "sampled": 188027,
       "overflow": 0
     },
     "admin-inicio-light": {
       "hueOk": 1,
-      "sampled": 11225,
+      "sampled": 11258,
       "overflow": 0
     },
     "admin-clientes-light": {
       "hueOk": 1,
-      "sampled": 2283,
+      "sampled": 2299,
       "overflow": 0
     },
     "admin-inventario-light": {
       "hueOk": 1,
-      "sampled": 22906,
+      "sampled": 21331,
       "overflow": 0
     },
     "admin-movimientos-light": {
       "hueOk": 1,
-      "sampled": 9432,
+      "sampled": 9598,
       "overflow": 0
     },
     "admin-pedidos-light": {
       "hueOk": 1,
-      "sampled": 16742,
+      "sampled": 16741,
       "overflow": 0
     },
     "admin-reposicion-light": {
       "hueOk": 1,
-      "sampled": 3332,
+      "sampled": 3599,
       "overflow": 0
     },
     "admin-reportes-light": {
       "hueOk": 1,
-      "sampled": 18559,
+      "sampled": 18530,
       "overflow": 0
     },
     "home-dark": {
       "hueOk": 1,
-      "sampled": 161826,
+      "sampled": 79323,
+      "overflow": 0
+    },
+    "inicio-dark": {
+      "hueOk": 1,
+      "sampled": 165914,
       "overflow": 0
     },
     "catalogo-dark": {
       "hueOk": 1,
-      "sampled": 69123,
+      "sampled": 96155,
       "overflow": 0
     },
     "catalogo-filtros-dark": {
       "hueOk": 1,
-      "sampled": 60193,
+      "sampled": 83875,
       "overflow": 0
     },
     "ficha-dark": {
       "hueOk": 1,
-      "sampled": 118882,
+      "sampled": 109493,
       "overflow": 0
     },
     "carrito-dark": {
       "hueOk": 1,
-      "sampled": 59811,
+      "sampled": 60994,
       "overflow": 0
     },
     "checkout-dark": {
       "hueOk": 1,
-      "sampled": 41941,
+      "sampled": 34622,
       "overflow": 0
     },
     "seguimiento-dark": {
       "hueOk": 1,
-      "sampled": 22665,
+      "sampled": 22598,
       "overflow": 0
     },
     "favoritos-dark": {
       "hueOk": 1,
-      "sampled": 22778,
+      "sampled": 22724,
       "overflow": 0
     },
     "cuenta-ingresar-dark": {
       "hueOk": 1,
-      "sampled": 119153,
+      "sampled": 119090,
       "overflow": 0
     },
     "cuenta-registro-dark": {
       "hueOk": 1,
-      "sampled": 113611,
+      "sampled": 113561,
       "overflow": 0
     },
     "login-dark": {
       "hueOk": 1,
-      "sampled": 10979,
+      "sampled": 10831,
       "overflow": 0
     },
     "admin-inicio-dark": {
       "hueOk": 1,
-      "sampled": 15750,
+      "sampled": 15843,
       "overflow": 0
     },
     "admin-clientes-dark": {
       "hueOk": 1,
-      "sampled": 5438,
+      "sampled": 5462,
       "overflow": 0
     },
     "admin-inventario-dark": {
       "hueOk": 1,
-      "sampled": 29887,
+      "sampled": 27492,
       "overflow": 0
     },
     "admin-movimientos-dark": {
       "hueOk": 1,
-      "sampled": 13906,
+      "sampled": 15904,
       "overflow": 0
     },
     "admin-pedidos-dark": {
       "hueOk": 1,
-      "sampled": 22539,
+      "sampled": 22436,
       "overflow": 0
     },
     "admin-reposicion-dark": {
       "hueOk": 1,
-      "sampled": 6947,
+      "sampled": 7289,
       "overflow": 0
     },
     "admin-reportes-dark": {
       "hueOk": 1,
-      "sampled": 24869,
+      "sampled": 22811,
       "overflow": 0
     },
     "home-320-light": {
       "hueOk": 1,
-      "sampled": 34327,
+      "sampled": 18196,
+      "overflow": 0
+    },
+    "inicio-320-light": {
+      "hueOk": 1,
+      "sampled": 26781,
       "overflow": 0
     },
     "catalogo-320-light": {
       "hueOk": 1,
-      "sampled": 12855,
+      "sampled": 12954,
       "overflow": 0
     },
     "ficha-320-light": {
       "hueOk": 1,
-      "sampled": 26386,
+      "sampled": 25254,
       "overflow": 0
     },
     "carrito-320-light": {
       "hueOk": 1,
-      "sampled": 7785,
+      "sampled": 7706,
       "overflow": 0
     },
     "admin-inventario-320-light": {
       "hueOk": 1,
-      "sampled": 4065,
+      "sampled": 4058,
       "overflow": 0
     },
     "home-320-dark": {
       "hueOk": 1,
-      "sampled": 31692,
+      "sampled": 18227,
+      "overflow": 0
+    },
+    "inicio-320-dark": {
+      "hueOk": 1,
+      "sampled": 24145,
       "overflow": 0
     },
     "catalogo-320-dark": {
       "hueOk": 1,
-      "sampled": 9100,
+      "sampled": 9762,
       "overflow": 0
     },
     "ficha-320-dark": {
       "hueOk": 1,
-      "sampled": 22234,
+      "sampled": 20271,
       "overflow": 0
     },
     "carrito-320-dark": {
       "hueOk": 1,
-      "sampled": 4500,
+      "sampled": 4330,
       "overflow": 0
     },
     "admin-inventario-320-dark": {
       "hueOk": 1,
-      "sampled": 4005,
+      "sampled": 4001,
       "overflow": 0
     },
     "home-mobile-light": {
       "hueOk": 1,
-      "sampled": 43554,
+      "sampled": 33344,
+      "overflow": 0
+    },
+    "inicio-mobile-light": {
+      "hueOk": 1,
+      "sampled": 35995,
       "overflow": 0
     },
     "catalogo-mobile-light": {
       "hueOk": 1,
-      "sampled": 26145,
+      "sampled": 34444,
       "overflow": 0
     },
     "ficha-mobile-light": {
       "hueOk": 1,
-      "sampled": 35437,
+      "sampled": 36219,
       "overflow": 0
     },
     "carrito-mobile-light": {
       "hueOk": 1,
-      "sampled": 28238,
+      "sampled": 28244,
       "overflow": 0
     },
     "admin-inventario-mobile-light": {
       "hueOk": 1,
-      "sampled": 5132,
+      "sampled": 5123,
       "overflow": 0
     },
     "home-mobile-dark": {
       "hueOk": 1,
-      "sampled": 40422,
+      "sampled": 33369,
+      "overflow": 0
+    },
+    "inicio-mobile-dark": {
+      "hueOk": 1,
+      "sampled": 32267,
       "overflow": 0
     },
     "catalogo-mobile-dark": {
       "hueOk": 1,
-      "sampled": 21622,
+      "sampled": 30086,
       "overflow": 0
     },
     "ficha-mobile-dark": {
       "hueOk": 1,
-      "sampled": 30633,
+      "sampled": 28792,
       "overflow": 0
     },
     "carrito-mobile-dark": {
       "hueOk": 1,
-      "sampled": 22883,
+      "sampled": 23329,
       "overflow": 0
     },
     "admin-inventario-mobile-dark": {
       "hueOk": 1,
-      "sampled": 5364,
+      "sampled": 5358,
       "overflow": 0
     },
     "home-412-light": {
       "hueOk": 1,
-      "sampled": 46816,
+      "sampled": 33502,
+      "overflow": 0
+    },
+    "inicio-412-light": {
+      "hueOk": 1,
+      "sampled": 39223,
       "overflow": 0
     },
     "catalogo-412-light": {
       "hueOk": 1,
-      "sampled": 33759,
+      "sampled": 39058,
       "overflow": 0
     },
     "ficha-412-light": {
       "hueOk": 1,
-      "sampled": 39203,
+      "sampled": 40104,
       "overflow": 0
     },
     "carrito-412-light": {
       "hueOk": 1,
-      "sampled": 38380,
+      "sampled": 38363,
       "overflow": 0
     },
     "admin-inventario-412-light": {
       "hueOk": 1,
-      "sampled": 5222,
+      "sampled": 5219,
       "overflow": 0
     },
     "home-412-dark": {
       "hueOk": 1,
-      "sampled": 43269,
+      "sampled": 33521,
+      "overflow": 0
+    },
+    "inicio-412-dark": {
+      "hueOk": 1,
+      "sampled": 35548,
       "overflow": 0
     },
     "catalogo-412-dark": {
       "hueOk": 1,
-      "sampled": 28678,
+      "sampled": 34922,
       "overflow": 0
     },
     "ficha-412-dark": {
       "hueOk": 1,
-      "sampled": 33876,
+      "sampled": 32472,
       "overflow": 0
     },
     "carrito-412-dark": {
       "hueOk": 1,
-      "sampled": 32670,
+      "sampled": 33169,
       "overflow": 0
     },
     "admin-inventario-412-dark": {
@@ -338,102 +378,122 @@
     },
     "home-768-light": {
       "hueOk": 1,
-      "sampled": 96670,
+      "sampled": 32483,
+      "overflow": 0
+    },
+    "inicio-768-light": {
+      "hueOk": 1,
+      "sampled": 79283,
       "overflow": 0
     },
     "catalogo-768-light": {
       "hueOk": 1,
-      "sampled": 65191,
+      "sampled": 70652,
       "overflow": 0
     },
     "ficha-768-light": {
       "hueOk": 1,
-      "sampled": 67102,
+      "sampled": 64639,
       "overflow": 0
     },
     "carrito-768-light": {
       "hueOk": 1,
-      "sampled": 59171,
+      "sampled": 62442,
       "overflow": 0
     },
     "admin-inventario-768-light": {
       "hueOk": 1,
-      "sampled": 10712,
+      "sampled": 10767,
       "overflow": 0
     },
     "home-768-dark": {
       "hueOk": 1,
-      "sampled": 89533,
+      "sampled": 32606,
+      "overflow": 0
+    },
+    "inicio-768-dark": {
+      "hueOk": 1,
+      "sampled": 72054,
       "overflow": 0
     },
     "catalogo-768-dark": {
       "hueOk": 1,
-      "sampled": 55744,
+      "sampled": 62587,
       "overflow": 0
     },
     "ficha-768-dark": {
       "hueOk": 1,
-      "sampled": 56147,
+      "sampled": 51682,
       "overflow": 0
     },
     "carrito-768-dark": {
       "hueOk": 1,
-      "sampled": 49130,
+      "sampled": 53657,
       "overflow": 0
     },
     "admin-inventario-768-dark": {
       "hueOk": 1,
-      "sampled": 12330,
+      "sampled": 12507,
       "overflow": 0
     },
     "home-1280-light": {
       "hueOk": 1,
-      "sampled": 134747,
+      "sampled": 59849,
+      "overflow": 0
+    },
+    "inicio-1280-light": {
+      "hueOk": 1,
+      "sampled": 90597,
       "overflow": 0
     },
     "catalogo-1280-light": {
       "hueOk": 1,
-      "sampled": 96467,
+      "sampled": 127584,
       "overflow": 0
     },
     "ficha-1280-light": {
       "hueOk": 1,
-      "sampled": 114787,
+      "sampled": 110791,
       "overflow": 0
     },
     "carrito-1280-light": {
       "hueOk": 1,
-      "sampled": 74347,
+      "sampled": 73344,
       "overflow": 0
     },
     "admin-inventario-1280-light": {
       "hueOk": 1,
-      "sampled": 17427,
+      "sampled": 17534,
       "overflow": 0
     },
     "home-1280-dark": {
       "hueOk": 1,
-      "sampled": 121760,
+      "sampled": 59843,
+      "overflow": 0
+    },
+    "inicio-1280-dark": {
+      "hueOk": 1,
+      "sampled": 77575,
       "overflow": 0
     },
     "catalogo-1280-dark": {
       "hueOk": 1,
-      "sampled": 81574,
+      "sampled": 114514,
       "overflow": 0
     },
     "ficha-1280-dark": {
       "hueOk": 1,
-      "sampled": 96231,
+      "sampled": 89483,
       "overflow": 0
     },
     "carrito-1280-dark": {
       "hueOk": 1,
-      "sampled": 60051,
+      "sampled": 60526,
       "overflow": 0
     },
     "admin-inventario-1280-dark": {
       "hueOk": 1,
-      "sampled": 23385,
+      "sampled": 23678,
       "overflow": 0
     }
   },
@@ -446,13 +506,21 @@
       "longTasks": 0,
       "maxTask": 0
     },
-    "320-light-catalogo": {
+    "320-light-inicio": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "320-light-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 1,
+      "maxTask": 54
     },
     "320-light-ficha": {
       "smallTargets": [],
@@ -486,13 +554,21 @@
       "longTasks": 0,
       "maxTask": 0
     },
-    "320-dark-catalogo": {
+    "320-dark-inicio": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "320-dark-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 3,
+      "maxTask": 63
     },
     "320-dark-ficha": {
       "smallTargets": [],
@@ -526,13 +602,21 @@
       "longTasks": 0,
       "maxTask": 0
     },
+    "390-light-inicio": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 1,
+      "maxTask": 58
+    },
     "390-light-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 64
     },
     "390-light-ficha": {
       "smallTargets": [],
@@ -566,13 +650,21 @@
       "longTasks": 0,
       "maxTask": 0
     },
+    "390-dark-inicio": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 3,
+      "maxTask": 80
+    },
     "390-dark-catalogo": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 59
     },
     "390-dark-ficha": {
       "smallTargets": [],
@@ -606,13 +698,21 @@
       "longTasks": 0,
       "maxTask": 0
     },
-    "412-light-catalogo": {
+    "412-light-inicio": {
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "412-light-catalogo": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 1,
+      "maxTask": 53
     },
     "412-light-ficha": {
       "smallTargets": [],
@@ -645,6 +745,14 @@
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "412-dark-inicio": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 1,
+      "maxTask": 50
     },
     "412-dark-catalogo": {
       "smallTargets": [],
@@ -686,6 +794,14 @@
       "longTasks": 0,
       "maxTask": 0
     },
+    "768-light-inicio": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 3,
+      "maxTask": 68
+    },
     "768-light-catalogo": {
       "smallTargets": [],
       "smallFields": [],
@@ -726,6 +842,14 @@
       "longTasks": 0,
       "maxTask": 0
     },
+    "768-dark-inicio": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 3,
+      "maxTask": 89
+    },
     "768-dark-catalogo": {
       "smallTargets": [],
       "smallFields": [],
@@ -762,9 +886,17 @@
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
-      "cls": 0.00039444780349731445,
-      "longTasks": 1,
-      "maxTask": 56
+      "cls": 0.00003448333740234375,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280-light-inicio": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 2,
+      "maxTask": 75
     },
     "1280-light-catalogo": {
       "smallTargets": [],
@@ -787,8 +919,8 @@
       "smallFields": [],
       "overflow": 0,
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 51
     },
     "1280-light-admin-inventario": {
       "smallTargets": [],
@@ -802,9 +934,17 @@
       "smallTargets": [],
       "smallFields": [],
       "overflow": 0,
-      "cls": 0.00039444780349731445,
+      "cls": 0.00003448333740234375,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "1280-dark-inicio": {
+      "smallTargets": [],
+      "smallFields": [],
+      "overflow": 0,
+      "cls": 0,
+      "longTasks": 3,
+      "maxTask": 68
     },
     "1280-dark-catalogo": {
       "smallTargets": [],
@@ -867,18 +1007,221 @@
       "adminRedirect": "#/ingresar",
       "checkout": "IVO-2026-000007"
     },
-    "checkout": {
+    "visitante": {
       "ok": true,
-      "hash": "#/pedido/IVO-2026-000007",
-      "code": "IVO-2026-000007"
+      "landingHash": "#/",
+      "sections": 6,
+      "redirects": {
+        "#/tienda": "#/cuenta/ingresar",
+        "#/carrito": "#/cuenta/ingresar",
+        "#/pagar": "#/cuenta/ingresar",
+        "#/favoritos": "#/cuenta/ingresar"
+      },
+      "trackingHash": "#/seguimiento",
+      "orderHash": "#/pedido/IVO-2026-000001"
     },
     "filtros": {
       "ok": true,
-      "cards": 10,
+      "cards": 24,
       "hash": "#/tienda?categoria=Accesorios&orden=precio-asc&densidad=compacta"
     }
   },
   "externalRequests": [],
+  "importedImages": [
+    "light: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/sports-accessories/metal-baseball-bat/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/mens-shirts/man-plaid-shirt/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s8/1.webp",
+    "light: https://images.openfoodfacts.org/images/products/322/885/700/0166/front_en.1884.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/302/933/002/2428/front_fr.311.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/000/001/625/6866/front_fr.105.400.jpg",
+    "light: https://cdn.dummyjson.com/product-images/vehicle/300-touring/1.webp",
+    "light: https://images.openfoodfacts.org/images/products/611/125/175/3912/front_en.10.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/328/423/001/1884/front_fr.161.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/611/103/500/1635/front_en.38.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/611/103/500/1673/front_fr.3.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/611/112/800/0071/front_fr.62.400.jpg",
+    "light: https://cdn.dummyjson.com/product-images/tops/girl-summer-dress/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/womens-jewellery/tropical-earring/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/womens-shoes/black-&-brown-slipper/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/mens-shirts/man-short-sleeve-shirt/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/sunglasses/sunglasses/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/sunglasses/classic-sun-glasses/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/tops/short-frock/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/womens-jewellery/green-oval-earring/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/mens-shirts/men-check-shirt/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/tops/blue-frock/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/womens-jewellery/green-crystal-earring/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/womens-shoes/pampi-shoes/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/mens-shirts/blue-&-black-check-shirt/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/sunglasses/green-and-black-glasses/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/tops/gray-dress/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/womens-shoes/red-shoes/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/beauty/red-nail-polish/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "light: https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/1.webp",
+    "light: https://images.openfoodfacts.org/images/products/322/885/700/0166/front_en.1884.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/302/933/002/2428/front_fr.311.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/000/001/625/6866/front_fr.105.400.jpg",
+    "light: https://cdn.dummyjson.com/product-images/vehicle/300-touring/1.webp",
+    "light: https://images.openfoodfacts.org/images/products/611/125/175/3912/front_en.10.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/328/423/001/1884/front_fr.161.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/611/103/500/1635/front_en.38.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/611/103/500/1673/front_fr.3.400.jpg",
+    "light: https://images.openfoodfacts.org/images/products/611/112/800/0071/front_fr.62.400.jpg",
+    "dark: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/sports-accessories/metal-baseball-bat/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/mens-shirts/man-plaid-shirt/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s8/1.webp",
+    "dark: https://images.openfoodfacts.org/images/products/322/885/700/0166/front_en.1884.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/302/933/002/2428/front_fr.311.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/000/001/625/6866/front_fr.105.400.jpg",
+    "dark: https://cdn.dummyjson.com/product-images/vehicle/300-touring/1.webp",
+    "dark: https://images.openfoodfacts.org/images/products/611/125/175/3912/front_en.10.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/328/423/001/1884/front_fr.161.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/611/103/500/1635/front_en.38.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/611/103/500/1673/front_fr.3.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/611/112/800/0071/front_fr.62.400.jpg",
+    "dark: https://cdn.dummyjson.com/product-images/tops/girl-summer-dress/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/womens-jewellery/tropical-earring/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/womens-shoes/black-&-brown-slipper/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/mens-shirts/man-short-sleeve-shirt/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/sunglasses/sunglasses/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/sunglasses/classic-sun-glasses/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/tops/short-frock/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/womens-jewellery/green-oval-earring/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/mens-shirts/men-check-shirt/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/tops/blue-frock/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/womens-jewellery/green-crystal-earring/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/womens-shoes/pampi-shoes/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/mens-shirts/blue-&-black-check-shirt/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/sunglasses/green-and-black-glasses/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/tops/gray-dress/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/womens-shoes/red-shoes/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/beauty/red-nail-polish/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "dark: https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/1.webp",
+    "dark: https://images.openfoodfacts.org/images/products/322/885/700/0166/front_en.1884.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/302/933/002/2428/front_fr.311.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/000/001/625/6866/front_fr.105.400.jpg",
+    "dark: https://cdn.dummyjson.com/product-images/vehicle/300-touring/1.webp",
+    "dark: https://images.openfoodfacts.org/images/products/611/125/175/3912/front_en.10.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/328/423/001/1884/front_fr.161.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/611/103/500/1635/front_en.38.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/611/103/500/1673/front_fr.3.400.jpg",
+    "dark: https://images.openfoodfacts.org/images/products/611/112/800/0071/front_fr.62.400.jpg",
+    "320-light: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "320-light: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "320-light: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "320-dark: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "320-dark: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "320-dark: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "390-light: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "390-light: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/1.webp",
+    "390-light: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "390-light: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "390-dark: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "390-dark: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/1.webp",
+    "390-dark: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "390-dark: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "412-light: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "412-light: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/1.webp",
+    "412-light: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "412-light: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "412-light: https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/1.webp",
+    "412-dark: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "412-dark: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/1.webp",
+    "412-dark: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "412-dark: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "412-dark: https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/1.webp",
+    "768-light: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "768-light: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/1.webp",
+    "768-light: https://cdn.dummyjson.com/product-images/sports-accessories/metal-baseball-bat/1.webp",
+    "768-light: https://cdn.dummyjson.com/product-images/mens-shirts/man-plaid-shirt/1.webp",
+    "768-light: https://images.openfoodfacts.org/images/products/322/885/700/0166/front_en.1884.400.jpg",
+    "768-light: https://images.openfoodfacts.org/images/products/302/933/002/2428/front_fr.311.400.jpg",
+    "768-light: https://images.openfoodfacts.org/images/products/000/001/625/6866/front_fr.105.400.jpg",
+    "768-light: https://cdn.dummyjson.com/product-images/vehicle/300-touring/1.webp",
+    "768-light: https://images.openfoodfacts.org/images/products/611/125/175/3912/front_en.10.400.jpg",
+    "768-light: https://images.openfoodfacts.org/images/products/328/423/001/1884/front_fr.161.400.jpg",
+    "768-light: https://images.openfoodfacts.org/images/products/611/103/500/1635/front_en.38.400.jpg",
+    "768-light: https://images.openfoodfacts.org/images/products/611/103/500/1673/front_fr.3.400.jpg",
+    "768-light: https://images.openfoodfacts.org/images/products/611/112/800/0071/front_fr.62.400.jpg",
+    "768-light: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "768-light: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "768-light: https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/1.webp",
+    "768-dark: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "768-dark: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/1.webp",
+    "768-dark: https://cdn.dummyjson.com/product-images/sports-accessories/metal-baseball-bat/1.webp",
+    "768-dark: https://cdn.dummyjson.com/product-images/mens-shirts/man-plaid-shirt/1.webp",
+    "768-dark: https://images.openfoodfacts.org/images/products/322/885/700/0166/front_en.1884.400.jpg",
+    "768-dark: https://images.openfoodfacts.org/images/products/302/933/002/2428/front_fr.311.400.jpg",
+    "768-dark: https://images.openfoodfacts.org/images/products/000/001/625/6866/front_fr.105.400.jpg",
+    "768-dark: https://cdn.dummyjson.com/product-images/vehicle/300-touring/1.webp",
+    "768-dark: https://images.openfoodfacts.org/images/products/611/125/175/3912/front_en.10.400.jpg",
+    "768-dark: https://images.openfoodfacts.org/images/products/328/423/001/1884/front_fr.161.400.jpg",
+    "768-dark: https://images.openfoodfacts.org/images/products/611/103/500/1635/front_en.38.400.jpg",
+    "768-dark: https://images.openfoodfacts.org/images/products/611/103/500/1673/front_fr.3.400.jpg",
+    "768-dark: https://images.openfoodfacts.org/images/products/611/112/800/0071/front_fr.62.400.jpg",
+    "768-dark: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "768-dark: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "768-dark: https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/1.webp",
+    "1280-light: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "1280-light: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/1.webp",
+    "1280-light: https://cdn.dummyjson.com/product-images/sports-accessories/metal-baseball-bat/1.webp",
+    "1280-light: https://cdn.dummyjson.com/product-images/mens-shirts/man-plaid-shirt/1.webp",
+    "1280-light: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s8/1.webp",
+    "1280-light: https://images.openfoodfacts.org/images/products/322/885/700/0166/front_en.1884.400.jpg",
+    "1280-light: https://images.openfoodfacts.org/images/products/302/933/002/2428/front_fr.311.400.jpg",
+    "1280-light: https://images.openfoodfacts.org/images/products/000/001/625/6866/front_fr.105.400.jpg",
+    "1280-light: https://cdn.dummyjson.com/product-images/vehicle/300-touring/1.webp",
+    "1280-light: https://images.openfoodfacts.org/images/products/611/125/175/3912/front_en.10.400.jpg",
+    "1280-light: https://cdn.dummyjson.com/product-images/beauty/red-nail-polish/1.webp",
+    "1280-light: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "1280-light: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "1280-light: https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/1.webp",
+    "1280-dark: https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/1.webp",
+    "1280-dark: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s7/1.webp",
+    "1280-dark: https://cdn.dummyjson.com/product-images/sports-accessories/metal-baseball-bat/1.webp",
+    "1280-dark: https://cdn.dummyjson.com/product-images/mens-shirts/man-plaid-shirt/1.webp",
+    "1280-dark: https://cdn.dummyjson.com/product-images/smartphones/samsung-galaxy-s8/1.webp",
+    "1280-dark: https://images.openfoodfacts.org/images/products/322/885/700/0166/front_en.1884.400.jpg",
+    "1280-dark: https://images.openfoodfacts.org/images/products/302/933/002/2428/front_fr.311.400.jpg",
+    "1280-dark: https://images.openfoodfacts.org/images/products/000/001/625/6866/front_fr.105.400.jpg",
+    "1280-dark: https://cdn.dummyjson.com/product-images/vehicle/300-touring/1.webp",
+    "1280-dark: https://images.openfoodfacts.org/images/products/611/125/175/3912/front_en.10.400.jpg",
+    "1280-dark: https://cdn.dummyjson.com/product-images/beauty/red-nail-polish/1.webp",
+    "1280-dark: https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+    "1280-dark: https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+    "1280-dark: https://cdn.dummyjson.com/product-images/fragrances/dior-j'adore/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/tops/girl-summer-dress/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/womens-jewellery/tropical-earring/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/womens-shoes/black-&-brown-slipper/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/mens-shirts/man-short-sleeve-shirt/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/sunglasses/sunglasses/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/sunglasses/classic-sun-glasses/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/tops/short-frock/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/womens-jewellery/green-oval-earring/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/mens-shirts/men-check-shirt/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/sunglasses/black-sun-glasses/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/tops/blue-frock/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/womens-jewellery/green-crystal-earring/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/womens-shoes/pampi-shoes/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/mens-shirts/blue-&-black-check-shirt/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/sunglasses/green-and-black-glasses/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/tops/gray-dress/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/womens-shoes/red-shoes/1.webp",
+    "e2e-filtros: https://cdn.dummyjson.com/product-images/mens-shirts/man-plaid-shirt/1.webp"
+  ],
   "errors": [],
   "problems": [],
   "overflow": {
@@ -886,11 +1229,11 @@
     "threshold": 2
   },
   "mobileSummary": {
-    "measurements": 50,
+    "measurements": 60,
     "smallTargets": 0,
     "smallFields": 0,
     "maxOverflow": 0,
-    "maxCls": 0.00039444780349731445,
-    "maxTask": 56
+    "maxCls": 0.00003448333740234375,
+    "maxTask": 89
   }
 }

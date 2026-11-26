@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T04:55:16.016Z",
+  "generatedAt": "2026-11-26T05:33:36.324Z",
   "viewports": [
     {
       "name": "320x568",
@@ -77,6 +77,48 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Gucci Bloom Eau deUSD 79,99»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "img.eshop-photo__blur",
+          "left": 237,
+          "right": 463
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|light|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "div.eshop-hero__controls-right «Pausar»",
           "left": 233,
           "right": 430
@@ -112,12 +154,23 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 74
     },
     "320x568|light|catalogo": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span «Utensilios de cocina»",
+          "left": 173,
+          "right": 325
+        },
+        {
+          "el": "span «Utensilios de cocina»",
+          "left": 173,
+          "right": 334
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -130,34 +183,24 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "g",
-          "left": 283,
-          "right": 345
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "g",
-          "left": 292,
-          "right": 345
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "polygon",
-          "left": 324,
-          "right": 345
+          "el": "span.eshop-card__shine",
+          "left": -35,
+          "right": 22
         },
         {
-          "el": "polygon",
-          "left": 292,
-          "right": 345
-        },
-        {
-          "el": "g",
-          "left": 312,
-          "right": 345
-        },
-        {
-          "el": "polygon",
-          "left": 312,
-          "right": 344
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -173,7 +216,22 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -41,
+          "left": -38,
+          "right": 21
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -32,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -37,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -38,
           "right": 21
         }
       ],
@@ -342,8 +400,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 3,
+      "maxTask": 2517
     },
     "320x568|light|admin-pedidos": {
       "overflowPx": 0,
@@ -384,8 +442,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 409
     },
     "320x568|light|admin-config": {
       "overflowPx": 0,
@@ -433,6 +491,48 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Gucci Bloom Eau deUSD 79,99»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "img.eshop-photo__blur",
+          "left": 237,
+          "right": 463
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "320x568|dark|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "div.eshop-hero__controls-right «Pausar»",
           "left": 233,
           "right": 430
@@ -468,12 +568,23 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 50
     },
     "320x568|dark|catalogo": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span «Utensilios de cocina»",
+          "left": 173,
+          "right": 325
+        },
+        {
+          "el": "span «Utensilios de cocina»",
+          "left": 173,
+          "right": 334
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -486,34 +597,24 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "g",
-          "left": 283,
-          "right": 345
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "g",
-          "left": 292,
-          "right": 345
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "polygon",
-          "left": 324,
-          "right": 345
+          "el": "span.eshop-card__shine",
+          "left": -35,
+          "right": 22
         },
         {
-          "el": "polygon",
-          "left": 292,
-          "right": 345
-        },
-        {
-          "el": "g",
-          "left": 312,
-          "right": 345
-        },
-        {
-          "el": "polygon",
-          "left": 312,
-          "right": 344
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -529,7 +630,22 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -41,
+          "left": -38,
+          "right": 21
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -32,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -37,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -38,
           "right": 21
         }
       ],
@@ -698,8 +814,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 3,
+      "maxTask": 2642
     },
     "320x568|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -740,8 +856,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 437
     },
     "320x568|dark|admin-config": {
       "overflowPx": 0,
@@ -789,6 +905,48 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Gucci Bloom Eau deUSD 79,99»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "p.landing-showcase__price «USD 79,99»",
+          "left": 244,
+          "right": 456
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|light|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "div.eshop-hero__controls-right «Pausar»",
           "left": 233,
           "right": 430
@@ -824,8 +982,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 1,
-      "maxTask": 75
+      "longTasks": 2,
+      "maxTask": 65
     },
     "360x740|light|catalogo": {
       "overflowPx": 0,
@@ -842,34 +1000,24 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "g",
-          "left": 318,
-          "right": 380
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "g",
-          "left": 327,
-          "right": 380
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "polygon",
-          "left": 359,
-          "right": 380
+          "el": "span.eshop-card__shine",
+          "left": -35,
+          "right": 22
         },
         {
-          "el": "polygon",
-          "left": 327,
-          "right": 380
-        },
-        {
-          "el": "g",
-          "left": 347,
-          "right": 380
-        },
-        {
-          "el": "polygon",
-          "left": 347,
-          "right": 379
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -885,8 +1033,23 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -52,
-          "right": 16
+          "left": -38,
+          "right": 21
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -32,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -37,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -1059,8 +1222,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 4,
+      "maxTask": 2562
     },
     "360x740|light|admin-pedidos": {
       "overflowPx": 0,
@@ -1101,8 +1264,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 454
     },
     "360x740|light|admin-config": {
       "overflowPx": 0,
@@ -1150,6 +1313,48 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Gucci Bloom Eau deUSD 79,99»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "img.eshop-photo__blur",
+          "left": 237,
+          "right": 463
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "360x740|dark|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "div.eshop-hero__controls-right «Pausar»",
           "left": 233,
           "right": 430
@@ -1185,8 +1390,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 60
     },
     "360x740|dark|catalogo": {
       "overflowPx": 0,
@@ -1203,34 +1408,24 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "g",
-          "left": 318,
-          "right": 380
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "g",
-          "left": 327,
-          "right": 380
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "polygon",
-          "left": 359,
-          "right": 380
+          "el": "span.eshop-card__shine",
+          "left": -35,
+          "right": 22
         },
         {
-          "el": "polygon",
-          "left": 327,
-          "right": 380
-        },
-        {
-          "el": "g",
-          "left": 347,
-          "right": 380
-        },
-        {
-          "el": "polygon",
-          "left": 347,
-          "right": 379
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -1246,8 +1441,23 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -52,
-          "right": 16
+          "left": -38,
+          "right": 21
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -32,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -37,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -1420,8 +1630,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 3,
+      "maxTask": 2530
     },
     "360x740|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -1462,8 +1672,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 452
     },
     "360x740|dark|admin-config": {
       "overflowPx": 0,
@@ -1511,6 +1721,48 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Gucci Bloom Eau deUSD 79,99»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "img.eshop-photo__blur",
+          "left": 237,
+          "right": 463
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|light|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "div.eshop-hero__controls-right «Pausar»",
           "left": 237,
           "right": 434
@@ -1546,8 +1798,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 54
     },
     "390x844|light|catalogo": {
       "overflowPx": 0,
@@ -1564,34 +1816,24 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "g",
-          "left": 345,
-          "right": 407
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "g",
-          "left": 354,
-          "right": 407
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "polygon",
-          "left": 385,
-          "right": 407
+          "el": "span.eshop-card__shine",
+          "left": -35,
+          "right": 22
         },
         {
-          "el": "polygon",
-          "left": 354,
-          "right": 407
-        },
-        {
-          "el": "g",
-          "left": 373,
-          "right": 406
-        },
-        {
-          "el": "polygon",
-          "left": 373,
-          "right": 405
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -1607,8 +1849,23 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -52,
-          "right": 16
+          "left": -49,
+          "right": 17
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -32,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -37,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -1781,8 +2038,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 3,
+      "maxTask": 2540
     },
     "390x844|light|admin-pedidos": {
       "overflowPx": 0,
@@ -1823,8 +2080,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 461
     },
     "390x844|light|admin-config": {
       "overflowPx": 0,
@@ -1872,6 +2129,48 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Gucci Bloom Eau deUSD 79,99»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "img.eshop-photo__blur",
+          "left": 237,
+          "right": 463
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "390x844|dark|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "div.eshop-hero__controls-right «Pausar»",
           "left": 237,
           "right": 434
@@ -1907,8 +2206,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 66
     },
     "390x844|dark|catalogo": {
       "overflowPx": 0,
@@ -1925,34 +2224,24 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "g",
-          "left": 345,
-          "right": 407
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "g",
-          "left": 354,
-          "right": 407
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "polygon",
-          "left": 385,
-          "right": 407
+          "el": "span.eshop-card__shine",
+          "left": -35,
+          "right": 22
         },
         {
-          "el": "polygon",
-          "left": 354,
-          "right": 407
-        },
-        {
-          "el": "g",
-          "left": 373,
-          "right": 406
-        },
-        {
-          "el": "polygon",
-          "left": 373,
-          "right": 405
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -1968,8 +2257,23 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -52,
-          "right": 16
+          "left": -49,
+          "right": 17
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -32,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -37,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -2142,8 +2446,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 2,
+      "maxTask": 2551
     },
     "390x844|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -2184,8 +2488,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 444
     },
     "390x844|dark|admin-config": {
       "overflowPx": 0,
@@ -2233,6 +2537,48 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Gucci Bloom Eau deUSD 79,99»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "p.landing-showcase__price «USD 79,99»",
+          "left": 244,
+          "right": 456
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|light|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "div.eshop-hero__controls-right «Pausar»",
           "left": 237,
           "right": 434
@@ -2268,8 +2614,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 52
     },
     "412x915|light|catalogo": {
       "overflowPx": 0,
@@ -2286,34 +2632,24 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "g",
-          "left": 364,
-          "right": 426
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "g",
-          "left": 373,
-          "right": 426
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "polygon",
-          "left": 405,
-          "right": 426
+          "el": "span.eshop-card__shine",
+          "left": -35,
+          "right": 22
         },
         {
-          "el": "polygon",
-          "left": 373,
-          "right": 426
-        },
-        {
-          "el": "g",
-          "left": 392,
-          "right": 425
-        },
-        {
-          "el": "polygon",
-          "left": 392,
-          "right": 424
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -2329,8 +2665,23 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -52,
-          "right": 16
+          "left": -49,
+          "right": 17
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -32,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -37,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -2503,8 +2854,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 3,
+      "maxTask": 2627
     },
     "412x915|light|admin-pedidos": {
       "overflowPx": 0,
@@ -2545,8 +2896,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 446
     },
     "412x915|light|admin-config": {
       "overflowPx": 0,
@@ -2594,6 +2945,48 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Gucci Bloom Eau deUSD 79,99»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "p.landing-showcase__price «USD 79,99»",
+          "left": 244,
+          "right": 456
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "412x915|dark|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "div.eshop-hero__controls-right «Pausar»",
           "left": 237,
           "right": 434
@@ -2629,8 +3022,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 72
     },
     "412x915|dark|catalogo": {
       "overflowPx": 0,
@@ -2647,34 +3040,24 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "g",
-          "left": 364,
-          "right": 426
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "g",
-          "left": 373,
-          "right": 426
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "polygon",
-          "left": 405,
-          "right": 426
+          "el": "span.eshop-card__shine",
+          "left": -35,
+          "right": 22
         },
         {
-          "el": "polygon",
-          "left": 373,
-          "right": 426
-        },
-        {
-          "el": "g",
-          "left": 392,
-          "right": 425
-        },
-        {
-          "el": "polygon",
-          "left": 392,
-          "right": 424
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -2690,8 +3073,23 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -52,
-          "right": 16
+          "left": -49,
+          "right": 17
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -32,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -37,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -2864,8 +3262,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 4,
+      "maxTask": 2482
     },
     "412x915|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -2906,8 +3304,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 439
     },
     "412x915|dark|admin-config": {
       "overflowPx": 0,
@@ -2955,6 +3353,48 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Gucci Bloom Eau deUSD 79,99»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "p.landing-showcase__price «USD 79,99»",
+          "left": 244,
+          "right": 456
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|light|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "div.eshop-hero__controls-right «Pausar»",
           "left": 237,
           "right": 434
@@ -2975,12 +3415,12 @@
           "right": 17
         },
         {
-          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
+          "el": "li.eshop-rail__item «-20 %SamsungTelefoníaSamsung Galaxy S7Pres»",
           "left": 372,
           "right": 540
         },
         {
-          "el": "article.product-card.eshop-card «-17 %NordisaProtecciónFunda para laptopPre»",
+          "el": "article.product-card.eshop-card «-20 %SamsungTelefoníaSamsung Galaxy S7Pres»",
           "left": 372,
           "right": 540
         }
@@ -2991,7 +3431,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 51
+      "maxTask": 61
     },
     "430x932|light|catalogo": {
       "overflowPx": 0,
@@ -3008,34 +3448,24 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "g",
-          "left": 380,
-          "right": 442
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "g",
-          "left": 389,
-          "right": 442
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "polygon",
-          "left": 420,
-          "right": 442
+          "el": "span.eshop-card__shine",
+          "left": -35,
+          "right": 22
         },
         {
-          "el": "polygon",
-          "left": 389,
-          "right": 442
-        },
-        {
-          "el": "g",
-          "left": 408,
-          "right": 441
-        },
-        {
-          "el": "polygon",
-          "left": 408,
-          "right": 440
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -3051,8 +3481,23 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -52,
-          "right": 16
+          "left": -49,
+          "right": 17
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -32,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -37,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -3225,8 +3670,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 2,
+      "maxTask": 2563
     },
     "430x932|light|admin-pedidos": {
       "overflowPx": 0,
@@ -3267,8 +3712,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 429
     },
     "430x932|light|admin-config": {
       "overflowPx": 0,
@@ -3316,6 +3761,48 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Gucci Bloom Eau deUSD 79,99»",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 244,
+          "right": 456
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "img.eshop-photo__blur",
+          "left": 237,
+          "right": 463
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 245,
+          "right": 455
+        },
+        {
+          "el": "p.landing-showcase__name «Gucci Bloom Eau de»",
+          "left": 244,
+          "right": 456
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "430x932|dark|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "div.eshop-hero__controls-right «Pausar»",
           "left": 237,
           "right": 434
@@ -3336,12 +3823,12 @@
           "right": 17
         },
         {
-          "el": "li.eshop-rail__item «-17 %NordisaProtecciónFunda para laptopPre»",
+          "el": "li.eshop-rail__item «-20 %SamsungTelefoníaSamsung Galaxy S7Pres»",
           "left": 372,
           "right": 540
         },
         {
-          "el": "article.product-card.eshop-card «-17 %NordisaProtecciónFunda para laptopPre»",
+          "el": "article.product-card.eshop-card «-20 %SamsungTelefoníaSamsung Galaxy S7Pres»",
           "left": 372,
           "right": 540
         }
@@ -3352,7 +3839,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 81
+      "maxTask": 53
     },
     "430x932|dark|catalogo": {
       "overflowPx": 0,
@@ -3369,34 +3856,24 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "g",
-          "left": 380,
-          "right": 442
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "g",
-          "left": 389,
-          "right": 442
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         },
         {
-          "el": "polygon",
-          "left": 420,
-          "right": 442
+          "el": "span.eshop-card__shine",
+          "left": -35,
+          "right": 22
         },
         {
-          "el": "polygon",
-          "left": 389,
-          "right": 442
-        },
-        {
-          "el": "g",
-          "left": 408,
-          "right": 441
-        },
-        {
-          "el": "polygon",
-          "left": 408,
-          "right": 440
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -3412,8 +3889,23 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -52,
-          "right": 16
+          "left": -49,
+          "right": 17
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -32,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -37,
+          "right": 22
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -38,
+          "right": 21
         }
       ],
       "clipped": [],
@@ -3586,8 +4078,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 2,
+      "maxTask": 2550
     },
     "430x932|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -3628,8 +4120,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 468
     },
     "430x932|dark|admin-config": {
       "overflowPx": 0,
@@ -3677,34 +4169,34 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "span.eshop-card__shine",
-          "left": -41,
-          "right": 21
+          "el": "div.landing-showcase__card «Apple AirPods Max SilverUSD 549,99»",
+          "left": 700,
+          "right": 912
         },
         {
-          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
-          "left": 739,
-          "right": 908
-        },
-        {
-          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
-          "left": 739,
-          "right": 908
-        },
-        {
-          "el": "div.eshop-card__media «-17 %»",
-          "left": 748,
-          "right": 899
+          "el": "div.landing-showcase__photo",
+          "left": 700,
+          "right": 912
         },
         {
           "el": "div.eshop-photo",
-          "left": 748,
-          "right": 899
+          "left": 701,
+          "right": 911
         },
         {
-          "el": "div.eshop-photo__art-wrap",
-          "left": 748,
-          "right": 899
+          "el": "img.eshop-photo__blur",
+          "left": 693,
+          "right": 919
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 701,
+          "right": 911
+        },
+        {
+          "el": "p.landing-showcase__name «Apple AirPods Max Silver»",
+          "left": 700,
+          "right": 912
         }
       ],
       "clipped": [],
@@ -3714,6 +4206,48 @@
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "844x390|light|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
+          "el": "li.eshop-rail__item «-20 %Classic WearRopa de hombreMan Plaid S»",
+          "left": 739,
+          "right": 908
+        },
+        {
+          "el": "article.product-card.eshop-card «-20 %Classic WearRopa de hombreMan Plaid S»",
+          "left": 739,
+          "right": 908
+        },
+        {
+          "el": "div.eshop-card__media «-20 %»",
+          "left": 748,
+          "right": 899
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 748,
+          "right": 899
+        },
+        {
+          "el": "a.eshop-card__cover",
+          "left": 748,
+          "right": 899
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 1,
+      "maxTask": 62
     },
     "844x390|light|catalogo": {
       "overflowPx": 0,
@@ -3728,7 +4262,18 @@
     },
     "844x390|light|ficha": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -3742,7 +4287,12 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -33,
+          "left": -30,
+          "right": 29
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
           "right": 29
         }
       ],
@@ -3911,8 +4461,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 5,
+      "maxTask": 2553
     },
     "844x390|light|admin-pedidos": {
       "overflowPx": 0,
@@ -3953,8 +4503,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 406
     },
     "844x390|light|admin-config": {
       "overflowPx": 0,
@@ -4002,34 +4552,34 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "span.eshop-card__shine",
-          "left": -41,
-          "right": 21
+          "el": "div.landing-showcase__card «Apple AirPods Max SilverUSD 549,99»",
+          "left": 700,
+          "right": 912
         },
         {
-          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
-          "left": 739,
-          "right": 908
-        },
-        {
-          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
-          "left": 739,
-          "right": 908
-        },
-        {
-          "el": "div.eshop-card__media «-17 %»",
-          "left": 748,
-          "right": 899
+          "el": "div.landing-showcase__photo",
+          "left": 700,
+          "right": 912
         },
         {
           "el": "div.eshop-photo",
-          "left": 748,
-          "right": 899
+          "left": 701,
+          "right": 911
         },
         {
-          "el": "div.eshop-photo__art-wrap",
-          "left": 748,
-          "right": 899
+          "el": "img.eshop-photo__img",
+          "left": 701,
+          "right": 911
+        },
+        {
+          "el": "p.landing-showcase__name «Apple AirPods Max Silver»",
+          "left": 700,
+          "right": 912
+        },
+        {
+          "el": "p.landing-showcase__price «USD 549,99»",
+          "left": 700,
+          "right": 912
         }
       ],
       "clipped": [],
@@ -4039,6 +4589,48 @@
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "844x390|dark|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
+          "el": "li.eshop-rail__item «-20 %Classic WearRopa de hombreMan Plaid S»",
+          "left": 739,
+          "right": 908
+        },
+        {
+          "el": "article.product-card.eshop-card «-20 %Classic WearRopa de hombreMan Plaid S»",
+          "left": 739,
+          "right": 908
+        },
+        {
+          "el": "div.eshop-card__media «-20 %»",
+          "left": 748,
+          "right": 899
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 748,
+          "right": 899
+        },
+        {
+          "el": "span.eshop-photo__skeleton",
+          "left": 748,
+          "right": 899
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 2,
+      "maxTask": 54
     },
     "844x390|dark|catalogo": {
       "overflowPx": 0,
@@ -4053,7 +4645,18 @@
     },
     "844x390|dark|ficha": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -4067,7 +4670,12 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -33,
+          "left": -30,
+          "right": 29
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
           "right": 29
         }
       ],
@@ -4236,8 +4844,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 5,
+      "maxTask": 2541
     },
     "844x390|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -4278,8 +4886,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 410
     },
     "844x390|dark|admin-config": {
       "overflowPx": 0,
@@ -4327,34 +4935,34 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "span.eshop-card__shine",
-          "left": -41,
-          "right": 21
+          "el": "div.landing-showcase__card «Apple AirPods Max SilverUSD 549,99»",
+          "left": 700,
+          "right": 912
         },
         {
-          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
-          "left": 736,
-          "right": 904
-        },
-        {
-          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
-          "left": 736,
-          "right": 904
-        },
-        {
-          "el": "div.eshop-card__media «-17 %»",
-          "left": 745,
-          "right": 895
+          "el": "div.landing-showcase__photo",
+          "left": 700,
+          "right": 912
         },
         {
           "el": "div.eshop-photo",
-          "left": 745,
-          "right": 895
+          "left": 701,
+          "right": 911
         },
         {
-          "el": "div.eshop-photo__art-wrap",
-          "left": 745,
-          "right": 895
+          "el": "img.eshop-photo__blur",
+          "left": 693,
+          "right": 919
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 701,
+          "right": 911
+        },
+        {
+          "el": "p.landing-showcase__name «Apple AirPods Max Silver»",
+          "left": 700,
+          "right": 912
         }
       ],
       "clipped": [],
@@ -4364,6 +4972,48 @@
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "768x1024|light|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
+          "el": "li.eshop-rail__item «-20 %Classic WearRopa de hombreMan Plaid S»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "article.product-card.eshop-card «-20 %Classic WearRopa de hombreMan Plaid S»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "div.eshop-card__media «-20 %»",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "span.eshop-photo__skeleton",
+          "left": 745,
+          "right": 895
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 1,
+      "maxTask": 101
     },
     "768x1024|light|catalogo": {
       "overflowPx": 0,
@@ -4378,7 +5028,18 @@
     },
     "768x1024|light|ficha": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -4392,8 +5053,13 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -44,
-          "right": 24
+          "left": -41,
+          "right": 25
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
         }
       ],
       "clipped": [],
@@ -4561,8 +5227,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 3,
+      "maxTask": 2455
     },
     "768x1024|light|admin-pedidos": {
       "overflowPx": 0,
@@ -4603,8 +5269,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 435
     },
     "768x1024|light|admin-config": {
       "overflowPx": 0,
@@ -4652,34 +5318,34 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "span.eshop-card__shine",
-          "left": -41,
-          "right": 21
+          "el": "div.landing-showcase__card «Apple AirPods Max SilverUSD 549,99»",
+          "left": 700,
+          "right": 912
         },
         {
-          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
-          "left": 736,
-          "right": 904
-        },
-        {
-          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
-          "left": 736,
-          "right": 904
-        },
-        {
-          "el": "div.eshop-card__media «-17 %»",
-          "left": 745,
-          "right": 895
+          "el": "div.landing-showcase__photo",
+          "left": 700,
+          "right": 912
         },
         {
           "el": "div.eshop-photo",
-          "left": 745,
-          "right": 895
+          "left": 701,
+          "right": 911
         },
         {
-          "el": "div.eshop-photo__art-wrap",
-          "left": 745,
-          "right": 895
+          "el": "img.eshop-photo__blur",
+          "left": 693,
+          "right": 919
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 701,
+          "right": 911
+        },
+        {
+          "el": "p.landing-showcase__name «Apple AirPods Max Silver»",
+          "left": 700,
+          "right": 912
         }
       ],
       "clipped": [],
@@ -4689,6 +5355,48 @@
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "768x1024|dark|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
+          "el": "li.eshop-rail__item «-20 %Classic WearRopa de hombreMan Plaid S»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "article.product-card.eshop-card «-20 %Classic WearRopa de hombreMan Plaid S»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "div.eshop-card__media «-20 %»",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "a.eshop-card__cover",
+          "left": 745,
+          "right": 895
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 1,
+      "maxTask": 61
     },
     "768x1024|dark|catalogo": {
       "overflowPx": 0,
@@ -4703,7 +5411,18 @@
     },
     "768x1024|dark|ficha": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -4717,8 +5436,13 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -44,
-          "right": 24
+          "left": -41,
+          "right": 25
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
         }
       ],
       "clipped": [],
@@ -4886,8 +5610,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 2,
+      "maxTask": 2550
     },
     "768x1024|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -4928,8 +5652,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 402
     },
     "768x1024|dark|admin-config": {
       "overflowPx": 0,
@@ -4977,22 +5701,64 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Apple AirPods Max SilverUSD 549,99»",
+          "left": 700,
+          "right": 912
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 700,
+          "right": 912
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 701,
+          "right": 911
+        },
+        {
+          "el": "img.eshop-photo__blur",
+          "left": 693,
+          "right": 919
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 701,
+          "right": 911
+        },
+        {
+          "el": "p.landing-showcase__name «Apple AirPods Max Silver»",
+          "left": 700,
+          "right": 912
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "820x1180|light|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "span.eshop-card__shine",
           "left": -41,
           "right": 21
         },
         {
-          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
+          "el": "li.eshop-rail__item «-20 %Classic WearRopa de hombreMan Plaid S»",
           "left": 736,
           "right": 904
         },
         {
-          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
+          "el": "article.product-card.eshop-card «-20 %Classic WearRopa de hombreMan Plaid S»",
           "left": 736,
           "right": 904
         },
         {
-          "el": "div.eshop-card__media «-17 %»",
+          "el": "div.eshop-card__media «-20 %»",
           "left": 745,
           "right": 895
         },
@@ -5002,7 +5768,7 @@
           "right": 895
         },
         {
-          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
+          "el": "a.eshop-card__cover",
           "left": 745,
           "right": 895
         }
@@ -5013,7 +5779,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 59
+      "maxTask": 50
     },
     "820x1180|light|catalogo": {
       "overflowPx": 0,
@@ -5028,7 +5794,18 @@
     },
     "820x1180|light|ficha": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -5042,8 +5819,13 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -44,
-          "right": 24
+          "left": -41,
+          "right": 25
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 25
         }
       ],
       "clipped": [],
@@ -5216,8 +5998,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 5,
+      "maxTask": 2549
     },
     "820x1180|light|admin-pedidos": {
       "overflowPx": 0,
@@ -5258,8 +6040,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 437
     },
     "820x1180|light|admin-config": {
       "overflowPx": 0,
@@ -5307,34 +6089,34 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "span.eshop-card__shine",
-          "left": -41,
-          "right": 21
+          "el": "div.landing-showcase__card «Apple AirPods Max SilverUSD 549,99»",
+          "left": 700,
+          "right": 912
         },
         {
-          "el": "li.eshop-rail__item «-17 %AndariaCampingCarpa de campañaPresent»",
-          "left": 736,
-          "right": 904
-        },
-        {
-          "el": "article.product-card.eshop-card «-17 %AndariaCampingCarpa de campañaPresent»",
-          "left": 736,
-          "right": 904
-        },
-        {
-          "el": "div.eshop-card__media «-17 %»",
-          "left": 745,
-          "right": 895
+          "el": "div.landing-showcase__photo",
+          "left": 700,
+          "right": 912
         },
         {
           "el": "div.eshop-photo",
-          "left": 745,
-          "right": 895
+          "left": 701,
+          "right": 911
         },
         {
-          "el": "div.product-art.product-art--hero «Carpa de campaña · ilustración paquete»",
-          "left": 745,
-          "right": 895
+          "el": "img.eshop-photo__blur",
+          "left": 693,
+          "right": 919
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 701,
+          "right": 911
+        },
+        {
+          "el": "p.landing-showcase__name «Apple AirPods Max Silver»",
+          "left": 700,
+          "right": 912
         }
       ],
       "clipped": [],
@@ -5344,6 +6126,48 @@
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "820x1180|dark|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
+          "el": "li.eshop-rail__item «-20 %Classic WearRopa de hombreMan Plaid S»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "article.product-card.eshop-card «-20 %Classic WearRopa de hombreMan Plaid S»",
+          "left": 736,
+          "right": 904
+        },
+        {
+          "el": "div.eshop-card__media «-20 %»",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 745,
+          "right": 895
+        },
+        {
+          "el": "a.eshop-card__cover",
+          "left": 745,
+          "right": 895
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 1,
+      "maxTask": 59
     },
     "820x1180|dark|catalogo": {
       "overflowPx": 0,
@@ -5358,7 +6182,18 @@
     },
     "820x1180|dark|ficha": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -30,
+          "right": 29
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -5372,8 +6207,13 @@
       "overflowing": [
         {
           "el": "span.eshop-card__shine",
-          "left": -44,
-          "right": 24
+          "left": -41,
+          "right": 25
+        },
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 25
         }
       ],
       "clipped": [],
@@ -5546,8 +6386,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 5,
+      "maxTask": 2523
     },
     "820x1180|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -5588,8 +6428,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 419
     },
     "820x1180|dark|admin-config": {
       "overflowPx": 0,
@@ -5637,22 +6477,64 @@
       "overflowPx": 0,
       "overflowing": [
         {
+          "el": "div.landing-showcase__card «Apple Airpower Wireless ChargerUSD 79,99»",
+          "left": 1256,
+          "right": 1544
+        },
+        {
+          "el": "div.landing-showcase__photo",
+          "left": 1256,
+          "right": 1544
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 1257,
+          "right": 1543
+        },
+        {
+          "el": "img.eshop-photo__blur",
+          "left": 1246,
+          "right": 1554
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 1257,
+          "right": 1543
+        },
+        {
+          "el": "p.landing-showcase__name «Apple Airpower Wireless Charger»",
+          "left": 1256,
+          "right": 1544
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 0,
+      "maxTask": 0
+    },
+    "1280x800|light|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
           "el": "span.eshop-card__shine",
           "left": -41,
           "right": 21
         },
         {
-          "el": "li.eshop-rail__item «-13 %PataliaDescansoCama para mascotaPrese»",
+          "el": "li.eshop-rail__item «AgotadoSamsungTelefoníaSamsung Galaxy S8Pr»",
           "left": 1196,
           "right": 1420
         },
         {
-          "el": "article.product-card.eshop-card «-13 %PataliaDescansoCama para mascotaPrese»",
+          "el": "article.product-card.eshop-card «AgotadoSamsungTelefoníaSamsung Galaxy S8Pr»",
           "left": 1196,
           "right": 1420
         },
         {
-          "el": "div.eshop-card__media «-13 %»",
+          "el": "div.eshop-card__media «Agotado»",
           "left": 1205,
           "right": 1411
         },
@@ -5662,7 +6544,7 @@
           "right": 1411
         },
         {
-          "el": "div.product-art.product-art--hero «Cama para mascota · ilustración paquete»",
+          "el": "span.eshop-photo__skeleton",
           "left": 1205,
           "right": 1411
         }
@@ -5673,7 +6555,7 @@
       "covered": [],
       "cls": 0,
       "longTasks": 1,
-      "maxTask": 60
+      "maxTask": 61
     },
     "1280x800|light|catalogo": {
       "overflowPx": 0,
@@ -5688,7 +6570,13 @@
     },
     "1280x800|light|ficha": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -14,
+          "right": 45
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -5803,8 +6691,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 2,
+      "maxTask": 2528
     },
     "1280x800|light|admin-pedidos": {
       "overflowPx": 0,
@@ -5814,8 +6702,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 421
     },
     "1280x800|light|admin-config": {
       "overflowPx": 0,
@@ -5832,34 +6720,34 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "span.eshop-card__shine",
-          "left": -41,
-          "right": 21
+          "el": "div.landing-showcase__card «Apple Airpower Wireless ChargerUSD 79,99»",
+          "left": 1256,
+          "right": 1544
         },
         {
-          "el": "li.eshop-rail__item «-13 %PataliaDescansoCama para mascotaPrese»",
-          "left": 1196,
-          "right": 1420
-        },
-        {
-          "el": "article.product-card.eshop-card «-13 %PataliaDescansoCama para mascotaPrese»",
-          "left": 1196,
-          "right": 1420
-        },
-        {
-          "el": "div.eshop-card__media «-13 %»",
-          "left": 1205,
-          "right": 1411
+          "el": "div.landing-showcase__photo",
+          "left": 1256,
+          "right": 1544
         },
         {
           "el": "div.eshop-photo",
-          "left": 1205,
-          "right": 1411
+          "left": 1257,
+          "right": 1543
         },
         {
-          "el": "div.eshop-photo__art-wrap",
-          "left": 1205,
-          "right": 1411
+          "el": "img.eshop-photo__blur",
+          "left": 1246,
+          "right": 1554
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 1257,
+          "right": 1543
+        },
+        {
+          "el": "p.landing-showcase__name «Apple Airpower Wireless Charger»",
+          "left": 1256,
+          "right": 1544
         }
       ],
       "clipped": [],
@@ -5869,6 +6757,48 @@
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "1280x800|dark|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
+          "el": "li.eshop-rail__item «AgotadoSamsungTelefoníaSamsung Galaxy S8Pr»",
+          "left": 1196,
+          "right": 1420
+        },
+        {
+          "el": "article.product-card.eshop-card «AgotadoSamsungTelefoníaSamsung Galaxy S8Pr»",
+          "left": 1196,
+          "right": 1420
+        },
+        {
+          "el": "div.eshop-card__media «Agotado»",
+          "left": 1205,
+          "right": 1411
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 1205,
+          "right": 1411
+        },
+        {
+          "el": "span.eshop-photo__skeleton",
+          "left": 1205,
+          "right": 1411
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 1,
+      "maxTask": 58
     },
     "1280x800|dark|catalogo": {
       "overflowPx": 0,
@@ -5883,7 +6813,13 @@
     },
     "1280x800|dark|ficha": {
       "overflowPx": 0,
-      "overflowing": [],
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -14,
+          "right": 45
+        }
+      ],
       "clipped": [],
       "smallTargets": [],
       "smallFields": [],
@@ -5998,8 +6934,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 2,
+      "maxTask": 2570
     },
     "1280x800|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -6009,8 +6945,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 457
     },
     "1280x800|dark|admin-config": {
       "overflowPx": 0,
@@ -6027,34 +6963,34 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "span.eshop-card__shine",
-          "left": -41,
-          "right": 21
+          "el": "div.landing-showcase__card «Apple Airpower Wireless ChargerUSD 79,99»",
+          "left": 1336,
+          "right": 1624
         },
         {
-          "el": "li.eshop-rail__item «-12 %VelmarTabletsTablet 10\"Presentación ·»",
-          "left": 1432,
-          "right": 1656
-        },
-        {
-          "el": "article.product-card.eshop-card «-12 %VelmarTabletsTablet 10\"Presentación ·»",
-          "left": 1432,
-          "right": 1656
-        },
-        {
-          "el": "div.eshop-card__media «-12 %»",
-          "left": 1441,
-          "right": 1647
+          "el": "div.landing-showcase__photo",
+          "left": 1336,
+          "right": 1624
         },
         {
           "el": "div.eshop-photo",
-          "left": 1441,
-          "right": 1647
+          "left": 1337,
+          "right": 1623
         },
         {
-          "el": "div.product-art.product-art--hero «Tablet 10\" · ilustración almohadilla»",
-          "left": 1441,
-          "right": 1647
+          "el": "img.eshop-photo__blur",
+          "left": 1326,
+          "right": 1634
+        },
+        {
+          "el": "img.eshop-photo__img",
+          "left": 1337,
+          "right": 1623
+        },
+        {
+          "el": "p.landing-showcase__name «Apple Airpower Wireless Charger»",
+          "left": 1336,
+          "right": 1624
         }
       ],
       "clipped": [],
@@ -6064,6 +7000,48 @@
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "1440x900|light|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
+          "el": "li.eshop-rail__item «-19 %GadgetMasterAccesorios móvilesSelfie »",
+          "left": 1432,
+          "right": 1656
+        },
+        {
+          "el": "article.product-card.eshop-card «-19 %GadgetMasterAccesorios móvilesSelfie »",
+          "left": 1432,
+          "right": 1656
+        },
+        {
+          "el": "div.eshop-card__media «-19 %»",
+          "left": 1441,
+          "right": 1647
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 1441,
+          "right": 1647
+        },
+        {
+          "el": "span.eshop-photo__skeleton",
+          "left": 1441,
+          "right": 1647
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 1,
+      "maxTask": 92
     },
     "1440x900|light|catalogo": {
       "overflowPx": 0,
@@ -6193,8 +7171,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 2,
+      "maxTask": 2596
     },
     "1440x900|light|admin-pedidos": {
       "overflowPx": 0,
@@ -6204,8 +7182,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 448
     },
     "1440x900|light|admin-config": {
       "overflowPx": 0,
@@ -6222,34 +7200,34 @@
       "overflowPx": 0,
       "overflowing": [
         {
-          "el": "span.eshop-card__shine",
-          "left": -41,
-          "right": 21
+          "el": "div.landing-showcase__card «Apple Airpower Wireless ChargerUSD 79,99»",
+          "left": 1336,
+          "right": 1624
         },
         {
-          "el": "li.eshop-rail__item «-12 %VelmarTabletsTablet 10\"Presentación ·»",
-          "left": 1432,
-          "right": 1656
-        },
-        {
-          "el": "article.product-card.eshop-card «-12 %VelmarTabletsTablet 10\"Presentación ·»",
-          "left": 1432,
-          "right": 1656
-        },
-        {
-          "el": "div.eshop-card__media «-12 %»",
-          "left": 1441,
-          "right": 1647
+          "el": "div.landing-showcase__photo",
+          "left": 1336,
+          "right": 1624
         },
         {
           "el": "div.eshop-photo",
-          "left": 1441,
-          "right": 1647
+          "left": 1337,
+          "right": 1623
         },
         {
-          "el": "div.product-art.product-art--hero «Tablet 10\" · ilustración almohadilla»",
-          "left": 1441,
-          "right": 1647
+          "el": "img.eshop-photo__img",
+          "left": 1337,
+          "right": 1623
+        },
+        {
+          "el": "p.landing-showcase__name «Apple Airpower Wireless Charger»",
+          "left": 1336,
+          "right": 1624
+        },
+        {
+          "el": "p.landing-showcase__price «USD 79,99»",
+          "left": 1336,
+          "right": 1624
         }
       ],
       "clipped": [],
@@ -6259,6 +7237,48 @@
       "cls": 0,
       "longTasks": 0,
       "maxTask": 0
+    },
+    "1440x900|dark|inicio": {
+      "overflowPx": 0,
+      "overflowing": [
+        {
+          "el": "span.eshop-card__shine",
+          "left": -41,
+          "right": 21
+        },
+        {
+          "el": "li.eshop-rail__item «-19 %GadgetMasterAccesorios móvilesSelfie »",
+          "left": 1432,
+          "right": 1656
+        },
+        {
+          "el": "article.product-card.eshop-card «-19 %GadgetMasterAccesorios móvilesSelfie »",
+          "left": 1432,
+          "right": 1656
+        },
+        {
+          "el": "div.eshop-card__media «-19 %»",
+          "left": 1441,
+          "right": 1647
+        },
+        {
+          "el": "div.eshop-photo",
+          "left": 1441,
+          "right": 1647
+        },
+        {
+          "el": "span.eshop-photo__skeleton",
+          "left": 1441,
+          "right": 1647
+        }
+      ],
+      "clipped": [],
+      "smallTargets": [],
+      "smallFields": [],
+      "covered": [],
+      "cls": 0,
+      "longTasks": 1,
+      "maxTask": 79
     },
     "1440x900|dark|catalogo": {
       "overflowPx": 0,
@@ -6388,8 +7408,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 3,
+      "maxTask": 2533
     },
     "1440x900|dark|admin-pedidos": {
       "overflowPx": 0,
@@ -6399,8 +7419,8 @@
       "smallFields": [],
       "covered": [],
       "cls": 0,
-      "longTasks": 0,
-      "maxTask": 0
+      "longTasks": 1,
+      "maxTask": 435
     },
     "1440x900|dark|admin-config": {
       "overflowPx": 0,
@@ -6427,8 +7447,8 @@
     ],
     "vh100": 4,
     "safeAreaUses": 4,
-    "hoverRules": 54,
-    "hoverRulesGuarded": 54,
+    "hoverRules": 57,
+    "hoverRulesGuarded": 57,
     "fsUi": "16",
     "colorLiteralsOutsideTokens": "ver check:palette"
   },

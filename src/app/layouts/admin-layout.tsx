@@ -132,7 +132,7 @@ export const AdminLayout = () => {
         role={drawerOpen ? 'dialog' : undefined} aria-modal={drawerOpen || undefined}
         aria-label={drawerOpen ? 'Menú del panel' : undefined}>
         <div className="admin-sidebar__top">
-          <Link to="/" className="brand" aria-label="Ver tienda">
+          <Link to="/inicio" className="brand" aria-label="Ver tienda">
             <span className="brand__mark">I</span>
             {!collapsed && <span className="brand__name">{BRAND.shortName}</span>}
           </Link>
@@ -165,7 +165,7 @@ export const AdminLayout = () => {
           })}
         </nav>
         <div className="admin-sidebar__bottom">
-          <Link to="/" className="admin-nav__item" title="Ver tienda"
+          <Link to="/inicio" className="admin-nav__item" title="Ver tienda"
             onClick={() => { if (drawerOpen) { skipBack.current = true; setDrawerOpen(false) } }}>
             <ArrowUpRight size={20} strokeWidth={1.5} />
             {!collapsed && <span>Ver tienda</span>}

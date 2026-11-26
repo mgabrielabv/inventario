@@ -6,7 +6,6 @@ import { Button } from '../../components/ui/Button'
 import { Field, Input } from '../../components/ui/Field'
 import { useToast } from '../../components/ui/Toast'
 import { normalizePhoneVE, passwordStrength, type RegisterCustomerInput } from '../../logic/services/customer-auth'
-import { useCustomerStore } from '../../logic/store/customer'
 import { AccountLoading } from './account-page'
 
 type Prefill = {
@@ -51,7 +50,6 @@ export const CustomerSignUpPage = () => {
   const navigate = useNavigate()
   const { signUp, emailExists, ready } = useCustomer()
   const { toast } = useToast()
-  const setGuestCheckout = useCustomerStore((state) => state.setGuestCheckout)
   const state = (location.state as SignUpState | null) ?? {}
   const raw = state.prefill
   const prefill = raw ? { ...raw, ...raw.cliente } : null
@@ -116,7 +114,6 @@ export const CustomerSignUpPage = () => {
       else setAlert(result.error ?? 'No se pudo crear la cuenta. Inténtalo de nuevo.')
       return
     }
-    setGuestCheckout(false)
     toast('¡Bienvenido! Tu cuenta está lista.')
     navigate(state.from ?? '/cuenta', { replace: true })
   }

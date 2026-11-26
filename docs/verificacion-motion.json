@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24T04:52:14.895Z",
+  "generatedAt": "2026-11-26T05:27:56.356Z",
   "budget": {
     "targetFps": 55,
     "minFps": 32,
@@ -10,20 +10,23 @@
     "maxOrphans": 0
   },
   "warnings": [
-    "390-abrir-ficha: FPS 51.6 por debajo del objetivo 55",
+    "390-anadir-carrito: FPS 54.5 por debajo del objetivo 55",
+    "390-anadir-carrito: 1 tareas largas (objetivo 0)",
+    "390-abrir-ficha: FPS 47.8 por debajo del objetivo 55",
     "390-abrir-ficha: 2 tareas largas (objetivo 0)",
-    "390-hoja-filtros: FPS 54.4 por debajo del objetivo 55",
+    "390-hoja-filtros: FPS 51.5 por debajo del objetivo 55",
     "390-hoja-filtros: 3 tareas largas (objetivo 0)",
-    "390-confirmar-pedido: FPS 54.9 por debajo del objetivo 55",
-    "390-confirmar-pedido: 1 tareas largas (objetivo 0)",
+    "390-confirmar-pedido: FPS 49.9 por debajo del objetivo 55",
+    "390-confirmar-pedido: 3 tareas largas (objetivo 0)",
     "390-estado-pedido: 1 tareas largas (objetivo 0)",
     "1280-anadir-carrito: 1 tareas largas (objetivo 0)",
-    "1280-abrir-ficha: FPS 52.5 por debajo del objetivo 55",
-    "1280-abrir-ficha: 1 tareas largas (objetivo 0)",
+    "1280-abrir-ficha: FPS 43.5 por debajo del objetivo 55",
+    "1280-abrir-ficha: 2 tareas largas (objetivo 0)",
+    "1280-hoja-filtros: FPS 50.3 por debajo del objetivo 55",
     "1280-hoja-filtros: 3 tareas largas (objetivo 0)",
-    "1280-confirmar-pedido: FPS 54.8 por debajo del objetivo 55",
-    "1280-confirmar-pedido: 1 tareas largas (objetivo 0)",
-    "1280-estado-pedido: FPS 38.8 por debajo del objetivo 55",
+    "1280-confirmar-pedido: FPS 49.5 por debajo del objetivo 55",
+    "1280-confirmar-pedido: 3 tareas largas (objetivo 0)",
+    "1280-estado-pedido: FPS 32.4 por debajo del objetivo 55",
     "1280-estado-pedido: 1 tareas largas (objetivo 0)"
   ],
   "conditions": {
@@ -44,14 +47,14 @@
         "thumb": true,
         "ripple": 0
       },
-      "fps": 58.8,
-      "frames": 114,
-      "jank": 1,
-      "maxFrameGapMs": 66.6,
+      "fps": 54.5,
+      "frames": 110,
+      "jank": 8,
+      "maxFrameGapMs": 83.3,
       "cls": 0,
       "shifts": [],
-      "longTasks": 0,
-      "maxTaskMs": 0,
+      "longTasks": 1,
+      "maxTaskMs": 67,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -62,10 +65,10 @@
           "shifts": []
         },
         "live": [
-          "59 productos",
-          "Agregado al carrito: Audífonos inalámbricos",
+          "489 productos",
+          "Agregado al carrito: Alpro Plantaardig variatie vanille",
           "1",
-          "Agregado al carrito: Cargador USB-C 65 W",
+          "Agregado al carrito: Cranberry saveur amande",
           "1",
           "1"
         ]
@@ -74,16 +77,16 @@
     "390-abrir-ficha": {
       "viewport": "390",
       "flow": "abrir-ficha",
-      "hash": "#/tienda/028-audifonos-inalambricos",
-      "title": "Audífonos inalámbricos",
-      "fps": 51.6,
-      "frames": 92,
-      "jank": 4,
-      "maxFrameGapMs": 183.4,
+      "hash": "#/tienda/alpro-plantaardig-variatie-vanille-off-5411188103387",
+      "title": "Alpro Plantaardig variatie vanille",
+      "fps": 47.8,
+      "frames": 85,
+      "jank": 7,
+      "maxFrameGapMs": 166.6,
       "cls": 0,
       "shifts": [],
       "longTasks": 2,
-      "maxTaskMs": 153,
+      "maxTaskMs": 136,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -100,25 +103,25 @@
       "viewport": "390",
       "flow": "hoja-filtros",
       "sheetOpen": 1,
-      "fps": 54.4,
-      "frames": 147,
-      "jank": 3,
-      "maxFrameGapMs": 233.4,
+      "fps": 51.5,
+      "frames": 141,
+      "jank": 11,
+      "maxFrameGapMs": 216.6,
       "cls": 0,
       "shifts": [],
       "longTasks": 1,
-      "maxTaskMs": 224,
+      "maxTaskMs": 212,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
           "cls": 0,
           "longTasks": 2,
-          "maxTask": 111,
+          "maxTask": 167,
           "shifts": []
         },
         "live": [
-          "59 productos",
+          "489 productos",
           "1"
         ]
       }
@@ -129,14 +132,14 @@
       "hash": "#/pedido/IVO-2026-000007",
       "celebration": 1,
       "live": 1,
-      "fps": 54.9,
-      "frames": 117,
-      "jank": 7,
-      "maxFrameGapMs": 66.6,
+      "fps": 49.9,
+      "frames": 121,
+      "jank": 8,
+      "maxFrameGapMs": 133.3,
       "cls": 0,
       "shifts": [],
-      "longTasks": 1,
-      "maxTaskMs": 65,
+      "longTasks": 3,
+      "maxTaskMs": 138,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -152,16 +155,16 @@
     "390-estado-pedido": {
       "viewport": "390",
       "flow": "estado-pedido",
-      "before": "Confirmado",
-      "fps": 58.1,
+      "before": "Pendiente",
+      "fps": 55.6,
       "frames": 127,
-      "jank": 4,
-      "maxFrameGapMs": 50,
+      "jank": 7,
+      "maxFrameGapMs": 100,
       "cls": 0,
       "shifts": [],
       "longTasks": 1,
-      "maxTaskMs": 60,
-      "statusChip": "Preparando",
+      "maxTaskMs": 87,
+      "statusChip": "Confirmado",
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -172,7 +175,7 @@
           "shifts": []
         },
         "live": [
-          "Pedido IVO-2026-000002 pasó a Preparando"
+          "Pedido IVO-2026-000001 pasó a Confirmado"
         ]
       }
     },
@@ -184,14 +187,14 @@
         "thumb": true,
         "ripple": 0
       },
-      "fps": 57.9,
-      "frames": 106,
-      "jank": 4,
-      "maxFrameGapMs": 50,
+      "fps": 55.6,
+      "frames": 105,
+      "jank": 7,
+      "maxFrameGapMs": 66.6,
       "cls": 0,
       "shifts": [],
       "longTasks": 1,
-      "maxTaskMs": 50,
+      "maxTaskMs": 57,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -202,10 +205,10 @@
           "shifts": []
         },
         "live": [
-          "59 productos",
-          "Agregado al carrito: Audífonos inalámbricos",
+          "489 productos",
+          "Agregado al carrito: Alpro Plantaardig variatie vanille",
           "1",
-          "Agregado al carrito: Cargador USB-C 65 W",
+          "Agregado al carrito: Cranberry saveur amande",
           "1",
           "1"
         ]
@@ -214,16 +217,16 @@
     "1280-abrir-ficha": {
       "viewport": "1280",
       "flow": "abrir-ficha",
-      "hash": "#/tienda/028-audifonos-inalambricos",
-      "title": "Audífonos inalámbricos",
-      "fps": 52.5,
-      "frames": 92,
-      "jank": 3,
-      "maxFrameGapMs": 133.3,
+      "hash": "#/tienda/alpro-plantaardig-variatie-vanille-off-5411188103387",
+      "title": "Catálogo",
+      "fps": 43.5,
+      "frames": 74,
+      "jank": 13,
+      "maxFrameGapMs": 183.4,
       "cls": 0,
       "shifts": [],
-      "longTasks": 1,
-      "maxTaskMs": 105,
+      "longTasks": 2,
+      "maxTaskMs": 159,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -240,25 +243,25 @@
       "viewport": "1280",
       "flow": "hoja-filtros",
       "sheetOpen": 1,
-      "fps": 56.7,
-      "frames": 91,
-      "jank": 2,
-      "maxFrameGapMs": 116.6,
+      "fps": 50.3,
+      "frames": 89,
+      "jank": 6,
+      "maxFrameGapMs": 166.7,
       "cls": 0,
       "shifts": [],
       "longTasks": 1,
-      "maxTaskMs": 111,
+      "maxTaskMs": 151,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
           "cls": 0,
           "longTasks": 2,
-          "maxTask": 108,
+          "maxTask": 193,
           "shifts": []
         },
         "live": [
-          "59 productos",
+          "489 productos",
           "1"
         ]
       }
@@ -269,14 +272,14 @@
       "hash": "#/pedido/IVO-2026-000007",
       "celebration": 1,
       "live": 1,
-      "fps": 54.8,
-      "frames": 115,
-      "jank": 5,
-      "maxFrameGapMs": 66.7,
+      "fps": 49.5,
+      "frames": 119,
+      "jank": 13,
+      "maxFrameGapMs": 100,
       "cls": 0,
       "shifts": [],
-      "longTasks": 1,
-      "maxTaskMs": 66,
+      "longTasks": 3,
+      "maxTaskMs": 111,
       "after": {
         "orphans": 0,
         "orphanNodes": [],
@@ -293,14 +296,14 @@
       "viewport": "1280",
       "flow": "estado-pedido",
       "before": "Pendiente",
-      "fps": 38.8,
-      "frames": 88,
-      "jank": 43,
-      "maxFrameGapMs": 50.1,
+      "fps": 32.4,
+      "frames": 76,
+      "jank": 32,
+      "maxFrameGapMs": 66.7,
       "cls": 0,
       "shifts": [],
       "longTasks": 1,
-      "maxTaskMs": 52,
+      "maxTaskMs": 91,
       "statusChip": "Confirmado",
       "after": {
         "orphans": 0,
@@ -328,14 +331,26 @@
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
-          "cls": 0,
-          "longTasks": 7,
-          "maxTask": 360,
-          "shifts": []
+          "cls": 0.1670616113744076,
+          "longTasks": 8,
+          "maxTask": 307,
+          "shifts": [
+            {
+              "at": 1643,
+              "value": 0.1671,
+              "sources": [
+                {
+                  "node": "footer.eshop-footer",
+                  "from": "703,141",
+                  "to": "0,0"
+                }
+              ]
+            }
+          ]
         },
         "live": [
-          "59 productos",
-          "Agregado al carrito: Audífonos inalámbricos",
+          "489 productos",
+          "Agregado al carrito: Alpro Plantaardig variatie vanille",
           "1",
           "1"
         ]
@@ -352,14 +367,26 @@
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
-          "cls": 0,
-          "longTasks": 7,
-          "maxTask": 360,
-          "shifts": []
+          "cls": 0.1670616113744076,
+          "longTasks": 8,
+          "maxTask": 307,
+          "shifts": [
+            {
+              "at": 1643,
+              "value": 0.1671,
+              "sources": [
+                {
+                  "node": "footer.eshop-footer",
+                  "from": "703,141",
+                  "to": "0,0"
+                }
+              ]
+            }
+          ]
         },
         "live": [
-          "59 productos",
-          "Agregado al carrito: Audífonos inalámbricos",
+          "489 productos",
+          "Agregado al carrito: Alpro Plantaardig variatie vanille",
           "1",
           "1"
         ]
@@ -375,14 +402,45 @@
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
-          "cls": 0.00039444780349731445,
-          "longTasks": 7,
-          "maxTask": 263,
+          "cls": 0.2671149648785591,
+          "longTasks": 9,
+          "maxTask": 355,
           "shifts": [
             {
-              "at": 1111,
-              "value": 0.0004,
+              "at": 1259,
+              "value": 0.0001,
               "sources": [
+                {
+                  "node": "button.eshop-nav__icon-btn.eshop-nav__cart",
+                  "from": "54,44",
+                  "to": "54,44"
+                },
+                {
+                  "node": "a.eshop-nav__icon-btn",
+                  "from": "54,44",
+                  "to": "54,44"
+                },
+                {
+                  "node": "span.eshop-nav__badge",
+                  "from": "53,18",
+                  "to": "53,18"
+                },
+                {
+                  "node": "span.eshop-nav__badge",
+                  "from": "53,18",
+                  "to": "53,18"
+                }
+              ]
+            },
+            {
+              "at": 1657,
+              "value": 0.267,
+              "sources": [
+                {
+                  "node": "footer.eshop-footer",
+                  "from": "634,166",
+                  "to": "0,0"
+                },
                 {
                   "node": "div.eshop-search",
                   "from": "54,44",
@@ -397,19 +455,14 @@
                   "node": "div.eshop-nav__utility-links",
                   "from": "0,44",
                   "to": "0,44"
-                },
-                {
-                  "node": "span.eshop-nav__delivery-msg",
-                  "from": "13,18",
-                  "to": "13,18"
                 }
               ]
             }
           ]
         },
         "live": [
-          "59 productos",
-          "Agregado al carrito: Audífonos inalámbricos",
+          "489 productos",
+          "Agregado al carrito: Alpro Plantaardig variatie vanille",
           "1",
           "1"
         ]
@@ -426,14 +479,45 @@
         "orphans": 0,
         "orphanNodes": [],
         "perf": {
-          "cls": 0.00039444780349731445,
-          "longTasks": 7,
-          "maxTask": 263,
+          "cls": 0.2671149648785591,
+          "longTasks": 9,
+          "maxTask": 355,
           "shifts": [
             {
-              "at": 1111,
-              "value": 0.0004,
+              "at": 1259,
+              "value": 0.0001,
               "sources": [
+                {
+                  "node": "button.eshop-nav__icon-btn.eshop-nav__cart",
+                  "from": "54,44",
+                  "to": "54,44"
+                },
+                {
+                  "node": "a.eshop-nav__icon-btn",
+                  "from": "54,44",
+                  "to": "54,44"
+                },
+                {
+                  "node": "span.eshop-nav__badge",
+                  "from": "53,18",
+                  "to": "53,18"
+                },
+                {
+                  "node": "span.eshop-nav__badge",
+                  "from": "53,18",
+                  "to": "53,18"
+                }
+              ]
+            },
+            {
+              "at": 1657,
+              "value": 0.267,
+              "sources": [
+                {
+                  "node": "footer.eshop-footer",
+                  "from": "634,166",
+                  "to": "0,0"
+                },
                 {
                   "node": "div.eshop-search",
                   "from": "54,44",
@@ -448,19 +532,14 @@
                   "node": "div.eshop-nav__utility-links",
                   "from": "0,44",
                   "to": "0,44"
-                },
-                {
-                  "node": "span.eshop-nav__delivery-msg",
-                  "from": "13,18",
-                  "to": "13,18"
                 }
               ]
             }
           ]
         },
         "live": [
-          "59 productos",
-          "Agregado al carrito: Audífonos inalámbricos",
+          "489 productos",
+          "Agregado al carrito: Alpro Plantaardig variatie vanille",
           "1",
           "1"
         ]

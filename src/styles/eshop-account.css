@@ -1,5 +1,14 @@
 /* Cuenta de cliente: ingreso, registro, recuperación y área privada. */
 
+.customer-route-loading {
+  min-height: 60svh;
+  display: grid;
+  place-items: center;
+  padding: var(--s6);
+  color: var(--text-2);
+  font-size: var(--fs-caption);
+}
+
 .eshop-account-page {
   min-height: calc(100svh - var(--nav-h));
   padding-block: var(--s6) var(--s9);

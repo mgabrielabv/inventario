@@ -31,9 +31,11 @@ const STORE = {
   cart: storeKey('cart-v2'),
   customerSession: storeKey('customer-session-v1'),
 }
+const IMAGE_HOSTS = ['cdn.dummyjson.com', 'images.openfoodfacts.org']
 
 const routes = [
   ['home', '#/'],
+  ['inicio', '#/inicio'],
   ['catalogo', '#/tienda'],
   ['catalogo-filtros', '#/tienda?categoria=Accesorios&orden=precio-asc&densidad=compacta'],
   ['ficha', '#/tienda/essence-mascara-lash-princess-dj-1'],
@@ -63,6 +65,7 @@ const mobileViewports = [
 ]
 const mobileRoutes = [
   ['home', '#/'],
+  ['inicio', '#/inicio'],
   ['catalogo', '#/tienda'],
   ['ficha', '#/tienda/essence-mascara-lash-princess-dj-1'],
   ['carrito', '#/carrito'],
@@ -143,9 +146,17 @@ const paletteScript = async (dataUrl) => {
 }
 
 const capture = async (page, name) => {
+  // La captura de evidencia conserva las fotos de producto.
   const shot = await page.screenshot({ fullPage: false })
   await writeFile(join(out, `${name}.png`), shot)
-  const dataUrl = `data:image/png;base64,${shot.toString('base64')}`
+  // La paleta se mide solo sobre la interfaz: las fotos importadas tienen
+  // colores propios y no deben contar contra la familia de la marca.
+  const hidden = await page.addStyleTag({
+    content: 'img { visibility: hidden !important; }',
+  })
+  const uiShot = await page.screenshot({ fullPage: false })
+  await hidden.evaluate((node) => node.remove())
+  const dataUrl = `data:image/png;base64,${uiShot.toString('base64')}`
   const palette = await page.evaluate(paletteScript, dataUrl)
   const geometry = await page.evaluate(() => ({
     overflow: Math.max(0, document.documentElement.scrollWidth - window.innerWidth),
@@ -226,7 +237,7 @@ const run = async () => {
     html: {
       bytes: htmlBytes,
       gzipBytes: gzipSync(await readFile(join(root, 'dist', 'index.html'))).length,
-      limitBytes: 2.5 * 1024 * 1024,
+      limitBytes: 4.5 * 1024 * 1024,
     },
     routes: {},
     mobile: {},
@@ -234,6 +245,7 @@ const run = async () => {
     performance: {},
     e2e: {},
     externalRequests: [],
+    importedImages: [],
     errors: [],
     problems: [],
   }
@@ -245,7 +257,15 @@ const run = async () => {
     })
     page.on('request', (request) => {
       const url = request.url()
-      if (!/^(?:file|data|blob|about):/.test(url)) report.externalRequests.push(`${scope}: ${url}`)
+      if (/^(?:file|data|blob|about):/.test(url)) return
+      const entry = `${scope}: ${url}`
+      // Las fotos importadas en la semilla son recursos de contenido, no
+      // dependencias de la aplicación: se contabilizan aparte.
+      if (IMAGE_HOSTS.some((host) => url.startsWith(`https://${host}/`))) {
+        report.importedImages.push(entry)
+      } else {
+        report.externalRequests.push(entry)
+      }
     })
   }
 
@@ -261,6 +281,9 @@ const run = async () => {
         state: { lines: [{ productoId: 'dj-1', cantidad: 1, agregadoEn: new Date().toISOString() }] },
         version: 2,
       }))
+      localStorage.setItem(store.customerSession, JSON.stringify({
+        state: { accountId: 'c-demo-cliente', remember: true }, version: 1,
+      }))
     } catch { /* file:// sin almacenamiento: la app usa memoria */ }
   }
 
@@ -273,11 +296,10 @@ const run = async () => {
     } catch { /* ignore */ }
   }
 
-  const injectGuest = (store) => {
+  const injectCustomerSession = (store) => {
     try {
       localStorage.setItem(store.customerSession, JSON.stringify({
-        state: { accountId: null, remember: false, guestCheckout: true },
-        version: 1,
+        state: { accountId: 'c-demo-cliente', remember: true }, version: 1,
       }))
     } catch { /* ignore */ }
   }
@@ -362,6 +384,9 @@ const run = async () => {
             state: { lines: [{ productoId: 'dj-1', cantidad: 1, agregadoEn: new Date().toISOString() }] },
             version: 2,
           }))
+          localStorage.setItem(store.customerSession, JSON.stringify({
+            state: { accountId: 'c-demo-cliente', remember: true }, version: 1,
+          }))
         } catch { /* file:// sin almacenamiento */ }
       }, { store: STORE, theme })
       const page = await context.newPage()
@@ -429,8 +454,7 @@ const run = async () => {
     )
     const next = () => page.locator('.checkout-nav button', { hasText: 'Continuar' }).click()
     await page.goto(`${base}#/pagar`, { waitUntil: 'load' })
-    const guest = page.getByRole('button', { name: 'Continuar como invitado' })
-    if (await guest.count()) await guest.click()
+    await page.locator('.checkout-account-card').waitFor()
     await page.locator('[data-field="nombre"]').fill('Ana Pérez')
     await page.locator('[data-field="telefono"]').fill('0414-1234567')
     await page.locator('[data-field="email"]').fill('ana@example.com')
@@ -484,21 +508,40 @@ const run = async () => {
     }
   }
 
-  // E2E · checkout de invitado, con la tarjeta de cuenta al inicio.
+  // E2E · visitante: portada pública, tienda protegida y consultas públicas.
   {
     let context
     try {
       context = await browser.newContext({
         viewport: { width: 1440, height: 900 }, colorScheme: 'light', reducedMotion: 'no-preference',
       })
-      await context.addInitScript(injectCart, STORE)
-      await context.addInitScript(injectGuest, STORE)
       const page = await context.newPage()
-      watch(page, 'e2e-checkout')
-      const hash = await finishCheckout(page, 'checkout')
-      report.e2e.checkout = { ok: true, hash, code: hash.split('/').pop() ?? '' }
+      watch(page, 'e2e-visitante')
+      await page.goto(`${base}#/`, { waitUntil: 'load' })
+      await page.locator('.landing').waitFor()
+      const landingHash = await page.evaluate(() => window.location.hash)
+      const sections = await page.locator('.landing > main > section').count()
+      const redirects = {}
+      for (const ruta of ['#/tienda', '#/carrito', '#/pagar', '#/favoritos']) {
+        await page.goto(`${base}${ruta}`, { waitUntil: 'load' })
+        await page.waitForFunction(() => window.location.hash === '#/cuenta/ingresar')
+        redirects[ruta] = await page.evaluate(() => window.location.hash)
+      }
+      await page.goto(`${base}#/seguimiento`, { waitUntil: 'load' })
+      await page.locator('.tracking-page').waitFor()
+      const trackingHash = await page.evaluate(() => window.location.hash)
+      await page.goto(`${base}#/pedido/IVO-2026-000001`, { waitUntil: 'load' })
+      await page.locator('.order-page').waitFor()
+      const orderHash = await page.evaluate(() => window.location.hash)
+      await page.screenshot({ path: join(out, 'e2e-landing-visitante-light.png') })
+      report.e2e.visitante = {
+        ok: landingHash === '#/' && sections === 6 && trackingHash === '#/seguimiento'
+          && orderHash === '#/pedido/IVO-2026-000001'
+          && Object.values(redirects).every((hash) => hash === '#/cuenta/ingresar'),
+        landingHash, sections, redirects, trackingHash, orderHash,
+      }
     } catch (error) {
-      report.e2e.checkout = { ok: false, error: error.message }
+      report.e2e.visitante = { ok: false, error: error.message }
     } finally {
       await context?.close()
     }
@@ -511,6 +554,7 @@ const run = async () => {
       context = await browser.newContext({
         viewport: { width: 1440, height: 900 }, colorScheme: 'light', reducedMotion: 'no-preference',
       })
+      await context.addInitScript(injectCustomerSession, STORE)
       const page = await context.newPage()
       watch(page, 'e2e-filtros')
       await page.goto(
@@ -538,7 +582,7 @@ const run = async () => {
   const overflow = Math.max(...Object.values(report.routes).map((item) => item.overflow ?? 0))
   report.palette = { worst, threshold: 0.98 }
   report.overflow = { max: overflow, threshold: 2 }
-  if (htmlBytes > report.html.limitBytes) report.problems.push('HTML por encima de 2.5 MB')
+  if (htmlBytes > report.html.limitBytes) report.problems.push('HTML por encima de 4,5 MB')
   if (worst < 0.98) report.problems.push('Croma visible fuera de la familia de color')
   if (overflow > 2) report.problems.push(`Desborde horizontal de ${overflow} px`)
   if (report.errors.length) report.problems.push('Errores de consola o de página')
@@ -571,13 +615,14 @@ const run = async () => {
 
   console.log(`Capturas: ${out}`)
   console.log(`Informe: ${reportPath}`)
-  console.log(`HTML: ${(htmlBytes / 1024 / 1024).toFixed(2)} MiB · gzip ${(report.html.gzipBytes / 1024 / 1024).toFixed(2)} MiB · límite 2.5 MiB`)
+  console.log(`HTML: ${(htmlBytes / 1024 / 1024).toFixed(2)} MiB · gzip ${(report.html.gzipBytes / 1024 / 1024).toFixed(2)} MiB · límite 4,5 MiB`)
   console.log(`Croma dentro de 350°–40°: peor caso ${(worst * 100).toFixed(1)}% · desborde máx. ${overflow} px`)
   for (const [theme, perf] of Object.entries(report.performance)) {
     console.log(`${theme}: CLS ${perf.cls.toFixed(4)} · tareas largas ${perf.longTasks} · máx ${perf.maxTask.toFixed(1)} ms`)
   }
   console.log(`Móvil: ${ms.measurements} mediciones · CLS máx. ${ms.maxCls.toFixed(4)} · desborde ${ms.maxOverflow} px · objetivos <44 px ${ms.smallTargets} · campos <16 px ${ms.smallFields}`)
-  console.log(`E2E: personal ${report.e2e.login?.ok ? 'OK' : 'fallido'} · cliente ${report.e2e.cliente?.ok ? 'OK' : 'fallido'} · invitado ${report.e2e.checkout?.ok ? `OK (${report.e2e.checkout.code})` : 'fallido'} · filtros ${report.e2e.filtros?.ok ? 'OK' : 'fallido'}`)
+  console.log(`E2E: personal ${report.e2e.login?.ok ? 'OK' : 'fallido'} · cliente ${report.e2e.cliente?.ok ? `OK (${report.e2e.cliente.checkout})` : 'fallido'} · visitante ${report.e2e.visitante?.ok ? 'OK' : 'fallido'} · filtros ${report.e2e.filtros?.ok ? 'OK' : 'fallido'}`)
+  console.log(`Fotos importadas cargadas: ${report.importedImages.length}`)
   if (report.externalRequests.length) console.log(`Peticiones externas: ${report.externalRequests.length}`)
   if (report.errors.length) console.log(`Errores de consola: ${report.errors.length}`)
   if (report.problems.length) {

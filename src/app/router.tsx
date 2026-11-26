@@ -29,20 +29,25 @@ import { AccountOrdersPage } from '../pages/customer/account-orders-page'
 import { AddressesPage } from '../pages/customer/addresses-page'
 import { ProfilePage } from '../pages/customer/profile-page'
 
+/**
+ * La portada es pública; la tienda y el checkout exigen cuenta de cliente.
+ * Seguimiento y pedido concreto siguen siendo públicos: se pueden consultar
+ * con el código sin iniciar sesión.
+ */
 export const router = createHashRouter([
-  { path: '/bienvenida', element: <LandingPage /> },
+  { index: true, element: <LandingPage /> },
   {
     path: '/',
     element: <StoreLayout />,
     children: [
-      { index: true, element: <HomePage /> },
-      { path: 'tienda', element: <CatalogPage /> },
-      { path: 'tienda/:slug', element: <ProductPage /> },
-      { path: 'carrito', element: <CartPage /> },
-      { path: 'pagar', element: <CheckoutPage /> },
+      { path: 'inicio', element: <CustomerRoute><HomePage /></CustomerRoute> },
+      { path: 'tienda', element: <CustomerRoute><CatalogPage /></CustomerRoute> },
+      { path: 'tienda/:slug', element: <CustomerRoute><ProductPage /></CustomerRoute> },
+      { path: 'carrito', element: <CustomerRoute><CartPage /></CustomerRoute> },
+      { path: 'pagar', element: <CustomerRoute><CheckoutPage /></CustomerRoute> },
       { path: 'pedido/:codigo', element: <OrderPage /> },
       { path: 'seguimiento', element: <TrackingPage /> },
-      { path: 'favoritos', element: <FavoritesPage /> },
+      { path: 'favoritos', element: <CustomerRoute><FavoritesPage /></CustomerRoute> },
       { path: 'arte', element: <ArtSheetPage /> },
       { path: 'cuenta/ingresar', element: <CustomerSignInPage /> },
       { path: 'cuenta/registro', element: <CustomerSignUpPage /> },

@@ -540,20 +540,6 @@
   font-weight: 700;
   line-height: 1.4;
 }
-.eshop-cart__invite-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--s3);
-  margin-top: var(--s3);
-}
-.eshop-cart__invite-links a {
-  color: var(--primary-text);
-  font-size: var(--fs-caption);
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.eshop-cart__invite-links .eshop-cart__guest { color: var(--text-2); font-weight: 600; }
 .eshop-cart__summary > * > :last-child { display: none; }
 .eshop-cart__summary > * > :first-child + div > div > :last-child { display: none; }
 .eshop-cart__follow {
@@ -708,7 +694,6 @@
   .eshop-nav__icon-btn { min-width: 34px; height: 34px; padding: 0 var(--s1); }
   .eshop-nav__cart-total { display: none; }
   .eshop-search-dialog { padding: var(--s3); }
-  .eshop-cart__invite-links { gap: var(--s2); }
   .eshop-footer__grid { grid-template-columns: minmax(0, 1fr); }
   .eshop-footer__pay-list { gap: var(--s1); }
 }

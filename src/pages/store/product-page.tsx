@@ -120,7 +120,7 @@ export const ProductPage = () => {
       <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">{feedback}</span>
       <nav className="pdp-breadcrumb" aria-label="Ruta de navegación">
         <ol>
-          <li><Link to="/">Inicio</Link></li>
+          <li><Link to="/inicio">Inicio</Link></li>
           <li><Link to="/tienda">Catálogo</Link></li>
           <li><Link to={`/tienda?cat=${encodeURIComponent(product.categoria)}`}>{product.categoria}</Link></li>
           <li aria-current="page">{product.nombre}</li>

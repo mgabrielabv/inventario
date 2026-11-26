@@ -148,7 +148,7 @@ export const LoginPage = () => {
 
           <Link className="login-page__back t-mid" to="/">
             <ArrowLeft size={16} strokeWidth={1.5} aria-hidden="true" />
-            Volver a la tienda
+            Volver al inicio
           </Link>
         </motion.div>
       </motion.section>
